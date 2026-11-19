@@ -10,3 +10,6 @@ generated/
 *.log
 **/.gamearts/
 System.IO.MemoryStream
+
+# Generated evidence runs (files already tracked stay tracked)
+docs/evidence/
