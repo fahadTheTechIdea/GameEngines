@@ -1,40 +1,32 @@
 using WorldCreator.Core.Geometry;
+using WorldCreator.Core.Spatial;
 
 namespace WorldCreator.Core.Planning;
 
-/// <summary>Queries the same authored terrain overlays used by the raster compiler.
-/// Boundary partitioning detects interruptions smaller than an arbitrary sample interval.</summary>
-public sealed class MockupTerrainQuery(MockupWorldDesign design)
+/// <summary>Translates visual terrain inputs into the common surface-query owner.
+/// No independent point-selection, gradient or segment-partition algorithm remains here.</summary>
+public sealed class MockupTerrainQuery
 {
-    private readonly IReadOnlyDictionary<string,VisualRegion> _regions=design.Blueprint.Regions.ToDictionary(r=>r.Id,StringComparer.Ordinal);
-    public CellKind? KindAt(WorldPoint point) => design.TerrainRules.Where(t=>_regions[t.RegionId].Outline.ContainsPoint(point))
-        .OrderByDescending(t=>t.Priority).ThenBy(t=>t.RegionId,StringComparer.Ordinal).Select(t=>(CellKind?)t.Kind).FirstOrDefault();
-
-    public bool Matches(WorldPolyline line,Func<WorldPoint,bool> predicate,CancellationToken token=default)
+    private readonly WorldSurfaceQuery query;
+    public MockupTerrainQuery(MockupWorldDesign design,CancellationToken token=default)
     {
-        token.ThrowIfCancellationRequested();
-        if (line.Points.Any(p=>!predicate(p))) return false;
-        foreach (var pair in line.Points.Zip(line.Points.Skip(1)))
+        ArgumentNullException.ThrowIfNull(design);
+        var regions=design.Blueprint.Regions.ToDictionary(r=>r.Id,StringComparer.Ordinal);
+        var patches=design.TerrainRules.Select(rule=>
         {
-            token.ThrowIfCancellationRequested();
-            var a=pair.First; var b=pair.Second;
-            double vx=b.X-a.X,vy=b.Y-a.Y,squared=vx*vx+vy*vy;
-            var cuts=new SortedSet<double> { 0,1 };
-            foreach (var rule in design.TerrainRules)
-            {
-                token.ThrowIfCancellationRequested();
-                var vertices=_regions[rule.RegionId].Outline.Vertices;
-                for (int i=0;i<vertices.Count;i++)
-                {
-                    var hit=PlanarIntersections.Intersect(a,b,vertices[i],vertices[(i+1)%vertices.Count]);
-                    if (hit.Point is { } p) cuts.Add(Math.Clamp(((p.X-a.X)*vx+(p.Y-a.Y)*vy)/squared,0,1));
-                    else if (hit.Kind==IntersectionKind.CollinearOverlap)
-                        foreach (var v in new[] { vertices[i],vertices[(i+1)%vertices.Count] })
-                            cuts.Add(Math.Clamp(((v.X-a.X)*vx+(v.Y-a.Y)*vy)/squared,0,1));
-                }
-            }
-            if (cuts.Zip(cuts.Skip(1)).Any(c=>!predicate(new(a.X+vx*(c.First+c.Second)/2,a.Y+vy*(c.First+c.Second)/2)))) return false;
-        }
-        return true;
+            token.ThrowIfCancellationRequested();var region=regions[rule.RegionId];
+            return new WorldTerrainPatch(rule.RegionId,rule.Kind.ToString(),region.VisualRole,rule.RuleId,region.Outline,rule.Priority,
+                new(region.Outline.Vertices.Min(v=>v.X),region.Outline.Vertices.Min(v=>v.Y)),rule.ElevationMeters,rule.SlopeX,rule.SlopeY);
+        }).ToArray();
+        query=new(new(1,"mockup-terrain","meters",null,[],patches),token);
     }
+    public WorldSurfaceSample Sample(WorldPoint point,CancellationToken token=default)=>query.Sample(point,token);
+    public CellKind? KindAt(WorldPoint point)
+    {
+        var sample=query.Sample(point);
+        if(sample.Status==WorldSurfaceStatus.Ambiguous)throw new ArgumentException("TERRAIN_PRIORITY_AMBIGUOUS:"+sample.SourceId);
+        return sample.Status==WorldSurfaceStatus.Sampled?Enum.Parse<CellKind>(sample.Kind!):null;
+    }
+    public bool Matches(WorldPolyline line,Func<WorldPoint,bool> predicate,CancellationToken token=default)
+        =>query.Matches(line,s=>predicate(s.Position),token);
 }

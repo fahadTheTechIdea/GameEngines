@@ -1,0 +1,11 @@
+{
+  "Status": "OwnerAcceptedArtTestProfile",
+  "Scope": "Reusable framework reference test; not a commissioned game",
+  "UserStatement": "Accept the proposed test profile",
+  "ProposalFile": "art-profile-proposal.json",
+  "ProposalSha256": "2355e8a0add283bd30fbfc04a43431278e7d51d54aeb35b22b2a7c9562ba1547",
+  "ChoicesVersion": "b5db73aa73c2",
+  "CanonicalMaterialSettingsSha256": "4ea2c9586e32bb28ed01fca504d2b9e53b7a41d58ec1b7d2e113d3ba22bad103",
+  "RecordedAtUtc": "2026-10-27T13:39:39.580155+00:00",
+  "ArtworkApprovalGranted": false
+}

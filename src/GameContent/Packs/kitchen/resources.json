@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "pack": "kitchen",
+  "resources": [
+    { "id": "kitchen.plum-tomatoes", "name": "Plum tomatoes", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["ingredient", "vegetable"], "properties": { "base-price": 3 } },
+    { "id": "kitchen.onions", "name": "Onions", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["ingredient", "vegetable"], "properties": { "base-price": 1.5 } },
+    { "id": "kitchen.beef", "name": "Beef", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["ingredient", "meat"], "properties": { "base-price": 12 } },
+    { "id": "kitchen.rice", "name": "Rice", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["ingredient", "staple"], "properties": { "base-price": 2 } },
+    { "id": "kitchen.olive-oil", "name": "Olive oil", "class": "fluid", "unit": "L", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["ingredient", "oil"], "properties": { "base-price": 8 } },
+    { "id": "kitchen.pepper", "name": "Black pepper", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["ingredient", "spice"], "properties": { "base-price": 30 } },
+    { "id": "kitchen.fish-fillets", "name": "Fish fillets", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["ingredient", "fish"], "properties": { "base-price": 10 } },
+    { "id": "kitchen.cream", "name": "Cream", "class": "fluid", "unit": "L", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["ingredient", "dairy"], "properties": { "base-price": 5 } },
+    { "id": "kitchen.basil", "name": "Basil", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["ingredient", "herb"], "properties": { "base-price": 15 } },
+    { "id": "kitchen.garlic", "name": "Garlic", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["ingredient", "vegetable"], "properties": { "base-price": 6 } },
+    { "id": "kitchen.cane-sugar", "name": "Cane sugar", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["ingredient", "sweet"], "properties": { "base-price": 2 } },
+    { "id": "kitchen.stock", "name": "Beef stock", "class": "intermediate", "unit": "L", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["base"], "properties": { "base-price": 5 } },
+    { "id": "kitchen.pasta", "name": "Fresh pasta", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["base"], "properties": { "base-price": 3 } },
+    { "id": "kitchen.pesto", "name": "Basil pesto", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["sauce"], "properties": { "base-price": 20 } },
+    { "id": "kitchen.garlic-oil", "name": "Garlic oil", "class": "intermediate", "unit": "L", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["sauce"], "properties": { "base-price": 14 } },
+    { "id": "kitchen.pasta-plate", "name": "Pasta pomodoro", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": { "ticks": 6000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["dish"], "properties": { "base-price": 9 } },
+    { "id": "kitchen.fish-plate", "name": "Pan-seared fish", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": { "ticks": 4500, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["dish"], "properties": { "base-price": 14 } },
+    { "id": "kitchen.steak-plate", "name": "Grilled steak dinner", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": { "ticks": 6000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["dish"], "properties": { "base-price": 22 } },
+    { "id": "kitchen.risotto", "name": "Risotto", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": { "ticks": 6000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["dish"], "properties": { "base-price": 12 } },
+    { "id": "kitchen.custard", "name": "Egg-free custard", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": { "ticks": 8000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["dish", "dessert"], "properties": { "base-price": 6 } },
+    { "id": "kitchen.soup", "name": "Onion soup", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": { "ticks": 7000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["dish"], "properties": { "base-price": 7 } },
+    { "id": "kitchen.tasting-menu", "name": "Tasting menu", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 10 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["dish", "menu"], "properties": { "base-price": 40 } }
+  ],
+  "stations": [
+    { "id": "kitchen.range", "name": "Range and grill", "levels": 2 },
+    { "id": "kitchen.pass", "name": "Service pass", "levels": 1 }
+  ],
+  "skills": []
+}

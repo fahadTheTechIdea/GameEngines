@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Core/GameRuntime.Core.csproj" />
+    <ProjectReference Include="../GameRuntime.Alchemy/GameRuntime.Alchemy.csproj" />
+    <ProjectReference Include="../GameRuntime.Services/GameRuntime.Services.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Diagnostics/ScenarioEngine.Diagnostics.csproj" />
+    <ProjectReference Include="../../GameContent/GameContent.Catalog/GameContent.Catalog.csproj" />
+    <ProjectReference Include="../../GameContent/GameContent.Catalog.Alchemy/GameContent.Catalog.Alchemy.csproj" />
+    <None Include="Content/**/*.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../GameContent/Packs/**/*.json" Link="Packs/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

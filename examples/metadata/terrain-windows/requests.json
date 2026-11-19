@@ -1,0 +1,34 @@
+[
+  {
+    "Version": 1,
+    "FirstColumn": 0,
+    "FirstRow": 0,
+    "Columns": 17,
+    "Rows": 17,
+    "HaloCells": 1
+  },
+  {
+    "Version": 1,
+    "FirstColumn": 16,
+    "FirstRow": 0,
+    "Columns": 17,
+    "Rows": 17,
+    "HaloCells": 1
+  },
+  {
+    "Version": 1,
+    "FirstColumn": 0,
+    "FirstRow": 16,
+    "Columns": 17,
+    "Rows": 17,
+    "HaloCells": 1
+  },
+  {
+    "Version": 1,
+    "FirstColumn": 16,
+    "FirstRow": 16,
+    "Columns": 17,
+    "Rows": 17,
+    "HaloCells": 1
+  }
+]

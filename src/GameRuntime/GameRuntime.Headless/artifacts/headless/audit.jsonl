@@ -1,0 +1,4 @@
+{"occurredAtUtc":"2026-10-28T12:25:55.9170242+00:00","record":{"operation":"PackValidated","target":"gameruntime.tycoon","result":"accepted","sessionId":null}}
+{"occurredAtUtc":"2026-10-28T12:25:56.8602217+00:00","record":{"operation":"ScenarioEnded","target":"f12e8606f0b573e72f68c93d0e95605fbc334d033f46d67de119ca55c9996bf9","result":"committed","sessionId":"headless"}}
+{"occurredAtUtc":"2026-10-28T12:26:06.5251339+00:00","record":{"operation":"PackValidated","target":"gameruntime.tycoon","result":"accepted","sessionId":null}}
+{"occurredAtUtc":"2026-10-28T12:26:07.1312788+00:00","record":{"operation":"ScenarioEnded","target":"f12e8606f0b573e72f68c93d0e95605fbc334d033f46d67de119ca55c9996bf9","result":"committed","sessionId":"headless"}}

@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The authoring tool for economy documents: check, simulate, explain, coverage. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><AssemblyName>EconomyEngine.Cli</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EconomyEngine.Core/EconomyEngine.Core.csproj" />
+    <ProjectReference Include="../../EngineCommon/EngineCommon.Balance/EngineCommon.Balance.csproj" />
+  </ItemGroup>
+</Project>

@@ -369,12 +369,12 @@ namespace Beep.SimEngine.Standard
         }
         private void SyncLots(IStateSync s)
         {
-            var lots = _stock.Lots; int n = s.Count(lots.Count);
+            int n = s.Count(_stock.LotCount);
             if (s.Reading) _stock.Clear();
             int previous = 0; string previousLot = null;
             for (int i = 0; i < n; i++)
             {
-                var lot = ResourceLotAmount.Sync(s, s.Reading ? default : lots[i]);
+                var lot = ResourceLotAmount.Sync(s, s.Reading ? default : _stock.LotAt(i));
                 ResourceId resource = lot.Resource; string identity = lot.Lot.Id;
                 if (s.Reading)
                 {

@@ -149,6 +149,8 @@
       "expected": [
         "Invokes the C# ProceduralCityGenerator or generate-city CLI with reusable requests/catalogs",
         "Provides dimensions, district programs, structure definitions and layout rules rather than per-object coordinates",
+        "Uses context-driven Design and district Program inputs for new city work; does not silently return the owner-rejected rectangular/courtyard prototype",
+        "Declares centers, approaches, road roles, land-use mixes and required facility/park counts; reports the current radial/convex geometry limits honestly",
         "Verifies engine streets, blocks, frontage parcels, structure/access geometry, nested membership and explicit scope",
         "Shows JavaScript rendering of exact MapGeometry and does not claim diagram packing is city generation",
         "Preserves previous outputs and reports unsupported terrain, road layouts, art or runtime gates accurately"

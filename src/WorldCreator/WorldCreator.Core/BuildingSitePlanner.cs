@@ -1,4 +1,5 @@
 using WorldCreator.Core.Geometry;
+using WorldCreator.Core.Spatial;
 
 namespace WorldCreator.Core.Planning;
 
@@ -21,20 +22,44 @@ public sealed record BuildingSitePlan(IReadOnlyList<BuildingSiteFeature> Feature
 
 /// <summary>Derives access, service and green zones from the selected physical footprint
 /// and its street frontage. Zones cannot spill into roads, buildings or neighboring parcels.</summary>
-public sealed class BuildingSitePlanner
+public sealed partial class BuildingSitePlanner
 {
     public BuildingSitePlan Plan(string buildingId, string regionId, string pathId,
-        BuildableParcel parcel, WorldPolygon footprint, BuildingDefinition definition)
+        BuildableParcel parcel, WorldPolygon footprint, BuildingDefinition definition,CancellationToken token=default)
+        =>Plan(buildingId,regionId,pathId,parcel,footprint,definition,null,token);
+
+    internal BuildingSitePlan Plan(string buildingId,string regionId,string pathId,
+        BuildableParcel parcel,WorldPolygon footprint,BuildingDefinition definition,WorldSpatialWorkBudget? parent,CancellationToken token)
     {
+        token.ThrowIfCancellationRequested();parent?.Charge(0);
         ArgumentNullException.ThrowIfNull(parcel);
         ArgumentNullException.ThrowIfNull(footprint);
         ArgumentNullException.ThrowIfNull(definition);
         definition.Validate();
+        return Plan(buildingId,regionId,pathId,parcel,footprint,definition.SiteRules??[],definition.AccessWidthMeters,definition.Id,parent,token);
+    }
+
+    /// <summary>Shared site grammar over authored source geometry. No settlement or registered building is required.</summary>
+    public BuildingSitePlan Plan(string buildingId,string regionId,string pathId,BuildableParcel parcel,WorldPolygon footprint,
+        IReadOnlyList<BuildingSiteRule> rules,double accessWidthMeters,string sourceRuleId,CancellationToken token=default)
+        =>Plan(buildingId,regionId,pathId,parcel,footprint,rules,accessWidthMeters,sourceRuleId,null,token);
+
+    internal BuildingSitePlan Plan(string buildingId,string regionId,string pathId,BuildableParcel parcel,WorldPolygon footprint,
+        IReadOnlyList<BuildingSiteRule> rules,double accessWidthMeters,string sourceRuleId,WorldSpatialWorkBudget? parent,CancellationToken token,
+        WorldPoint? sourceEntrance=null)
+    {
+        var budget=new WorldSpatialWorkBudget(2000000,token,parent,"BUILDING_SITE_WORK_BUDGET");budget.Charge(0);
+        ArgumentNullException.ThrowIfNull(parcel);ArgumentNullException.ThrowIfNull(footprint);ArgumentNullException.ThrowIfNull(rules);
+        if(parcel.Boundary?.Vertices is not {Count:>=3 and <=64}||footprint.Vertices is not {Count:4}||rules.Count>64)
+            return new([], ["BUILDING_SITE_GEOMETRY_UNSUPPORTED"]);
+        ValidateRules(rules);
+        if(!double.IsFinite(accessWidthMeters)||accessWidthMeters<=0||string.IsNullOrWhiteSpace(sourceRuleId))
+            throw new ArgumentException("BUILDING_SITE_INPUT_INVALID");
         parcel.Boundary.Validate();
         footprint.Validate();
-        if (parcel.Boundary.Vertices.Count != 4 || footprint.Vertices.Count != 4 ||
-            parcel.Boundary.Vertices.Select(p => p.X).Distinct().Count() != 2 ||
-            parcel.Boundary.Vertices.Select(p => p.Y).Distinct().Count() != 2 ||
+        bool rectangular=SiteRectangle(parcel.Boundary);
+        if(!rectangular)budget.Charge(8L*parcel.Boundary.Vertices.Count*parcel.Boundary.Vertices.Count);
+        if (!ConvexParcelGeometry.IsConvex(parcel.Boundary) ||
             footprint.Vertices.Select(p => p.X).Distinct().Count() != 2 ||
             footprint.Vertices.Select(p => p.Y).Distinct().Count() != 2 ||
             footprint.Vertices.Any(p => !parcel.Boundary.ContainsPoint(p)))
@@ -48,13 +73,18 @@ public sealed class BuildingSitePlanner
         if (Math.Abs(parcel.StreetAccess.Y-py0) > 1e-8 && Math.Abs(parcel.StreetAccess.Y-py1) > 1e-8)
             return new([], ["BUILDING_SITE_FRONTAGE_INVALID"]);
         bool north = Math.Abs(parcel.StreetAccess.Y-py0) <= 1e-8;
-        double cx = (bx0+bx1)/2, half = definition.AccessWidthMeters/2;
+        double cx = sourceEntrance?.X ?? (bx0+bx1)/2, half = accessWidthMeters/2;
+        if(sourceEntrance is {} entrance&&(!double.IsFinite(entrance.X)||!double.IsFinite(entrance.Y)||
+            Math.Abs(entrance.Y-(north?by0:by1))>1e-8||Math.Abs(entrance.X-parcel.StreetAccess.X)>1e-8||
+            cx-half<bx0-1e-8||cx+half>bx1+1e-8))
+            return new([], ["BUILDING_SITE_ENTRANCE_INVALID"]);
         if (cx-half < px0 || cx+half > px1)
             return new([], ["BUILDING_ACCESS_WIDTH_DOES_NOT_FIT"]);
         Add("access", SiteFeatureKind.AccessWalkway, cx-half, north ? py0 : by1,
             cx+half, north ? by0 : py1, "connect the building entrance to its designed street", null);
-        foreach (var rule in definition.SiteRules ?? [])
+        foreach (var rule in rules)
         {
+            budget.Charge(0);
             double x0 = px0, x1 = px1, y0 = by0, y1 = by1;
             if (rule.Band is SiteBand.Front or SiteBand.Rear)
             {
@@ -82,6 +112,10 @@ public sealed class BuildingSitePlanner
                 if (rule.Required) issues.Add("BUILDING_SITE_ZONE_DOES_NOT_FIT:" + rule.Id);
                 continue;
             }
+            if(!rectangular&&!SiteBandSupported(parcel.Boundary,rule,north,bx0,bx1,by0,by1,budget))
+            {
+                if(rule.Required)issues.Add("BUILDING_SITE_ZONE_DOES_NOT_FIT:"+rule.Id);continue;
+            }
             // Green/service front bands are split around the entrance. A forecourt
             // intentionally includes its access walk as shared circulation space.
             if (rule.Band == SiteBand.Front && rule.Kind != SiteFeatureKind.Forecourt)
@@ -101,9 +135,22 @@ public sealed class BuildingSitePlanner
                 if (rule is null || rule.Required) issues.Add("BUILDING_SITE_ZONE_EMPTY:" + id);
                 return;
             }
-            features.Add(new(buildingId+"-"+id, buildingId, kind,
-                new([new(x0,y0),new(x1,y0),new(x1,y1),new(x0,y1)]), regionId,
-                definition.Id+":"+id, pathId, purpose, rule?.SpeciesAssetId,
+            var shape=new WorldPolygon([new(x0,y0),new(x1,y0),new(x1,y1),new(x0,y1)]);
+            if(!rectangular)
+            {
+                if(rule is null)
+                {
+                    budget.Charge(16L*parcel.Boundary.Vertices.Count);
+                    if(!parcel.Boundary.ContainsPolygon(shape)){issues.Add("BUILDING_ACCESS_WIDTH_DOES_NOT_FIT");return;}
+                }
+                else
+                {
+                    shape=ClipSiteFeature(shape,parcel.Boundary,rule.InsetMeters,budget);
+                    if(shape is null){if(rule.Required)issues.Add("BUILDING_SITE_ZONE_EMPTY:"+id);return;}
+                }
+            }
+            features.Add(new(buildingId+"-"+id, buildingId, kind,shape, regionId,
+                sourceRuleId+":"+id, pathId, purpose, rule?.SpeciesAssetId,
                 rule?.PlantSpacingMeters ?? 0, rule?.PlantMarginMeters ?? 0));
         }
     }

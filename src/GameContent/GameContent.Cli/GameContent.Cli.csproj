@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><AssemblyName>GameContent.Cli</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameContent.Catalog/GameContent.Catalog.csproj" />
+    <ProjectReference Include="../GameContent.Catalog.Alchemy/GameContent.Catalog.Alchemy.csproj" />
+    <ProjectReference Include="../GameContent.Catalog.Sim/GameContent.Catalog.Sim.csproj" />
+    <ProjectReference Include="../GameContent.Catalog.Economy/GameContent.Catalog.Economy.csproj" />
+    <None Include="../Packs/**/*.json" Link="Packs/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

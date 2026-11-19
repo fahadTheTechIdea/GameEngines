@@ -1,0 +1,4 @@
+{
+  "world_setup_profiles": [{ "id": "lab.start", "entries": [], "includes": [] }],
+  "entity_setups": []
+}

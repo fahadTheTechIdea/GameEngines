@@ -1,0 +1,99 @@
+{
+  "format": 1,
+  "id": "gregorian-town",
+  "time": { "hoursPerDay": 24, "minutesPerHour": 60, "ticksPerMinute": 1 },
+  "epoch": { "year": 1970, "weekday": "thursday" },
+  "weekMode": "continuous",
+  "weekdays": [
+    { "id": "monday", "key": "cal.weekday.monday" }, { "id": "tuesday", "key": "cal.weekday.tuesday" }, { "id": "wednesday", "key": "cal.weekday.wednesday" },
+    { "id": "thursday", "key": "cal.weekday.thursday" }, { "id": "friday", "key": "cal.weekday.friday" }, { "id": "saturday", "key": "cal.weekday.saturday" }, { "id": "sunday", "key": "cal.weekday.sunday" }
+  ],
+  "months": [
+    { "id": "january", "key": "cal.month.january", "days": 31, "leapDays": 0, "intercalary": false },
+    { "id": "february", "key": "cal.month.february", "days": 28, "leapDays": 1, "intercalary": false },
+    { "id": "march", "key": "cal.month.march", "days": 31, "leapDays": 0, "intercalary": false },
+    { "id": "april", "key": "cal.month.april", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "may", "key": "cal.month.may", "days": 31, "leapDays": 0, "intercalary": false },
+    { "id": "june", "key": "cal.month.june", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "july", "key": "cal.month.july", "days": 31, "leapDays": 0, "intercalary": false },
+    { "id": "august", "key": "cal.month.august", "days": 31, "leapDays": 0, "intercalary": false },
+    { "id": "september", "key": "cal.month.september", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "october", "key": "cal.month.october", "days": 31, "leapDays": 0, "intercalary": false },
+    { "id": "november", "key": "cal.month.november", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "december", "key": "cal.month.december", "days": 31, "leapDays": 0, "intercalary": false }
+  ],
+  "leap": [ { "every": 4, "offset": 0, "leap": true }, { "every": 100, "offset": 0, "leap": false }, { "every": 400, "offset": 0, "leap": true } ],
+  "eras": [
+    { "id": "bce", "key": "cal.era.bce", "from": -100000, "direction": "down" },
+    { "id": "ce", "key": "cal.era.ce", "from": 1, "direction": "up" }
+  ],
+  "dayParts": [
+    { "id": "night", "key": "cal.daypart.night", "from": "0:00" }, { "id": "dawn", "key": "cal.daypart.dawn", "from": "5:00" },
+    { "id": "morning", "key": "cal.daypart.morning", "from": "8:00" }, { "id": "noon", "key": "cal.daypart.noon", "from": "12:00" },
+    { "id": "afternoon", "key": "cal.daypart.afternoon", "from": "13:00" }, { "id": "evening", "key": "cal.daypart.evening", "from": "18:00" },
+    { "id": "late-night", "key": "cal.daypart.late-night", "from": "22:00" }
+  ],
+  "seasons": [
+    { "id": "spring", "key": "cal.season.spring", "month": "march", "day": 1, "sunrise": "6:00", "sunset": "18:30" },
+    { "id": "summer", "key": "cal.season.summer", "month": "june", "day": 1, "sunrise": "5:00", "sunset": "21:00" },
+    { "id": "autumn", "key": "cal.season.autumn", "month": "september", "day": 1, "sunrise": "6:30", "sunset": "18:00" },
+    { "id": "winter", "key": "cal.season.winter", "month": "december", "day": 1, "sunrise": "7:30", "sunset": "16:30" }
+  ],
+  "twilightMinutes": 30,
+  "moons": [
+    { "id": "moon", "key": "cal.moon.moon", "period": { "num": 29530588, "den": 1000000 }, "newMoon": { "num": 109627597, "den": 10000 },
+      "phases": [ "cal.phase.new", "cal.phase.waxing-crescent", "cal.phase.first-quarter", "cal.phase.waxing-gibbous", "cal.phase.full", "cal.phase.waning-gibbous", "cal.phase.last-quarter", "cal.phase.waning-crescent" ] }
+  ],
+  "holidays": [
+    { "id": "new-year", "key": "cal.holiday.new-year", "days": 1, "tags": [ "public" ], "rule": { "freq": "yearly", "start": { "year": 1970, "month": "january", "day": 1 } } },
+    { "id": "leap-day", "key": "cal.holiday.leap-day", "days": 1, "tags": [], "rule": { "freq": "yearly", "start": { "year": 2000, "month": "february", "day": 29 } } },
+    { "id": "labor-day", "key": "cal.holiday.labor-day", "days": 1, "tags": [ "public" ], "rule": { "freq": "yearly", "start": { "year": 1970, "month": "september", "day": 1 }, "bymonth": [ "september" ], "byday": [ { "weekday": "monday", "nth": 1 } ] } },
+    { "id": "thanksgiving", "key": "cal.holiday.thanksgiving", "days": 1, "tags": [ "public" ], "rule": { "freq": "yearly", "start": { "year": 1970, "month": "november", "day": 1 }, "bymonth": [ "november" ], "byday": [ { "weekday": "thursday", "nth": 4 } ] } },
+    { "id": "harvest-week", "key": "cal.holiday.harvest-week", "days": 3, "tags": [ "festival" ], "rule": { "freq": "yearly", "start": { "year": 1970, "month": "october", "day": 1 } } },
+    { "id": "christmas", "key": "cal.holiday.christmas", "days": 1, "tags": [ "public" ], "rule": { "freq": "yearly", "start": { "year": 1970, "month": "december", "day": 25 } } }
+  ],
+  "formats": [
+    { "id": "long", "key": "cal.format.long" }, { "id": "short", "key": "cal.format.short" }, { "id": "time", "key": "cal.format.time" }, { "id": "ordinal", "key": "cal.format.ordinal" }
+  ],
+  "locations": [
+    { "id": "home", "key": "cal.place.home" }, { "id": "shop", "key": "cal.place.shop" }, { "id": "tavern", "key": "cal.place.tavern" },
+    { "id": "church", "key": "cal.place.church" }, { "id": "guardhouse", "key": "cal.place.guardhouse" }, { "id": "square", "key": "cal.place.square" }
+  ],
+  "activities": [
+    { "id": "sleep", "key": "cal.act.sleep" }, { "id": "eat", "key": "cal.act.eat" }, { "id": "work", "key": "cal.act.work" },
+    { "id": "worship", "key": "cal.act.worship" }, { "id": "idle", "key": "cal.act.idle" }, { "id": "celebrate", "key": "cal.act.celebrate" }, { "id": "defend", "key": "cal.act.defend" }
+  ],
+  "interrupts": [
+    { "id": "alarm", "priority": 900, "location": "guardhouse", "activity": "defend" },
+    { "id": "invitation", "priority": 12, "location": "square", "activity": "celebrate" }
+  ],
+  "facts": [ { "id": "weather.raining", "type": "bool" }, { "id": "story.plague", "type": "int", "min": 0, "max": 3 } ],
+  "schedules": [
+    { "id": "shopkeeper", "routines": [
+      { "id": "base", "priority": 0, "blocks": [
+        { "id": "sleep-night", "from": "0:00", "to": "7:00", "location": "home", "activity": "sleep" },
+        { "id": "breakfast", "from": "7:00", "to": "8:00", "location": "home", "activity": "eat" },
+        { "id": "open-morning", "from": "8:00", "to": "12:00", "location": "shop", "activity": "work" },
+        { "id": "lunch", "from": "12:00", "to": "13:00", "location": "tavern", "activity": "eat" },
+        { "id": "open-afternoon", "from": "13:00", "to": "18:00", "location": "shop", "activity": "work" },
+        { "id": "evening", "from": "18:00", "to": "22:00", "location": "tavern", "activity": "idle" },
+        { "id": "sleep-late", "from": "22:00", "to": "24:00", "location": "home", "activity": "sleep" } ] },
+      { "id": "saturday-market", "priority": 5, "when": { "weekdays": [ "saturday" ] }, "blocks": [
+        { "id": "market", "from": "9:00", "to": "15:00", "location": "square", "activity": "work" } ] },
+      { "id": "sunday", "priority": 10, "when": { "weekdays": [ "sunday" ] }, "blocks": [
+        { "id": "mass", "from": "8:00", "to": "12:00", "location": "church", "activity": "worship" },
+        { "id": "rest", "from": "12:00", "to": "18:00", "location": "home", "activity": "idle" } ] },
+      { "id": "winter-rain", "priority": 15, "when": { "seasons": [ "winter" ], "condition": { "fact": "weather.raining", "op": "eq", "value": true } }, "blocks": [
+        { "id": "stay-in", "from": "8:00", "to": "18:00", "location": "home", "activity": "idle" } ] },
+      { "id": "holiday", "priority": 20, "when": { "holidays": [ "christmas", "new-year", "thanksgiving" ] }, "blocks": [
+        { "id": "feast", "from": "8:00", "to": "22:00", "location": "square", "activity": "celebrate" } ] },
+      { "id": "harvest", "priority": 18, "when": { "holidays": [ "harvest-week" ] }, "blocks": [
+        { "id": "fair", "from": "10:00", "to": "20:00", "location": "square", "activity": "celebrate" } ] } ] },
+    { "id": "guard", "routines": [
+      { "id": "base", "priority": 0, "blocks": [
+        { "id": "night-watch", "from": "0:00", "to": "6:00", "location": "guardhouse", "activity": "defend" },
+        { "id": "sleep-day", "from": "6:00", "to": "14:00", "location": "home", "activity": "sleep" },
+        { "id": "tavern-time", "from": "14:00", "to": "18:00", "location": "tavern", "activity": "idle" },
+        { "id": "evening-watch", "from": "18:00", "to": "24:00", "location": "guardhouse", "activity": "defend" } ] } ] }
+  ]
+}

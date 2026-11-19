@@ -1,0 +1,44 @@
+{
+  "time_definitions": [{
+    "id": "lab.time", "quantum": { "numerator": 60, "denominator": 1, "unit": "second" },
+    "frame_ticks": 1, "ticks_per_second": 30, "calendar": null, "horizon": null
+  }],
+  "entity_states": [
+    { "id": "lab.idle", "state": "state.lab.idle", "priority": 0, "default": true },
+    { "id": "lab.working", "state": "state.lab.working", "priority": 20 },
+    { "id": "lab.loading", "state": "state.lab.loading", "priority": 30 },
+    { "id": "lab.moving", "state": "state.lab.moving", "priority": 40 },
+    { "id": "lab.stopped", "state": "state.lab.stopped", "priority": 60 }
+  ],
+  "tile_spaces": [{ "id": "lab.tiles", "width": 128, "height": 128 }],
+  "entities": [
+    { "id": "bench.walker", "kind": "vehicle", "components": {
+      "tile_presence": { "space": "lab.tiles", "width": 1, "height": 1, "blocks": false, "movable": true },
+      "mover": { "classes": ["land"], "class": "land", "speed": 60, "states": { "moving": "lab.moving", "stopped": "lab.stopped" } }
+    } },
+    { "id": "bench.person", "kind": "vehicle", "components": {
+      "tile_presence": { "space": "lab.tiles", "width": 1, "height": 1, "blocks": false, "movable": true },
+      "mover": { "classes": ["land"], "class": "land", "speed": 60, "states": { "moving": "lab.moving", "stopped": "lab.stopped" } },
+      "character": {}
+    } },
+    { "id": "bench.squad", "kind": "vehicle", "components": {
+      "tile_presence": { "space": "lab.tiles", "width": 1, "height": 1, "blocks": false, "movable": true },
+      "mover": { "classes": ["land"], "class": "land", "speed": 60, "states": { "moving": "lab.moving", "stopped": "lab.stopped" } },
+      "squad": { "max_members": 5000 }
+    } },
+    { "id": "bench.soldier", "kind": "vehicle", "components": {
+      "tile_presence": { "space": "lab.tiles", "width": 1, "height": 1, "blocks": false, "movable": true },
+      "mover": { "classes": ["land"], "class": "land", "speed": 60, "states": { "moving": "lab.moving", "stopped": "lab.stopped" } },
+      "worker": { "work_rate": 1, "roles": ["haul"], "states": { "working": "lab.working", "loading": "lab.loading", "stopped": "lab.stopped" } },
+      "work_policy": { "profile": "lab.hauler.work" }
+    } }
+  ],
+  "game_modes": [{ "id": "lab.resource-only", "name": "Resource-only simulation", "properties": {} }],
+  "scenarios": [{
+    "id": "bench", "name": "Character bench",
+    "modules": ["bench", "sim.characters", "sim.inventory", "sim.motion", "sim.tile-navigation", "sim.work", "gf.director"],
+    "space": "lab.tiles", "game_mode": "lab.resource-only", "mode_overrides": {},
+    "settings": { "sim.world-setup": { "profile": "lab.start" }, "sim.work": { "retry": "lab.retry" } },
+    "seats": 1, "default_seats": 1, "time": "lab.time"
+  }]
+}

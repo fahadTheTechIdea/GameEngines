@@ -1,0 +1,16 @@
+{
+  "character_stats": [
+    { "id": "field.stat.strength", "min": 1, "max": 20 },
+    { "id": "field.stat.courage", "min": 0, "max": 100 }
+  ],
+  "character_skills": [{ "id": "field.skill.shooting", "max_level": 5 }],
+  "character_traits": [
+    { "id": "field.trait.brave", "label": "trait.brave" },
+    { "id": "field.trait.careful", "label": "trait.careful" },
+    { "id": "field.trait.steady", "label": "trait.steady" }
+  ],
+  "name_pools": [
+    { "id": "field.names.given", "names": ["Adam", "Bram", "Carl", "Dario", "Emil", "Farid", "Gus", "Hugo", "Ivo", "Jonas", "Karim", "Leo"] },
+    { "id": "field.names.family", "names": ["Ashby", "Brandt", "Cole", "Dunn", "Ekberg", "Foss", "Gray", "Hale", "Ito", "Jansen", "Kerr", "Lund"] }
+  ]
+}

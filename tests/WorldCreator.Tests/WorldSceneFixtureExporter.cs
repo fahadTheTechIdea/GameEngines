@@ -1,0 +1,58 @@
+using System.Text.Json;
+using WorldCreator.Core;
+using WorldCreator.Core.Geometry;
+using WorldCreator.Core.Planning;
+
+internal static class WorldSceneFixtureExporter
+{
+    public static WorldSceneDocument Assemble()
+    {
+        var inspection = SemanticWorldAssemblyFixture.Create();
+        var houses = inspection.World.Base.Objects.Where(o => o.Kind == "home").ToArray();
+        if (houses.Length != inspection.BuildingFootprints.Count)
+            throw new InvalidOperationException("FIXTURE_BUILDING_FOOTPRINT_COUNT_MISMATCH");
+        var footprints = houses.Zip(inspection.BuildingFootprints,
+            (house, envelope) => envelope.IsFeasible && envelope.Footprint is not null
+                ? new NamedBuildingFootprint(house.Id, envelope.Footprint)
+                : throw new InvalidOperationException("FIXTURE_BUILDING_FOOTPRINT_INVALID")).ToArray();
+        if (!inspection.GardenBeds.IsValid || inspection.GroundMaterials.Diagnostics.Count != 0)
+            throw new InvalidOperationException("FIXTURE_GEOMETRY_INVALID");
+        return new(1, "simulation-fixture", false, inspection.World,
+            inspection.GroundMaterials.Pieces.ToArray(),
+            inspection.GardenBeds.Features.ToArray(), footprints,
+            inspection.Vegetation.ToArray(), [
+                new("house-west", new WorldPoint(17, 20),
+                    new WorldPolyline([new(17, 20), new(17, 28), new(24, 28)]), "crosswalk"),
+                new("house-east", new WorldPoint(43, 20),
+                    new WorldPolyline([new(43, 20), new(43, 28), new(40, 28)]), "crosswalk")
+            ], [], [new("village-zebra", "crosswalk", "main-road",
+                new WorldPoint(32, 28), true, true)],
+                [new("village-zebra", new(30,28), new(34,28), 4, false)],
+                [new("main-road", new RoadCrossSection(1.8, 2, 0.8, 0.8, 0.2, 0.2))],
+                [new("village-zebra", new(29.2,28), new(34.8,28), 0, 0, true, true)]);
+    }
+
+    public static async Task<string> ExportAsync(string outputPath,
+        CancellationToken token = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(outputPath);
+        var document = Assemble();
+        var target = Path.GetFullPath(outputPath);
+        var parent = Path.GetDirectoryName(target)!;
+        Directory.CreateDirectory(parent);
+        var json = JsonSerializer.Serialize(document,
+            new JsonSerializerOptions { WriteIndented = true });
+        token.ThrowIfCancellationRequested();
+        var temporary = target + "." + Guid.NewGuid().ToString("N") + ".tmp";
+        try
+        {
+            await File.WriteAllTextAsync(temporary, json, token);
+            File.Move(temporary, target, overwrite: true);
+        }
+        finally
+        {
+            if (File.Exists(temporary)) File.Delete(temporary);
+        }
+        return target;
+    }
+}

@@ -1,0 +1,13 @@
+{ "format": 1, "locale": "en", "messages": {
+  "rel.axis.affinity": "affinity", "rel.axis.trust": "trust", "rel.axis.attraction": "attraction",
+  "rel.need.hunger": "hunger", "rel.need.energy": "energy", "rel.need.social": "company", "rel.need.fun": "fun",
+  "rel.mood.miserable": "miserable", "rel.mood.unhappy": "unhappy", "rel.mood.glum": "glum", "rel.mood.content": "content", "rel.mood.happy": "happy", "rel.mood.elated": "elated",
+  "rel.moodlet.ate-well": "Enjoyed a good meal", "rel.moodlet.gift-received": "Received a gift", "rel.moodlet.insulted": "Was insulted", "rel.moodlet.festival-joy": "Joy of the festival", "rel.moodlet.saw-a-theft": "Saw a theft",
+  "rel.memory.was-gifted": "gave me a gift", "rel.memory.heard-kindness": "is said to be kind", "rel.memory.was-insulted": "insulted me", "rel.memory.heard-insult": "is said to be rude",
+  "rel.memory.saw-theft": "stole from me", "rel.memory.heard-theft": "is said to be a thief", "rel.memory.shared-feast": "shared a meal with me", "rel.memory.saw-kindness": "was kind to someone", "rel.memory.social-pressure": "is a friend of my friend or an enemy of my enemy",
+  "rel.state.enemy": "enemy", "rel.state.rival": "rival", "rel.state.stranger": "stranger", "rel.state.acquaintance": "acquaintance", "rel.state.friend": "friend", "rel.state.close-friend": "close friend",
+  "rel.state.distrusted": "distrusted", "rel.state.unknown": "not known well", "rel.state.trusted": "trusted",
+  "rel.bond.spouse": "spouse", "rel.bond.sworn-rival": "sworn rival",
+  "rel.gift.flowers": "a bunch of flowers", "rel.gift.pie": "a pie", "rel.gift.stone": "a plain stone",
+  "rel.act.chat": "chat", "rel.act.give-gift": "give a gift", "rel.act.insult": "insult", "rel.act.steal": "steal", "rel.act.share-meal": "share a meal", "rel.act.propose": "propose", "rel.act.flirt": "flirt"
+} }

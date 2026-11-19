@@ -1,0 +1,67 @@
+run,mode,measurement,median,min,max,unit,repeats
+1,direct,load document,777.00,777.00,777.00,ms,1
+1,direct,first period,424.28,424.28,424.28,ms,1
+1,direct,ordinary period,51.06,44.98,66.38,ms,15
+1,direct,allocation of a period,6247,6247,6247,KB,5
+1,direct,landed field alone,27.13,22.04,69.50,ms,15
+1,direct,one trade,0.00,0.00,3.63,ms,15
+1,direct,save write,150.33,90.93,296.57,ms,5
+1,direct,save open,178.50,117.17,342.69,ms,5
+1,direct,state digest,46.24,37.46,63.76,ms,5
+1,direct,save size,5463,5463,5463,KB,1
+1,direct,shipments on the way,21203,21203,21203,count,1
+1,landed,load document,375.43,375.43,375.43,ms,1
+1,landed,first period,82.23,82.23,82.23,ms,1
+1,landed,ordinary period,85.58,73.08,134.71,ms,15
+1,landed,allocation of a period,15981,15981,15981,KB,5
+1,landed,landed field alone,36.75,23.47,98.06,ms,15
+1,landed,one trade,0.00,0.00,0.02,ms,15
+1,landed,save write,158.99,111.48,272.79,ms,5
+1,landed,save open,341.63,215.09,564.01,ms,5
+1,landed,state digest,64.62,34.08,232.85,ms,5
+1,landed,save size,5488,5488,5488,KB,1
+1,landed,shipments on the way,21674,21674,21674,count,1
+2,direct,load document,628.25,628.25,628.25,ms,1
+2,direct,first period,465.74,465.74,465.74,ms,1
+2,direct,ordinary period,49.85,43.35,143.49,ms,15
+2,direct,allocation of a period,6247,6247,6247,KB,5
+2,direct,landed field alone,63.59,31.69,130.05,ms,15
+2,direct,one trade,0.00,0.00,3.16,ms,15
+2,direct,save write,200.80,148.18,239.59,ms,5
+2,direct,save open,147.86,117.56,382.02,ms,5
+2,direct,state digest,35.27,29.26,41.48,ms,5
+2,direct,save size,5463,5463,5463,KB,1
+2,direct,shipments on the way,21203,21203,21203,count,1
+2,landed,load document,271.70,271.70,271.70,ms,1
+2,landed,first period,87.14,87.14,87.14,ms,1
+2,landed,ordinary period,88.27,70.86,167.30,ms,15
+2,landed,allocation of a period,15981,15981,15981,KB,5
+2,landed,landed field alone,25.28,21.79,29.54,ms,15
+2,landed,one trade,0.00,0.00,0.02,ms,15
+2,landed,save write,100.22,71.99,198.09,ms,5
+2,landed,save open,158.26,128.01,292.20,ms,5
+2,landed,state digest,44.53,33.71,70.32,ms,5
+2,landed,save size,5488,5488,5488,KB,1
+2,landed,shipments on the way,21674,21674,21674,count,1
+3,direct,load document,719.22,719.22,719.22,ms,1
+3,direct,first period,541.60,541.60,541.60,ms,1
+3,direct,ordinary period,44.64,40.28,47.82,ms,15
+3,direct,allocation of a period,6247,6247,6247,KB,5
+3,direct,landed field alone,24.73,17.60,75.44,ms,15
+3,direct,one trade,0.00,0.00,2.58,ms,15
+3,direct,save write,119.14,98.33,194.86,ms,5
+3,direct,save open,122.47,88.01,319.81,ms,5
+3,direct,state digest,33.27,27.87,49.74,ms,5
+3,direct,save size,5463,5463,5463,KB,1
+3,direct,shipments on the way,21203,21203,21203,count,1
+3,landed,load document,233.45,233.45,233.45,ms,1
+3,landed,first period,60.96,60.96,60.96,ms,1
+3,landed,ordinary period,82.91,67.49,118.22,ms,15
+3,landed,allocation of a period,15981,15981,15981,KB,5
+3,landed,landed field alone,26.73,22.17,38.26,ms,15
+3,landed,one trade,0.00,0.00,0.02,ms,15
+3,landed,save write,63.54,59.89,97.95,ms,5
+3,landed,save open,134.41,119.61,152.17,ms,5
+3,landed,state digest,43.22,35.00,72.84,ms,5
+3,landed,save size,5488,5488,5488,KB,1
+3,landed,shipments on the way,21674,21674,21674,count,1

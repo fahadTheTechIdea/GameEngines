@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TutorialEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="TutorialEngine.html" aria-current="page">TutorialEngine</a>
+      <a href="../TUTORIAL_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>TutorialEngine</h1>
+  <p class="lede">First-run onboarding: a language → story → entry journey, steps completed by observed facts and events, escalating hints after inactivity, contextual one-shot tips, skills and mastery, skip, replay, resume, and accessibility settings.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">pure runtime</span>
+    <span class="tag">save / digest</span>
+    <span class="tag">GameRuntime component</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#document">Document format 1</a></li>
+    <li><a href="#steps">Steps and completion</a></li>
+    <li><a href="#hints">Hints</a></li>
+    <li><a href="#tips">Tips</a></li>
+    <li><a href="#skills">Skills and mastery</a></li>
+    <li><a href="#journey">First-run journey</a></li>
+    <li><a href="#access">Accessibility</a></li>
+    <li><a href="#api">Runtime API</a></li>
+    <li><a href="#facts">Facts</a></li>
+    <li><a href="#save">Save and replay</a></li>
+    <li><a href="#cli">Command line</a></li>
+    <li><a href="#component">GameRuntime integration</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>TutorialEngine decides what a new player is taught and when. It never draws a highlight or plays a sound; it emits views (step, hint, tip, journey page) with localisation keys and a motion hint, and the host presents them. Completion is driven by <strong>observed facts and events</strong> — the player actually built the thing — not by the player clicking "next".</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Journey, steps and dependencies, event counting, skills/mastery, hint escalation, tip eligibility and priority, skip/replay/resume, accessibility flags and the save.</p></div>
+  <div class="card"><h3>It does not own</h3><p>Rendering, highlight implementation, audio, input mapping into game actions, or the text itself.</p></div>
+  <div class="card"><h3>Deterministic</h3><p>Time is the step counter. Progress depends only on state, events and host facts; a save is a complete copy of that state.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/TutorialEngine/TutorialEngine.Core</code></td><td>Reader and checks, runtime (steps, hints, tips, skills, journey, controls), facts, explanation, save image.</td><td>net8.0</td></tr>
+    <tr><td><code>src/TutorialEngine/TutorialEngine.Cli</code></td><td><code>check</code>, <code>simulate</code>, <code>explain</code>, <code>coverage</code>.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Tutorial</code></td><td><code>TutorialComponent</code>, requests/answers, bridges, checkpoint.</td><td>net8.0</td></tr>
+  </tbody>
+</table>
+<p>Samples: <code>samples/valley.tutorial.json</code>, <code>valley.scenario.json</code>, <code>valley.en.json</code>. The headless demo is <code>GameRuntime.Tutorial.Headless</code>.</p>
+
+<h2 id="document" class="anchor">Document format 1</h2>
+<pre><code>{ "format": 1, "id": "valley.tutorial",
+  "time": { "stepsPerDay": 1440 },
+  "limits": { "maxActiveSteps": 1, "maxVisibleTips": 2, "tipGap": 0 },
+  "facts": [ { "id": "input.gamepad", "type": "bool" } ],
+  "events": [ { "id": "structure_built" }, { "id": "menu_opened" } ],
+  "inputs": [ { "action": "menu.open", "event": "menu_opened" } ],
+  "skills": [ { "id": "building", "key": "tut.skill.building", "mastered": 4,
+                "evidence": [ { "event": "structure_built", "points": 2 } ] } ],
+  "journey": { "languages": ["en", "ar"], "defaultLanguage": "en",
+               "pages": [ { "id": "welcome", "key": "tut.page.welcome",
+                            "body": "tut.page.welcome.body", "art": "tut.art.welcome" } ],
+               "entries": ["guest", "sign-in", "register", "join"] },
+  "steps": [ { "id": "shelter", "key": "tut.step.shelter", "body": "tut.step.shelter.body",
+               "target": "shelter.plot", "motion": "pulse", "skippable": true, "skill": "building",
+               "requires": [], "requiresAny": [],
+               "complete": { "fact": "event.structure_built.since_step", "op": "gte", "value": 1 },
+               "hints": [ { "idle": 300, "kind": "nudge", "key": "tut.hint.shelter.nudge" } ] } ],
+  "tips": [ { "id": "journal-tip", "key": "tut.tip.journal",
+              "when": { "fact": "step.shelter.status", "op": "eq", "value": "Active" },
+              "cooldown": 5, "maxShows": 1, "duration": 10, "priority": 50,
+              "skill": "building", "afterStep": "shelter", "motion": "slide" } ] }</code></pre>
+<p>Strict JSON: unknown or missing fields, duplicate ids, dangling references, invalid conditions, unreachable steps and over-large bounds are refused with <code>TUT_*</code> codes. Every player-visible string is a localisation key.</p>
+
+<h2 id="steps" class="anchor">Steps and completion</h2>
+<ul>
+  <li>A step is available when every <code>requires</code> entry is satisfied and, if given, one <code>requiresAny</code> entry was really done (bypassed alternatives only let the step continue when all alternatives were bypassed).</li>
+  <li>When <code>when</code> is false the step is <strong>bypassed</strong> (a branch not taken); when its skill is mastered it is <strong>mastered</strong>; otherwise it becomes <strong>active</strong> until <code>complete</code> holds.</li>
+  <li>Completion reads facts; an event's <code>event.&lt;id&gt;.since_step</code> fact counts only what happened since the step began. A step may be <code>skippable</code>.</li>
+  <li>Statuses: <code>Pending</code>, <code>Active</code>, <code>Done</code>, <code>Skipped</code>, <code>Mastered</code>, <code>Bypassed</code>. <code>ProgressPermille</code> and <code>Satisfied</code> summarise progress.</li>
+  <li><code>maxActiveSteps</code> usually 1, so the player has one main task at a time.</li>
+</ul>
+
+<h2 id="hints" class="anchor">Hints</h2>
+<p>After <code>idle</code> steps without activity a step's hint appears, escalating from <code>Nudge</code> to <code>Explain</code> to <code>Show</code>. A hint is a <code>HintView(Step, Level, Kind, Key, Target, Motion)</code>; the host decides how to present it. Activity (<code>Touch</code>/<code>Resume</code>) resets the idle count.</p>
+
+<h2 id="tips">Tips</h2>
+<ul>
+  <li>A tip shows while <code>when</code> holds, at most <code>maxShows</code> times, at least <code>cooldown</code> steps apart, for <code>duration</code> steps, and only after <code>afterStep</code> when given.</li>
+  <li>Priority breaks competition when more tips are eligible than <code>maxVisibleTips</code>; <code>tipGap</code> keeps two tips at least that many steps apart.</li>
+  <li>A tip ends as <code>Shown</code>, <code>Dismissed</code>, <code>Expired</code> or <code>Withdrawn</code>.</li>
+</ul>
+
+<h2 id="skills">Skills and mastery</h2>
+<p>A skill collects evidence from events; at <code>mastered</code> points the player is taken to know it, so its steps are mastered and its tips are not shown. This is how a returning player skips what they already know without a separate "experienced" flag.</p>
+
+<h2 id="journey">First-run journey</h2>
+<p><code>JourneyState</code>: <code>Language</code> → <code>Story</code> → <code>Entry</code> → <code>Done</code>. The journey has languages, story pages (title, body, art keys) and entries (guest, sign-in, register, join). <code>SelectLanguage</code>, <code>StoryNext</code>/<code>StoryBack</code>, <code>StorySkip</code>, <code>ChooseEntry</code>, and <code>ReplayStory</code> drive it. Story replay is separate from tutorial replay.</p>
+
+<h2 id="access">Accessibility</h2>
+<p><code>SetReducedMotion(bool)</code> turns every <code>Pulse</code>/<code>Slide</code> into <code>None</code>. <code>SetTextScale(permille)</code> records the player's text size. <code>SetTipsEnabled(bool)</code> suppresses tips without losing progress. These are state, saved with the session, so a host applies them consistently.</p>
+
+<h2 id="api">Runtime API</h2>
+<pre><code>var set     = TutorialLoader.Load(json);
+var runtime = TutorialRuntime.Create(set, startStep: 0);
+runtime.Start();
+runtime.Observe("built.shelter");                 // an event happened
+TutorialChanges c = runtime.Advance(step, hostFacts);   // time passes; evaluate steps/hints/tips
+runtime.SkipStep("shelter");
+runtime.SkipTutorial();
+var hints   = runtime.Hints();
+var tips    = runtime.VisibleTips();
+var step    = runtime.StepState("shelter");
+var digest  = runtime.StateDigest();</code></pre>
+<p><code>TutorialChanges</code> lists typed changes (step, skill, hint, tip, journey) for the game layer. <code>Advance</code> is monotonic; <code>Evaluate</code> re-evaluates without advancing.</p>
+
+<h2 id="facts">Facts</h2>
+<p><code>TutorialFacts</code> declares the facts conditions can read: <code>event.&lt;event&gt;.count</code>, <code>.ago</code>, <code>.since_step</code>; <code>step.&lt;step&gt;.status</code>, <code>.done</code>; <code>tip.&lt;tip&gt;.shows</code>, <code>.acknowledged</code>, <code>.visible</code>; <code>skill.&lt;skill&gt;.points</code>, <code>.mastered</code>; <code>tutorial.phase</code>, <code>tutorial.progress</code>; <code>journey.state</code>, <code>journey.language</code>; and <code>setting.reduced_motion</code>, <code>setting.text_scale</code>, <code>setting.tips</code>. Any other id is the host's. <code>since_step</code> is only meaningful in a step's completion condition. <code>ReadFacts(prefix)</code> exports them for dialogue or AI.</p>
+
+<h2 id="save">Save and replay</h2>
+<p><code>TutorialSave</code> writes the session image; <code>StateDigest()</code> is the canonical digest. A save names the document digest and refuses a mismatch (<code>TUT_SAVE_DOCUMENT</code>) or a tampered state (<code>TUT_SAVE_STATE</code>). <code>Replay()</code> restarts the tutorial from the beginning while keeping the journey and settings where the design says so; <code>ResetTips()</code> clears tip history.</p>
+
+<h2 id="cli">Command line</h2>
+<pre><code>TutorialEngine.Cli check &lt;tutorial.json&gt;
+TutorialEngine.Cli simulate &lt;tutorial.json&gt; &lt;scenario.json&gt; &lt;steps&gt; [--save state.json] [--verbose]
+TutorialEngine.Cli explain &lt;tutorial.json&gt; &lt;state.json&gt; step &lt;step&gt; [--fact id=value]...
+TutorialEngine.Cli explain ... tip &lt;tip&gt; [--fact id=value]...
+TutorialEngine.Cli explain ... journey
+TutorialEngine.Cli coverage &lt;tutorial.json&gt; &lt;locale.json&gt; [...]</code></pre>
+<p>Exit codes: <code>0</code> done, <code>1</code> refused or incomplete, <code>2</code> usage/scenario/file problem.</p>
+
+<h2 id="component">GameRuntime integration</h2>
+<p><code>TutorialComponent</code> applies observed events, host facts, controls and player choices inside <code>Update</code>, and publishes step/hint/tip changes.</p>
+<table>
+  <thead><tr><th>Request in</th><th>Result out</th></tr></thead>
+  <tbody>
+    <tr><td>start, observe, advance/evaluate, skip step, skip tutorial, replay, language, story, entry, reduced motion, text scale, tips enabled, dismiss tip</td><td><code>tutorial.step-changed</code>, <code>hint-shown</code>, <code>tip-shown</code>/<code>tip-ended</code>, <code>skill-changed</code>, <code>journey-changed</code>, <code>refused</code></td></tr>
+  </tbody>
+</table>
+<p><code>TutorialBridges</code> maps game events into observations (build completed, menu opened). The input component maps authored actions to events. A checkpoint is consistent when no request waits.</p>
+
+<h2 id="testing">Testing</h2>
+<pre><code>dotnet run --project src/TutorialEngine/TutorialEngine.Tests -c Release</code></pre>
+<p>Suites: steps and dependencies, hints, tips, skills/mastery, journey, facts/names, bounds and boundary, refusal matrix, save/tamper, scale, CLI and source guards.</p>
+
+<h2 id="source">Source map</h2>
+<dl class="kv">
+  <dt>Reader</dt><dd><code>TutorialReader.cs</code>, <code>TutorialReader.Steps.cs</code></dd>
+  <dt>Runtime</dt><dd><code>TutorialRuntime.cs</code>, <code>.Evaluate.cs</code>, <code>.Facts.cs</code>, <code>.Journey.cs</code>, <code>.Controls.cs</code>, <code>.Observe.cs</code></dd>
+  <dt>Model</dt><dd><code>Definitions.cs</code>, <code>State.cs</code>, <code>TutorialSet.cs</code>, <code>TutorialStateRules.cs</code></dd>
+  <dt>Save and text</dt><dd><code>TutorialImage.cs</code>, <code>TutorialSave.cs</code>, <code>TutorialFacts.cs</code>, <code>TutorialExplain.cs</code>, <code>TutorialNames.cs</code>, <code>TutorialPresentation.cs</code></dd>
+  <dt>Refusals</dt><dd><code>TutorialCodes.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/TutorialEngine</code> and <code>src/GameRuntime/GameRuntime.Tutorial*</code>. Research, accessibility and measurements: <a href="../TUTORIAL_ENGINE.md">docs/TUTORIAL_ENGINE.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

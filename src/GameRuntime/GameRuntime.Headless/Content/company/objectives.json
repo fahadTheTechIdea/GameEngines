@@ -1,0 +1,4 @@
+{
+  "entity_objective_predicates": [ { "id": "company.is-founded", "prototype": "company.marker", "minimum": 1 } ],
+  "objectives": [ { "id": "company.founded", "prerequisites": [], "predicate": "company.is-founded", "deadline": null, "on_complete": null, "on_failure": null } ]
+}

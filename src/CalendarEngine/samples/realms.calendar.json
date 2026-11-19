@@ -1,0 +1,68 @@
+{
+  "format": 1,
+  "id": "realms-reckoning",
+  "time": { "hoursPerDay": 24, "minutesPerHour": 60, "ticksPerMinute": 1 },
+  "epoch": { "year": 1 },
+  "weekMode": "restart",
+  "weekdays": [
+    { "id": "d1", "key": "cal.weekday.d1" }, { "id": "d2", "key": "cal.weekday.d2" }, { "id": "d3", "key": "cal.weekday.d3" }, { "id": "d4", "key": "cal.weekday.d4" }, { "id": "d5", "key": "cal.weekday.d5" },
+    { "id": "d6", "key": "cal.weekday.d6" }, { "id": "d7", "key": "cal.weekday.d7" }, { "id": "d8", "key": "cal.weekday.d8" }, { "id": "d9", "key": "cal.weekday.d9" }, { "id": "d10", "key": "cal.weekday.d10" }
+  ],
+  "months": [
+    { "id": "hammer", "key": "cal.month.hammer", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "midwinter", "key": "cal.month.midwinter", "days": 1, "leapDays": 0, "intercalary": true },
+    { "id": "alturiak", "key": "cal.month.alturiak", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "ches", "key": "cal.month.ches", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "tarsakh", "key": "cal.month.tarsakh", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "greengrass", "key": "cal.month.greengrass", "days": 1, "leapDays": 0, "intercalary": true },
+    { "id": "mirtul", "key": "cal.month.mirtul", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "kythorn", "key": "cal.month.kythorn", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "flamerule", "key": "cal.month.flamerule", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "midsummer", "key": "cal.month.midsummer", "days": 1, "leapDays": 0, "intercalary": true },
+    { "id": "shieldmeet", "key": "cal.month.shieldmeet", "days": 0, "leapDays": 1, "intercalary": true },
+    { "id": "eleasis", "key": "cal.month.eleasis", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "eleint", "key": "cal.month.eleint", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "highharvestide", "key": "cal.month.highharvestide", "days": 1, "leapDays": 0, "intercalary": true },
+    { "id": "marpenoth", "key": "cal.month.marpenoth", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "uktar", "key": "cal.month.uktar", "days": 30, "leapDays": 0, "intercalary": false },
+    { "id": "feast-of-the-moon", "key": "cal.month.feast-of-the-moon", "days": 1, "leapDays": 0, "intercalary": true },
+    { "id": "nightal", "key": "cal.month.nightal", "days": 30, "leapDays": 0, "intercalary": false }
+  ],
+  "leap": [ { "every": 4, "offset": 0, "leap": true } ],
+  "eras": [ { "id": "dr", "key": "cal.era.dr", "from": -100000, "direction": "up" } ],
+  "dayParts": [
+    { "id": "night", "key": "cal.daypart.night", "from": "0:00" }, { "id": "day", "key": "cal.daypart.day", "from": "6:00" }, { "id": "dusk", "key": "cal.daypart.dusk", "from": "18:00" }
+  ],
+  "seasons": [
+    { "id": "spring", "key": "cal.season.spring", "month": "ches", "day": 1, "sunrise": "6:00", "sunset": "18:00" },
+    { "id": "summer", "key": "cal.season.summer", "month": "kythorn", "day": 1, "sunrise": "5:00", "sunset": "20:00" },
+    { "id": "autumn", "key": "cal.season.autumn", "month": "eleint", "day": 1, "sunrise": "6:00", "sunset": "18:00" },
+    { "id": "winter", "key": "cal.season.winter", "month": "uktar", "day": 1, "sunrise": "7:30", "sunset": "16:30" }
+  ],
+  "twilightMinutes": 20,
+  "moons": [
+    { "id": "selune", "key": "cal.moon.selune", "period": { "num": 30, "den": 1 }, "newMoon": { "num": 0, "den": 1 },
+      "phases": [ "cal.phase.new", "cal.phase.waxing-crescent", "cal.phase.first-quarter", "cal.phase.waxing-gibbous", "cal.phase.full", "cal.phase.waning-gibbous", "cal.phase.last-quarter", "cal.phase.waning-crescent" ] }
+  ],
+  "holidays": [
+    { "id": "midwinter-feast", "key": "cal.holiday.midwinter-feast", "days": 1, "tags": [ "festival" ], "rule": { "freq": "yearly", "start": { "year": 1, "month": "midwinter", "day": 1 } } },
+    { "id": "greengrass-feast", "key": "cal.holiday.greengrass-feast", "days": 1, "tags": [ "festival" ], "rule": { "freq": "yearly", "start": { "year": 1, "month": "greengrass", "day": 1 } } },
+    { "id": "midsummer-night", "key": "cal.holiday.midsummer-night", "days": 1, "tags": [ "festival" ], "rule": { "freq": "yearly", "start": { "year": 1, "month": "midsummer", "day": 1 } } },
+    { "id": "shieldmeet-games", "key": "cal.holiday.shieldmeet-games", "days": 1, "tags": [ "festival", "leap" ], "rule": { "freq": "yearly", "start": { "year": 4, "month": "shieldmeet", "day": 1 } } },
+    { "id": "tenday-rest", "key": "cal.holiday.tenday-rest", "days": 1, "tags": [ "rest" ], "rule": { "freq": "weekly", "start": { "year": 1, "month": "hammer", "day": 10 }, "byday": [ { "weekday": "d10" } ] } }
+  ],
+  "formats": [ { "id": "long", "key": "cal.format.long" } ],
+  "locations": [ { "id": "temple", "key": "cal.place.temple" }, { "id": "market", "key": "cal.place.market" }, { "id": "home", "key": "cal.place.home" } ],
+  "activities": [ { "id": "pray", "key": "cal.act.pray" }, { "id": "trade", "key": "cal.act.trade" }, { "id": "sleep", "key": "cal.act.sleep" } ],
+  "interrupts": [],
+  "facts": [],
+  "schedules": [
+    { "id": "priest", "routines": [
+      { "id": "base", "priority": 0, "blocks": [
+        { "id": "sleep", "from": "0:00", "to": "6:00", "location": "home", "activity": "sleep" },
+        { "id": "prayers", "from": "6:00", "to": "18:00", "location": "temple", "activity": "pray" },
+        { "id": "rest", "from": "18:00", "to": "24:00", "location": "home", "activity": "sleep" } ] },
+      { "id": "festival", "priority": 10, "when": { "dates": { "freq": "yearly", "start": { "year": 1, "month": "midsummer", "day": 1 } } }, "blocks": [
+        { "id": "vigil", "from": "0:00", "to": "24:00", "location": "temple", "activity": "pray" } ] } ] }
+  ]
+}

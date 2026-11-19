@@ -2,17 +2,6 @@ using WorldCreator.Core.Geometry;
 namespace WorldCreator.Core.Planning;
 
 public enum PublicFeatureKind { Streetlight, StreetNameSign, Bench, Tree, Flowerbed, Grass }
-public sealed record PublicRealmRules(double StreetlightSpacingMeters = 25, double SideOffsetMeters = 1,
-    double MinimumClearanceMeters = 1.5)
-{
-    public void Validate()
-    {
-        if (!double.IsFinite(StreetlightSpacingMeters) || StreetlightSpacingMeters <= 0 ||
-            !double.IsFinite(SideOffsetMeters) || SideOffsetMeters < 0 ||
-            !double.IsFinite(MinimumClearanceMeters) || MinimumClearanceMeters < 0)
-            throw new ArgumentOutOfRangeException(nameof(StreetlightSpacingMeters));
-    }
-}
 public sealed record PublicFeature(string Id, PublicFeatureKind Kind, WorldPoint Position,
     string ParentId, string Purpose, string RuleId, double ClearanceRadiusMeters,
     VisualPlacementSource? VisualSource = null);
@@ -30,18 +19,9 @@ public sealed class SpatialReservationIndex
         return true;
     }
 }
-/// <summary>Public props follow authored visual rhythms and offsets. The former
-/// distance-only default API fails explicitly rather than inventing lamps or signs.</summary>
+/// <summary>Public props follow authored visual rhythms, offsets and reservations.</summary>
 public sealed class PublicRealmPlanner
 {
-    public PublicRealmPlan Plan(IReadOnlyList<StreetCorridor> streets, PublicRealmRules rules,
-        SpatialReservationIndex? reservations = null)
-    {
-        ArgumentNullException.ThrowIfNull(streets);
-        rules.Validate();
-        return new([], ["MOCKUP_PUBLIC_REALM_DESIGN_REQUIRED"]);
-    }
-
     public PublicRealmPlan Plan(MockupWorldDesign design,
         SpatialReservationIndex? reservations = null, CancellationToken token = default)
     {

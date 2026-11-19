@@ -1,0 +1,86 @@
+{
+  "SchemaVersion": 1,
+  "Id": "window-land",
+  "Kind": "ground",
+  "Purpose": "Game-authored ridge and crossing valley",
+  "SourceRuleId": "window:source",
+  "Unit": "meters",
+  "Origin": {
+    "X": -0.7,
+    "Y": -2.3
+  },
+  "StepX": 0.1,
+  "StepY": 0.3,
+  "Columns": 33,
+  "Rows": 33,
+  "BaseElevation": 1,
+  "GradientX": 0.13,
+  "GradientY": -0.07,
+  "Operations": [
+    {
+      "Id": "ridge",
+      "Purpose": "Required ridge",
+      "SourceRuleId": "window:ridge",
+      "Mode": "Add",
+      "ControlPath": [
+        {
+          "X": -0.5,
+          "Y": -1
+        },
+        {
+          "X": 1,
+          "Y": 3
+        },
+        {
+          "X": 2.4,
+          "Y": 6.7
+        }
+      ],
+      "Radius": 0.75,
+      "Height": 4
+    },
+    {
+      "Id": "valley",
+      "Purpose": "Crossing low ground",
+      "SourceRuleId": "window:valley",
+      "Mode": "Add",
+      "ControlPath": [
+        {
+          "X": 0.2,
+          "Y": -2.3
+        },
+        {
+          "X": 1,
+          "Y": 2
+        },
+        {
+          "X": 2,
+          "Y": 7.3
+        }
+      ],
+      "Radius": 0.6,
+      "Height": -2
+    },
+    {
+      "Id": "landing",
+      "Purpose": "Authored level platform",
+      "SourceRuleId": "window:landing",
+      "Mode": "Level",
+      "ControlPath": [
+        {
+          "X": 0.9,
+          "Y": 2.5
+        }
+      ],
+      "Radius": 0.4,
+      "Height": 2.7
+    }
+  ],
+  "Detail": {
+    "Seed": -178,
+    "Wavelength": 1.7,
+    "Amplitude": 0.3,
+    "Octaves": 3
+  },
+  "MaximumWork": 20000000
+}

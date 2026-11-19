@@ -83,7 +83,7 @@ internal static class CatalogExpansionTests
 
         var representatives = new[] { "detached-house","supermarket","hotel","bank","primary-school","hospital",
             "police-station","mosque","indoor-arena","bus-depot","food-processing-plant","greenhouse","data-center","park-pavilion" };
-        var engine = new DesertWorldGenerator(TestCatalogs.Registry);
+        var engine = new MockupWorldGenerator(TestCatalogs.Registry);
         foreach (var id in representatives)
         {
             var definition = catalog.Single(d => d.Id == id);
@@ -161,7 +161,7 @@ internal static class CatalogExpansionTests
         double right = 32+variant.WidthMeters+200,bottom = 32+variant.DepthMeters+200;
         int width = (int)Math.Ceiling(right+32),height = (int)Math.Ceiling(bottom+32);
         var region = MockupGenerationFixture.Rect(32,32,right,bottom);
-        return TestCatalogs.Contextualize(new(width,height,42,Biome.Desert,1,new(1,
+        return TestCatalogs.Contextualize(new(width,height,1,new(1,
             new(1,"synthetic-catalog-layout","simulated-r1","synthetic-profile",
                 [new("world",MockupGenerationFixture.Rect(0,0,width,height),"world"),new("facility-site",region,"facility-composition")],[]),1,
             [new("approach","world",new([new(16,32),new(right+16,32)]),"road")],

@@ -1,0 +1,12 @@
+{
+ "facts": { "game.garrison": 30 },
+ "script": [
+  { "at": 40, "do": "outbreak", "arg": "riverton:plague", "n": 5 },
+  { "at": 45, "do": "intervene", "arg": "riverton:hospital", "n": 1 },
+  { "at": 120, "do": "hazard", "arg": "seaport:storm:tempest" },
+  { "at": 150, "do": "card", "arg": "festival" },
+  { "at": 200, "do": "fact", "arg": "game.garrison=80" },
+  { "at": 210, "do": "storyteller", "arg": "phoebe" },
+  { "at": 211, "do": "difficulty", "arg": "hard" }
+ ]
+}

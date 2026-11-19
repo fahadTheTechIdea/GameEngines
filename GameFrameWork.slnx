@@ -21,8 +21,124 @@
   </Folder>
   <Folder Name="/SimEngine/">
     <Project Path="src/SimEngine/src/Beep.SimEngine/Beep.SimEngine.csproj" />
-    <Project Path="src/SimEngine/tests/ExtensionProof/ExtensionProof.csproj" />
     <Project Path="src/SimEngine/tests/Beep.SimEngine.Testing/Beep.SimEngine.Testing.csproj" />
-    <Project Path="src/SimEngine/tests/Beep.SimEngine.Tests/Beep.SimEngine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/EngineCommon/">
+    <Project Path="src/EngineCommon/EngineCommon.Balance/EngineCommon.Balance.csproj" />
+    <Project Path="src/EngineCommon/EngineCommon.Balance.Tests/EngineCommon.Balance.Tests.csproj" />
+    <Project Path="src/EngineCommon/EngineCommon.Core/EngineCommon.Core.csproj" />
+    <Project Path="src/EngineCommon/EngineCommon.Graph/EngineCommon.Graph.csproj" />
+    <Project Path="src/EngineCommon/EngineCommon.Graph.Tests/EngineCommon.Graph.Tests.csproj" />
+    <Project Path="src/EngineCommon/EngineCommon.TailTool/EngineCommon.TailTool.csproj" />
+    <Project Path="src/EngineCommon/EngineCommon.TestSupport/EngineCommon.TestSupport.csproj" />
+    <Project Path="src/EngineCommon/EngineCommon.Tests/EngineCommon.Tests.csproj" />
+  </Folder>
+  <Folder Name="/DiplomacyEngine/">
+    <Project Path="src/DiplomacyEngine/DiplomacyEngine.Core/DiplomacyEngine.Core.csproj" />
+    <Project Path="src/DiplomacyEngine/DiplomacyEngine.Cli/DiplomacyEngine.Cli.csproj" />
+    <Project Path="src/DiplomacyEngine/DiplomacyEngine.Tests/DiplomacyEngine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/RelationshipEngine/">
+    <Project Path="src/RelationshipEngine/RelationshipEngine.Core/RelationshipEngine.Core.csproj" />
+    <Project Path="src/RelationshipEngine/RelationshipEngine.Cli/RelationshipEngine.Cli.csproj" />
+    <Project Path="src/RelationshipEngine/RelationshipEngine.Tests/RelationshipEngine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/TutorialEngine/">
+    <Project Path="src/TutorialEngine/TutorialEngine.Core/TutorialEngine.Core.csproj" />
+    <Project Path="src/TutorialEngine/TutorialEngine.Cli/TutorialEngine.Cli.csproj" />
+    <Project Path="src/TutorialEngine/TutorialEngine.Tests/TutorialEngine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/EconomyEngine/">
+    <Project Path="src/EconomyEngine/EconomyEngine.Core/EconomyEngine.Core.csproj" />
+    <Project Path="src/EconomyEngine/EconomyEngine.Cli/EconomyEngine.Cli.csproj" />
+    <Project Path="src/EconomyEngine/EconomyEngine.Tests/EconomyEngine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/WorldEventsEngine/">
+    <Project Path="src/WorldEventsEngine/WorldEventsEngine.Core/WorldEventsEngine.Core.csproj" />
+    <Project Path="src/WorldEventsEngine/WorldEventsEngine.Cli/WorldEventsEngine.Cli.csproj" />
+    <Project Path="src/WorldEventsEngine/WorldEventsEngine.Tests/WorldEventsEngine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/AIEngine/">
+    <Project Path="src/AIEngine/AIEngine.Cli/AIEngine.Cli.csproj" />
+    <Project Path="src/AIEngine/AIEngine.Core/AIEngine.Core.csproj" />
+    <Project Path="src/AIEngine/AIEngine.Tests/AIEngine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/DialogueEngine/">
+    <Project Path="src/DialogueEngine/DialogueEngine.Cli/DialogueEngine.Cli.csproj" />
+    <Project Path="src/DialogueEngine/DialogueEngine.Core/DialogueEngine.Core.csproj" />
+    <Project Path="src/DialogueEngine/DialogueEngine.Tests/DialogueEngine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/CalendarEngine/">
+    <Project Path="src/CalendarEngine/CalendarEngine.Cli/CalendarEngine.Cli.csproj" />
+    <Project Path="src/CalendarEngine/CalendarEngine.Core/CalendarEngine.Core.csproj" />
+    <Project Path="src/CalendarEngine/CalendarEngine.Sim/CalendarEngine.Sim.csproj" />
+    <Project Path="src/CalendarEngine/CalendarEngine.Tests/CalendarEngine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/CombatEngine/">
+    <Project Path="src/CombatEngine/CombatEngine.Core/CombatEngine.Core.csproj" />
+    <Project Path="src/CombatEngine/CombatEngine.Tests/CombatEngine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/AlchemyEngine/">
+    <Project Path="src/AlchemyEngine/AlchemyEngine.Core/AlchemyEngine.Core.csproj" />
+  </Folder>
+  <Folder Name="/GameContent/">
+    <Project Path="src/GameContent/GameContent.Catalog/GameContent.Catalog.csproj" />
+    <Project Path="src/GameContent/GameContent.Catalog.Alchemy/GameContent.Catalog.Alchemy.csproj" />
+    <Project Path="src/GameContent/GameContent.Catalog.Sim/GameContent.Catalog.Sim.csproj" />
+    <Project Path="src/GameContent/GameContent.Catalog.Economy/GameContent.Catalog.Economy.csproj" />
+    <Project Path="src/GameContent/GameContent.Cli/GameContent.Cli.csproj" />
+    <Project Path="src/GameContent/GameContent.Generator/GameContent.Generator.csproj" />
+    <Project Path="src/GameContent/GameContent.Catalog.Combat/GameContent.Catalog.Combat.csproj" />
+    <Project Path="src/GameContent/GameContent.Catalog.Characters/GameContent.Catalog.Characters.csproj" />
+    <Project Path="src/GameContent/GameContent.Tests/GameContent.Tests.csproj" />
+  </Folder>
+  <Folder Name="/GameRuntime/">
+    <Project Path="src/GameRuntime/GameRuntime.Abstractions/GameRuntime.Abstractions.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Core/GameRuntime.Core.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Channels/GameRuntime.Channels.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Scenario/GameRuntime.Scenario.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Sim/GameRuntime.Sim.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Alchemy/GameRuntime.Alchemy.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.AlchemySim/GameRuntime.AlchemySim.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.AlchemySim.Headless/GameRuntime.AlchemySim.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Services/GameRuntime.Services.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Headless/GameRuntime.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Alchemy.Headless/GameRuntime.Alchemy.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Combat/GameRuntime.Combat.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Combat.Headless/GameRuntime.Combat.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Dialogue/GameRuntime.Dialogue.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.AI/GameRuntime.AI.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Calendar/GameRuntime.Calendar.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Calendar.Ai/GameRuntime.Calendar.Ai.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Calendar.Headless/GameRuntime.Calendar.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Calendar.Tests/GameRuntime.Calendar.Tests.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Diplomacy/GameRuntime.Diplomacy.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Diplomacy.Bridges/GameRuntime.Diplomacy.Bridges.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Diplomacy.Headless/GameRuntime.Diplomacy.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Diplomacy.Tests/GameRuntime.Diplomacy.Tests.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Relationship/GameRuntime.Relationship.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Relationship.Bridges/GameRuntime.Relationship.Bridges.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Relationship.Headless/GameRuntime.Relationship.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Relationship.Tests/GameRuntime.Relationship.Tests.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Economy/GameRuntime.Economy.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Economy.Bridges/GameRuntime.Economy.Bridges.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Economy.Headless/GameRuntime.Economy.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Economy.Tests/GameRuntime.Economy.Tests.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Tutorial/GameRuntime.Tutorial.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Tutorial.Bridges/GameRuntime.Tutorial.Bridges.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Tutorial.Headless/GameRuntime.Tutorial.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Tutorial.Tests/GameRuntime.Tutorial.Tests.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.WorldEvents/GameRuntime.WorldEvents.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.WorldEvents.Bridges/GameRuntime.WorldEvents.Bridges.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.WorldEvents.Headless/GameRuntime.WorldEvents.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.WorldEvents.Tests/GameRuntime.WorldEvents.Tests.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Briefing.Headless/GameRuntime.Briefing.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Characters/GameRuntime.Characters.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.CombatStock/GameRuntime.CombatStock.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Field.Headless/GameRuntime.Field.Headless.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.CharacterBench/GameRuntime.CharacterBench.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Tool/GameRuntime.Tool.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Tests/GameRuntime.Tests.csproj" />
+    <Project Path="src/GameRuntime/GameRuntime.Godot/GameRuntime.Godot.csproj" />
   </Folder>
 </Solution>

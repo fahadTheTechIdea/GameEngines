@@ -1,0 +1,158 @@
+{
+  "format": 3,
+  "id": "village",
+  "seed": 20261028,
+  "time": { "stepsPerDay": 24 },
+  "limits": { "maxActors": 2000, "maxEdgesPerActor": 24, "maxMemoriesPerEdge": 8, "maxMoodlets": 12 },
+  "facts": [
+    { "id": "cal.season", "type": "string" },
+    { "id": "cal.is_day", "type": "bool" },
+    { "id": "cal.is_holiday", "type": "bool" },
+    { "id": "weather.raining", "type": "bool" }
+  ],
+  "axes": [
+    { "id": "affinity", "key": "rel.axis.affinity", "min": -1000, "max": 1000, "baseline": 0, "driftPerDay": 4 },
+    { "id": "trust", "key": "rel.axis.trust", "min": -1000, "max": 1000, "baseline": 0, "driftPerDay": 2 },
+    { "id": "attraction", "key": "rel.axis.attraction", "min": 0, "max": 1000, "baseline": 0, "driftPerDay": 6 }
+  ],
+  "needs": [
+    { "id": "hunger", "key": "rel.need.hunger", "max": 1000, "initial": 800, "decayPerDay": 900, "critical": 200, "rearm": 350,
+      "urgency": [ [0, 1000], [200, 800], [600, 200], [1000, 0] ],
+      "decayModifiers": [ { "when": { "fact": "cal.season", "op": "eq", "value": "winter" }, "permille": 1300 } ] },
+    { "id": "energy", "key": "rel.need.energy", "max": 1000, "initial": 900, "decayPerDay": 800, "critical": 150, "rearm": 300,
+      "urgency": [ [0, 1000], [150, 700], [500, 150], [1000, 0] ], "decayModifiers": [] },
+    { "id": "social", "key": "rel.need.social", "max": 1000, "initial": 700, "decayPerDay": 600, "critical": 150, "rearm": 300,
+      "urgency": [ [0, 900], [300, 500], [1000, 0] ], "decayModifiers": [] },
+    { "id": "fun", "key": "rel.need.fun", "max": 1000, "initial": 600, "decayPerDay": 500, "critical": 100, "rearm": 250,
+      "urgency": [ [0, 700], [400, 300], [1000, 0] ],
+      "decayModifiers": [ { "when": { "fact": "weather.raining", "op": "eq", "value": true }, "permille": 1500 } ] }
+  ],
+  "sources": [
+    { "activity": "eat", "need": "hunger", "perDay": 12000 },
+    { "activity": "sleep", "need": "energy", "perDay": 2400 },
+    { "activity": "worship", "need": "social", "perDay": 6000 },
+    { "activity": "celebrate", "need": "social", "perDay": 9000 },
+    { "activity": "celebrate", "need": "fun", "perDay": 12000 },
+    { "activity": "idle", "need": "hunger", "perDay": 4800 },
+    { "activity": "idle", "need": "social", "perDay": 1500 },
+    { "activity": "idle", "need": "fun", "perDay": 2000 },
+    { "activity": "work", "need": "social", "perDay": 500 }
+  ],
+  "mood": {
+    "min": -1000, "max": 1000, "base": 0, "hysteresis": 50,
+    "needWeights": [
+      { "need": "hunger", "weight": 800, "neutral": 500 },
+      { "need": "energy", "weight": 600, "neutral": 500 },
+      { "need": "social", "weight": 400, "neutral": 500 },
+      { "need": "fun", "weight": 300, "neutral": 500 }
+    ],
+    "states": [
+      { "id": "miserable", "key": "rel.mood.miserable", "from": -1000 },
+      { "id": "unhappy", "key": "rel.mood.unhappy", "from": -400 },
+      { "id": "glum", "key": "rel.mood.glum", "from": -150 },
+      { "id": "content", "key": "rel.mood.content", "from": 100 },
+      { "id": "happy", "key": "rel.mood.happy", "from": 400 },
+      { "id": "elated", "key": "rel.mood.elated", "from": 750 }
+    ]
+  },
+  "moodlets": [
+    { "id": "ate-well", "key": "rel.moodlet.ate-well", "magnitude": 120, "duration": 24, "decay": { "kind": "linear" }, "stack": { "mode": "refresh", "max": 1 }, "tags": [ "food" ] },
+    { "id": "gift-received", "key": "rel.moodlet.gift-received", "magnitude": 200, "duration": 72, "decay": { "kind": "halfLife", "halfLife": 24 }, "stack": { "mode": "stack", "max": 3 }, "tags": [ "kindness" ] },
+    { "id": "insulted", "key": "rel.moodlet.insulted", "magnitude": -250, "duration": 96, "decay": { "kind": "linear" }, "stack": { "mode": "refresh", "max": 1 }, "tags": [ "insult" ] },
+    { "id": "festival-joy", "key": "rel.moodlet.festival-joy", "magnitude": 300, "duration": 48, "decay": { "kind": "halfLife", "halfLife": 12 }, "stack": { "mode": "replace", "max": 1 }, "tags": [] },
+    { "id": "saw-a-theft", "key": "rel.moodlet.saw-a-theft", "magnitude": -150, "duration": 120, "decay": { "kind": "fixed" }, "stack": { "mode": "unique", "max": 1 }, "tags": [ "crime" ] }
+  ],
+  "memories": [
+    { "id": "was-gifted", "key": "rel.memory.was-gifted", "effects": [ { "axis": "affinity", "magnitude": 120 }, { "axis": "trust", "magnitude": 30 } ], "duration": 720,
+      "decay": { "kind": "halfLife", "halfLife": 240 }, "stack": { "mode": "refresh", "max": 1 }, "tags": [ "kindness" ], "spread": { "as": "heard-kindness", "permille": 600, "chance": 700, "hops": 2 } },
+    { "id": "heard-kindness", "key": "rel.memory.heard-kindness", "effects": [ { "axis": "affinity", "magnitude": 60 } ], "duration": 480,
+      "decay": { "kind": "linear" }, "stack": { "mode": "refresh", "max": 1 }, "tags": [ "kindness" ], "spread": null },
+    { "id": "was-insulted", "key": "rel.memory.was-insulted", "effects": [ { "axis": "affinity", "magnitude": -150 }, { "axis": "trust", "magnitude": -50 } ], "duration": 960,
+      "decay": { "kind": "halfLife", "halfLife": 360 }, "stack": { "mode": "stack", "max": 3 }, "tags": [ "insult" ], "spread": { "as": "heard-insult", "permille": 500, "chance": 600, "hops": 2 } },
+    { "id": "heard-insult", "key": "rel.memory.heard-insult", "effects": [ { "axis": "affinity", "magnitude": -70 } ], "duration": 480,
+      "decay": { "kind": "linear" }, "stack": { "mode": "refresh", "max": 1 }, "tags": [ "insult" ], "spread": null },
+    { "id": "saw-theft", "key": "rel.memory.saw-theft", "effects": [ { "axis": "trust", "magnitude": -200 } ], "duration": 1440,
+      "decay": { "kind": "fixed" }, "stack": { "mode": "unique", "max": 1 }, "tags": [ "crime" ], "spread": { "as": "heard-theft", "permille": 800, "chance": 900, "hops": 3 } },
+    { "id": "heard-theft", "key": "rel.memory.heard-theft", "effects": [ { "axis": "trust", "magnitude": -120 } ], "duration": 960,
+      "decay": { "kind": "linear" }, "stack": { "mode": "refresh", "max": 1 }, "tags": [ "crime" ], "spread": null },
+    { "id": "shared-feast", "key": "rel.memory.shared-feast", "effects": [ { "axis": "affinity", "magnitude": 80 } ], "duration": 480,
+      "decay": { "kind": "linear" }, "stack": { "mode": "refresh", "max": 1 }, "tags": [], "spread": null },
+    { "id": "social-pressure", "key": "rel.memory.social-pressure", "effects": [ { "axis": "affinity", "magnitude": 60 } ], "duration": 72,
+      "decay": { "kind": "linear" }, "stack": { "mode": "refresh", "max": 1 }, "tags": [], "spread": null },
+    { "id": "saw-kindness", "key": "rel.memory.saw-kindness", "effects": [ { "axis": "affinity", "magnitude": 40 }, { "axis": "trust", "magnitude": 40 } ], "duration": 240,
+      "decay": { "kind": "linear" }, "stack": { "mode": "refresh", "max": 1 }, "tags": [ "kindness" ], "spread": null }
+  ],
+  "traits": [
+    { "id": "kind", "moodBase": 40, "needDecay": [], "moodScale": [ { "tag": "kindness", "permille": 1500 } ], "axisScale": [ { "axis": "affinity", "sign": "gain", "permille": 1200 } ] },
+    { "id": "grumpy", "moodBase": -60, "needDecay": [], "moodScale": [ { "tag": "insult", "permille": 1500 } ], "axisScale": [ { "axis": "affinity", "sign": "gain", "permille": 700 }, { "axis": "trust", "sign": "gain", "permille": 800 } ] },
+    { "id": "glutton", "moodBase": 0, "needDecay": [ { "need": "hunger", "permille": 1400 } ], "moodScale": [], "axisScale": [] },
+    { "id": "sociable", "moodBase": 20, "needDecay": [ { "need": "social", "permille": 1400 } ], "moodScale": [ { "tag": "kindness", "permille": 1200 } ], "axisScale": [] },
+    { "id": "stoic", "moodBase": 0, "needDecay": [], "moodScale": [ { "tag": "insult", "permille": 500 }, { "tag": "crime", "permille": 600 } ], "axisScale": [ { "axis": "affinity", "sign": "loss", "permille": 600 } ] }
+  ],
+  "ladders": [
+    { "id": "friendship", "axis": "affinity", "hysteresis": 60, "steps": [
+        { "id": "enemy", "key": "rel.state.enemy", "from": -1000 }, { "id": "rival", "key": "rel.state.rival", "from": -450 }, { "id": "stranger", "key": "rel.state.stranger", "from": -150 },
+        { "id": "acquaintance", "key": "rel.state.acquaintance", "from": 100 }, { "id": "friend", "key": "rel.state.friend", "from": 350 }, { "id": "close-friend", "key": "rel.state.close-friend", "from": 700 } ] },
+    { "id": "reliability", "axis": "trust", "hysteresis": 50, "steps": [
+        { "id": "distrusted", "key": "rel.state.distrusted", "from": -1000 }, { "id": "unknown", "key": "rel.state.unknown", "from": -250 }, { "id": "trusted", "key": "rel.state.trusted", "from": 300 } ] }
+  ],
+  "bonds": [
+    { "id": "spouse", "key": "rel.bond.spouse", "symmetric": true, "exclusive": true, "break": { "axis": "affinity", "below": -200 } },
+    { "id": "sworn-rival", "key": "rel.bond.sworn-rival", "symmetric": true, "exclusive": false, "break": null }
+  ],
+  "gifts": [
+    { "id": "flowers", "key": "rel.gift.flowers", "tags": [ "flower", "pretty" ] },
+    { "id": "pie", "key": "rel.gift.pie", "tags": [ "food", "sweet" ] },
+    { "id": "stone", "key": "rel.gift.stone", "tags": [ "junk" ] }
+  ],
+  "tastes": [ -500, -250, 250, 1000, 2000 ],
+  "gossip": { "trustAxis": "trust", "minTrust": 0, "maxTellings": 2, "maxListeners": 3 },
+  "social": {
+    "communities": { "enabled": true, "axis": "affinity", "above": 100, "maxRounds": 8 },
+    "standing": { "enabled": true, "axis": "trust", "above": 0, "alphaPermille": 150, "iterations": 12, "preTrustTrait": "kind", "eventDelta": 250 },
+    "balance": { "enabled": true, "axis": "affinity", "like": 200, "dislike": -200, "memory": "social-pressure", "strengthPermille": 1000, "topK": 4, "maxPerActor": 2, "chancePermille": 1000 },
+    "schedule": "spread"
+  },
+  "interactions": [
+    { "id": "chat", "key": "rel.act.chat", "tags": [ "talk" ], "requires": null, "cooldown": 6, "gift": false,
+      "desire": [ { "when": { "fact": "actor.need.social", "op": "lt", "value": 400 }, "weight": 300 }, { "when": { "fact": "edge.state.friendship", "op": "eq", "value": "friend" }, "weight": 100 } ],
+      "accept": [ { "when": { "fact": "target.mood", "op": "gt", "value": -300 }, "weight": 100 } ], "acceptAt": 50, "noise": 0,
+      "effects": [ { "kind": "axis", "edge": "actorToTarget", "axis": "affinity", "delta": 15, "byTaste": false }, { "kind": "axis", "edge": "targetToActor", "axis": "affinity", "delta": 15, "byTaste": false },
+                   { "kind": "need", "who": "actor", "need": "social", "delta": 120, "byTaste": false }, { "kind": "need", "who": "target", "need": "social", "delta": 120, "byTaste": false } ],
+      "refusedEffects": [ { "kind": "axis", "edge": "actorToTarget", "axis": "affinity", "delta": -5, "byTaste": false } ], "witness": null },
+    { "id": "give-gift", "key": "rel.act.give-gift", "tags": [ "gift" ], "requires": { "fact": "edge.state.reliability", "op": "ne", "value": "distrusted" }, "cooldown": 24, "gift": true,
+      "desire": [ { "when": { "fact": "edge.state.friendship", "op": "eq", "value": "acquaintance" }, "weight": 200 } ],
+      "accept": [], "acceptAt": 0, "noise": 0,
+      "effects": [ { "kind": "memory", "edge": "targetToActor", "memory": "was-gifted", "byTaste": true }, { "kind": "moodlet", "who": "target", "moodlet": "gift-received", "byTaste": true },
+                   { "kind": "axis", "edge": "targetToActor", "axis": "affinity", "delta": 80, "byTaste": true } ],
+      "refusedEffects": [], "witness": { "memory": "saw-kindness", "scale": 1000, "max": 3 } },
+    { "id": "insult", "key": "rel.act.insult", "tags": [ "hostile" ], "requires": null, "cooldown": 12, "gift": false,
+      "desire": [ { "when": { "fact": "actor.mood", "op": "lt", "value": -300 }, "weight": 250 }, { "when": { "fact": "edge.state.friendship", "op": "eq", "value": "rival" }, "weight": 200 } ],
+      "accept": [], "acceptAt": 0, "noise": 0,
+      "effects": [ { "kind": "memory", "edge": "targetToActor", "memory": "was-insulted", "byTaste": false }, { "kind": "moodlet", "who": "target", "moodlet": "insulted", "byTaste": false },
+                   { "kind": "axis", "edge": "actorToTarget", "axis": "affinity", "delta": -20, "byTaste": false } ],
+      "refusedEffects": [], "witness": null },
+    { "id": "steal", "key": "rel.act.steal", "tags": [ "crime" ], "requires": { "fact": "target.need.hunger", "op": "gte", "value": 0 }, "cooldown": 48, "gift": false,
+      "desire": [ { "when": { "fact": "actor.need.hunger", "op": "lt", "value": 200 }, "weight": 400 } ],
+      "accept": [], "acceptAt": 0, "noise": 0,
+      "effects": [ { "kind": "memory", "edge": "targetToActor", "memory": "saw-theft", "byTaste": false }, { "kind": "need", "who": "actor", "need": "hunger", "delta": 300, "byTaste": false } ],
+      "refusedEffects": [], "witness": { "memory": "saw-theft", "scale": 1000, "max": 4 } },
+    { "id": "share-meal", "key": "rel.act.share-meal", "tags": [ "food" ], "requires": { "fact": "cal.is_day", "op": "eq", "value": true }, "cooldown": 12, "gift": false,
+      "desire": [ { "when": { "fact": "actor.need.hunger", "op": "lt", "value": 500 }, "weight": 150 } ],
+      "accept": [ { "when": { "fact": "edge.state.friendship", "op": "eq", "value": "friend" }, "weight": 60 }, { "when": { "fact": "reverse.affinity", "op": "gt", "value": 100 }, "weight": 40 } ], "acceptAt": 40, "noise": 30,
+      "effects": [ { "kind": "memory", "edge": "actorToTarget", "memory": "shared-feast", "byTaste": false }, { "kind": "memory", "edge": "targetToActor", "memory": "shared-feast", "byTaste": false },
+                   { "kind": "need", "who": "actor", "need": "hunger", "delta": 250, "byTaste": false }, { "kind": "need", "who": "target", "need": "hunger", "delta": 250, "byTaste": false },
+                   { "kind": "moodlet", "who": "actor", "moodlet": "ate-well", "byTaste": false }, { "kind": "moodlet", "who": "target", "moodlet": "ate-well", "byTaste": false } ],
+      "refusedEffects": [ { "kind": "axis", "edge": "actorToTarget", "axis": "affinity", "delta": -10, "byTaste": false } ], "witness": null },
+    { "id": "propose", "key": "rel.act.propose", "tags": [ "romance" ], "requires": { "all": [ { "fact": "edge.attraction", "op": "gte", "value": 400 }, { "fact": "edge.affinity", "op": "gte", "value": 500 }, { "fact": "edge.bond.spouse", "op": "eq", "value": false } ] },
+      "cooldown": 240, "gift": false,
+      "desire": [ { "when": { "fact": "edge.attraction", "op": "gte", "value": 600 }, "weight": 500 } ],
+      "accept": [ { "when": { "fact": "reverse.affinity", "op": "gte", "value": 500 }, "weight": 300 }, { "when": { "fact": "reverse.attraction", "op": "gte", "value": 400 }, "weight": 300 } ], "acceptAt": 600, "noise": 100,
+      "effects": [ { "kind": "bond", "bond": "spouse", "set": true }, { "kind": "moodlet", "who": "actor", "moodlet": "festival-joy", "byTaste": false }, { "kind": "moodlet", "who": "target", "moodlet": "festival-joy", "byTaste": false } ],
+      "refusedEffects": [ { "kind": "axis", "edge": "actorToTarget", "axis": "attraction", "delta": -150, "byTaste": false } ], "witness": null },
+    { "id": "flirt", "key": "rel.act.flirt", "tags": [ "romance" ], "requires": null, "cooldown": 12, "gift": false,
+      "desire": [], "accept": [ { "when": { "fact": "reverse.attraction", "op": "gte", "value": 0 }, "weight": 100 } ], "acceptAt": 50, "noise": 0,
+      "effects": [ { "kind": "axis", "edge": "actorToTarget", "axis": "attraction", "delta": 60, "byTaste": false }, { "kind": "axis", "edge": "targetToActor", "axis": "attraction", "delta": 40, "byTaste": false } ],
+      "refusedEffects": [], "witness": null }
+  ]
+}

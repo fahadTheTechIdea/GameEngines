@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The authoring tool for calendar documents: check, explain, convert, month-view, coverage. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><AssemblyName>CalendarEngine.Cli</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../CalendarEngine.Core/CalendarEngine.Core.csproj" />
+  </ItemGroup>
+</Project>

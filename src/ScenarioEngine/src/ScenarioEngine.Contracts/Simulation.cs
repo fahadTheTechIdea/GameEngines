@@ -5,7 +5,7 @@ namespace ScenarioEngine.Contracts;
 
 public readonly record struct EntityId(long Value);
 public readonly record struct PositionMm(int X, int Y, int Z);
-public enum SessionPhase { Ready, Running, Paused, Transitioning, Ended, Faulted, Disposed }
+public enum SessionPhase { Running, Transitioning, Ended, Faulted, Disposed }
 public sealed record CommandEnvelope(string CommandId, string ControllerId, long TargetTick,
     int WorldGeneration, string Operation, JsonElement Payload);
 public sealed record QueuedCommand(long Sequence, CommandEnvelope Command);
@@ -68,24 +68,14 @@ public interface IScenarioSimulation : IDisposable
     SessionSnapshot Snapshot { get; }
     AdmissionResult Enqueue(CommandEnvelope command);
     AdmissionResult CancelQueued(string controllerId, string commandId);
-    void Start();
-    void Pause();
-    void Resume();
-    StepResult Step(TickInput input);
-}
-public sealed record GameStart(ValidatedScenario Scenario, ScenarioStartOptions Options, WorldFrame InitialWorld);
-public interface IGame : IDisposable
-{
-    SessionSnapshot Snapshot { get; }
-    void Init(GameStart start);
-    void Restore(ValidatedScenario scenario, SessionSnapshot saved, WorldFrame restoredWorld);
     StepResult Update(TickInput input);
-    AdmissionResult Submit(CommandEnvelope command);
-    AdmissionResult CancelQueued(string controllerId, string commandId);
-    void Pause();
-    void Resume();
 }
-public interface IGameFactory
+/// <summary>
+/// Optional capability of a layer runtime: when nothing arrived for a tick (no command, no observation) and the layer does
+/// no time-based work of its own in this state, the engine may record the tick without resolving the layer or the
+/// objective graph. A layer that does not implement this is resolved on every tick.
+/// </summary>
+public interface IIdleTickRuntime
 {
-    IGame Create(ValidatedScenario scenario);
+    bool CanSkipIdleTick(LayerSnapshot state);
 }

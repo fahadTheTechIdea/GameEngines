@@ -13,11 +13,11 @@ namespace Beep.SimEngine.Testing
     {
         internal SimulationWaitException(SimGame game, SimulationWaitFailure reason, int completed, int allowed, SimulationWaitBudgetUnit budgetUnit)
             : base("simulation wait failed: " + reason + "; scenario=" + game.Scenario + "; seed=" + game.Seed +
-                "; completed=" + completed + "/" + allowed + "; budget-unit=" + budgetUnit + "; clock=" + game.Clock.StepIndex +
+                "; completed=" + completed + "/" + allowed + "; budget-unit=" + budgetUnit + "; clock=" + game.Tick +
                 "; state=" + game.State + "; outcome=" + game.Outcome + "; fault=" + game.Fault)
         {
             Reason = reason; CompletedSteps = completed; AllowedSteps = allowed; BudgetUnit = budgetUnit;
-            Scenario = game.Scenario; Seed = game.Seed; ClockStep = game.Clock.StepIndex; State = game.State;
+            Scenario = game.Scenario; Seed = game.Seed; ClockStep = game.Tick; State = game.State;
             Outcome = game.Outcome; Fault = game.Fault; Snapshot = game.Snapshot;
             Modules = new List<string>(game.Modules).AsReadOnly();
             if (Fault != null) HashUnavailable = "faulted partial update: " + Fault;

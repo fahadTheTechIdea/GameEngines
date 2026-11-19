@@ -1,0 +1,1245 @@
+{
+  "SchemaVersion": 1,
+  "Id": "population",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Complete declared population follows generated routes with preserved source members and passage envelopes; generated-network sources, recursive phases, region interiors, sightlines, scale, art and native runtime remain open."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    1,
+    1
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "approach",
+      "Kind": "journey",
+      "FromId": "population/gates-0",
+      "ToId": "population/resource-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "exit",
+      "Kind": "journey",
+      "FromId": "population/resource-0",
+      "ToId": "population/gates-1",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "population-ground",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 50,
+          "Y": 0
+        },
+        {
+          "X": 50,
+          "Y": 38
+        },
+        {
+          "X": 30,
+          "Y": 45
+        },
+        {
+          "X": 0,
+          "Y": 45
+        }
+      ]
+    },
+    "Exclusions": [
+      {
+        "Id": "ridge-face",
+        "Purpose": "Keep the rock face clear",
+        "SourceRuleId": "game:rock",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 22,
+              "Y": 16
+            },
+            {
+              "X": 30,
+              "Y": 16
+            },
+            {
+              "X": 30,
+              "Y": 34
+            },
+            {
+              "X": 22,
+              "Y": 34
+            }
+          ]
+        }
+      }
+    ],
+    "Patches": [
+      {
+        "Id": "ground",
+        "Kind": "ground",
+        "Purpose": "Gently sloping ground",
+        "SourceRuleId": "game:ground",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 50,
+              "Y": 0
+            },
+            {
+              "X": 50,
+              "Y": 38
+            },
+            {
+              "X": 30,
+              "Y": 45
+            },
+            {
+              "X": 0,
+              "Y": 45
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 0,
+        "GradientX": 0.03,
+        "GradientY": 0
+      }
+    ],
+    "Terrain": null,
+    "HeightField": null
+  },
+  "RouteRules": [
+    {
+      "Id": "travel",
+      "ConnectionKind": "journey",
+      "Profile": {
+        "Id": "foot",
+        "Purpose": "Walk between destinations",
+        "SourceRuleId": "example:walking",
+        "Radius": 0.3,
+        "MaximumSlope": 1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.25,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 30000000
+      },
+      "FromPortId": "entry",
+      "ToPortId": "entry",
+      "Reuse": null,
+      "Interfaces": null
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "population-fields",
+    "Fields": [
+      {
+        "Id": "slope",
+        "Purpose": "Terrain slope",
+        "SourceRuleId": "game:ground",
+        "Unit": "ratio",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Slope",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ]
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "population-sites",
+      "Purpose": "Place complete required program",
+      "SourceRuleId": "game:population",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 50,
+            "Y": 0
+          },
+          {
+            "X": 50,
+            "Y": 38
+          },
+          {
+            "X": 30,
+            "Y": 45
+          },
+          {
+            "X": 0,
+            "Y": 45
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "gate",
+          "Purpose": "Required gate",
+          "SourceRuleId": "game:gate",
+          "Footprint": null,
+          "Profile": {
+            "Id": "gentle-ground",
+            "Purpose": "Keep required items on traversable ground",
+            "SourceRuleId": "game:population",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "gentle",
+                "FieldId": "slope",
+                "Purpose": "Avoid steep detail sites",
+                "SourceRuleId": "game:population",
+                "Minimum": 0,
+                "Maximum": 0.2
+              }
+            ],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "marker",
+          "Purpose": "Required marker",
+          "SourceRuleId": "game:marker",
+          "Footprint": null,
+          "Profile": {
+            "Id": "gentle-ground",
+            "Purpose": "Keep required items on traversable ground",
+            "SourceRuleId": "game:population",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "gentle",
+                "FieldId": "slope",
+                "Purpose": "Avoid steep detail sites",
+                "SourceRuleId": "game:population",
+                "Minimum": 0,
+                "Maximum": 0.2
+              }
+            ],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "border",
+          "Purpose": "Required border",
+          "SourceRuleId": "game:border",
+          "Footprint": null,
+          "Profile": {
+            "Id": "gentle-ground",
+            "Purpose": "Keep required items on traversable ground",
+            "SourceRuleId": "game:population",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "gentle",
+                "FieldId": "slope",
+                "Purpose": "Avoid steep detail sites",
+                "SourceRuleId": "game:population",
+                "Minimum": 0,
+                "Maximum": 0.2
+              }
+            ],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "resource",
+          "Purpose": "Required resource",
+          "SourceRuleId": "game:resource",
+          "Footprint": null,
+          "Profile": {
+            "Id": "gentle-ground",
+            "Purpose": "Keep required items on traversable ground",
+            "SourceRuleId": "game:population",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "gentle",
+                "FieldId": "slope",
+                "Purpose": "Avoid steep detail sites",
+                "SourceRuleId": "game:population",
+                "Minimum": 0,
+                "Maximum": 0.2
+              }
+            ],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        }
+      ],
+      "Anchors": [],
+      "Relations": [],
+      "MinimumSeparation": 0,
+      "MaximumCandidates": 2048,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 20000000,
+      "AllowBoundaryContact": false
+    },
+    "Bindings": [
+      {
+        "DemandId": "gate",
+        "NodeId": "population",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "gates",
+        "SiteLayout": null,
+        "Population": {
+          "Purpose": "Required entrance sockets",
+          "SourceRuleId": "game:gates",
+          "Path": null,
+          "Boundary": null,
+          "Sockets": [
+            {
+              "NodeId": "population/gates-0",
+              "Position": {
+                "X": 5,
+                "Y": 10
+              }
+            },
+            {
+              "NodeId": "population/gates-1",
+              "Position": {
+                "X": 45,
+                "Y": 10
+              }
+            }
+          ],
+          "Route": null
+        }
+      },
+      {
+        "DemandId": "marker",
+        "NodeId": "population",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "markers",
+        "SiteLayout": null,
+        "Population": {
+          "Purpose": "Mark the generated approach",
+          "SourceRuleId": "game:generated-route",
+          "Path": null,
+          "Boundary": null,
+          "Sockets": null,
+          "Route": {
+            "ConnectionId": "population/explicit/approach",
+            "Spacing": 9,
+            "StartDistance": 4,
+            "EndInset": 0,
+            "NormalOffset": -0.7,
+            "Reverse": false
+          }
+        }
+      },
+      {
+        "DemandId": "border",
+        "NodeId": "population",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "boundary",
+        "SiteLayout": null,
+        "Population": {
+          "Purpose": "Reserve boundary markers",
+          "SourceRuleId": "game:reserve",
+          "Path": null,
+          "Boundary": {
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": 5,
+                  "Y": 25
+                },
+                {
+                  "X": 20,
+                  "Y": 25
+                },
+                {
+                  "X": 20,
+                  "Y": 40
+                },
+                {
+                  "X": 12,
+                  "Y": 40
+                },
+                {
+                  "X": 12,
+                  "Y": 32
+                },
+                {
+                  "X": 5,
+                  "Y": 32
+                }
+              ]
+            },
+            "StartEdgeIndex": 0,
+            "Spacing": 5,
+            "StartDistance": 2,
+            "InwardOffset": 1,
+            "SpanLength": 16
+          },
+          "Sockets": null,
+          "Route": null
+        }
+      },
+      {
+        "DemandId": "resource",
+        "NodeId": "population",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "resource",
+        "SiteLayout": null,
+        "Population": {
+          "Purpose": "Required collectible socket",
+          "SourceRuleId": "game:resource",
+          "Path": null,
+          "Boundary": null,
+          "Sockets": [
+            {
+              "NodeId": "population/resource-0",
+              "Position": {
+                "X": 38,
+                "Y": 30
+              }
+            }
+          ],
+          "Route": null
+        }
+      }
+    ],
+    "NestedStages": null,
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 32,
+    "SourceWorld": null
+  },
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": {
+    "Recipe": {
+      "SchemaVersion": 1,
+      "Id": "population",
+      "GameProfile": "exploration",
+      "CatalogId": "surface-example",
+      "RootArchetypeId": "root",
+      "Scale": "region",
+      "Coverage": "PartialScope",
+      "RemainingScopes": [
+        "Base phase: seven required physical members and their routes; four required route markers are added by the complete population phase."
+      ],
+      "Parameters": {},
+      "Space": {
+        "Axes": [
+          "x",
+          "y"
+        ],
+        "Unit": "meters"
+      },
+      "Origin": [
+        1,
+        1
+      ],
+      "RequireAllPositions": true,
+      "MaximumNodes": 10000,
+      "MaximumConnections": 50000,
+      "AdditionalConnections": [
+        {
+          "Id": "approach",
+          "Kind": "journey",
+          "FromId": "population/gates-0",
+          "ToId": "population/resource-0",
+          "Bidirectional": true,
+          "Properties": null,
+          "LayerId": null
+        },
+        {
+          "Id": "exit",
+          "Kind": "journey",
+          "FromId": "population/resource-0",
+          "ToId": "population/gates-1",
+          "Bidirectional": true,
+          "Properties": null,
+          "LayerId": null
+        }
+      ],
+      "Layers": [
+        {
+          "Id": "intent",
+          "Kind": "game-intent",
+          "Purpose": "Declared exploration destinations",
+          "SourceRuleId": "example:destinations",
+          "DependsOn": [],
+          "Coverage": "CompleteDeclaredScope",
+          "RemainingScopes": []
+        }
+      ],
+      "Surface": {
+        "SchemaVersion": 1,
+        "Id": "population-ground",
+        "Unit": "meters",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 50,
+              "Y": 0
+            },
+            {
+              "X": 50,
+              "Y": 38
+            },
+            {
+              "X": 30,
+              "Y": 45
+            },
+            {
+              "X": 0,
+              "Y": 45
+            }
+          ]
+        },
+        "Exclusions": [
+          {
+            "Id": "ridge-face",
+            "Purpose": "Keep the rock face clear",
+            "SourceRuleId": "game:rock",
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": 22,
+                  "Y": 16
+                },
+                {
+                  "X": 30,
+                  "Y": 16
+                },
+                {
+                  "X": 30,
+                  "Y": 34
+                },
+                {
+                  "X": 22,
+                  "Y": 34
+                }
+              ]
+            }
+          }
+        ],
+        "Patches": [
+          {
+            "Id": "ground",
+            "Kind": "ground",
+            "Purpose": "Gently sloping ground",
+            "SourceRuleId": "game:ground",
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": 0,
+                  "Y": 0
+                },
+                {
+                  "X": 50,
+                  "Y": 0
+                },
+                {
+                  "X": 50,
+                  "Y": 38
+                },
+                {
+                  "X": 30,
+                  "Y": 45
+                },
+                {
+                  "X": 0,
+                  "Y": 45
+                }
+              ]
+            },
+            "Priority": 0,
+            "Origin": {
+              "X": 0,
+              "Y": 0
+            },
+            "Elevation": 0,
+            "GradientX": 0.03,
+            "GradientY": 0
+          }
+        ],
+        "Terrain": null,
+        "HeightField": null
+      },
+      "RouteRules": [
+        {
+          "Id": "travel",
+          "ConnectionKind": "journey",
+          "Profile": {
+            "Id": "foot",
+            "Purpose": "Walk between destinations",
+            "SourceRuleId": "example:walking",
+            "Radius": 0.3,
+            "MaximumSlope": 1,
+            "KindCosts": {
+              "ground": 1
+            },
+            "AscentCost": 0,
+            "DescentCost": 0,
+            "MaximumHeightStep": 0.001
+          },
+          "Search": {
+            "Clearance": 0.25,
+            "Waypoints": [],
+            "MaximumCandidates": 256,
+            "MaximumEdgeChecks": 32768,
+            "MaximumWork": 30000000
+          },
+          "FromPortId": "entry",
+          "ToPortId": "entry",
+          "Reuse": null,
+          "Interfaces": null
+        }
+      ],
+      "NetworkRules": null,
+      "Environment": {
+        "SchemaVersion": 1,
+        "Id": "population-fields",
+        "Fields": [
+          {
+            "Id": "slope",
+            "Purpose": "Terrain slope",
+            "SourceRuleId": "game:ground",
+            "Unit": "ratio",
+            "Offset": 0,
+            "Terms": [
+              {
+                "Input": "Slope",
+                "Coefficient": 1,
+                "FieldId": null
+              }
+            ],
+            "Minimum": null,
+            "Maximum": null
+          }
+        ]
+      },
+      "SuitabilityRules": null,
+      "Placement": {
+        "Request": {
+          "Id": "population-sites",
+          "Purpose": "Place complete required program",
+          "SourceRuleId": "game:population",
+          "Boundary": {
+            "Vertices": [
+              {
+                "X": 0,
+                "Y": 0
+              },
+              {
+                "X": 50,
+                "Y": 0
+              },
+              {
+                "X": 50,
+                "Y": 38
+              },
+              {
+                "X": 30,
+                "Y": 45
+              },
+              {
+                "X": 0,
+                "Y": 45
+              }
+            ]
+          },
+          "Demands": [
+            {
+              "Id": "gate",
+              "Purpose": "Required gate",
+              "SourceRuleId": "game:gate",
+              "Footprint": null,
+              "Profile": {
+                "Id": "gentle-ground",
+                "Purpose": "Keep required items on traversable ground",
+                "SourceRuleId": "game:population",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "gentle",
+                    "FieldId": "slope",
+                    "Purpose": "Avoid steep detail sites",
+                    "SourceRuleId": "game:population",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "border",
+              "Purpose": "Required border",
+              "SourceRuleId": "game:border",
+              "Footprint": null,
+              "Profile": {
+                "Id": "gentle-ground",
+                "Purpose": "Keep required items on traversable ground",
+                "SourceRuleId": "game:population",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "gentle",
+                    "FieldId": "slope",
+                    "Purpose": "Avoid steep detail sites",
+                    "SourceRuleId": "game:population",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "resource",
+              "Purpose": "Required resource",
+              "SourceRuleId": "game:resource",
+              "Footprint": null,
+              "Profile": {
+                "Id": "gentle-ground",
+                "Purpose": "Keep required items on traversable ground",
+                "SourceRuleId": "game:population",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "gentle",
+                    "FieldId": "slope",
+                    "Purpose": "Avoid steep detail sites",
+                    "SourceRuleId": "game:population",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [],
+          "Relations": [],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false
+        },
+        "Bindings": [
+          {
+            "DemandId": "gate",
+            "NodeId": "population",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": "gates",
+            "SiteLayout": null,
+            "Population": {
+              "Purpose": "Required entrance sockets",
+              "SourceRuleId": "game:gates",
+              "Path": null,
+              "Boundary": null,
+              "Sockets": [
+                {
+                  "NodeId": "population/gates-0",
+                  "Position": {
+                    "X": 5,
+                    "Y": 10
+                  }
+                },
+                {
+                  "NodeId": "population/gates-1",
+                  "Position": {
+                    "X": 45,
+                    "Y": 10
+                  }
+                }
+              ],
+              "Route": null
+            }
+          },
+          {
+            "DemandId": "border",
+            "NodeId": "population",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": "boundary",
+            "SiteLayout": null,
+            "Population": {
+              "Purpose": "Reserve boundary markers",
+              "SourceRuleId": "game:reserve",
+              "Path": null,
+              "Boundary": {
+                "Boundary": {
+                  "Vertices": [
+                    {
+                      "X": 5,
+                      "Y": 25
+                    },
+                    {
+                      "X": 20,
+                      "Y": 25
+                    },
+                    {
+                      "X": 20,
+                      "Y": 40
+                    },
+                    {
+                      "X": 12,
+                      "Y": 40
+                    },
+                    {
+                      "X": 12,
+                      "Y": 32
+                    },
+                    {
+                      "X": 5,
+                      "Y": 32
+                    }
+                  ]
+                },
+                "StartEdgeIndex": 0,
+                "Spacing": 5,
+                "StartDistance": 2,
+                "InwardOffset": 1,
+                "SpanLength": 16
+              },
+              "Sockets": null,
+              "Route": null
+            }
+          },
+          {
+            "DemandId": "resource",
+            "NodeId": "population",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": "resource",
+            "SiteLayout": null,
+            "Population": {
+              "Purpose": "Required collectible socket",
+              "SourceRuleId": "game:resource",
+              "Path": null,
+              "Boundary": null,
+              "Sockets": [
+                {
+                  "NodeId": "population/resource-0",
+                  "Position": {
+                    "X": 38,
+                    "Y": 30
+                  }
+                }
+              ],
+              "Route": null
+            }
+          }
+        ],
+        "NestedStages": null,
+        "MaximumWork": 200000000,
+        "MaximumStageAttempts": 128,
+        "MaximumFeasibilityAttempts": 32,
+        "SourceWorld": null
+      },
+      "Services": null,
+      "Context": null,
+      "Corridors": null,
+      "Regions": null,
+      "LocalLayouts": null,
+      "LayoutAdaptation": null,
+      "ProgressionRules": null,
+      "PopulationSource": null
+    },
+    "Catalog": {
+      "SchemaVersion": 1,
+      "Id": "surface-example",
+      "Archetypes": [
+        {
+          "Id": "root",
+          "Kind": "level",
+          "Purpose": "Exploration area",
+          "Properties": {},
+          "Parts": [
+            {
+              "Id": "gates",
+              "ArchetypeId": "gate",
+              "Count": 2,
+              "Purpose": "Required journey entrances",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null
+            },
+            {
+              "Id": "boundary",
+              "ArchetypeId": "marker",
+              "Count": 4,
+              "Purpose": "Mark the irregular resource reserve",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null
+            },
+            {
+              "Id": "resource",
+              "ArchetypeId": "resource",
+              "Count": 1,
+              "Purpose": "Required collectible location",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null
+            }
+          ],
+          "Connections": [],
+          "ChildRequirements": [
+            {
+              "Kind": "gate",
+              "Minimum": 2,
+              "Maximum": 2
+            },
+            {
+              "Kind": "marker",
+              "Minimum": 4,
+              "Maximum": 4
+            },
+            {
+              "Kind": "resource",
+              "Minimum": 1,
+              "Maximum": 1
+            }
+          ],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": null,
+          "Access": null,
+          "Capacities": null,
+          "Services": null
+        },
+        {
+          "Id": "gate",
+          "Kind": "gate",
+          "Purpose": "Required gate",
+          "Properties": {},
+          "Parts": [],
+          "Connections": [],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": "intent",
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Source-sized gate",
+            "SourceRuleId": "catalog:gate",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -0.5,
+                  "Y": -0.5
+                },
+                {
+                  "X": 0.5,
+                  "Y": -0.5
+                },
+                {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                {
+                  "X": -0.5,
+                  "Y": 0.5
+                }
+              ]
+            },
+            "Reservation": {
+              "Vertices": [
+                {
+                  "X": -0.6,
+                  "Y": -0.6
+                },
+                {
+                  "X": 0.6,
+                  "Y": -0.6
+                },
+                {
+                  "X": 0.6,
+                  "Y": 0.6
+                },
+                {
+                  "X": -0.6,
+                  "Y": 0.6
+                }
+              ]
+            }
+          },
+          "Access": {
+            "Occupancy": "Solid",
+            "Ports": [
+              {
+                "Id": "entry",
+                "Purpose": "Interaction access",
+                "SourceRuleId": "catalog:gate",
+                "BoundaryPosition": {
+                  "X": 0,
+                  "Y": -0.5
+                },
+                "ApproachPosition": {
+                  "X": 0,
+                  "Y": -1.5
+                },
+                "Width": 0.8
+              }
+            ]
+          },
+          "Capacities": null,
+          "Services": null
+        },
+        {
+          "Id": "marker",
+          "Kind": "marker",
+          "Purpose": "Required marker",
+          "Properties": {},
+          "Parts": [],
+          "Connections": [],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": "intent",
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Source-sized marker",
+            "SourceRuleId": "catalog:marker",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -0.5,
+                  "Y": -0.5
+                },
+                {
+                  "X": 0.5,
+                  "Y": -0.5
+                },
+                {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                {
+                  "X": -0.5,
+                  "Y": 0.5
+                }
+              ]
+            },
+            "Reservation": {
+              "Vertices": [
+                {
+                  "X": -0.6,
+                  "Y": -0.6
+                },
+                {
+                  "X": 0.6,
+                  "Y": -0.6
+                },
+                {
+                  "X": 0.6,
+                  "Y": 0.6
+                },
+                {
+                  "X": -0.6,
+                  "Y": 0.6
+                }
+              ]
+            }
+          },
+          "Access": {
+            "Occupancy": "Solid",
+            "Ports": []
+          },
+          "Capacities": null,
+          "Services": null
+        },
+        {
+          "Id": "resource",
+          "Kind": "resource",
+          "Purpose": "Required resource",
+          "Properties": {},
+          "Parts": [],
+          "Connections": [],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": "intent",
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Source-sized resource",
+            "SourceRuleId": "catalog:resource",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -0.5,
+                  "Y": -0.5
+                },
+                {
+                  "X": 0.5,
+                  "Y": -0.5
+                },
+                {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                {
+                  "X": -0.5,
+                  "Y": 0.5
+                }
+              ]
+            },
+            "Reservation": {
+              "Vertices": [
+                {
+                  "X": -0.6,
+                  "Y": -0.6
+                },
+                {
+                  "X": 0.6,
+                  "Y": -0.6
+                },
+                {
+                  "X": 0.6,
+                  "Y": 0.6
+                },
+                {
+                  "X": -0.6,
+                  "Y": 0.6
+                }
+              ]
+            }
+          },
+          "Access": {
+            "Occupancy": "Solid",
+            "Ports": [
+              {
+                "Id": "entry",
+                "Purpose": "Interaction access",
+                "SourceRuleId": "catalog:resource",
+                "BoundaryPosition": {
+                  "X": 0,
+                  "Y": -0.5
+                },
+                "ApproachPosition": {
+                  "X": 0,
+                  "Y": -1.5
+                },
+                "Width": 0.8
+              }
+            ]
+          },
+          "Capacities": null,
+          "Services": null
+        }
+      ]
+    }
+  }
+}

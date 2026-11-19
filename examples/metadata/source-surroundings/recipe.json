@@ -1,0 +1,223 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surroundings-world",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Source site bands only. Shared service delivery, roads, boundary assemblies, wider world generation, art and native runtime remain open."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    50,
+    50
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "surface",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 100,
+          "Y": 0
+        },
+        {
+          "X": 100,
+          "Y": 100
+        },
+        {
+          "X": 0,
+          "Y": 100
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [],
+    "Terrain": null,
+    "HeightField": {
+      "SchemaVersion": 1,
+      "Id": "flat",
+      "Kind": "ground",
+      "Purpose": "Surroundings fixture",
+      "SourceRuleId": "example",
+      "Unit": "meters",
+      "Origin": {
+        "X": 0,
+        "Y": 0
+      },
+      "StepX": 50,
+      "StepY": 50,
+      "Columns": 3,
+      "Rows": 3,
+      "Heights": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "position",
+    "Fields": [
+      {
+        "Id": "x",
+        "Purpose": "World x",
+        "SourceRuleId": "test",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "X",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ]
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "sites",
+      "Purpose": "Place source sites and clearance",
+      "SourceRuleId": "test",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 100,
+            "Y": 0
+          },
+          {
+            "X": 100,
+            "Y": 100
+          },
+          {
+            "X": 0,
+            "Y": 100
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "a",
+          "Purpose": "First required site",
+          "SourceRuleId": "test",
+          "Footprint": null,
+          "Profile": {
+            "Id": "central",
+            "Purpose": "Prefer central sites",
+            "SourceRuleId": "test",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [],
+            "Preferences": [
+              {
+                "Id": "center",
+                "FieldId": "x",
+                "Purpose": "Central purpose",
+                "SourceRuleId": "test",
+                "Ideal": 20,
+                "Tolerance": 40,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null
+        }
+      ],
+      "Anchors": [
+        {
+          "Id": "center",
+          "Position": {
+            "X": 50,
+            "Y": 50
+          }
+        }
+      ],
+      "Relations": [
+        {
+          "Id": "center",
+          "FromId": "a",
+          "ToId": "center",
+          "Purpose": "Retain designed center",
+          "SourceRuleId": "example",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        }
+      ],
+      "MinimumSeparation": 0,
+      "MaximumCandidates": 2048,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 50000000
+    },
+    "Bindings": [
+      {
+        "DemandId": "a",
+        "NodeId": "surroundings-world/sites-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 30,
+        "PartId": null,
+        "SiteLayout": {
+          "FrontDepthMeters": 4,
+          "RearDepthMeters": 4,
+          "LeftDepthMeters": 2,
+          "RightDepthMeters": 2,
+          "EntrancePortId": "front",
+          "Purpose": "Required garden and entrance",
+          "SourceRuleId": "example:surroundings"
+        }
+      }
+    ],
+    "NestedStages": null,
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 32
+  }
+}

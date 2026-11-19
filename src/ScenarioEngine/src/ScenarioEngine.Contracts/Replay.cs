@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 
 namespace ScenarioEngine.Contracts;
 
-public enum ReplayOperation { Start, Submit, CancelQueued, Pause, Resume, Step, Dispose }
+public enum ReplayOperation { Submit, CancelQueued, Update, Dispose }
 public sealed record ReplayEntry(
     ReplayOperation Operation, string ExpectedCode, string ExpectedStateHash, string ExpectedOutputHash,
     CommandEnvelope? Command = null, string? ControllerId = null,

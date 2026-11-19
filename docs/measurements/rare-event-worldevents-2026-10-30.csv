@@ -1,0 +1,9 @@
+engine,document,target,method,horizon_steps,effort_per_stage,replications,root_seed_or_first_seed,runs,estimate_ppb,uncertainty_ppb_half_width_or_se,band_low_ppb,band_high_ppb,median_ppb,median95_low_ppb,median95_high_ppb,min_ppb,max_ppb,extinct_replications,exact_ppb,wall_seconds_release
+world-events,valley.world.json,quake:quake,splitting,365,500,21,1,21000,7535619,se 787348,5960923,9110315,6600000,4500000,10272000,2400000,14940000,0,,112
+world-events,valley.world.json,quake:quake,plain (seeds 1000001-1040000),365,,,1000001,40000,7800000,band 879726,6920274,8679726,,,,,,,,340
+world-events,valley.world.json,quake:great,splitting,365,500,21,1,31500,1042809,se 325202,392405,1693213,153600,98256,2008832,0,4123440,5,,147
+world-events,valley.world.json,quake:great,plain (seeds 1000001-1040000),365,,,1000001,40000,1050000,band 323868,726132,1373868,,,,,,,,340
+world-events,valley.world.json,quake: any onset,plain (seeds 1000001-1040000),365,,,1000001,40000,56425000,band 2307406,54117594,58732406,,,,,,,,340
+world-events,lab (one region one hazard rate 20 ppm; tiny.world.json edited),h:mid,plain (seeds 5000001-5100000),365,,,5000001,100000,960000,band 195866,764134,1155866,,,,,,,919378,92
+world-events,lab (one region one hazard rate 20 ppm; tiny.world.json edited),h:great,splitting,365,2000,21,1,120000,119373,se 47556,24261,214485,0,0,4532,0,500750,13,116793,60
+world-events,lab (one region one hazard rate 20 ppm; tiny.world.json edited),h:great,plain (seeds 5000001-5100000),365,,,5000001,100000,160000,band 79994,80006,239994,,,,,,,116793,92

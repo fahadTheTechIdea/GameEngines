@@ -50,13 +50,15 @@ public sealed class VisualPathPatternGenerator
         if (!double.IsFinite(requested) || requested > 100000)
             return Reject("PATH_PATTERN_TOO_LARGE", "Requested count exceeds safety limit.");
         var count = (int)requested;
+        IReadOnlyList<WorldPoint> positions;
+        try { positions=WorldPopulationGeometry.Path(new(path.Centerline,pattern.SpacingMeters,pattern.StartInsetMeters,pattern.EndInsetMeters,pattern.NormalOffsetMeters),count,token); }
+        catch(ArgumentException error){return Reject(error.Message,"Invalid bounded path grammar.");}
         var anchors = new List<VisualAnchor>(count);
         var decisions = new List<VisualObjectDecision>(count);
         for (var i = 0; i < count; i++)
         {
             token.ThrowIfCancellationRequested();
-            double distance = pattern.StartInsetMeters + i * pattern.SpacingMeters;
-            var point = Sample(path.Centerline.Points, distance, pattern.NormalOffsetMeters);
+            var point = positions[i];
             if (!region.Outline.ContainsPoint(point))
                 return Reject("PATH_PATTERN_OUTSIDE_REGION", "The authored offset leaves its visual region; revise the grammar.");
             var id = $"{pattern.Id}-{i}";
@@ -64,21 +66,5 @@ public sealed class VisualPathPatternGenerator
             decisions.Add(new(id, pattern.Kind, id, pattern.Purpose, pattern.RuleId));
         }
         return new(anchors, decisions, []);
-    }
-    private static WorldPoint Sample(IReadOnlyList<WorldPoint> points, double distance, double offset)
-    {
-        for (int i = 1; i < points.Count; i++)
-        {
-            var a = points[i - 1]; var b = points[i];
-            double segment = a.DistanceTo(b);
-            if (distance <= segment || i == points.Count - 1)
-            {
-                var t = Math.Clamp(distance / segment, 0, 1);
-                return new(a.X + (b.X - a.X) * t - (b.Y-a.Y)/segment*offset,
-                    a.Y + (b.Y - a.Y) * t + (b.X-a.X)/segment*offset);
-            }
-            distance -= segment;
-        }
-        throw new InvalidOperationException("Validated path could not be sampled.");
     }
 }

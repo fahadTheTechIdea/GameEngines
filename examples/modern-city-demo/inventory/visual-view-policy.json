@@ -1,0 +1,77 @@
+{
+  "Version": 1,
+  "MaximumBuildingBodiesPerDetailView": 24,
+  "Scope": "Framework example presentation policy only; add views rather than omit members. Actual legibility still requires image review.",
+  "DistrictGroups": {
+    "old-center": {
+      "civic-and-market": [
+        "shop",
+        "cafe",
+        "restaurant",
+        "civic",
+        "library",
+        "plaza"
+      ],
+      "residential-frontages": [
+        "townhouse"
+      ]
+    },
+    "garden-neighborhood": {
+      "residential-gardens": [
+        "house-site"
+      ],
+      "local-center": [
+        "school-site",
+        "clinic",
+        "shop",
+        "park"
+      ]
+    },
+    "riverside": {
+      "waterfront-housing": [
+        "apartment-site"
+      ],
+      "promenade-and-services": [
+        "cafe",
+        "shop",
+        "park"
+      ]
+    },
+    "mixed-center": {
+      "workplaces": [
+        "office"
+      ],
+      "mixed-housing": [
+        "apartment-site"
+      ],
+      "commercial-core": [
+        "shop",
+        "restaurant",
+        "clinic",
+        "plaza"
+      ]
+    },
+    "work-district": {
+      "factory-compounds": [
+        "factory-site"
+      ],
+      "work-services": [
+        "workshop",
+        "warehouse",
+        "cafe"
+      ]
+    },
+    "outer-neighborhood": {
+      "residential": [
+        "house-site",
+        "townhouse"
+      ],
+      "neighborhood-center": [
+        "school-site",
+        "shop",
+        "clinic",
+        "park"
+      ]
+    }
+  }
+}

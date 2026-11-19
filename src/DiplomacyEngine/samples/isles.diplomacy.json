@@ -1,0 +1,140 @@
+{
+ "format": 1,
+ "id": "isles",
+ "seed": 20261029,
+ "time": { "stepsPerDay": 1 },
+ "limits": { "maxTreaties": 256, "maxProposals": 64, "maxWars": 16, "maxAgents": 128, "maxMissions": 64, "maxCalls": 64, "maxIncidents": 64, "maxGrants": 64, "maxDeedsPerPair": 4 },
+ "seasons": [
+  { "id": "spring", "key": "season.spring", "warCost": 1000 },
+  { "id": "summer", "key": "season.summer", "warCost": 1000 },
+  { "id": "autumn", "key": "season.autumn", "warCost": 1000 },
+  { "id": "winter", "key": "season.winter", "warCost": 2000 }
+ ],
+ "ideologies": [
+  { "id": "crown", "key": "ideology.crown", "affinity": [600, -100, -300] },
+  { "id": "guild", "key": "ideology.guild", "affinity": [-100, 600, -200] },
+  { "id": "zeal", "key": "ideology.zeal", "affinity": [-300, -200, 700] }
+ ],
+ "traits": [
+  { "id": "loyal", "key": "trait.loyal", "acceptance": 100, "reliability": 200, "counterIntel": 100, "spyBonus": 0 },
+  { "id": "shady", "key": "trait.shady", "acceptance": -100, "reliability": -300, "counterIntel": 0, "spyBonus": 100 }
+ ],
+ "deeds": [
+  { "id": "gift", "key": "deed.gift", "value": 300, "days": 100 },
+  { "id": "insult", "key": "deed.insult", "value": -300, "days": 100 },
+  { "id": "betrayal", "key": "deed.betrayal", "value": -600, "days": 200 },
+  { "id": "war-on-us", "key": "deed.war_on_us", "value": -500, "days": 150 },
+  { "id": "witnessed", "key": "deed.witnessed", "value": -100, "days": 100 },
+  { "id": "good-faith", "key": "deed.good_faith", "value": 100, "days": 50 },
+  { "id": "spying", "key": "deed.spying", "value": -400, "days": 100 }
+ ],
+ "rules": {
+  "regard": { "ideology": 300, "leader": 400, "trust": 200, "honour": 100, "coalition": 300 },
+  "standing": { "trustDecayPpm": 2000, "fearDecayPpm": 3000, "honourDecayPpm": 1000, "infamyDecayPpm": 2000, "witnessDeed": "witnessed", "expireTrust": 20, "paidTrust": 10, "honouredTrust": 50, "honouredHonour": 40 },
+  "war": { "allowNoCb": true, "noCbInfamy": 200, "noCbHonour": 150, "declaredDeed": "war-on-us", "warOnUsDeed": "war-on-us", "exhaustPpm": 2000, "callBase": 700, "fearPerScore": 400,
+   "sourceWeights": { "battle": 300, "occupation": 500, "blockade": 200, "event": 400 } },
+  "acceptance": { "acceptAt": 0, "rejectAt": -200, "termUnit": 100000 },
+  "balance": { "interval": 10, "threatLine": 450, "relaxLine": 300, "joinRegard": 200, "minMembers": 2, "bandwagonFear": 600, "casusBelli": "balance", "cbDays": 60 },
+  "politics": { "inertiaPpm": 50000, "legitimacyWeight": 300, "exhaustionWeight": 500, "unrestLine": 400, "revoltLine": 200, "hysteresis": 50, "driftPpm": 10000, "legitimacyBase": 700, "legitimacyDriftPpm": 5000,
+   "succession": { "legitimacy": 700, "contestedBase": 100, "contestedPerLack": 600, "contestedStability": 150, "casusBelli": "claim", "claimDays": 120 },
+   "signals": { "unrest": "realm-unrest", "revolt": "realm-revolt", "calm": "realm-calm", "succession": "succession", "contested": "succession-contested" } },
+  "espionage": { "counterWeight": 500, "exposedOnSuccess": 300, "captureDays": 20, "exposedHonour": 100, "intelDecayPpm": 3000, "counterDecayPpm": 5000, "levels": [100, 300, 600, 900], "errors": [1000, 500, 250, 100, 0], "epochDays": 30 }
+ },
+ "casusBelli": [
+  { "id": "rivalry", "key": "cb.rivalry", "source": "standing", "requires": { "fact": "regard", "op": "lt", "value": -500 }, "infamy": 100, "honour": 50 },
+  { "id": "betrayed", "key": "cb.betrayed", "source": "granted", "infamy": 0, "honour": 0 },
+  { "id": "border", "key": "cb.border", "source": "granted", "infamy": 0, "honour": 0 },
+  { "id": "balance", "key": "cb.balance", "source": "granted", "infamy": 0, "honour": 0 },
+  { "id": "claim", "key": "cb.claim", "source": "granted", "infamy": 50, "honour": 0 },
+  { "id": "spied", "key": "cb.spied", "source": "granted", "infamy": 0, "honour": 0 }
+ ],
+ "missions": [
+  { "id": "spy", "key": "mission.spy", "kind": "intel", "days": 5, "difficulty": 300, "exposure": 200, "gain": 400, "shock": "", "shockScale": 0, "stabilityHit": 0, "deed": "spying", "casusBelli": "" },
+  { "id": "sabotage", "key": "mission.sabotage", "kind": "sabotage", "days": 8, "difficulty": 500, "exposure": 400, "gain": 0, "shock": "sabotage", "shockScale": 1000, "stabilityHit": 100, "deed": "spying", "casusBelli": "spied" },
+  { "id": "unrest", "key": "mission.unrest", "kind": "incite", "days": 6, "difficulty": 400, "exposure": 300, "gain": 0, "shock": "", "shockScale": 0, "stabilityHit": 150, "deed": "spying", "casusBelli": "" },
+  { "id": "guard", "key": "mission.guard", "kind": "counter", "days": 5, "difficulty": 200, "exposure": 0, "gain": 300, "shock": "", "shockScale": 0, "stabilityHit": 0, "deed": "", "casusBelli": "" }
+ ],
+ "types": [
+  { "id": "nap", "key": "type.nap", "consent": "mutual", "clauses": [ { "kind": "non_aggression" } ], "permanent": false, "minDays": 10, "maxDays": 400, "considerDays": 2, "expireDays": 10, "regard": 50,
+   "excludes": [], "duringWar": false, "endsWar": false, "endsOnSuccession": false, "cancel": "breach",
+   "breach": { "trust": 150, "honour": 100, "deed": "betrayal", "casusBelli": "betrayed", "cbDays": 60 }, "signDeed": "good-faith", "bias": 0,
+   "weights": { "regard": 600, "trust": 300, "honour": 200, "power_ratio": 100, "shared_enemy": 400, "ideology": 100, "threat": 100, "coalition": 300 },
+   "modifiers": [ { "id": "good-mood", "key": "modifier.good_mood", "when": { "fact": "game.crisis", "op": "lt", "value": 5 }, "value": 50 } ],
+   "onSign": [ { "kind": "signal", "name": "treaty-signed", "scale": 0, "target": "both" } ], "onEnd": [], "onBreach": [ { "kind": "signal", "name": "treaty-broken", "scale": 0, "target": "both" } ] },
+  { "id": "trade", "key": "type.trade", "consent": "mutual", "clauses": [ { "kind": "trade" } ], "permanent": true, "minDays": 30, "maxDays": 720, "considerDays": 1, "expireDays": 8, "regard": 30,
+   "excludes": ["embargo"], "duringWar": false, "endsWar": false, "endsOnSuccession": false, "cancel": "free",
+   "breach": { "trust": 50, "honour": 30, "deed": "betrayal", "casusBelli": "", "cbDays": 0 }, "signDeed": "good-faith", "bias": 100,
+   "weights": { "regard": 500, "trust": 200, "ties": 100, "ideology": 100 }, "modifiers": [],
+   "onSign": [ { "kind": "shock", "name": "trade-boom", "scale": 500, "target": "both" } ], "onEnd": [ { "kind": "shock", "name": "trade-bust", "scale": 300, "target": "both" } ], "onBreach": [] },
+  { "id": "alliance", "key": "type.alliance", "consent": "mutual", "clauses": [ { "kind": "defend", "graceDays": 3, "mutual": true }, { "kind": "non_aggression" } ], "permanent": true, "minDays": 30, "maxDays": 3650,
+   "considerDays": 3, "expireDays": 15, "regard": 150, "excludes": [], "duringWar": false, "endsWar": false, "endsOnSuccession": false, "cancel": "breach",
+   "breach": { "trust": 300, "honour": 250, "deed": "betrayal", "casusBelli": "betrayed", "cbDays": 90 }, "signDeed": "good-faith", "bias": -100,
+   "weights": { "regard": 700, "trust": 300, "honour": 300, "power_ratio": 200, "shared_enemy": 500, "ideology": 200, "threat": 300, "coalition": 300, "ties": 200 }, "modifiers": [],
+   "onSign": [ { "kind": "signal", "name": "alliance-formed", "scale": 0, "target": "both" } ], "onEnd": [], "onBreach": [ { "kind": "signal", "name": "alliance-broken", "scale": 0, "target": "both" } ] },
+  { "id": "vassalage", "key": "type.vassalage", "consent": "mutual", "clauses": [ { "kind": "vassal" }, { "kind": "tribute", "intervalDays": 30, "graceDays": 3, "maxMissed": 2, "dueSeason": "", "optional": false }, { "kind": "defend", "graceDays": 5, "mutual": false } ],
+   "permanent": true, "minDays": 60, "maxDays": 3650, "considerDays": 2, "expireDays": 12, "regard": -50, "excludes": [], "duringWar": false, "endsWar": false, "endsOnSuccession": false, "cancel": "never",
+   "breach": { "trust": 250, "honour": 200, "deed": "betrayal", "casusBelli": "betrayed", "cbDays": 90 }, "signDeed": "", "bias": -300,
+   "weights": { "fear": 800, "power_ratio": 600, "terms": 800, "stability": 200, "regard": 200 }, "modifiers": [],
+   "onSign": [ { "kind": "signal", "name": "vassalage-sworn", "scale": 0, "target": "both" } ], "onEnd": [], "onBreach": [ { "kind": "signal", "name": "vassal-defied", "scale": 0, "target": "both" } ] },
+  { "id": "peace", "key": "type.peace", "consent": "mutual", "clauses": [ { "kind": "non_aggression" }, { "kind": "tribute", "intervalDays": 30, "graceDays": 3, "maxMissed": 3, "dueSeason": "", "optional": true } ],
+   "permanent": false, "minDays": 30, "maxDays": 360, "considerDays": 1, "expireDays": 6, "regard": 0, "excludes": [], "duringWar": true, "endsWar": true, "endsOnSuccession": false, "cancel": "breach",
+   "breach": { "trust": 200, "honour": 150, "deed": "betrayal", "casusBelli": "betrayed", "cbDays": 60 }, "signDeed": "", "bias": 100,
+   "weights": { "war_score": -700, "exhaustion": 600, "weariness": 300, "terms": 800, "regard": 100 }, "modifiers": [],
+   "onSign": [ { "kind": "signal", "name": "peace-signed", "scale": 0, "target": "both" } ], "onEnd": [], "onBreach": [ { "kind": "signal", "name": "peace-broken", "scale": 0, "target": "both" } ] },
+  { "id": "ceasefire", "key": "type.ceasefire", "consent": "mutual", "clauses": [ { "kind": "truce" } ], "permanent": false, "minDays": 5, "maxDays": 60, "considerDays": 1, "expireDays": 4, "regard": 0,
+   "excludes": [], "duringWar": true, "endsWar": false, "endsOnSuccession": false, "cancel": "breach",
+   "breach": { "trust": 250, "honour": 200, "deed": "betrayal", "casusBelli": "betrayed", "cbDays": 60 }, "signDeed": "", "bias": 0,
+   "weights": { "war_score": -400, "exhaustion": 500, "weariness": 300 }, "modifiers": [],
+   "onSign": [ { "kind": "signal", "name": "ceasefire-signed", "scale": 0, "target": "both" } ], "onEnd": [], "onBreach": [ { "kind": "signal", "name": "ceasefire-broken", "scale": 0, "target": "both" } ] },
+  { "id": "marriage", "key": "type.marriage", "consent": "mutual", "clauses": [ { "kind": "bond" } ], "permanent": true, "minDays": 0, "maxDays": 0, "considerDays": 5, "expireDays": 20, "regard": 200,
+   "excludes": [], "duringWar": false, "endsWar": false, "endsOnSuccession": true, "cancel": "breach",
+   "breach": { "trust": 200, "honour": 150, "deed": "betrayal", "casusBelli": "betrayed", "cbDays": 60 }, "signDeed": "good-faith", "bias": 0,
+   "weights": { "regard": 400, "ideology": 200, "power_ratio": 100, "trust": 300 }, "modifiers": [],
+   "onSign": [ { "kind": "signal", "name": "marriage-made", "scale": 0, "target": "both" } ], "onEnd": [], "onBreach": [] },
+  { "id": "embargo", "key": "type.embargo", "consent": "imposed", "clauses": [ { "kind": "embargo" } ], "permanent": false, "minDays": 10, "maxDays": 365, "considerDays": 0, "expireDays": 0, "regard": -300,
+   "excludes": ["trade"], "duringWar": false, "endsWar": false, "endsOnSuccession": false, "cancel": "free",
+   "breach": { "trust": 0, "honour": 0, "deed": "", "casusBelli": "", "cbDays": 0 }, "signDeed": "insult", "bias": 0, "weights": {}, "modifiers": [],
+   "onSign": [ { "kind": "shock", "name": "embargo", "scale": 800, "target": "second" } ], "onEnd": [ { "kind": "shock", "name": "embargo-lifted", "scale": 300, "target": "second" } ], "onBreach": [] }
+ ],
+ "realms": [
+  { "id": "aurel", "key": "realm.aurel", "ideology": "crown", "traits": ["loyal"], "might": 500000, "market": "aurel-market", "leader": "king-aurel", "control": "ai", "stability": 700, "legitimacy": 800, "successionPpm": 200,
+   "standing": { "trust": 100, "fear": 50, "honour": 100, "infamy": 0 },
+   "factions": [
+    { "id": "court", "key": "faction.aurel_court", "share": 600, "satisfaction": 600, "likes": [ { "event": "treaty_signed", "delta": 50 }, { "event": "treaty_breached", "delta": -200 }, { "event": "war_declared", "delta": -50 }, { "event": "war_won", "delta": 200 }, { "event": "war_lost", "delta": -300 }, { "event": "peace_signed", "delta": 100 } ] },
+    { "id": "commons", "key": "faction.aurel_commons", "share": 400, "satisfaction": 500, "likes": [ { "event": "war_declared", "delta": -100 }, { "event": "war_on_us", "delta": -150 }, { "event": "peace_signed", "delta": 150 }, { "event": "disaster", "delta": -200 }, { "event": "tribute_missed", "delta": -50 } ] }
+   ] },
+  { "id": "brass", "key": "realm.brass", "ideology": "guild", "traits": ["shady"], "might": 400000, "market": "brass-market", "leader": "doge-brass", "control": "ai", "stability": 650, "legitimacy": 600, "successionPpm": 300,
+   "standing": { "trust": 0, "fear": 0, "honour": 0, "infamy": 0 },
+   "factions": [
+    { "id": "merchants", "key": "faction.brass_merchants", "share": 700, "satisfaction": 600, "likes": [ { "event": "treaty_signed", "delta": 100 }, { "event": "war_declared", "delta": -150 }, { "event": "peace_signed", "delta": 150 }, { "event": "tribute_paid", "delta": -20 } ] },
+    { "id": "mercenaries", "key": "faction.brass_mercenaries", "share": 300, "satisfaction": 500, "likes": [ { "event": "war_declared", "delta": 200 }, { "event": "peace_signed", "delta": -150 }, { "event": "war_won", "delta": 150 } ] }
+   ] },
+  { "id": "cinder", "key": "realm.cinder", "ideology": "crown", "traits": [], "might": 300000, "market": "cinder-market", "leader": "queen-cinder", "control": "host", "stability": 600, "legitimacy": 700, "successionPpm": 200,
+   "standing": { "trust": 0, "fear": 0, "honour": 0, "infamy": 0 },
+   "factions": [
+    { "id": "nobles", "key": "faction.cinder_nobles", "share": 500, "satisfaction": 550, "likes": [ { "event": "war_won", "delta": 250 }, { "event": "war_lost", "delta": -250 }, { "event": "treaty_breached", "delta": -100 } ] },
+    { "id": "guilds", "key": "faction.cinder_guilds", "share": 500, "satisfaction": 550, "likes": [ { "event": "peace_signed", "delta": 120 }, { "event": "war_declared", "delta": -120 }, { "event": "spy_exposed", "delta": -80 } ] }
+   ] },
+  { "id": "dune", "key": "realm.dune", "ideology": "guild", "traits": ["loyal"], "might": 250000, "market": "dune-market", "leader": "sheikh-dune", "control": "ai", "stability": 600, "legitimacy": 650, "successionPpm": 300,
+   "standing": { "trust": 50, "fear": 0, "honour": 50, "infamy": 0 },
+   "factions": [
+    { "id": "caravans", "key": "faction.dune_caravans", "share": 600, "satisfaction": 600, "likes": [ { "event": "treaty_signed", "delta": 80 }, { "event": "tribute_missed", "delta": -80 } ] },
+    { "id": "clans", "key": "faction.dune_clans", "share": 400, "satisfaction": 500, "likes": [ { "event": "war_won", "delta": 200 }, { "event": "war_lost", "delta": -200 }, { "event": "succession", "delta": -100 } ] }
+   ] },
+  { "id": "ember", "key": "realm.ember", "ideology": "zeal", "traits": ["shady"], "might": 200000, "market": "ember-market", "leader": "prophet-ember", "control": "ai", "stability": 550, "legitimacy": 500, "successionPpm": 400,
+   "standing": { "trust": -50, "fear": 100, "honour": -50, "infamy": 100 },
+   "factions": [
+    { "id": "zealots", "key": "faction.ember_zealots", "share": 700, "satisfaction": 500, "likes": [ { "event": "war_declared", "delta": 100 }, { "event": "peace_signed", "delta": -100 }, { "event": "war_won", "delta": 200 } ] },
+    { "id": "herders", "key": "faction.ember_herders", "share": 300, "satisfaction": 500, "likes": [ { "event": "peace_signed", "delta": 150 }, { "event": "disaster", "delta": -250 } ] }
+   ] }
+ ],
+ "agents": [
+  { "id": "agent-aurel-1", "key": "agent.aurel_1", "realm": "aurel", "skill": 600 },
+  { "id": "agent-brass-1", "key": "agent.brass_1", "realm": "brass", "skill": 700 },
+  { "id": "agent-brass-2", "key": "agent.brass_2", "realm": "brass", "skill": 400 },
+  { "id": "agent-cinder-1", "key": "agent.cinder_1", "realm": "cinder", "skill": 500 },
+  { "id": "agent-dune-1", "key": "agent.dune_1", "realm": "dune", "skill": 450 },
+  { "id": "agent-ember-1", "key": "agent.ember_1", "realm": "ember", "skill": 650 }
+ ],
+ "facts": [ { "id": "game.crisis", "type": "int", "min": 0, "max": 10 } ]
+}

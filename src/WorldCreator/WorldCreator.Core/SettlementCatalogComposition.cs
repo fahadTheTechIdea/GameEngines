@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace WorldCreator.Core.Planning;
 
-public sealed record CatalogImport(string CatalogId, IReadOnlyList<string> StructureIds, IReadOnlyList<string> FacilityIds);
+public sealed record CatalogImport(string CatalogId, IReadOnlyList<string> StructureIds, IReadOnlyList<string> FacilityIds,IReadOnlyList<string>? ObjectIds=null,IReadOnlyList<string>? AreaIds=null);
 public sealed record CatalogCompositionDefinition(string Id, string Name, IReadOnlyList<CatalogImport> Imports);
 public sealed record CatalogCompositionManifest(int SchemaVersion, IReadOnlyList<CatalogCompositionDefinition> Catalogs);
 
@@ -14,6 +14,8 @@ public sealed class SettlementCatalogComposition : ISettlementCatalogProvider
     public SettlementCatalogDescriptor Descriptor { get; }
     public IReadOnlyList<BuildingDefinition> Structures { get; }
     public IReadOnlyList<FacilityDefinition> Facilities { get; }
+    public IReadOnlyList<SiteObjectDefinition> Objects { get; }
+    public IReadOnlyList<SiteAreaDefinition> Areas { get; }
     public ISettlementCatalogPolicy Policy { get; }
     public ISettlementDemandPolicy Demand { get; }
     public IInfrastructureDesignStrategy Infrastructure { get; }
@@ -29,11 +31,13 @@ public sealed class SettlementCatalogComposition : ISettlementCatalogProvider
         var owners = new Dictionary<string, RegisteredSettlementCatalog>(StringComparer.Ordinal);
         var facilities = new Dictionary<string, FacilityDefinition>(StringComparer.Ordinal);
         var facilityOwners = new Dictionary<string,string>(StringComparer.Ordinal);
+        var objects=new Dictionary<string,SiteObjectDefinition>(StringComparer.Ordinal);var objectOwners=new Dictionary<string,string>(StringComparer.Ordinal);
+        var areas=new Dictionary<string,SiteAreaDefinition>(StringComparer.Ordinal);var areaOwners=new Dictionary<string,string>(StringComparer.Ordinal);
         foreach (var import in definition.Imports.OrderBy(i => i?.CatalogId, StringComparer.Ordinal))
         {
             token.ThrowIfCancellationRequested();
             if (import is null || import.StructureIds is null || import.FacilityIds is null ||
-                import.StructureIds.Count + import.FacilityIds.Count == 0 || import.StructureIds.Count > 10000 || import.FacilityIds.Count > 1000 ||
+                import.StructureIds.Count + import.FacilityIds.Count+(import.ObjectIds?.Count??0)+(import.AreaIds?.Count??0) == 0 || import.StructureIds.Count > 10000 || import.FacilityIds.Count > 1000 ||import.ObjectIds?.Count>10000||import.AreaIds?.Count>10000||
                 packs.Any(p => p.Descriptor.Id == import.CatalogId)) throw new ArgumentException("CATALOG_IMPORT_INVALID");
             var descriptor = registry.Catalogs.SingleOrDefault(d => d.Id == import.CatalogId)
                 ?? throw new ArgumentException("CATALOG_IMPORT_MISSING:" + import.CatalogId);
@@ -50,6 +54,18 @@ public sealed class SettlementCatalogComposition : ISettlementCatalogProvider
                 if (!facilities.TryAdd(id, facility)) throw new ArgumentException("CATALOG_IMPORT_FACILITY_CONFLICT:" + id);
                 facilityOwners.Add(id,pack.Descriptor.Id);
             }
+            foreach(var id in (import.ObjectIds??[]).Order(StringComparer.Ordinal))
+            {
+                var item=(pack.Objects??[]).SingleOrDefault(o=>o.Id==id)??throw new ArgumentException("CATALOG_IMPORT_OBJECT_UNKNOWN:"+id);
+                if(!objects.TryAdd(id,item))throw new ArgumentException("CATALOG_IMPORT_OBJECT_CONFLICT:"+id);
+                objectOwners.Add(id,pack.Descriptor.Id);
+            }
+            foreach(var id in import.AreaIds??[])
+            {
+                var area=(pack.Areas??[]).SingleOrDefault(a=>a.Id==id)??throw new ArgumentException("CATALOG_IMPORT_AREA_UNKNOWN:"+id);
+                if(!areas.TryAdd(id,area))throw new ArgumentException("CATALOG_IMPORT_AREA_CONFLICT:"+id);
+                areaOwners.Add(id,pack.Descriptor.Id);
+            }
         }
         IReadOnlySet<string> Union(Func<SettlementCatalogDescriptor, IReadOnlySet<string>> values) =>
             packs.SelectMany(p => values(p.Descriptor)).ToFrozenSet(StringComparer.Ordinal);
@@ -59,9 +75,11 @@ public sealed class SettlementCatalogComposition : ISettlementCatalogProvider
                 Union(d => d.Vocabulary.Technologies), Union(d => d.Vocabulary.Resources)),
             new(packs.ToFrozenDictionary(p => p.Descriptor.Id, p => p.Provenance.ContentSha256, StringComparer.Ordinal),
                 owners.OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(p=>p.Key,p=>p.Value.Descriptor.Id,StringComparer.Ordinal),
-                facilityOwners.OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal)));
+                facilityOwners.OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal),objectOwners.OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal),areaOwners.OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal)));
         Structures = Array.AsReadOnly(structures.Values.OrderBy(s => s.Id, StringComparer.Ordinal).ToArray());
-        Facilities = FacilityCompositionPlanner.Snapshot(facilities.Values.ToArray(), Structures, token);
+        Objects=SiteObjectPlanner.Snapshot(objects.Values.ToArray(),token);
+        Areas=SiteAreaPlanner.Snapshot(areas.Values.ToArray(),token);
+        Facilities = FacilityCompositionPlanner.Snapshot(facilities.Values.ToArray(), Structures, token,Objects,Areas);
         var dispatch = new Dispatch(definition.Id, owners.ToFrozenDictionary(StringComparer.Ordinal), packs.ToArray());
         Policy = dispatch; Demand = dispatch; Infrastructure = dispatch;
     }
@@ -101,8 +119,10 @@ public sealed class SettlementCatalogComposition : ISettlementCatalogProvider
     }
 
     private sealed class Dispatch(string id, FrozenDictionary<string, RegisteredSettlementCatalog> owners,
-        IReadOnlyList<RegisteredSettlementCatalog> packs) : ISettlementCatalogPolicy, ISettlementDemandPolicy, IInfrastructureDesignStrategy
+        IReadOnlyList<RegisteredSettlementCatalog> packs) : ISettlementCatalogPolicy, ISettlementDemandPolicy, IInfrastructureDesignStrategy,IWorldGenerationDependency
     {
+        public string ConfigurationSha256=>WorldGenerationDependencyIdentity.Digest(packs.OrderBy(p=>p.Descriptor.Id,StringComparer.Ordinal)
+            .Select(p=>new{p.Provenance,Policy=WorldGenerationDependencyIdentity.Describe(p.Policy)}).ToArray());
         public string Id => id + ":composition";
         private RegisteredSettlementCatalog Owner(BuildingDefinition d) => owners.TryGetValue(d.Id, out var pack) ? pack
             : throw new ArgumentException("CATALOG_COMPOSITION_STRUCTURE_NOT_IMPORTED:" + d.Id);
@@ -110,9 +130,9 @@ public sealed class SettlementCatalogComposition : ISettlementCatalogProvider
         public IReadOnlySet<string> RequiredCapabilities(BuildingDefinition definition, string technology) => Owner(definition).Policy.RequiredCapabilities(definition, technology);
         public IReadOnlySet<string> RequiredCapabilities(MockupWorldDesign design) => packs.Where(p => Filter(design, p).BuildingCatalog.Count > 0)
             .SelectMany(p => p.Policy.RequiredCapabilities(Filter(design, p))).ToFrozenSet(StringComparer.Ordinal);
-        public IReadOnlyList<string> ValidateSupply(MockupWorldDesign design, BuildingDefinition definition,
-            StructureResourceRequirement requirement, SitingResourceSource source, StructureSitingContext context, CancellationToken token = default) =>
-            Owner(definition).Policy.ValidateSupply(design, definition, requirement, source, context, token);
+        public IReadOnlyList<CatalogSupplyIssue> ValidateSupply(BuildingDefinition definition,
+            StructureResourceRequirement requirement, CatalogSupplySource source, CatalogSupplyContext context, CancellationToken token = default) =>
+            Owner(definition).Policy.ValidateSupply(definition, requirement, source, context, token);
         public bool RequiresNeighborPolicy(IReadOnlySet<string> firstTags, IReadOnlySet<string> secondTags) => packs.Any(p => p.Policy.RequiresNeighborPolicy(firstTags, secondTags));
         public BuildingProgram Plan(IReadOnlyList<BuildingDefinition> catalog, SettlementDemand settlement)
         {

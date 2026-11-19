@@ -15,16 +15,19 @@
           "Purpose": "Named systems",
           "CountParameter": "systems",
           "Layout": {
-            "Origin": [
-              100,
-              0,
-              0
-            ],
-            "Step": [
-              1000,
-              0,
-              100
-            ]
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                100,
+                0,
+                0
+              ],
+              "Step": [
+                1000,
+                0,
+                100
+              ]
+            }
           }
         }
       ],
@@ -56,16 +59,19 @@
           "Purpose": "System destinations",
           "CountParameter": "planets",
           "Layout": {
-            "Origin": [
-              50,
-              0,
-              0
-            ],
-            "Step": [
-              50,
-              0,
-              0
-            ]
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                50,
+                0,
+                0
+              ],
+              "Step": [
+                50,
+                0,
+                0
+              ]
+            }
           }
         }
       ],

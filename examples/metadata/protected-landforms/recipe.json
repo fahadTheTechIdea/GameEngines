@@ -1,0 +1,190 @@
+{
+  "SchemaVersion": 1,
+  "Id": "generated-landforms",
+  "GameProfile": "exploration",
+  "CatalogId": "generated-landforms",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Generated elevation and slope only; environmental fields, suitability placement, junctions, structures, art and runtime remain open"
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    32,
+    32
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "generated-landforms",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 8,
+          "Y": 12
+        },
+        {
+          "X": 76,
+          "Y": 0
+        },
+        {
+          "X": 120,
+          "Y": 24
+        },
+        {
+          "X": 128,
+          "Y": 84
+        },
+        {
+          "X": 96,
+          "Y": 120
+        },
+        {
+          "X": 28,
+          "Y": 128
+        },
+        {
+          "X": 0,
+          "Y": 72
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [],
+    "Terrain": {
+      "SchemaVersion": 1,
+      "Id": "landforms",
+      "Kind": "ground",
+      "Purpose": "Editable exploration landforms",
+      "SourceRuleId": "example:terrain",
+      "Unit": "meters",
+      "Origin": {
+        "X": 0,
+        "Y": 0
+      },
+      "StepX": 4,
+      "StepY": 4,
+      "Columns": 33,
+      "Rows": 33,
+      "BaseElevation": 10,
+      "GradientX": 0.01,
+      "GradientY": 0,
+      "Operations": [
+        {
+          "Id": "ridge",
+          "Purpose": "Raised route barrier",
+          "SourceRuleId": "example:ridge",
+          "Mode": "Add",
+          "ControlPath": [
+            {
+              "X": 24,
+              "Y": 80
+            },
+            {
+              "X": 64,
+              "Y": 56
+            },
+            {
+              "X": 112,
+              "Y": 88
+            }
+          ],
+          "Radius": 30,
+          "Height": 38,
+          "DetailProtectionRadius": 4
+        },
+        {
+          "Id": "valley",
+          "Purpose": "Lower passage through the ridge",
+          "SourceRuleId": "example:valley",
+          "Mode": "Add",
+          "ControlPath": [
+            {
+              "X": 48,
+              "Y": 0
+            },
+            {
+              "X": 64,
+              "Y": 64
+            },
+            {
+              "X": 100,
+              "Y": 128
+            }
+          ],
+          "Radius": 16,
+          "Height": -16,
+          "DetailProtectionRadius": 4
+        },
+        {
+          "Id": "landing",
+          "Purpose": "Level authored landing anchor",
+          "SourceRuleId": "example:landing",
+          "Mode": "Level",
+          "ControlPath": [
+            {
+              "X": 32,
+              "Y": 32
+            }
+          ],
+          "Radius": 14,
+          "Height": 12,
+          "DetailProtectionRadius": 4
+        }
+      ],
+      "Detail": {
+        "Seed": 178,
+        "Wavelength": 37,
+        "Amplitude": 3,
+        "Octaves": 3
+      },
+      "MaximumWork": 20000000
+    },
+    "HeightField": null
+  },
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": null,
+  "SuitabilityRules": null,
+  "Placement": null,
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": null,
+  "RouteBudget": null,
+  "Interiors": null,
+  "TerrainDemands": null,
+  "ProgramComposition": null,
+  "Drainage": null,
+  "Water": null,
+  "WindMoisture": null
+}

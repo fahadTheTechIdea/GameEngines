@@ -1,0 +1,48 @@
+{
+  "format": 2,
+  "armor_constant": 100,
+  "minimum_damage": 1,
+  "non_piercing_cut_percent": 50,
+  "hit_chance": { "floor_permille": 50, "ceiling_permille": 950 },
+  "personnel_health": 100,
+  "damage_types": [
+    { "id": "slash", "armor_factor_percent": 100, "armor_checked": true },
+    { "id": "pierce", "armor_factor_percent": 70, "armor_checked": true },
+    { "id": "blunt", "armor_factor_percent": 80, "armor_checked": false },
+    { "id": "ballistic", "armor_factor_percent": 100, "armor_checked": true },
+    { "id": "blast", "armor_factor_percent": 60, "armor_checked": false },
+    { "id": "energy", "armor_factor_percent": 50, "armor_checked": false },
+    { "id": "fire", "armor_factor_percent": 40, "armor_checked": false }
+  ],
+  "range_bands": [
+    { "up_to_percent": 25, "accuracy_percent": 100 },
+    { "up_to_percent": 50, "accuracy_percent": 90 },
+    { "up_to_percent": 75, "accuracy_percent": 75 },
+    { "up_to_percent": 100, "accuracy_percent": 55 }
+  ],
+  "cover": [
+    { "id": "open", "accuracy_percent": 100, "damage_percent": 100 },
+    { "id": "light", "accuracy_percent": 80, "damage_percent": 100 },
+    { "id": "heavy", "accuracy_percent": 55, "damage_percent": 100 },
+    { "id": "fortified", "accuracy_percent": 35, "damage_percent": 90 }
+  ],
+  "training": [
+    { "id": "raw", "accuracy_percent": 75, "damage_percent": 90, "morale_permille": 700 },
+    { "id": "regular", "accuracy_percent": 100, "damage_percent": 100, "morale_permille": 850 },
+    { "id": "veteran", "accuracy_percent": 115, "damage_percent": 105, "morale_permille": 950 },
+    { "id": "elite", "accuracy_percent": 130, "damage_percent": 110, "morale_permille": 1000 }
+  ],
+  "suppression": { "hits": 8, "accuracy_percent": 60 },
+  "rout": { "strength_percent": 25 },
+  "splash": { "spacing_milli": 2000, "max_targets": 6, "damage_percent": 50 },
+  "limits": { "max_engagement_seconds": 3600, "max_shots_per_battery": 1000000 },
+  "morale": { "casualty_loss_percent": 100, "suppression_loss_permille": 40, "recovery_permille": 30, "rout_below_permille": 250 },
+  "terrain": [
+    { "id": "open", "accuracy_percent": 100, "movement_percent": 100 },
+    { "id": "road", "accuracy_percent": 100, "movement_percent": 130 },
+    { "id": "rough", "accuracy_percent": 90, "movement_percent": 60 },
+    { "id": "forest", "accuracy_percent": 65, "movement_percent": 50 },
+    { "id": "urban", "accuracy_percent": 70, "movement_percent": 70 }
+  ],
+  "movement": { "foot_speed_milli_per_second": 1400 }
+}

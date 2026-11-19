@@ -1,0 +1,135 @@
+{
+  "SchemaVersion": 1,
+  "Id": "capability-journey",
+  "GameProfile": "capability-reference",
+  "CatalogId": "capability-catalog",
+  "RootArchetypeId": "journey",
+  "Scale": "capability-graph",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Logical persistent-capability progression only; no physical layout or runtime inventory behavior."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [],
+    "Unit": "none"
+  },
+  "Origin": null,
+  "RequireAllPositions": false,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "entry-hall",
+      "Kind": "travel",
+      "FromId": "capability-journey/entry-0",
+      "ToId": "capability-journey/hall-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "hall-key",
+      "Kind": "travel",
+      "FromId": "capability-journey/hall-0",
+      "ToId": "capability-journey/key-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "hall-vault",
+      "Kind": "travel",
+      "FromId": "capability-journey/hall-0",
+      "ToId": "capability-journey/vault-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "vault-exit",
+      "Kind": "travel",
+      "FromId": "capability-journey/vault-0",
+      "ToId": "capability-journey/exit-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": null,
+  "Surface": null,
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": null,
+  "SuitabilityRules": null,
+  "Placement": null,
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": [
+    {
+      "Id": "journey",
+      "Purpose": "Reach every goal with persistent abilities and a safe return",
+      "SourceRuleId": "game:capability-journey",
+      "ScopeNodeId": "capability-journey",
+      "StartNodeId": "capability-journey/entry-0",
+      "GoalNodeIds": [
+        "capability-journey/exit-0"
+      ],
+      "ConnectionKinds": [
+        "travel"
+      ],
+      "RequiredMilestones": [
+        "capability-journey/key-0",
+        "capability-journey/vault-0"
+      ],
+      "MaximumWork": 1000000,
+      "Capabilities": {
+        "CapabilityIds": [
+          "bronze",
+          "silver"
+        ],
+        "InitialCapabilityIds": [],
+        "Grants": [
+          {
+            "NodeId": "capability-journey/key-0",
+            "CapabilityIds": [
+              "bronze"
+            ]
+          },
+          {
+            "NodeId": "capability-journey/vault-0",
+            "CapabilityIds": [
+              "silver"
+            ]
+          }
+        ],
+        "Gates": [
+          {
+            "ConnectionId": "capability-journey/explicit/hall-vault",
+            "RequiredCapabilityIds": [
+              "bronze"
+            ]
+          },
+          {
+            "ConnectionId": "capability-journey/explicit/vault-exit",
+            "RequiredCapabilityIds": [
+              "bronze",
+              "silver"
+            ]
+          }
+        ],
+        "RequireReturnToStart": true,
+        "MaximumStates": 65536
+      }
+    }
+  ],
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": null,
+  "RouteBudget": null,
+  "Interiors": null
+}

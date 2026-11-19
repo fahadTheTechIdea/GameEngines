@@ -2,12 +2,12 @@ using WorldCreator.Core.Geometry;
 
 namespace WorldCreator.Core;
 
-/// <summary>Additional pedestrian access rules for renderer-neutral village inspection.
+/// <summary>Additional pedestrian access rules for renderer-neutral world scenes.
 /// Does not substitute for a navigation mesh or fully modeled right-of-way network.</summary>
 public sealed class PedestrianAccessNetworkValidator
 {
     private const double Epsilon = 1e-7;
-    public IReadOnlyList<string> Validate(DummyVillageWorldDocument world)
+    public IReadOnlyList<string> Validate(WorldSceneDocument world)
     {
         ArgumentNullException.ThrowIfNull(world);
         var issues = new List<string>();

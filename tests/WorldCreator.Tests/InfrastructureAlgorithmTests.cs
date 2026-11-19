@@ -10,7 +10,7 @@ internal static class InfrastructureAlgorithmTests
     public static async Task RunAsync()
     {
         var catalog = new ModernCatalog().Structures.Where(d=>d.PlacementKind!=BuildingPlacementKind.FrontageSite).ToArray();
-        var engine = new DesertWorldGenerator(TestCatalogs.Registry);
+        var engine = new MockupWorldGenerator(TestCatalogs.Registry);
         int generated=0;
         foreach (var definition in catalog)
         foreach (var variant in definition.SizeVariants!)
@@ -199,7 +199,7 @@ internal static class InfrastructureAlgorithmTests
             paths.Add(new("approach-a","world",new([new(8,y),a]),"road"));
             roads.Add(new("approach-a",RoadClass.Local,profile));
         }
-        return TestCatalogs.Contextualize(new(width,256,42,Biome.Desert,1,new(1,new(1,"synthetic-infrastructure","layout-r1","synthetic-pixel",regions,[]),
+        return TestCatalogs.Contextualize(new(width,256,1,new(1,new(1,"synthetic-infrastructure","layout-r1","synthetic-pixel",regions,[]),
             .5,paths,roads,[],[new("world",CellKind.Sand,0,2,"base"),
                 new("obstacle",id=="road-tunnel"?CellKind.Rock:CellKind.Water,1,0,"obstacle-mask")],[],[definition],
             InfrastructureRules:[new("structure","world","settlement",id,"alignment","obstacle",

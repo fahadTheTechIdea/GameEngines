@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "pack": "farming",
+  "resources": [
+    { "id": "farming.turnip-seed", "name": "Turnip seeds", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["seed"], "properties": {} },
+    { "id": "farming.tomato-seed", "name": "Tomato seeds", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["seed"], "properties": {} },
+    { "id": "farming.corn-seed", "name": "Corn seeds", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["seed"], "properties": {} },
+    { "id": "farming.manure", "name": "Manure", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["animal"], "properties": {} },
+    { "id": "farming.turnip", "name": "Turnip", "class": "consumable", "unit": "kg", "origin": "crafted", "stack": { "max": 99 }, "grade": { "scheme": "quality", "levels": ["normal", "silver", "gold"] }, "perishable": { "ticks": 20000, "result": "farming.rotten" }, "durability": null, "currency": null, "cpc": "0", "tags": ["crop", "vegetable"], "properties": { "season": "spring" } },
+    { "id": "farming.tomato", "name": "Tomato", "class": "consumable", "unit": "kg", "origin": "crafted", "stack": { "max": 99 }, "grade": { "scheme": "quality", "levels": ["normal", "silver", "gold"] }, "perishable": { "ticks": 14000, "result": "farming.rotten" }, "durability": null, "currency": null, "cpc": "0", "tags": ["crop", "vegetable"], "properties": { "season": "summer" } },
+    { "id": "farming.corn", "name": "Corn", "class": "consumable", "unit": "kg", "origin": "crafted", "stack": { "max": 99 }, "grade": { "scheme": "quality", "levels": ["normal", "silver", "gold"] }, "perishable": { "ticks": 30000, "result": "farming.rotten" }, "durability": null, "currency": null, "cpc": "0", "tags": ["crop", "grain"], "properties": { "season": "summer" } },
+    { "id": "farming.egg", "name": "Egg", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": { "ticks": 40000, "result": "farming.rotten" }, "durability": null, "currency": null, "cpc": "0", "tags": ["animal"], "properties": {} },
+    { "id": "farming.milk", "name": "Milk", "class": "consumable", "unit": "L", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": { "ticks": 12000, "result": "farming.rotten" }, "durability": null, "currency": null, "cpc": "0", "tags": ["animal", "dairy"], "properties": {} },
+    { "id": "farming.wool", "name": "Wool", "class": "raw", "unit": "kg", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["animal", "fiber"], "properties": {} },
+    { "id": "farming.rotten", "name": "Rotten produce", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["waste"], "properties": {} },
+    { "id": "farming.fertilizer", "name": "Fertilizer", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["fertilizer"], "properties": {} },
+    { "id": "farming.cheese", "name": "Cheese", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": { "scheme": "quality", "levels": ["normal", "silver", "gold"] }, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["artisan", "dairy"], "properties": {} },
+    { "id": "farming.butter", "name": "Butter", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["artisan", "dairy"], "properties": {} },
+    { "id": "farming.pickles", "name": "Pickles", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["artisan", "preserved"], "properties": {} },
+    { "id": "farming.tomato-sauce", "name": "Tomato sauce", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["artisan", "preserved"], "properties": {} },
+    { "id": "farming.corn-spirit", "name": "Corn spirit", "class": "product", "unit": "L", "origin": "crafted", "stack": { "max": 99 }, "grade": { "scheme": "quality", "levels": ["normal", "silver", "gold"] }, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["artisan", "drink"], "properties": {} },
+    { "id": "farming.yarn", "name": "Yarn", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["fiber"], "properties": {} },
+    { "id": "farming.wool-blanket", "name": "Wool blanket", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["artisan", "textile"], "properties": {} },
+    { "id": "farming.omelette", "name": "Omelette", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": { "ticks": 9000, "result": "farming.rotten" }, "durability": null, "currency": null, "cpc": "2", "tags": ["meal"], "properties": { "energy": 80 } },
+    { "id": "farming.hoe", "name": "Hoe", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 600 }, "currency": null, "cpc": "4", "tags": ["tool", "farming"], "properties": {} },
+    { "id": "farming.shears", "name": "Shears", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 600 }, "currency": null, "cpc": "4", "tags": ["tool", "animal"], "properties": {} },
+    { "id": "farming.watering-can", "name": "Watering can", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 2000 }, "currency": null, "cpc": "4", "tags": ["tool", "farming"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "farming.plot", "name": "Crop plot", "levels": 1 },
+    { "id": "farming.coop", "name": "Chicken coop", "levels": 1 },
+    { "id": "farming.barn", "name": "Barn", "levels": 2 },
+    { "id": "farming.preserves-jar", "name": "Preserves jar", "levels": 1 },
+    { "id": "farming.cheese-press", "name": "Cheese press", "levels": 1 },
+    { "id": "farming.loom", "name": "Loom", "levels": 1 },
+    { "id": "farming.keg", "name": "Keg", "levels": 1 },
+    { "id": "farming.farm-kitchen", "name": "Farm kitchen", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "farming.husbandry", "name": "Husbandry", "max": 10 },
+    { "id": "farming.cultivation", "name": "Cultivation", "max": 10 }
+  ]
+}

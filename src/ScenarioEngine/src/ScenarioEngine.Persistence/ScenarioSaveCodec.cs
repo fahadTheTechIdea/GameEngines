@@ -6,10 +6,10 @@ namespace ScenarioEngine.Persistence;
 
 public sealed class ScenarioSaveCodec : IScenarioSaveCodec
 {
-    public const string BuildId = "scenario-engine-0.1";
+    public const string BuildId = "scenario-engine-0.2";
     public byte[] Encode(SaveDocument document)
     {
-        if (document.SaveFormat != 1 || document.EngineBuildId != BuildId)
+        if (document.SaveFormat != 2 || document.EngineBuildId != BuildId)
             throw new ScenarioContractException("SAVE_VERSION", "Unsupported save version.");
         var payload = ContractJson.Element(document);
         return ContractJson.Canonical(ContractJson.Element(new
@@ -33,7 +33,7 @@ public sealed class ScenarioSaveCodec : IScenarioSaveCodec
             if (ContractJson.HashElement(payload) != root.GetProperty("payloadDigest").GetString())
                 return Failed("SAVE_CORRUPT", "Payload digest mismatch.");
             var save = payload.Deserialize<SaveDocument>(ContractJson.Options);
-            if (save is null || save.SaveFormat != 1 || save.EngineBuildId != BuildId)
+            if (save is null || save.SaveFormat != 2 || save.EngineBuildId != BuildId)
                 return Failed("SAVE_VERSION", "Unsupported save payload.");
             if (save.Snapshot is null || save.Snapshot.Identity is null || save.Snapshot.Layer is null ||
                 save.Snapshot.Controllers is null || save.Snapshot.Controllers.IsEmpty ||

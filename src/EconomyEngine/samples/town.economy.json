@@ -1,0 +1,968 @@
+{
+ "format": 6,
+ "id": "valley-economy",
+ "seed": 20261029,
+ "time": {
+  "stepsPerDay": 24,
+  "periodSteps": 24
+ },
+ "limits": {
+  "maxShipments": 200,
+  "maxLoans": 16,
+  "maxShocks": 8,
+  "history": 16
+ },
+ "price": {
+  "responseMin": 200,
+  "responseMax": 3000,
+  "settlePeriods": 6,
+  "bandMargin": 40,
+  "noise": 20,
+  "arrearsPenalty": 300
+ },
+ "routing": {
+  "mode": "landed"
+ },
+ "recipes": [
+  {
+   "id": "mill",
+   "key": "econ.recipe.mill",
+   "inputs": [
+    {
+     "good": "grain",
+     "amount": 3
+    }
+   ],
+   "outputs": [
+    {
+     "good": "flour",
+     "amount": 2
+    }
+   ],
+   "duration": 1,
+   "locked": false,
+   "requires": [
+    {
+     "good": "tools",
+     "amount": 1,
+     "wear": {
+      "units": 1,
+      "runs": 400
+     }
+    }
+   ]
+  },
+  {
+   "id": "bakery",
+   "key": "econ.recipe.bakery",
+   "inputs": [
+    {
+     "good": "flour",
+     "amount": 2
+    }
+   ],
+   "outputs": [
+    {
+     "good": "bread",
+     "amount": 3
+    }
+   ],
+   "duration": 1,
+   "locked": false,
+   "requires": [
+    {
+     "good": "tools",
+     "amount": 1,
+     "wear": {
+      "units": 1,
+      "runs": 500
+     }
+    }
+   ]
+  },
+  {
+   "id": "smelt-steel",
+   "key": "econ.recipe.smelt-steel",
+   "inputs": [
+    {
+     "good": "ore",
+     "amount": 2
+    },
+    {
+     "good": "coal",
+     "amount": 1
+    }
+   ],
+   "outputs": [
+    {
+     "good": "steel",
+     "amount": 1
+    }
+   ],
+   "duration": 1,
+   "locked": false
+  },
+  {
+   "id": "smith-tools",
+   "key": "econ.recipe.smith-tools",
+   "inputs": [
+    {
+     "good": "steel",
+     "amount": 2
+    }
+   ],
+   "outputs": [
+    {
+     "good": "tools",
+     "amount": 3
+    }
+   ],
+   "duration": 2,
+   "locked": false
+  },
+  {
+   "id": "alloy-steel",
+   "key": "econ.recipe.alloy-steel",
+   "inputs": [
+    {
+     "good": "coal",
+     "amount": 3
+    },
+    {
+     "good": "ore",
+     "amount": 1
+    }
+   ],
+   "outputs": [
+    {
+     "good": "steel",
+     "amount": 2
+    }
+   ],
+   "duration": 1,
+   "locked": true
+  }
+ ],
+ "currencies": [
+  {
+   "id": "crown",
+   "key": "econ.cur.crown",
+   "reference": true,
+   "anchor": 1000000,
+   "money": 2000000,
+   "growthPpm": 0,
+   "maxRateStepPpm": 0
+  },
+  {
+   "id": "florin",
+   "key": "econ.cur.florin",
+   "reference": false,
+   "anchor": 500000,
+   "money": 900000,
+   "growthPpm": 0,
+   "maxRateStepPpm": 20000
+  }
+ ],
+ "goods": [
+  {
+   "id": "grain",
+   "key": "econ.good.grain",
+   "base": 2000,
+   "demandElasticity": 600,
+   "supplyElasticity": 800,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 5,
+   "weight": 3,
+   "tags": [
+    "food"
+   ]
+  },
+  {
+   "id": "cloth",
+   "key": "econ.good.cloth",
+   "base": 12000,
+   "demandElasticity": 900,
+   "supplyElasticity": 700,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 1,
+   "tags": [
+    "luxury"
+   ]
+  },
+  {
+   "id": "iron",
+   "key": "econ.good.iron",
+   "base": 8000,
+   "demandElasticity": 500,
+   "supplyElasticity": 600,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 5,
+   "tags": [
+    "material"
+   ]
+  },
+  {
+   "id": "ale",
+   "key": "econ.good.ale",
+   "base": 3000,
+   "demandElasticity": 700,
+   "supplyElasticity": 800,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 2,
+   "weight": 2,
+   "tags": [
+    "food"
+   ]
+  },
+  {
+   "id": "flour",
+   "key": "econ.good.flour",
+   "base": 4500,
+   "demandElasticity": 500,
+   "supplyElasticity": 700,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 3,
+   "weight": 2,
+   "tags": [
+    "food"
+   ]
+  },
+  {
+   "id": "bread",
+   "key": "econ.good.bread",
+   "base": 5000,
+   "demandElasticity": 700,
+   "supplyElasticity": 800,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 10,
+   "weight": 1,
+   "tags": [
+    "food"
+   ]
+  },
+  {
+   "id": "ore",
+   "key": "econ.good.ore",
+   "base": 4000,
+   "demandElasticity": 400,
+   "supplyElasticity": 600,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 6,
+   "tags": [
+    "material"
+   ]
+  },
+  {
+   "id": "coal",
+   "key": "econ.good.coal",
+   "base": 3000,
+   "demandElasticity": 400,
+   "supplyElasticity": 600,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 5,
+   "tags": [
+    "material"
+   ]
+  },
+  {
+   "id": "steel",
+   "key": "econ.good.steel",
+   "base": 14000,
+   "demandElasticity": 500,
+   "supplyElasticity": 600,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 5,
+   "tags": [
+    "material"
+   ]
+  },
+  {
+   "id": "tools",
+   "key": "econ.good.tools",
+   "base": 20000,
+   "demandElasticity": 600,
+   "supplyElasticity": 700,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 2,
+   "tags": [
+    "tool"
+   ]
+  }
+ ],
+ "bands": [
+  {
+   "id": "cheap",
+   "key": "econ.band.cheap",
+   "from": 0
+  },
+  {
+   "id": "fair",
+   "key": "econ.band.fair",
+   "from": 800
+  },
+  {
+   "id": "dear",
+   "key": "econ.band.dear",
+   "from": 1250
+  },
+  {
+   "id": "scarce",
+   "key": "econ.band.scarce",
+   "from": 2000
+  }
+ ],
+ "schedules": [
+  {
+   "id": "payday",
+   "key": "econ.sched.payday",
+   "every": 7,
+   "offset": 0,
+   "manual": false
+  },
+  {
+   "id": "taxday",
+   "key": "econ.sched.taxday",
+   "every": 30,
+   "offset": 0,
+   "manual": false
+  },
+  {
+   "id": "decree",
+   "key": "econ.sched.decree",
+   "every": 1,
+   "offset": 0,
+   "manual": true
+  }
+ ],
+ "policies": [
+  {
+   "id": "sales-tax",
+   "kind": "sales",
+   "rate": 100,
+   "perUnit": 0,
+   "tags": [],
+   "schedule": "taxday"
+  },
+  {
+   "id": "import-tariff",
+   "kind": "import",
+   "rate": 150,
+   "perUnit": 0,
+   "tags": [],
+   "schedule": "taxday"
+  },
+  {
+   "id": "export-duty",
+   "kind": "export",
+   "rate": 50,
+   "perUnit": 0,
+   "tags": [],
+   "schedule": "taxday"
+  },
+  {
+   "id": "farm-subsidy",
+   "kind": "subsidy",
+   "rate": 0,
+   "perUnit": 300,
+   "tags": [
+    "food"
+   ],
+   "schedule": ""
+  },
+  {
+   "id": "luxury-duty",
+   "kind": "sales",
+   "rate": 200,
+   "perUnit": 0,
+   "tags": [
+    "luxury"
+   ],
+   "schedule": "decree"
+  }
+ ],
+ "modifiers": [
+  {
+   "id": "winter-hunger",
+   "kind": "demand",
+   "good": "",
+   "tag": "food",
+   "permille": 300,
+   "when": {
+    "fact": "cal.season",
+    "op": "eq",
+    "value": "winter"
+   }
+  },
+  {
+   "id": "autumn-harvest",
+   "kind": "supply",
+   "good": "",
+   "tag": "food",
+   "permille": 400,
+   "when": {
+    "fact": "cal.season",
+    "op": "eq",
+    "value": "autumn"
+   }
+  },
+  {
+   "id": "plague-labour",
+   "kind": "supply",
+   "good": "",
+   "tag": "",
+   "permille": -300,
+   "when": {
+    "fact": "story.plague",
+    "op": "gte",
+    "value": 2
+   }
+  }
+ ],
+ "shocks": [
+  {
+   "id": "drought",
+   "key": "econ.shock.drought",
+   "duration": 30,
+   "effects": [
+    {
+     "kind": "supply",
+     "good": "",
+     "tag": "food",
+     "route": "",
+     "amount": -500
+    },
+    {
+     "kind": "price",
+     "good": "grain",
+     "tag": "",
+     "route": "",
+     "amount": 200
+    }
+   ]
+  },
+  {
+   "id": "blockade",
+   "key": "econ.shock.blockade",
+   "duration": 20,
+   "effects": [
+    {
+     "kind": "route",
+     "good": "",
+     "tag": "",
+     "route": "",
+     "amount": -1000
+    }
+   ]
+  },
+  {
+   "id": "devaluation",
+   "key": "econ.shock.devaluation",
+   "duration": 1,
+   "effects": [
+    {
+     "kind": "rate",
+     "good": "",
+     "tag": "",
+     "route": "",
+     "amount": -300
+    }
+   ]
+  },
+  {
+   "id": "printing-press",
+   "key": "econ.shock.press",
+   "duration": 10,
+   "effects": [
+    {
+     "kind": "growth",
+     "good": "",
+     "tag": "",
+     "route": "",
+     "amount": 5000
+    }
+   ]
+  }
+ ],
+ "markets": [
+  {
+   "id": "riverton",
+   "key": "econ.market.riverton",
+   "currency": "crown",
+   "treasury": 50000,
+   "staff": 20,
+   "spread": 50,
+   "pairs": [
+    {
+     "good": "grain",
+     "production": 1360,
+     "consumption": 790,
+     "stock": 1800,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "cloth",
+     "production": 10,
+     "consumption": 130,
+     "stock": 450,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "iron",
+     "production": 8,
+     "consumption": 105,
+     "stock": 240,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "ale",
+     "production": 250,
+     "consumption": 195,
+     "stock": 750,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "flour",
+     "production": 16,
+     "consumption": 22,
+     "stock": 300,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "bread",
+     "production": 10,
+     "consumption": 420,
+     "stock": 600,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "tools",
+     "production": 26,
+     "consumption": 40,
+     "stock": 60,
+     "cover": 3,
+     "capacity": 100000
+    }
+   ],
+   "policies": [
+    "sales-tax",
+    "farm-subsidy",
+    "export-duty"
+   ],
+   "budget": [
+    {
+     "id": "wages",
+     "kind": "wage",
+     "schedule": "payday",
+     "amount": 0,
+     "perHead": 60,
+     "indexed": true
+    },
+    {
+     "id": "granary",
+     "kind": "upkeep",
+     "schedule": "taxday",
+     "amount": 2000,
+     "perHead": 0,
+     "indexed": false
+    },
+    {
+     "id": "court",
+     "kind": "upkeep",
+     "schedule": "decree",
+     "amount": 1500,
+     "perHead": 0,
+     "indexed": false
+    }
+   ],
+   "lines": [
+    {
+     "recipe": "mill",
+     "capacity": 170,
+     "throttle": {
+      "stop": 900,
+      "full": 1200,
+      "costs": {
+       "wage": 600,
+       "overhead": 300,
+       "indexed": true
+      }
+     }
+    },
+    {
+     "recipe": "bakery",
+     "capacity": 165,
+     "throttle": {
+      "stop": 900,
+      "full": 1200,
+      "costs": {
+       "wage": 800,
+       "overhead": 400,
+       "indexed": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "hillfort",
+   "key": "econ.market.hillfort",
+   "currency": "crown",
+   "treasury": 30000,
+   "staff": 25,
+   "spread": 50,
+   "pairs": [
+    {
+     "good": "grain",
+     "production": 280,
+     "consumption": 280,
+     "stock": 1500,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "cloth",
+     "production": 0,
+     "consumption": 41,
+     "stock": 300,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "iron",
+     "production": 420,
+     "consumption": 100,
+     "stock": 1200,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "ale",
+     "production": 29,
+     "consumption": 90,
+     "stock": 600,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "bread",
+     "production": 18,
+     "consumption": 60,
+     "stock": 360,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "ore",
+     "production": 65,
+     "consumption": 20,
+     "stock": 1000,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "coal",
+     "production": 50,
+     "consumption": 55,
+     "stock": 600,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "steel",
+     "production": 0,
+     "consumption": 28,
+     "stock": 100,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "tools",
+     "production": 0,
+     "consumption": 30,
+     "stock": 90,
+     "cover": 3,
+     "capacity": 100000
+    }
+   ],
+   "policies": [
+    "sales-tax",
+    "export-duty",
+    "import-tariff",
+    "luxury-duty"
+   ],
+   "budget": [
+    {
+     "id": "wages",
+     "kind": "wage",
+     "schedule": "payday",
+     "amount": 0,
+     "perHead": 120,
+     "indexed": true
+    }
+   ],
+   "lines": [
+    {
+     "recipe": "smelt-steel",
+     "capacity": 40,
+     "throttle": {
+      "stop": 900,
+      "full": 1200,
+      "costs": {
+       "wage": 1200,
+       "overhead": 500,
+       "indexed": true
+      }
+     }
+    },
+    {
+     "recipe": "smith-tools",
+     "capacity": 28,
+     "throttle": {
+      "stop": 900,
+      "full": 1200,
+      "costs": {
+       "wage": 2500,
+       "overhead": 1000,
+       "indexed": true
+      }
+     }
+    },
+    {
+     "recipe": "alloy-steel",
+     "capacity": 27,
+     "throttle": {
+      "stop": 900,
+      "full": 1200,
+      "costs": {
+       "wage": 1500,
+       "overhead": 600,
+       "indexed": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "seaport",
+   "key": "econ.market.seaport",
+   "currency": "florin",
+   "treasury": 80000,
+   "staff": 40,
+   "spread": 80,
+   "pairs": [
+    {
+     "good": "grain",
+     "production": 26,
+     "consumption": 240,
+     "stock": 1200,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "cloth",
+     "production": 400,
+     "consumption": 40,
+     "stock": 900,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "iron",
+     "production": 50,
+     "consumption": 90,
+     "stock": 450,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "ale",
+     "production": 170,
+     "consumption": 115,
+     "stock": 300,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "bread",
+     "production": 22,
+     "consumption": 50,
+     "stock": 480,
+     "cover": 3,
+     "capacity": 100000
+    },
+    {
+     "good": "tools",
+     "production": 24,
+     "consumption": 26,
+     "stock": 60,
+     "cover": 3,
+     "capacity": 100000
+    }
+   ],
+   "policies": [
+    "sales-tax",
+    "import-tariff",
+    "export-duty",
+    "luxury-duty"
+   ],
+   "budget": [
+    {
+     "id": "wages",
+     "kind": "wage",
+     "schedule": "payday",
+     "amount": 0,
+     "perHead": 120,
+     "indexed": true
+    },
+    {
+     "id": "docks",
+     "kind": "upkeep",
+     "schedule": "taxday",
+     "amount": 4000,
+     "perHead": 0,
+     "indexed": false
+    }
+   ],
+   "lines": []
+  }
+ ],
+ "routes": [
+  {
+   "id": "river-hill",
+   "from": "riverton",
+   "to": "hillfort",
+   "delay": 2,
+   "capacity": 960,
+   "costPerWeight": 100,
+   "margin": 50,
+   "share": 800
+  },
+  {
+   "id": "hill-river",
+   "from": "hillfort",
+   "to": "riverton",
+   "delay": 2,
+   "capacity": 450,
+   "costPerWeight": 100,
+   "margin": 50,
+   "share": 800
+  },
+  {
+   "id": "river-sea",
+   "from": "riverton",
+   "to": "seaport",
+   "delay": 3,
+   "capacity": 1620,
+   "costPerWeight": 100,
+   "margin": 50,
+   "share": 800
+  },
+  {
+   "id": "sea-river",
+   "from": "seaport",
+   "to": "riverton",
+   "delay": 3,
+   "capacity": 1000,
+   "costPerWeight": 100,
+   "margin": 50,
+   "share": 800
+  },
+  {
+   "id": "hill-sea",
+   "from": "hillfort",
+   "to": "seaport",
+   "delay": 4,
+   "capacity": 750,
+   "costPerWeight": 100,
+   "margin": 50,
+   "share": 800
+  },
+  {
+   "id": "sea-hill",
+   "from": "seaport",
+   "to": "hillfort",
+   "delay": 4,
+   "capacity": 750,
+   "costPerWeight": 100,
+   "margin": 50,
+   "share": 800
+  }
+ ],
+ "loans": [
+  {
+   "id": "levy-loan",
+   "lender": "riverton",
+   "borrower": "hillfort",
+   "principal": 12000,
+   "ratePpm": 8000,
+   "term": 12,
+   "kind": "annuity",
+   "schedule": "taxday",
+   "defaultAfter": 3
+  }
+ ],
+ "facts": [
+  {
+   "id": "cal.season",
+   "type": "string"
+  },
+  {
+   "id": "story.plague",
+   "type": "int",
+   "min": 0,
+   "max": 3
+  }
+ ]
+}

@@ -1,0 +1,4311 @@
+{
+  "SchemaVersion": 1,
+  "Id": "mixed-region",
+  "GameProfile": "mixed-purpose-exploration",
+  "CatalogId": "mixed-purpose-content",
+  "RootArchetypeId": "world",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Complete source compounds plus all terrain-demanded habitat members. Catalog minima and source sizes survive; amount per member and world intent are authored. Automatic world design, additional strategies and world-scale acceptance remain open. Godot deferred."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    0,
+    0
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": null,
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "composed-terrain",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": -60,
+          "Y": -40
+        },
+        {
+          "X": 65,
+          "Y": -35
+        },
+        {
+          "X": 70,
+          "Y": 35
+        },
+        {
+          "X": 20,
+          "Y": 55
+        },
+        {
+          "X": -55,
+          "Y": 45
+        },
+        {
+          "X": -70,
+          "Y": 0
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "land",
+        "Kind": "ground",
+        "Purpose": "Continuous terrain for different regional roles",
+        "SourceRuleId": "composition:land",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": -60,
+              "Y": -40
+            },
+            {
+              "X": 65,
+              "Y": -35
+            },
+            {
+              "X": 70,
+              "Y": 35
+            },
+            {
+              "X": 20,
+              "Y": 55
+            },
+            {
+              "X": -55,
+              "Y": 45
+            },
+            {
+              "X": -70,
+              "Y": 0
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 0,
+        "GradientX": 0.1,
+        "GradientY": 0.04
+      },
+      {
+        "Id": "woodland",
+        "Kind": "forest",
+        "Purpose": "Distinct woodland terrain domain",
+        "SourceRuleId": "composition:forest",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": -25,
+              "Y": 12
+            },
+            {
+              "X": 9,
+              "Y": 12
+            },
+            {
+              "X": 9,
+              "Y": 30
+            },
+            {
+              "X": -25,
+              "Y": 30
+            }
+          ]
+        },
+        "Priority": 1,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 0,
+        "GradientX": 0.1,
+        "GradientY": 0.04
+      },
+      {
+        "Id": "pond",
+        "Kind": "water",
+        "Purpose": "Protected non-traversable pond",
+        "SourceRuleId": "composition:pond",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 8,
+              "Y": -12
+            },
+            {
+              "X": 16,
+              "Y": -12
+            },
+            {
+              "X": 16,
+              "Y": 6
+            },
+            {
+              "X": 8,
+              "Y": 6
+            }
+          ]
+        },
+        "Priority": 2,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 0,
+        "GradientX": 0.1,
+        "GradientY": 0.04
+      }
+    ],
+    "Terrain": null,
+    "HeightField": null
+  },
+  "RouteRules": [
+    {
+      "Id": "regional",
+      "ConnectionKind": "regional-path",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Reach every declared function",
+        "SourceRuleId": "mixed:walk",
+        "Radius": 0.15,
+        "MaximumSlope": 0.2,
+        "KindCosts": {
+          "ground": 1,
+          "forest": 1.2
+        },
+        "AscentCost": 1,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 1024,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 100000000,
+        "Objective": "FirstFeasible"
+      },
+      "FromPortId": "north",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    },
+    {
+      "Id": "arrival",
+      "ConnectionKind": "arrival-access",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Reach every declared function",
+        "SourceRuleId": "mixed:walk",
+        "Radius": 0.15,
+        "MaximumSlope": 0.2,
+        "KindCosts": {
+          "ground": 1,
+          "forest": 1.2
+        },
+        "AscentCost": 1,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 1024,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 10000000,
+        "Objective": "FirstFeasible"
+      },
+      "FromPortId": "north",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    },
+    {
+      "Id": "local",
+      "ConnectionKind": "local-access",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Reach every declared function",
+        "SourceRuleId": "mixed:walk",
+        "Radius": 0.15,
+        "MaximumSlope": 0.2,
+        "KindCosts": {
+          "ground": 1,
+          "forest": 1.2
+        },
+        "AscentCost": 1,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 1024,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 10000000,
+        "Objective": "FirstFeasible"
+      },
+      "FromPortId": "north",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "game-fields",
+    "Fields": [
+      {
+        "Id": "height",
+        "Purpose": "Elevation",
+        "SourceRuleId": "mixed:height",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Elevation",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "slope",
+        "Purpose": "Ground slope",
+        "SourceRuleId": "mixed:slope",
+        "Unit": "ratio",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Slope",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "fertility",
+        "Purpose": "Game-authored habitat density",
+        "SourceRuleId": "area:fertility",
+        "Unit": "weight",
+        "Offset": 3,
+        "Terms": [
+          {
+            "Input": "Field",
+            "Coefficient": 0.1,
+            "FieldId": "height"
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ],
+    "SampledFields": null
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "region-program",
+      "Purpose": "Grow all required destinations",
+      "SourceRuleId": "mixed:region",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": -60,
+            "Y": -40
+          },
+          {
+            "X": 65,
+            "Y": -35
+          },
+          {
+            "X": 70,
+            "Y": 35
+          },
+          {
+            "X": 20,
+            "Y": 55
+          },
+          {
+            "X": -55,
+            "Y": 45
+          },
+          {
+            "X": -70,
+            "Y": 0
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "camp",
+          "Purpose": "Required complete camp",
+          "SourceRuleId": "mixed:camp",
+          "Footprint": null,
+          "Profile": {
+            "Id": "lowland",
+            "Purpose": "Purposeful lowland",
+            "SourceRuleId": "composition:lowland",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height",
+                "FieldId": "height",
+                "Purpose": "Regional elevation domain",
+                "SourceRuleId": "composition:height",
+                "Minimum": -10,
+                "Maximum": 0
+              },
+              {
+                "Id": "slope",
+                "FieldId": "slope",
+                "Purpose": "Supported ground slope",
+                "SourceRuleId": "composition:slope",
+                "Minimum": 0,
+                "Maximum": 0.2
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred regional role location",
+                "SourceRuleId": "composition:preference",
+                "Ideal": -2,
+                "Tolerance": 5,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "lowland",
+          "AllocationId": "lowland-program"
+        },
+        {
+          "Id": "workshop",
+          "Purpose": "Required complete workshop",
+          "SourceRuleId": "mixed:workshop",
+          "Footprint": null,
+          "Profile": {
+            "Id": "highland",
+            "Purpose": "Purposeful highland",
+            "SourceRuleId": "composition:highland",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height",
+                "FieldId": "height",
+                "Purpose": "Regional elevation domain",
+                "SourceRuleId": "composition:height",
+                "Minimum": 0,
+                "Maximum": 10
+              },
+              {
+                "Id": "slope",
+                "FieldId": "slope",
+                "Purpose": "Supported ground slope",
+                "SourceRuleId": "composition:slope",
+                "Minimum": 0,
+                "Maximum": 0.2
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred regional role location",
+                "SourceRuleId": "composition:preference",
+                "Ideal": 3,
+                "Tolerance": 5,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "highland",
+          "AllocationId": "highland-program"
+        },
+        {
+          "Id": "research",
+          "Purpose": "Required complete research",
+          "SourceRuleId": "mixed:research",
+          "Footprint": null,
+          "Profile": {
+            "Id": "woodland",
+            "Purpose": "Purposeful woodland",
+            "SourceRuleId": "composition:woodland",
+            "AllowedKinds": [
+              "forest"
+            ],
+            "Requirements": [
+              {
+                "Id": "height",
+                "FieldId": "height",
+                "Purpose": "Regional elevation domain",
+                "SourceRuleId": "composition:height",
+                "Minimum": -10,
+                "Maximum": 10
+              },
+              {
+                "Id": "slope",
+                "FieldId": "slope",
+                "Purpose": "Supported ground slope",
+                "SourceRuleId": "composition:slope",
+                "Minimum": 0,
+                "Maximum": 0.2
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred regional role location",
+                "SourceRuleId": "composition:preference",
+                "Ideal": 1,
+                "Tolerance": 5,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "woodland",
+          "AllocationId": "woodland-program"
+        },
+        {
+          "Id": "lowland-features",
+          "Purpose": "Required terrain-derived lowland features",
+          "SourceRuleId": "contour:lowland",
+          "Footprint": null,
+          "Profile": {
+            "Id": "lowland",
+            "Purpose": "Purposeful lowland",
+            "SourceRuleId": "composition:lowland",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height",
+                "FieldId": "height",
+                "Purpose": "Regional elevation domain",
+                "SourceRuleId": "composition:height",
+                "Minimum": -10,
+                "Maximum": 0
+              },
+              {
+                "Id": "slope",
+                "FieldId": "slope",
+                "Purpose": "Supported ground slope",
+                "SourceRuleId": "composition:slope",
+                "Minimum": 0,
+                "Maximum": 0.2
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred regional role location",
+                "SourceRuleId": "composition:preference",
+                "Ideal": -2,
+                "Tolerance": 5,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "highland-features",
+          "Purpose": "Required terrain-derived highland features",
+          "SourceRuleId": "contour:highland",
+          "Footprint": null,
+          "Profile": {
+            "Id": "highland",
+            "Purpose": "Purposeful highland",
+            "SourceRuleId": "composition:highland",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height",
+                "FieldId": "height",
+                "Purpose": "Regional elevation domain",
+                "SourceRuleId": "composition:height",
+                "Minimum": 0,
+                "Maximum": 10
+              },
+              {
+                "Id": "slope",
+                "FieldId": "slope",
+                "Purpose": "Supported ground slope",
+                "SourceRuleId": "composition:slope",
+                "Minimum": 0,
+                "Maximum": 0.2
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred regional role location",
+                "SourceRuleId": "composition:preference",
+                "Ideal": 3,
+                "Tolerance": 5,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "woodland-features",
+          "Purpose": "Required terrain-derived woodland features",
+          "SourceRuleId": "contour:woodland",
+          "Footprint": null,
+          "Profile": {
+            "Id": "woodland",
+            "Purpose": "Purposeful woodland",
+            "SourceRuleId": "composition:woodland",
+            "AllowedKinds": [
+              "forest"
+            ],
+            "Requirements": [
+              {
+                "Id": "height",
+                "FieldId": "height",
+                "Purpose": "Regional elevation domain",
+                "SourceRuleId": "composition:height",
+                "Minimum": -10,
+                "Maximum": 10
+              },
+              {
+                "Id": "slope",
+                "FieldId": "slope",
+                "Purpose": "Supported ground slope",
+                "SourceRuleId": "composition:slope",
+                "Minimum": 0,
+                "Maximum": 0.2
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred regional role location",
+                "SourceRuleId": "composition:preference",
+                "Ideal": 1,
+                "Tolerance": 5,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        }
+      ],
+      "Anchors": [
+        {
+          "Id": "lowland",
+          "Position": {
+            "X": -35,
+            "Y": -10
+          }
+        },
+        {
+          "Id": "highland",
+          "Position": {
+            "X": 35,
+            "Y": 5
+          }
+        },
+        {
+          "Id": "woodland",
+          "Position": {
+            "X": -8,
+            "Y": 21
+          }
+        }
+      ],
+      "Relations": [
+        {
+          "Id": "camp-purpose",
+          "FromId": "camp",
+          "ToId": "lowland",
+          "Purpose": "Site each complete program around its regional intent",
+          "SourceRuleId": "composition:regional-intent",
+          "Minimum": 0,
+          "Maximum": 120,
+          "Ideal": 10,
+          "Weight": 1
+        },
+        {
+          "Id": "workshop-purpose",
+          "FromId": "workshop",
+          "ToId": "highland",
+          "Purpose": "Site each complete program around its regional intent",
+          "SourceRuleId": "composition:regional-intent",
+          "Minimum": 0,
+          "Maximum": 120,
+          "Ideal": 10,
+          "Weight": 1
+        },
+        {
+          "Id": "research-purpose",
+          "FromId": "research",
+          "ToId": "woodland",
+          "Purpose": "Site each complete program around its regional intent",
+          "SourceRuleId": "composition:regional-intent",
+          "Minimum": 0,
+          "Maximum": 120,
+          "Ideal": 10,
+          "Weight": 1
+        }
+      ],
+      "MinimumSeparation": 1,
+      "MaximumCandidates": 8192,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 100000000,
+      "AllowBoundaryContact": false,
+      "Growth": null,
+      "Execution": "Prescribed",
+      "Nogoods": null
+    },
+    "Bindings": [
+      {
+        "DemandId": "camp",
+        "NodeId": "mixed-region",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "camps",
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "workshop",
+        "NodeId": "mixed-region",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "workshops",
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "research",
+        "NodeId": "mixed-region",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "research",
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "lowland-features",
+        "NodeId": "mixed-region",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "lowland-features",
+        "SiteLayout": null,
+        "Population": {
+          "Purpose": "Represent the complete density-weighted habitat in lowland",
+          "SourceRuleId": "area:population:lowland",
+          "Path": null,
+          "Boundary": null,
+          "Sockets": null,
+          "Route": null,
+          "Region": {
+            "RegionId": "lowland",
+            "Pattern": null,
+            "AllocationId": "lowland-habitat",
+            "Contour": null,
+            "Area": {
+              "DensityFieldId": "fertility",
+              "AxisRotationDegrees": 0,
+              "MaximumCells": 4096,
+              "MaximumDepth": 32,
+              "Interior": null,
+              "PartitionSearch": null
+            }
+          }
+        }
+      },
+      {
+        "DemandId": "highland-features",
+        "NodeId": "mixed-region",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "highland-features",
+        "SiteLayout": null,
+        "Population": {
+          "Purpose": "Represent the complete density-weighted habitat in highland",
+          "SourceRuleId": "area:population:highland",
+          "Path": null,
+          "Boundary": null,
+          "Sockets": null,
+          "Route": null,
+          "Region": {
+            "RegionId": "highland",
+            "Pattern": null,
+            "AllocationId": "highland-habitat",
+            "Contour": null,
+            "Area": {
+              "DensityFieldId": "fertility",
+              "AxisRotationDegrees": 0,
+              "MaximumCells": 4096,
+              "MaximumDepth": 32,
+              "Interior": null,
+              "PartitionSearch": null
+            }
+          }
+        }
+      },
+      {
+        "DemandId": "woodland-features",
+        "NodeId": "mixed-region",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "woodland-features",
+        "SiteLayout": null,
+        "Population": {
+          "Purpose": "Represent the complete density-weighted habitat in woodland",
+          "SourceRuleId": "area:population:woodland",
+          "Path": null,
+          "Boundary": null,
+          "Sockets": null,
+          "Route": null,
+          "Region": {
+            "RegionId": "woodland",
+            "Pattern": null,
+            "AllocationId": "woodland-habitat",
+            "Contour": null,
+            "Area": {
+              "DensityFieldId": "fertility",
+              "AxisRotationDegrees": 0,
+              "MaximumCells": 4096,
+              "MaximumDepth": 32,
+              "Interior": null,
+              "PartitionSearch": null
+            }
+          }
+        }
+      }
+    ],
+    "NestedStages": null,
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 1024,
+    "MaximumFeasibilityAttempts": 32,
+    "SourceWorld": null,
+    "ConnectedLayouts": null,
+    "Programs": [
+      {
+        "Id": "camp-contents",
+        "Purpose": "Complete camp program",
+        "SourceRuleId": "mixed:camp",
+        "ScopeNodeId": "mixed-region",
+        "ParentArchetypeId": "camp",
+        "MinimumParents": 2,
+        "MaximumParents": 2,
+        "Request": {
+          "Id": "contents",
+          "Purpose": "Place hut beside work area",
+          "SourceRuleId": "mixed:contents",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "body",
+              "Purpose": "Required source body",
+              "SourceRuleId": "mixed:body",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Retain complete contents within each exact parent",
+                "SourceRuleId": "composition:contents",
+                "AllowedKinds": [
+                  "ground",
+                  "forest"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported content slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Preferred usable content altitude",
+                    "SourceRuleId": "composition:contents-height",
+                    "Ideal": 0,
+                    "Tolerance": 10,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "yard",
+              "Purpose": "Required source yard",
+              "SourceRuleId": "mixed:yard",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Retain complete contents within each exact parent",
+                "SourceRuleId": "composition:contents",
+                "AllowedKinds": [
+                  "ground",
+                  "forest"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported content slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Preferred usable content altitude",
+                    "SourceRuleId": "composition:contents-height",
+                    "Ideal": 0,
+                    "Tolerance": 10,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "entrance",
+              "Position": {
+                "X": -2,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [],
+          "MinimumSeparation": 0.5,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 10000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "body",
+            "PartId": "hut",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "yard",
+            "PartId": "yard",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ],
+        "Growth": {
+          "RootPartId": "hut",
+          "RootIndex": 0,
+          "AnchorId": "entrance",
+          "ConnectionKinds": [
+            "local-access"
+          ],
+          "DirectionAnglesDegrees": [
+            0,
+            90,
+            180,
+            270
+          ],
+          "Gap": 0.5,
+          "MaximumConnectionDistance": 9
+        }
+      },
+      {
+        "Id": "workshop-contents",
+        "Purpose": "Complete workshop program",
+        "SourceRuleId": "mixed:workshop",
+        "ScopeNodeId": "mixed-region",
+        "ParentArchetypeId": "workshop",
+        "MinimumParents": 2,
+        "MaximumParents": 2,
+        "Request": {
+          "Id": "contents",
+          "Purpose": "Place hall beside work area",
+          "SourceRuleId": "mixed:contents",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "body",
+              "Purpose": "Required source body",
+              "SourceRuleId": "mixed:body",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Retain complete contents within each exact parent",
+                "SourceRuleId": "composition:contents",
+                "AllowedKinds": [
+                  "ground",
+                  "forest"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported content slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Preferred usable content altitude",
+                    "SourceRuleId": "composition:contents-height",
+                    "Ideal": 0,
+                    "Tolerance": 10,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "yard",
+              "Purpose": "Required source yard",
+              "SourceRuleId": "mixed:yard",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Retain complete contents within each exact parent",
+                "SourceRuleId": "composition:contents",
+                "AllowedKinds": [
+                  "ground",
+                  "forest"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported content slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Preferred usable content altitude",
+                    "SourceRuleId": "composition:contents-height",
+                    "Ideal": 0,
+                    "Tolerance": 10,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "entrance",
+              "Position": {
+                "X": -2,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [],
+          "MinimumSeparation": 0.5,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 10000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "body",
+            "PartId": "hall",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "yard",
+            "PartId": "yard",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ],
+        "Growth": {
+          "RootPartId": "hall",
+          "RootIndex": 0,
+          "AnchorId": "entrance",
+          "ConnectionKinds": [
+            "local-access"
+          ],
+          "DirectionAnglesDegrees": [
+            0,
+            90,
+            180,
+            270
+          ],
+          "Gap": 0.5,
+          "MaximumConnectionDistance": 9
+        }
+      },
+      {
+        "Id": "research-contents",
+        "Purpose": "Complete research program",
+        "SourceRuleId": "mixed:research",
+        "ScopeNodeId": "mixed-region",
+        "ParentArchetypeId": "research",
+        "MinimumParents": 2,
+        "MaximumParents": 2,
+        "Request": {
+          "Id": "contents",
+          "Purpose": "Place lab beside work area",
+          "SourceRuleId": "mixed:contents",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "body",
+              "Purpose": "Required source body",
+              "SourceRuleId": "mixed:body",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Retain complete contents within each exact parent",
+                "SourceRuleId": "composition:contents",
+                "AllowedKinds": [
+                  "ground",
+                  "forest"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported content slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Preferred usable content altitude",
+                    "SourceRuleId": "composition:contents-height",
+                    "Ideal": 0,
+                    "Tolerance": 10,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "yard",
+              "Purpose": "Required source yard",
+              "SourceRuleId": "mixed:yard",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Retain complete contents within each exact parent",
+                "SourceRuleId": "composition:contents",
+                "AllowedKinds": [
+                  "ground",
+                  "forest"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported content slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Preferred usable content altitude",
+                    "SourceRuleId": "composition:contents-height",
+                    "Ideal": 0,
+                    "Tolerance": 10,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "entrance",
+              "Position": {
+                "X": -2,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [],
+          "MinimumSeparation": 0.5,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 10000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "body",
+            "PartId": "lab",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "yard",
+            "PartId": "yard",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ],
+        "Growth": {
+          "RootPartId": "lab",
+          "RootIndex": 0,
+          "AnchorId": "entrance",
+          "ConnectionKinds": [
+            "local-access"
+          ],
+          "DirectionAnglesDegrees": [
+            0,
+            90,
+            180,
+            270
+          ],
+          "Gap": 0.5,
+          "MaximumConnectionDistance": 9
+        }
+      },
+      {
+        "Id": "yard-storage",
+        "Purpose": "Store supplies in every yard",
+        "SourceRuleId": "mixed:storage",
+        "ScopeNodeId": "mixed-region",
+        "ParentArchetypeId": "yard",
+        "MinimumParents": 6,
+        "MaximumParents": 6,
+        "Request": {
+          "Id": "cache",
+          "Purpose": "Required supply station",
+          "SourceRuleId": "mixed:cache",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "cache",
+              "Purpose": "Required supply station",
+              "SourceRuleId": "mixed:cache",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Retain complete contents within each exact parent",
+                "SourceRuleId": "composition:contents",
+                "AllowedKinds": [
+                  "ground",
+                  "forest"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported content slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Preferred usable content altitude",
+                    "SourceRuleId": "composition:contents-height",
+                    "Ideal": 0,
+                    "Tolerance": 10,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "station",
+              "Position": {
+                "X": 0,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "pin",
+              "FromId": "cache",
+              "ToId": "station",
+              "Purpose": "Required supply station",
+              "SourceRuleId": "mixed:cache",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 1000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "cache",
+            "PartId": "cache",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ],
+        "Growth": null
+      },
+      {
+        "Id": "production-equipment",
+        "Purpose": "Machines within production halls",
+        "SourceRuleId": "mixed:machines",
+        "ScopeNodeId": "mixed-region",
+        "ParentArchetypeId": "hall",
+        "MinimumParents": 2,
+        "MaximumParents": 2,
+        "Request": {
+          "Id": "equipment",
+          "Purpose": "Fit every production machine",
+          "SourceRuleId": "mixed:equipment",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "machine",
+              "Purpose": "Required production equipment",
+              "SourceRuleId": "mixed:machine",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Retain complete contents within each exact parent",
+                "SourceRuleId": "composition:contents",
+                "AllowedKinds": [
+                  "ground",
+                  "forest"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported content slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Preferred usable content altitude",
+                    "SourceRuleId": "composition:contents-height",
+                    "Ideal": 0,
+                    "Tolerance": 10,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [],
+          "Relations": [],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 1000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "machine",
+            "PartId": "machines",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": {
+              "Purpose": "Production line",
+              "SourceRuleId": "mixed:production-line",
+              "Path": {
+                "Path": {
+                  "Points": [
+                    {
+                      "X": -1,
+                      "Y": 0
+                    },
+                    {
+                      "X": 1,
+                      "Y": 0
+                    }
+                  ]
+                },
+                "Spacing": 2,
+                "StartDistance": 0,
+                "EndInset": 0,
+                "NormalOffset": 0
+              },
+              "Boundary": null,
+              "Sockets": null,
+              "Route": null,
+              "Region": null
+            }
+          }
+        ],
+        "Growth": null
+      }
+    ],
+    "RegionAnchors": null,
+    "AllocationAnchors": null
+  },
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": {
+    "Id": "regional-intent",
+    "Purpose": "Different terrain roles in one world",
+    "SourceRuleId": "composition:regions",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": -60,
+          "Y": -40
+        },
+        {
+          "X": 65,
+          "Y": -35
+        },
+        {
+          "X": 70,
+          "Y": 35
+        },
+        {
+          "X": 20,
+          "Y": 55
+        },
+        {
+          "X": -55,
+          "Y": 45
+        },
+        {
+          "X": -70,
+          "Y": 0
+        }
+      ]
+    },
+    "Profile": {
+      "Id": "lowland",
+      "Purpose": "Purposeful lowland",
+      "SourceRuleId": "composition:lowland",
+      "AllowedKinds": [
+        "ground"
+      ],
+      "Requirements": [
+        {
+          "Id": "height",
+          "FieldId": "height",
+          "Purpose": "Regional elevation domain",
+          "SourceRuleId": "composition:height",
+          "Minimum": -10,
+          "Maximum": 0
+        },
+        {
+          "Id": "slope",
+          "FieldId": "slope",
+          "Purpose": "Supported ground slope",
+          "SourceRuleId": "composition:slope",
+          "Minimum": 0,
+          "Maximum": 0.2
+        }
+      ],
+      "Preferences": [
+        {
+          "Id": "altitude",
+          "FieldId": "height",
+          "Purpose": "Preferred regional role location",
+          "SourceRuleId": "composition:preference",
+          "Ideal": -2,
+          "Tolerance": 5,
+          "Weight": 1
+        }
+      ]
+    },
+    "Seeds": [
+      {
+        "Id": "lowland",
+        "Purpose": "Lower-ground field bases",
+        "SourceRuleId": "composition:low",
+        "Position": {
+          "X": -35,
+          "Y": -10
+        },
+        "MinimumArea": 500,
+        "Profile": null
+      },
+      {
+        "Id": "highland",
+        "Purpose": "Higher-ground production bases",
+        "SourceRuleId": "composition:high",
+        "Position": {
+          "X": 35,
+          "Y": 5
+        },
+        "MinimumArea": 500,
+        "Profile": {
+          "Id": "highland",
+          "Purpose": "Purposeful highland",
+          "SourceRuleId": "composition:highland",
+          "AllowedKinds": [
+            "ground"
+          ],
+          "Requirements": [
+            {
+              "Id": "height",
+              "FieldId": "height",
+              "Purpose": "Regional elevation domain",
+              "SourceRuleId": "composition:height",
+              "Minimum": 0,
+              "Maximum": 10
+            },
+            {
+              "Id": "slope",
+              "FieldId": "slope",
+              "Purpose": "Supported ground slope",
+              "SourceRuleId": "composition:slope",
+              "Minimum": 0,
+              "Maximum": 0.2
+            }
+          ],
+          "Preferences": [
+            {
+              "Id": "altitude",
+              "FieldId": "height",
+              "Purpose": "Preferred regional role location",
+              "SourceRuleId": "composition:preference",
+              "Ideal": 3,
+              "Tolerance": 5,
+              "Weight": 1
+            }
+          ]
+        }
+      },
+      {
+        "Id": "woodland",
+        "Purpose": "Woodland research program",
+        "SourceRuleId": "composition:wood",
+        "Position": {
+          "X": -8,
+          "Y": 21
+        },
+        "MinimumArea": 500,
+        "Profile": {
+          "Id": "woodland",
+          "Purpose": "Purposeful woodland",
+          "SourceRuleId": "composition:woodland",
+          "AllowedKinds": [
+            "forest"
+          ],
+          "Requirements": [
+            {
+              "Id": "height",
+              "FieldId": "height",
+              "Purpose": "Regional elevation domain",
+              "SourceRuleId": "composition:height",
+              "Minimum": -10,
+              "Maximum": 10
+            },
+            {
+              "Id": "slope",
+              "FieldId": "slope",
+              "Purpose": "Supported ground slope",
+              "SourceRuleId": "composition:slope",
+              "Minimum": 0,
+              "Maximum": 0.2
+            }
+          ],
+          "Preferences": [
+            {
+              "Id": "altitude",
+              "FieldId": "height",
+              "Purpose": "Preferred regional role location",
+              "SourceRuleId": "composition:preference",
+              "Ideal": 1,
+              "Tolerance": 5,
+              "Weight": 1
+            }
+          ]
+        }
+      }
+    ],
+    "MaximumCells": 4096,
+    "MaximumWork": 100000000,
+    "Intents": null,
+    "AnchorPrecision": 0.1,
+    "MaximumAnchorCells": 65536,
+    "MaximumIntentCandidates": 1024,
+    "MaximumIntentStates": 100000,
+    "ExcludedAssignments": null,
+    "IntentRelations": null
+  },
+  "LocalLayouts": {
+    "Layouts": [
+      {
+        "Id": "lowland-layout",
+        "RegionId": "lowland",
+        "Purpose": "Retain complete regional program",
+        "SourceRuleId": "composition:layout",
+        "Strategy": "PowerDiagram",
+        "Programs": [
+          {
+            "Id": "lowland-program",
+            "Purpose": "Required regional content capacity",
+            "SourceRuleId": "composition:capacity",
+            "Anchor": {
+              "X": -35,
+              "Y": -10
+            },
+            "MinimumArea": 500,
+            "Influence": 0,
+            "Column": null,
+            "Row": null
+          },
+          {
+            "Id": "lowland-habitat",
+            "Purpose": "Required environmental habitat",
+            "SourceRuleId": "area:habitat:lowland",
+            "Anchor": {
+              "X": -60,
+              "Y": -10
+            },
+            "MinimumArea": 500,
+            "Influence": 375,
+            "Column": null,
+            "Row": null
+          }
+        ],
+        "Grid": null,
+        "ResidualPurpose": null,
+        "ParentAllocationId": null,
+        "RegionFrame": null,
+        "Partition": null,
+        "ProgramIntents": null,
+        "AreaPattern": null
+      },
+      {
+        "Id": "highland-layout",
+        "RegionId": "highland",
+        "Purpose": "Retain complete regional program",
+        "SourceRuleId": "composition:layout",
+        "Strategy": "PowerDiagram",
+        "Programs": [
+          {
+            "Id": "highland-program",
+            "Purpose": "Required regional content capacity",
+            "SourceRuleId": "composition:capacity",
+            "Anchor": {
+              "X": 35,
+              "Y": 5
+            },
+            "MinimumArea": 500,
+            "Influence": 0,
+            "Column": null,
+            "Row": null
+          },
+          {
+            "Id": "highland-habitat",
+            "Purpose": "Required environmental habitat",
+            "SourceRuleId": "area:habitat:highland",
+            "Anchor": {
+              "X": 62,
+              "Y": 10
+            },
+            "MinimumArea": 500,
+            "Influence": 164,
+            "Column": null,
+            "Row": null
+          }
+        ],
+        "Grid": null,
+        "ResidualPurpose": null,
+        "ParentAllocationId": null,
+        "RegionFrame": null,
+        "Partition": null,
+        "ProgramIntents": null,
+        "AreaPattern": null
+      },
+      {
+        "Id": "woodland-layout",
+        "RegionId": "woodland",
+        "Purpose": "Retain complete regional program",
+        "SourceRuleId": "composition:layout",
+        "Strategy": "PowerDiagram",
+        "Programs": [
+          {
+            "Id": "woodland-program",
+            "Purpose": "Required regional content capacity",
+            "SourceRuleId": "composition:capacity",
+            "Anchor": {
+              "X": -8,
+              "Y": 21
+            },
+            "MinimumArea": 500,
+            "Influence": 0,
+            "Column": null,
+            "Row": null
+          },
+          {
+            "Id": "woodland-habitat",
+            "Purpose": "Required environmental habitat",
+            "SourceRuleId": "area:habitat:woodland",
+            "Anchor": {
+              "X": -8,
+              "Y": 29
+            },
+            "MinimumArea": 60,
+            "Influence": -48,
+            "Column": null,
+            "Row": null
+          }
+        ],
+        "Grid": null,
+        "ResidualPurpose": null,
+        "ParentAllocationId": null,
+        "RegionFrame": null,
+        "Partition": null,
+        "ProgramIntents": null,
+        "AreaPattern": null
+      }
+    ],
+    "Interfaces": [],
+    "MaximumCells": 4096,
+    "MaximumWork": 100000000
+  },
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": {
+    "Recipe": {
+      "SchemaVersion": 1,
+      "Id": "mixed-region",
+      "GameProfile": "mixed-purpose-exploration",
+      "CatalogId": "mixed-purpose-content",
+      "RootArchetypeId": "world",
+      "Scale": "region",
+      "Coverage": "PartialScope",
+      "RemainingScopes": [
+        "Complete six-compound program across distinct terrain regions and suitability contours. Regional intent seeds and source catalog are authored; broad world diversity, automatic regional intent, multiple floors and world-scale performance remain open. Godot deferred."
+      ],
+      "Parameters": {},
+      "Space": {
+        "Axes": [
+          "x",
+          "y"
+        ],
+        "Unit": "meters"
+      },
+      "Origin": [
+        0,
+        0
+      ],
+      "RequireAllPositions": true,
+      "MaximumNodes": 10000,
+      "MaximumConnections": 50000,
+      "AdditionalConnections": null,
+      "Layers": null,
+      "Surface": {
+        "SchemaVersion": 1,
+        "Id": "composed-terrain",
+        "Unit": "meters",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": -60,
+              "Y": -40
+            },
+            {
+              "X": 65,
+              "Y": -35
+            },
+            {
+              "X": 70,
+              "Y": 35
+            },
+            {
+              "X": 20,
+              "Y": 55
+            },
+            {
+              "X": -55,
+              "Y": 45
+            },
+            {
+              "X": -70,
+              "Y": 0
+            }
+          ]
+        },
+        "Exclusions": [],
+        "Patches": [
+          {
+            "Id": "land",
+            "Kind": "ground",
+            "Purpose": "Continuous terrain for different regional roles",
+            "SourceRuleId": "composition:land",
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": -60,
+                  "Y": -40
+                },
+                {
+                  "X": 65,
+                  "Y": -35
+                },
+                {
+                  "X": 70,
+                  "Y": 35
+                },
+                {
+                  "X": 20,
+                  "Y": 55
+                },
+                {
+                  "X": -55,
+                  "Y": 45
+                },
+                {
+                  "X": -70,
+                  "Y": 0
+                }
+              ]
+            },
+            "Priority": 0,
+            "Origin": {
+              "X": 0,
+              "Y": 0
+            },
+            "Elevation": 0,
+            "GradientX": 0.1,
+            "GradientY": 0.04
+          },
+          {
+            "Id": "woodland",
+            "Kind": "forest",
+            "Purpose": "Distinct woodland terrain domain",
+            "SourceRuleId": "composition:forest",
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": -25,
+                  "Y": 12
+                },
+                {
+                  "X": 9,
+                  "Y": 12
+                },
+                {
+                  "X": 9,
+                  "Y": 30
+                },
+                {
+                  "X": -25,
+                  "Y": 30
+                }
+              ]
+            },
+            "Priority": 1,
+            "Origin": {
+              "X": 0,
+              "Y": 0
+            },
+            "Elevation": 0,
+            "GradientX": 0.1,
+            "GradientY": 0.04
+          },
+          {
+            "Id": "pond",
+            "Kind": "water",
+            "Purpose": "Protected non-traversable pond",
+            "SourceRuleId": "composition:pond",
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": 8,
+                  "Y": -12
+                },
+                {
+                  "X": 16,
+                  "Y": -12
+                },
+                {
+                  "X": 16,
+                  "Y": 6
+                },
+                {
+                  "X": 8,
+                  "Y": 6
+                }
+              ]
+            },
+            "Priority": 2,
+            "Origin": {
+              "X": 0,
+              "Y": 0
+            },
+            "Elevation": 0,
+            "GradientX": 0.1,
+            "GradientY": 0.04
+          }
+        ],
+        "Terrain": null,
+        "HeightField": null
+      },
+      "RouteRules": [
+        {
+          "Id": "regional",
+          "ConnectionKind": "regional-path",
+          "Profile": {
+            "Id": "walk",
+            "Purpose": "Reach every declared function",
+            "SourceRuleId": "mixed:walk",
+            "Radius": 0.15,
+            "MaximumSlope": 0.2,
+            "KindCosts": {
+              "ground": 1,
+              "forest": 1.2
+            },
+            "AscentCost": 1,
+            "DescentCost": 0.5,
+            "MaximumHeightStep": 0.001
+          },
+          "Search": {
+            "Clearance": 0.1,
+            "Waypoints": [],
+            "MaximumCandidates": 1024,
+            "MaximumEdgeChecks": 32768,
+            "MaximumWork": 100000000,
+            "Objective": "FirstFeasible"
+          },
+          "FromPortId": "north",
+          "ToPortId": "north",
+          "Reuse": null,
+          "Interfaces": null,
+          "Alignments": null
+        },
+        {
+          "Id": "arrival",
+          "ConnectionKind": "arrival-access",
+          "Profile": {
+            "Id": "walk",
+            "Purpose": "Reach every declared function",
+            "SourceRuleId": "mixed:walk",
+            "Radius": 0.15,
+            "MaximumSlope": 0.2,
+            "KindCosts": {
+              "ground": 1,
+              "forest": 1.2
+            },
+            "AscentCost": 1,
+            "DescentCost": 0.5,
+            "MaximumHeightStep": 0.001
+          },
+          "Search": {
+            "Clearance": 0.1,
+            "Waypoints": [],
+            "MaximumCandidates": 1024,
+            "MaximumEdgeChecks": 32768,
+            "MaximumWork": 10000000,
+            "Objective": "FirstFeasible"
+          },
+          "FromPortId": "north",
+          "ToPortId": "north",
+          "Reuse": null,
+          "Interfaces": null,
+          "Alignments": null
+        },
+        {
+          "Id": "local",
+          "ConnectionKind": "local-access",
+          "Profile": {
+            "Id": "walk",
+            "Purpose": "Reach every declared function",
+            "SourceRuleId": "mixed:walk",
+            "Radius": 0.15,
+            "MaximumSlope": 0.2,
+            "KindCosts": {
+              "ground": 1,
+              "forest": 1.2
+            },
+            "AscentCost": 1,
+            "DescentCost": 0.5,
+            "MaximumHeightStep": 0.001
+          },
+          "Search": {
+            "Clearance": 0.1,
+            "Waypoints": [],
+            "MaximumCandidates": 1024,
+            "MaximumEdgeChecks": 32768,
+            "MaximumWork": 10000000,
+            "Objective": "FirstFeasible"
+          },
+          "FromPortId": "north",
+          "ToPortId": "north",
+          "Reuse": null,
+          "Interfaces": null,
+          "Alignments": null
+        }
+      ],
+      "NetworkRules": null,
+      "Environment": {
+        "SchemaVersion": 1,
+        "Id": "game-fields",
+        "Fields": [
+          {
+            "Id": "height",
+            "Purpose": "Elevation",
+            "SourceRuleId": "mixed:height",
+            "Unit": "meters",
+            "Offset": 0,
+            "Terms": [
+              {
+                "Input": "Elevation",
+                "Coefficient": 1,
+                "FieldId": null
+              }
+            ],
+            "Minimum": null,
+            "Maximum": null
+          },
+          {
+            "Id": "slope",
+            "Purpose": "Ground slope",
+            "SourceRuleId": "mixed:slope",
+            "Unit": "ratio",
+            "Offset": 0,
+            "Terms": [
+              {
+                "Input": "Slope",
+                "Coefficient": 1,
+                "FieldId": null
+              }
+            ],
+            "Minimum": null,
+            "Maximum": null
+          },
+          {
+            "Id": "fertility",
+            "Purpose": "Game-authored habitat density",
+            "SourceRuleId": "area:fertility",
+            "Unit": "weight",
+            "Offset": 3,
+            "Terms": [
+              {
+                "Input": "Field",
+                "Coefficient": 0.1,
+                "FieldId": "height"
+              }
+            ],
+            "Minimum": null,
+            "Maximum": null
+          }
+        ],
+        "SampledFields": null
+      },
+      "SuitabilityRules": null,
+      "Placement": {
+        "Request": {
+          "Id": "region-program",
+          "Purpose": "Grow all required destinations",
+          "SourceRuleId": "mixed:region",
+          "Boundary": {
+            "Vertices": [
+              {
+                "X": -60,
+                "Y": -40
+              },
+              {
+                "X": 65,
+                "Y": -35
+              },
+              {
+                "X": 70,
+                "Y": 35
+              },
+              {
+                "X": 20,
+                "Y": 55
+              },
+              {
+                "X": -55,
+                "Y": 45
+              },
+              {
+                "X": -70,
+                "Y": 0
+              }
+            ]
+          },
+          "Demands": [
+            {
+              "Id": "camp",
+              "Purpose": "Required complete camp",
+              "SourceRuleId": "mixed:camp",
+              "Footprint": null,
+              "Profile": {
+                "Id": "lowland",
+                "Purpose": "Purposeful lowland",
+                "SourceRuleId": "composition:lowland",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Regional elevation domain",
+                    "SourceRuleId": "composition:height",
+                    "Minimum": -10,
+                    "Maximum": 0
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported ground slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred regional role location",
+                    "SourceRuleId": "composition:preference",
+                    "Ideal": -2,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": "lowland",
+              "AllocationId": "lowland-program"
+            },
+            {
+              "Id": "workshop",
+              "Purpose": "Required complete workshop",
+              "SourceRuleId": "mixed:workshop",
+              "Footprint": null,
+              "Profile": {
+                "Id": "highland",
+                "Purpose": "Purposeful highland",
+                "SourceRuleId": "composition:highland",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Regional elevation domain",
+                    "SourceRuleId": "composition:height",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported ground slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred regional role location",
+                    "SourceRuleId": "composition:preference",
+                    "Ideal": 3,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": "highland",
+              "AllocationId": "highland-program"
+            },
+            {
+              "Id": "research",
+              "Purpose": "Required complete research",
+              "SourceRuleId": "mixed:research",
+              "Footprint": null,
+              "Profile": {
+                "Id": "woodland",
+                "Purpose": "Purposeful woodland",
+                "SourceRuleId": "composition:woodland",
+                "AllowedKinds": [
+                  "forest"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Regional elevation domain",
+                    "SourceRuleId": "composition:height",
+                    "Minimum": -10,
+                    "Maximum": 10
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Supported ground slope",
+                    "SourceRuleId": "composition:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.2
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred regional role location",
+                    "SourceRuleId": "composition:preference",
+                    "Ideal": 1,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": "woodland",
+              "AllocationId": "woodland-program"
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "lowland",
+              "Position": {
+                "X": -35,
+                "Y": -10
+              }
+            },
+            {
+              "Id": "highland",
+              "Position": {
+                "X": 35,
+                "Y": 5
+              }
+            },
+            {
+              "Id": "woodland",
+              "Position": {
+                "X": -8,
+                "Y": 21
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "camp-purpose",
+              "FromId": "camp",
+              "ToId": "lowland",
+              "Purpose": "Site each complete program around its regional intent",
+              "SourceRuleId": "composition:regional-intent",
+              "Minimum": 0,
+              "Maximum": 120,
+              "Ideal": 10,
+              "Weight": 1
+            },
+            {
+              "Id": "workshop-purpose",
+              "FromId": "workshop",
+              "ToId": "highland",
+              "Purpose": "Site each complete program around its regional intent",
+              "SourceRuleId": "composition:regional-intent",
+              "Minimum": 0,
+              "Maximum": 120,
+              "Ideal": 10,
+              "Weight": 1
+            },
+            {
+              "Id": "research-purpose",
+              "FromId": "research",
+              "ToId": "woodland",
+              "Purpose": "Site each complete program around its regional intent",
+              "SourceRuleId": "composition:regional-intent",
+              "Minimum": 0,
+              "Maximum": 120,
+              "Ideal": 10,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 1,
+          "MaximumCandidates": 8192,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 100000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "camp",
+            "NodeId": "mixed-region",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": "camps",
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "workshop",
+            "NodeId": "mixed-region",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": "workshops",
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "research",
+            "NodeId": "mixed-region",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": "research",
+            "SiteLayout": null,
+            "Population": null
+          }
+        ],
+        "NestedStages": null,
+        "MaximumWork": 200000000,
+        "MaximumStageAttempts": 1024,
+        "MaximumFeasibilityAttempts": 32,
+        "SourceWorld": null,
+        "ConnectedLayouts": null,
+        "Programs": [
+          {
+            "Id": "camp-contents",
+            "Purpose": "Complete camp program",
+            "SourceRuleId": "mixed:camp",
+            "ScopeNodeId": "mixed-region",
+            "ParentArchetypeId": "camp",
+            "MinimumParents": 2,
+            "MaximumParents": 2,
+            "Request": {
+              "Id": "contents",
+              "Purpose": "Place hut beside work area",
+              "SourceRuleId": "mixed:contents",
+              "Boundary": null,
+              "Demands": [
+                {
+                  "Id": "body",
+                  "Purpose": "Required source body",
+                  "SourceRuleId": "mixed:body",
+                  "Footprint": null,
+                  "Profile": {
+                    "Id": "contents",
+                    "Purpose": "Retain complete contents within each exact parent",
+                    "SourceRuleId": "composition:contents",
+                    "AllowedKinds": [
+                      "ground",
+                      "forest"
+                    ],
+                    "Requirements": [
+                      {
+                        "Id": "slope",
+                        "FieldId": "slope",
+                        "Purpose": "Supported content slope",
+                        "SourceRuleId": "composition:slope",
+                        "Minimum": 0,
+                        "Maximum": 0.2
+                      }
+                    ],
+                    "Preferences": [
+                      {
+                        "Id": "height",
+                        "FieldId": "height",
+                        "Purpose": "Preferred usable content altitude",
+                        "SourceRuleId": "composition:contents-height",
+                        "Ideal": 0,
+                        "Tolerance": 10,
+                        "Weight": 1
+                      }
+                    ]
+                  },
+                  "Reservation": null,
+                  "RegionId": null,
+                  "AllocationId": null
+                },
+                {
+                  "Id": "yard",
+                  "Purpose": "Required source yard",
+                  "SourceRuleId": "mixed:yard",
+                  "Footprint": null,
+                  "Profile": {
+                    "Id": "contents",
+                    "Purpose": "Retain complete contents within each exact parent",
+                    "SourceRuleId": "composition:contents",
+                    "AllowedKinds": [
+                      "ground",
+                      "forest"
+                    ],
+                    "Requirements": [
+                      {
+                        "Id": "slope",
+                        "FieldId": "slope",
+                        "Purpose": "Supported content slope",
+                        "SourceRuleId": "composition:slope",
+                        "Minimum": 0,
+                        "Maximum": 0.2
+                      }
+                    ],
+                    "Preferences": [
+                      {
+                        "Id": "height",
+                        "FieldId": "height",
+                        "Purpose": "Preferred usable content altitude",
+                        "SourceRuleId": "composition:contents-height",
+                        "Ideal": 0,
+                        "Tolerance": 10,
+                        "Weight": 1
+                      }
+                    ]
+                  },
+                  "Reservation": null,
+                  "RegionId": null,
+                  "AllocationId": null
+                }
+              ],
+              "Anchors": [
+                {
+                  "Id": "entrance",
+                  "Position": {
+                    "X": -2,
+                    "Y": 0
+                  }
+                }
+              ],
+              "Relations": [],
+              "MinimumSeparation": 0.5,
+              "MaximumCandidates": 2048,
+              "MaximumSearchStates": 100000,
+              "MaximumWork": 10000000,
+              "AllowBoundaryContact": false,
+              "Growth": null,
+              "Execution": "Search",
+              "Nogoods": null
+            },
+            "Bindings": [
+              {
+                "DemandId": "body",
+                "PartId": "hut",
+                "UseCatalogFootprint": true,
+                "RotationDegrees": 0,
+                "SiteLayout": null,
+                "Population": null
+              },
+              {
+                "DemandId": "yard",
+                "PartId": "yard",
+                "UseCatalogFootprint": true,
+                "RotationDegrees": 0,
+                "SiteLayout": null,
+                "Population": null
+              }
+            ],
+            "Growth": {
+              "RootPartId": "hut",
+              "RootIndex": 0,
+              "AnchorId": "entrance",
+              "ConnectionKinds": [
+                "local-access"
+              ],
+              "DirectionAnglesDegrees": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "Gap": 0.5,
+              "MaximumConnectionDistance": 9
+            }
+          },
+          {
+            "Id": "workshop-contents",
+            "Purpose": "Complete workshop program",
+            "SourceRuleId": "mixed:workshop",
+            "ScopeNodeId": "mixed-region",
+            "ParentArchetypeId": "workshop",
+            "MinimumParents": 2,
+            "MaximumParents": 2,
+            "Request": {
+              "Id": "contents",
+              "Purpose": "Place hall beside work area",
+              "SourceRuleId": "mixed:contents",
+              "Boundary": null,
+              "Demands": [
+                {
+                  "Id": "body",
+                  "Purpose": "Required source body",
+                  "SourceRuleId": "mixed:body",
+                  "Footprint": null,
+                  "Profile": {
+                    "Id": "contents",
+                    "Purpose": "Retain complete contents within each exact parent",
+                    "SourceRuleId": "composition:contents",
+                    "AllowedKinds": [
+                      "ground",
+                      "forest"
+                    ],
+                    "Requirements": [
+                      {
+                        "Id": "slope",
+                        "FieldId": "slope",
+                        "Purpose": "Supported content slope",
+                        "SourceRuleId": "composition:slope",
+                        "Minimum": 0,
+                        "Maximum": 0.2
+                      }
+                    ],
+                    "Preferences": [
+                      {
+                        "Id": "height",
+                        "FieldId": "height",
+                        "Purpose": "Preferred usable content altitude",
+                        "SourceRuleId": "composition:contents-height",
+                        "Ideal": 0,
+                        "Tolerance": 10,
+                        "Weight": 1
+                      }
+                    ]
+                  },
+                  "Reservation": null,
+                  "RegionId": null,
+                  "AllocationId": null
+                },
+                {
+                  "Id": "yard",
+                  "Purpose": "Required source yard",
+                  "SourceRuleId": "mixed:yard",
+                  "Footprint": null,
+                  "Profile": {
+                    "Id": "contents",
+                    "Purpose": "Retain complete contents within each exact parent",
+                    "SourceRuleId": "composition:contents",
+                    "AllowedKinds": [
+                      "ground",
+                      "forest"
+                    ],
+                    "Requirements": [
+                      {
+                        "Id": "slope",
+                        "FieldId": "slope",
+                        "Purpose": "Supported content slope",
+                        "SourceRuleId": "composition:slope",
+                        "Minimum": 0,
+                        "Maximum": 0.2
+                      }
+                    ],
+                    "Preferences": [
+                      {
+                        "Id": "height",
+                        "FieldId": "height",
+                        "Purpose": "Preferred usable content altitude",
+                        "SourceRuleId": "composition:contents-height",
+                        "Ideal": 0,
+                        "Tolerance": 10,
+                        "Weight": 1
+                      }
+                    ]
+                  },
+                  "Reservation": null,
+                  "RegionId": null,
+                  "AllocationId": null
+                }
+              ],
+              "Anchors": [
+                {
+                  "Id": "entrance",
+                  "Position": {
+                    "X": -2,
+                    "Y": 0
+                  }
+                }
+              ],
+              "Relations": [],
+              "MinimumSeparation": 0.5,
+              "MaximumCandidates": 2048,
+              "MaximumSearchStates": 100000,
+              "MaximumWork": 10000000,
+              "AllowBoundaryContact": false,
+              "Growth": null,
+              "Execution": "Search",
+              "Nogoods": null
+            },
+            "Bindings": [
+              {
+                "DemandId": "body",
+                "PartId": "hall",
+                "UseCatalogFootprint": true,
+                "RotationDegrees": 0,
+                "SiteLayout": null,
+                "Population": null
+              },
+              {
+                "DemandId": "yard",
+                "PartId": "yard",
+                "UseCatalogFootprint": true,
+                "RotationDegrees": 0,
+                "SiteLayout": null,
+                "Population": null
+              }
+            ],
+            "Growth": {
+              "RootPartId": "hall",
+              "RootIndex": 0,
+              "AnchorId": "entrance",
+              "ConnectionKinds": [
+                "local-access"
+              ],
+              "DirectionAnglesDegrees": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "Gap": 0.5,
+              "MaximumConnectionDistance": 9
+            }
+          },
+          {
+            "Id": "research-contents",
+            "Purpose": "Complete research program",
+            "SourceRuleId": "mixed:research",
+            "ScopeNodeId": "mixed-region",
+            "ParentArchetypeId": "research",
+            "MinimumParents": 2,
+            "MaximumParents": 2,
+            "Request": {
+              "Id": "contents",
+              "Purpose": "Place lab beside work area",
+              "SourceRuleId": "mixed:contents",
+              "Boundary": null,
+              "Demands": [
+                {
+                  "Id": "body",
+                  "Purpose": "Required source body",
+                  "SourceRuleId": "mixed:body",
+                  "Footprint": null,
+                  "Profile": {
+                    "Id": "contents",
+                    "Purpose": "Retain complete contents within each exact parent",
+                    "SourceRuleId": "composition:contents",
+                    "AllowedKinds": [
+                      "ground",
+                      "forest"
+                    ],
+                    "Requirements": [
+                      {
+                        "Id": "slope",
+                        "FieldId": "slope",
+                        "Purpose": "Supported content slope",
+                        "SourceRuleId": "composition:slope",
+                        "Minimum": 0,
+                        "Maximum": 0.2
+                      }
+                    ],
+                    "Preferences": [
+                      {
+                        "Id": "height",
+                        "FieldId": "height",
+                        "Purpose": "Preferred usable content altitude",
+                        "SourceRuleId": "composition:contents-height",
+                        "Ideal": 0,
+                        "Tolerance": 10,
+                        "Weight": 1
+                      }
+                    ]
+                  },
+                  "Reservation": null,
+                  "RegionId": null,
+                  "AllocationId": null
+                },
+                {
+                  "Id": "yard",
+                  "Purpose": "Required source yard",
+                  "SourceRuleId": "mixed:yard",
+                  "Footprint": null,
+                  "Profile": {
+                    "Id": "contents",
+                    "Purpose": "Retain complete contents within each exact parent",
+                    "SourceRuleId": "composition:contents",
+                    "AllowedKinds": [
+                      "ground",
+                      "forest"
+                    ],
+                    "Requirements": [
+                      {
+                        "Id": "slope",
+                        "FieldId": "slope",
+                        "Purpose": "Supported content slope",
+                        "SourceRuleId": "composition:slope",
+                        "Minimum": 0,
+                        "Maximum": 0.2
+                      }
+                    ],
+                    "Preferences": [
+                      {
+                        "Id": "height",
+                        "FieldId": "height",
+                        "Purpose": "Preferred usable content altitude",
+                        "SourceRuleId": "composition:contents-height",
+                        "Ideal": 0,
+                        "Tolerance": 10,
+                        "Weight": 1
+                      }
+                    ]
+                  },
+                  "Reservation": null,
+                  "RegionId": null,
+                  "AllocationId": null
+                }
+              ],
+              "Anchors": [
+                {
+                  "Id": "entrance",
+                  "Position": {
+                    "X": -2,
+                    "Y": 0
+                  }
+                }
+              ],
+              "Relations": [],
+              "MinimumSeparation": 0.5,
+              "MaximumCandidates": 2048,
+              "MaximumSearchStates": 100000,
+              "MaximumWork": 10000000,
+              "AllowBoundaryContact": false,
+              "Growth": null,
+              "Execution": "Search",
+              "Nogoods": null
+            },
+            "Bindings": [
+              {
+                "DemandId": "body",
+                "PartId": "lab",
+                "UseCatalogFootprint": true,
+                "RotationDegrees": 0,
+                "SiteLayout": null,
+                "Population": null
+              },
+              {
+                "DemandId": "yard",
+                "PartId": "yard",
+                "UseCatalogFootprint": true,
+                "RotationDegrees": 0,
+                "SiteLayout": null,
+                "Population": null
+              }
+            ],
+            "Growth": {
+              "RootPartId": "lab",
+              "RootIndex": 0,
+              "AnchorId": "entrance",
+              "ConnectionKinds": [
+                "local-access"
+              ],
+              "DirectionAnglesDegrees": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "Gap": 0.5,
+              "MaximumConnectionDistance": 9
+            }
+          },
+          {
+            "Id": "yard-storage",
+            "Purpose": "Store supplies in every yard",
+            "SourceRuleId": "mixed:storage",
+            "ScopeNodeId": "mixed-region",
+            "ParentArchetypeId": "yard",
+            "MinimumParents": 6,
+            "MaximumParents": 6,
+            "Request": {
+              "Id": "cache",
+              "Purpose": "Required supply station",
+              "SourceRuleId": "mixed:cache",
+              "Boundary": null,
+              "Demands": [
+                {
+                  "Id": "cache",
+                  "Purpose": "Required supply station",
+                  "SourceRuleId": "mixed:cache",
+                  "Footprint": null,
+                  "Profile": {
+                    "Id": "contents",
+                    "Purpose": "Retain complete contents within each exact parent",
+                    "SourceRuleId": "composition:contents",
+                    "AllowedKinds": [
+                      "ground",
+                      "forest"
+                    ],
+                    "Requirements": [
+                      {
+                        "Id": "slope",
+                        "FieldId": "slope",
+                        "Purpose": "Supported content slope",
+                        "SourceRuleId": "composition:slope",
+                        "Minimum": 0,
+                        "Maximum": 0.2
+                      }
+                    ],
+                    "Preferences": [
+                      {
+                        "Id": "height",
+                        "FieldId": "height",
+                        "Purpose": "Preferred usable content altitude",
+                        "SourceRuleId": "composition:contents-height",
+                        "Ideal": 0,
+                        "Tolerance": 10,
+                        "Weight": 1
+                      }
+                    ]
+                  },
+                  "Reservation": null,
+                  "RegionId": null,
+                  "AllocationId": null
+                }
+              ],
+              "Anchors": [
+                {
+                  "Id": "station",
+                  "Position": {
+                    "X": 0,
+                    "Y": 0
+                  }
+                }
+              ],
+              "Relations": [
+                {
+                  "Id": "pin",
+                  "FromId": "cache",
+                  "ToId": "station",
+                  "Purpose": "Required supply station",
+                  "SourceRuleId": "mixed:cache",
+                  "Minimum": 0,
+                  "Maximum": 0,
+                  "Ideal": 0,
+                  "Weight": 1
+                }
+              ],
+              "MinimumSeparation": 0,
+              "MaximumCandidates": 2048,
+              "MaximumSearchStates": 100000,
+              "MaximumWork": 1000000,
+              "AllowBoundaryContact": false,
+              "Growth": null,
+              "Execution": "Search",
+              "Nogoods": null
+            },
+            "Bindings": [
+              {
+                "DemandId": "cache",
+                "PartId": "cache",
+                "UseCatalogFootprint": true,
+                "RotationDegrees": 0,
+                "SiteLayout": null,
+                "Population": null
+              }
+            ],
+            "Growth": null
+          },
+          {
+            "Id": "production-equipment",
+            "Purpose": "Machines within production halls",
+            "SourceRuleId": "mixed:machines",
+            "ScopeNodeId": "mixed-region",
+            "ParentArchetypeId": "hall",
+            "MinimumParents": 2,
+            "MaximumParents": 2,
+            "Request": {
+              "Id": "equipment",
+              "Purpose": "Fit every production machine",
+              "SourceRuleId": "mixed:equipment",
+              "Boundary": null,
+              "Demands": [
+                {
+                  "Id": "machine",
+                  "Purpose": "Required production equipment",
+                  "SourceRuleId": "mixed:machine",
+                  "Footprint": null,
+                  "Profile": {
+                    "Id": "contents",
+                    "Purpose": "Retain complete contents within each exact parent",
+                    "SourceRuleId": "composition:contents",
+                    "AllowedKinds": [
+                      "ground",
+                      "forest"
+                    ],
+                    "Requirements": [
+                      {
+                        "Id": "slope",
+                        "FieldId": "slope",
+                        "Purpose": "Supported content slope",
+                        "SourceRuleId": "composition:slope",
+                        "Minimum": 0,
+                        "Maximum": 0.2
+                      }
+                    ],
+                    "Preferences": [
+                      {
+                        "Id": "height",
+                        "FieldId": "height",
+                        "Purpose": "Preferred usable content altitude",
+                        "SourceRuleId": "composition:contents-height",
+                        "Ideal": 0,
+                        "Tolerance": 10,
+                        "Weight": 1
+                      }
+                    ]
+                  },
+                  "Reservation": null,
+                  "RegionId": null,
+                  "AllocationId": null
+                }
+              ],
+              "Anchors": [],
+              "Relations": [],
+              "MinimumSeparation": 0,
+              "MaximumCandidates": 2048,
+              "MaximumSearchStates": 100000,
+              "MaximumWork": 1000000,
+              "AllowBoundaryContact": false,
+              "Growth": null,
+              "Execution": "Search",
+              "Nogoods": null
+            },
+            "Bindings": [
+              {
+                "DemandId": "machine",
+                "PartId": "machines",
+                "UseCatalogFootprint": true,
+                "RotationDegrees": 0,
+                "SiteLayout": null,
+                "Population": {
+                  "Purpose": "Production line",
+                  "SourceRuleId": "mixed:production-line",
+                  "Path": {
+                    "Path": {
+                      "Points": [
+                        {
+                          "X": -1,
+                          "Y": 0
+                        },
+                        {
+                          "X": 1,
+                          "Y": 0
+                        }
+                      ]
+                    },
+                    "Spacing": 2,
+                    "StartDistance": 0,
+                    "EndInset": 0,
+                    "NormalOffset": 0
+                  },
+                  "Boundary": null,
+                  "Sockets": null,
+                  "Route": null,
+                  "Region": null
+                }
+              }
+            ],
+            "Growth": null
+          }
+        ],
+        "RegionAnchors": null,
+        "AllocationAnchors": null
+      },
+      "Services": null,
+      "Context": null,
+      "Corridors": null,
+      "Regions": {
+        "Id": "regional-intent",
+        "Purpose": "Different terrain roles in one world",
+        "SourceRuleId": "composition:regions",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": -60,
+              "Y": -40
+            },
+            {
+              "X": 65,
+              "Y": -35
+            },
+            {
+              "X": 70,
+              "Y": 35
+            },
+            {
+              "X": 20,
+              "Y": 55
+            },
+            {
+              "X": -55,
+              "Y": 45
+            },
+            {
+              "X": -70,
+              "Y": 0
+            }
+          ]
+        },
+        "Profile": {
+          "Id": "lowland",
+          "Purpose": "Purposeful lowland",
+          "SourceRuleId": "composition:lowland",
+          "AllowedKinds": [
+            "ground"
+          ],
+          "Requirements": [
+            {
+              "Id": "height",
+              "FieldId": "height",
+              "Purpose": "Regional elevation domain",
+              "SourceRuleId": "composition:height",
+              "Minimum": -10,
+              "Maximum": 0
+            },
+            {
+              "Id": "slope",
+              "FieldId": "slope",
+              "Purpose": "Supported ground slope",
+              "SourceRuleId": "composition:slope",
+              "Minimum": 0,
+              "Maximum": 0.2
+            }
+          ],
+          "Preferences": [
+            {
+              "Id": "altitude",
+              "FieldId": "height",
+              "Purpose": "Preferred regional role location",
+              "SourceRuleId": "composition:preference",
+              "Ideal": -2,
+              "Tolerance": 5,
+              "Weight": 1
+            }
+          ]
+        },
+        "Seeds": [
+          {
+            "Id": "lowland",
+            "Purpose": "Lower-ground field bases",
+            "SourceRuleId": "composition:low",
+            "Position": {
+              "X": -35,
+              "Y": -10
+            },
+            "MinimumArea": 500,
+            "Profile": null
+          },
+          {
+            "Id": "highland",
+            "Purpose": "Higher-ground production bases",
+            "SourceRuleId": "composition:high",
+            "Position": {
+              "X": 35,
+              "Y": 5
+            },
+            "MinimumArea": 500,
+            "Profile": {
+              "Id": "highland",
+              "Purpose": "Purposeful highland",
+              "SourceRuleId": "composition:highland",
+              "AllowedKinds": [
+                "ground"
+              ],
+              "Requirements": [
+                {
+                  "Id": "height",
+                  "FieldId": "height",
+                  "Purpose": "Regional elevation domain",
+                  "SourceRuleId": "composition:height",
+                  "Minimum": 0,
+                  "Maximum": 10
+                },
+                {
+                  "Id": "slope",
+                  "FieldId": "slope",
+                  "Purpose": "Supported ground slope",
+                  "SourceRuleId": "composition:slope",
+                  "Minimum": 0,
+                  "Maximum": 0.2
+                }
+              ],
+              "Preferences": [
+                {
+                  "Id": "altitude",
+                  "FieldId": "height",
+                  "Purpose": "Preferred regional role location",
+                  "SourceRuleId": "composition:preference",
+                  "Ideal": 3,
+                  "Tolerance": 5,
+                  "Weight": 1
+                }
+              ]
+            }
+          },
+          {
+            "Id": "woodland",
+            "Purpose": "Woodland research program",
+            "SourceRuleId": "composition:wood",
+            "Position": {
+              "X": -8,
+              "Y": 21
+            },
+            "MinimumArea": 500,
+            "Profile": {
+              "Id": "woodland",
+              "Purpose": "Purposeful woodland",
+              "SourceRuleId": "composition:woodland",
+              "AllowedKinds": [
+                "forest"
+              ],
+              "Requirements": [
+                {
+                  "Id": "height",
+                  "FieldId": "height",
+                  "Purpose": "Regional elevation domain",
+                  "SourceRuleId": "composition:height",
+                  "Minimum": -10,
+                  "Maximum": 10
+                },
+                {
+                  "Id": "slope",
+                  "FieldId": "slope",
+                  "Purpose": "Supported ground slope",
+                  "SourceRuleId": "composition:slope",
+                  "Minimum": 0,
+                  "Maximum": 0.2
+                }
+              ],
+              "Preferences": [
+                {
+                  "Id": "altitude",
+                  "FieldId": "height",
+                  "Purpose": "Preferred regional role location",
+                  "SourceRuleId": "composition:preference",
+                  "Ideal": 1,
+                  "Tolerance": 5,
+                  "Weight": 1
+                }
+              ]
+            }
+          }
+        ],
+        "MaximumCells": 4096,
+        "MaximumWork": 100000000,
+        "Intents": null,
+        "AnchorPrecision": 0.1,
+        "MaximumAnchorCells": 65536,
+        "MaximumIntentCandidates": 1024,
+        "MaximumIntentStates": 100000,
+        "ExcludedAssignments": null,
+        "IntentRelations": null
+      },
+      "LocalLayouts": {
+        "Layouts": [
+          {
+            "Id": "lowland-layout",
+            "RegionId": "lowland",
+            "Purpose": "Retain complete regional program",
+            "SourceRuleId": "composition:layout",
+            "Strategy": "PowerDiagram",
+            "Programs": [
+              {
+                "Id": "lowland-program",
+                "Purpose": "Required regional content capacity",
+                "SourceRuleId": "composition:capacity",
+                "Anchor": {
+                  "X": -35,
+                  "Y": -10
+                },
+                "MinimumArea": 500,
+                "Influence": 0,
+                "Column": null,
+                "Row": null
+              },
+              {
+                "Id": "lowland-habitat",
+                "Purpose": "Required environmental habitat",
+                "SourceRuleId": "area:habitat:lowland",
+                "Anchor": {
+                  "X": -60,
+                  "Y": -10
+                },
+                "MinimumArea": 500,
+                "Influence": 375,
+                "Column": null,
+                "Row": null
+              }
+            ],
+            "Grid": null,
+            "ResidualPurpose": null,
+            "ParentAllocationId": null,
+            "RegionFrame": null,
+            "Partition": null,
+            "ProgramIntents": null,
+            "AreaPattern": null
+          },
+          {
+            "Id": "highland-layout",
+            "RegionId": "highland",
+            "Purpose": "Retain complete regional program",
+            "SourceRuleId": "composition:layout",
+            "Strategy": "PowerDiagram",
+            "Programs": [
+              {
+                "Id": "highland-program",
+                "Purpose": "Required regional content capacity",
+                "SourceRuleId": "composition:capacity",
+                "Anchor": {
+                  "X": 35,
+                  "Y": 5
+                },
+                "MinimumArea": 500,
+                "Influence": 0,
+                "Column": null,
+                "Row": null
+              },
+              {
+                "Id": "highland-habitat",
+                "Purpose": "Required environmental habitat",
+                "SourceRuleId": "area:habitat:highland",
+                "Anchor": {
+                  "X": 62,
+                  "Y": 10
+                },
+                "MinimumArea": 500,
+                "Influence": 164,
+                "Column": null,
+                "Row": null
+              }
+            ],
+            "Grid": null,
+            "ResidualPurpose": null,
+            "ParentAllocationId": null,
+            "RegionFrame": null,
+            "Partition": null,
+            "ProgramIntents": null,
+            "AreaPattern": null
+          },
+          {
+            "Id": "woodland-layout",
+            "RegionId": "woodland",
+            "Purpose": "Retain complete regional program",
+            "SourceRuleId": "composition:layout",
+            "Strategy": "PowerDiagram",
+            "Programs": [
+              {
+                "Id": "woodland-program",
+                "Purpose": "Required regional content capacity",
+                "SourceRuleId": "composition:capacity",
+                "Anchor": {
+                  "X": -8,
+                  "Y": 21
+                },
+                "MinimumArea": 500,
+                "Influence": 0,
+                "Column": null,
+                "Row": null
+              },
+              {
+                "Id": "woodland-habitat",
+                "Purpose": "Required environmental habitat",
+                "SourceRuleId": "area:habitat:woodland",
+                "Anchor": {
+                  "X": -8,
+                  "Y": 29
+                },
+                "MinimumArea": 60,
+                "Influence": -48,
+                "Column": null,
+                "Row": null
+              }
+            ],
+            "Grid": null,
+            "ResidualPurpose": null,
+            "ParentAllocationId": null,
+            "RegionFrame": null,
+            "Partition": null,
+            "ProgramIntents": null,
+            "AreaPattern": null
+          }
+        ],
+        "Interfaces": [],
+        "MaximumCells": 4096,
+        "MaximumWork": 100000000
+      },
+      "LayoutAdaptation": null,
+      "ProgressionRules": null,
+      "PopulationSource": null,
+      "Chunks": null,
+      "TopologyRules": [
+        {
+          "Id": "mixed-journey",
+          "Purpose": "Reach every regional destination",
+          "SourceRuleId": "mixed:topology",
+          "ScopeNodeId": "mixed-region",
+          "StartNodeId": "mixed-region/camps-0",
+          "ConnectionKind": "regional-path",
+          "Stages": [
+            {
+              "Id": "exploration",
+              "Purpose": "Visit all functions",
+              "ExitNodeId": "mixed-region/research-1",
+              "MemberKinds": [
+                "compound"
+              ],
+              "MinimumMembers": 4,
+              "MaximumMembers": 4
+            }
+          ],
+          "Seed": "mixed-world-001",
+          "MaximumDegree": 4,
+          "ExtraConnections": 2,
+          "MaximumWork": 1000000,
+          "LayerId": null
+        }
+      ],
+      "RouteBudget": {
+        "Purpose": "Bound all realized regional travel work",
+        "SourceRuleId": "mixed:route-budget",
+        "MaximumWork": 200000000,
+        "MaximumDirections": 128
+      },
+      "Interiors": null,
+      "TerrainDemands": null,
+      "ProgramComposition": null,
+      "Drainage": null,
+      "Water": null,
+      "WindMoisture": null
+    },
+    "Catalog": {
+      "SchemaVersion": 1,
+      "Id": "mixed-purpose-content",
+      "Archetypes": [
+        {
+          "Id": "world",
+          "Kind": "region",
+          "Purpose": "Mixed expedition region",
+          "Properties": {},
+          "Parts": [
+            {
+              "Id": "camps",
+              "ArchetypeId": "camp",
+              "Count": 2,
+              "Purpose": "Required camp",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            },
+            {
+              "Id": "workshops",
+              "ArchetypeId": "workshop",
+              "Count": 2,
+              "Purpose": "Required workshop",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            },
+            {
+              "Id": "research",
+              "ArchetypeId": "research",
+              "Count": 2,
+              "Purpose": "Required research",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            }
+          ],
+          "Connections": [],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": null,
+          "Access": null,
+          "Capacities": null,
+          "Services": null,
+          "ProgramInputs": null
+        },
+        {
+          "Id": "camp",
+          "Kind": "compound",
+          "Purpose": "Complete camp with its surroundings",
+          "Properties": {},
+          "Parts": [
+            {
+              "Id": "hut",
+              "ArchetypeId": "hut",
+              "Count": 1,
+              "Purpose": "Required hut",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            },
+            {
+              "Id": "yard",
+              "ArchetypeId": "yard",
+              "Count": 1,
+              "Purpose": "Required work yard",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            }
+          ],
+          "Connections": [
+            {
+              "Id": "arrival",
+              "Kind": "arrival-access",
+              "Pattern": "AllPairs",
+              "FromPart": "self",
+              "ToPart": "hut",
+              "Bidirectional": true,
+              "Properties": null,
+              "LayerId": null
+            },
+            {
+              "Id": "work",
+              "Kind": "local-access",
+              "Pattern": "Pairs",
+              "FromPart": "hut",
+              "ToPart": "yard",
+              "Bidirectional": true,
+              "Properties": null,
+              "LayerId": null
+            }
+          ],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Source envelope for camp",
+            "SourceRuleId": "mixed:camp",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -5,
+                  "Y": -4
+                },
+                {
+                  "X": 5,
+                  "Y": -4
+                },
+                {
+                  "X": 5,
+                  "Y": 3
+                },
+                {
+                  "X": 3,
+                  "Y": 4
+                },
+                {
+                  "X": -5,
+                  "Y": 4
+                }
+              ]
+            },
+            "Reservation": null
+          },
+          "Access": {
+            "Occupancy": "Reservation",
+            "Ports": [
+              {
+                "Id": "north",
+                "Purpose": "Regional entrance",
+                "SourceRuleId": "mixed:entry",
+                "BoundaryPosition": {
+                  "X": 0,
+                  "Y": -4
+                },
+                "ApproachPosition": {
+                  "X": 0,
+                  "Y": -5
+                },
+                "Width": 1
+              }
+            ]
+          },
+          "Capacities": null,
+          "Services": null,
+          "ProgramInputs": null
+        },
+        {
+          "Id": "hut",
+          "Kind": "structure",
+          "Purpose": "Required hut",
+          "Properties": {},
+          "Parts": [],
+          "Connections": [],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Exact hut body",
+            "SourceRuleId": "mixed:hut",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -2,
+                  "Y": -1
+                },
+                {
+                  "X": 2,
+                  "Y": -1
+                },
+                {
+                  "X": 2,
+                  "Y": 1
+                },
+                {
+                  "X": -2,
+                  "Y": 1
+                }
+              ]
+            },
+            "Reservation": {
+              "Vertices": [
+                {
+                  "X": -2.25,
+                  "Y": -1.25
+                },
+                {
+                  "X": 2.25,
+                  "Y": -1.25
+                },
+                {
+                  "X": 2.25,
+                  "Y": 1.25
+                },
+                {
+                  "X": -2.25,
+                  "Y": 1.25
+                }
+              ]
+            }
+          },
+          "Access": {
+            "Occupancy": "Solid",
+            "Ports": [
+              {
+                "Id": "north",
+                "Purpose": "Body entrance",
+                "SourceRuleId": "mixed:body-door",
+                "BoundaryPosition": {
+                  "X": 0,
+                  "Y": -1
+                },
+                "ApproachPosition": {
+                  "X": 0,
+                  "Y": -2
+                },
+                "Width": 0.8
+              }
+            ]
+          },
+          "Capacities": null,
+          "Services": null,
+          "ProgramInputs": null
+        },
+        {
+          "Id": "workshop",
+          "Kind": "compound",
+          "Purpose": "Complete workshop with its surroundings",
+          "Properties": {},
+          "Parts": [
+            {
+              "Id": "hall",
+              "ArchetypeId": "hall",
+              "Count": 1,
+              "Purpose": "Required hall",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            },
+            {
+              "Id": "yard",
+              "ArchetypeId": "yard",
+              "Count": 1,
+              "Purpose": "Required work yard",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            }
+          ],
+          "Connections": [
+            {
+              "Id": "arrival",
+              "Kind": "arrival-access",
+              "Pattern": "AllPairs",
+              "FromPart": "self",
+              "ToPart": "hall",
+              "Bidirectional": true,
+              "Properties": null,
+              "LayerId": null
+            },
+            {
+              "Id": "work",
+              "Kind": "local-access",
+              "Pattern": "Pairs",
+              "FromPart": "hall",
+              "ToPart": "yard",
+              "Bidirectional": true,
+              "Properties": null,
+              "LayerId": null
+            }
+          ],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Source envelope for workshop",
+            "SourceRuleId": "mixed:workshop",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -6,
+                  "Y": -4.5
+                },
+                {
+                  "X": 6,
+                  "Y": -4.5
+                },
+                {
+                  "X": 6,
+                  "Y": 3.5
+                },
+                {
+                  "X": 4,
+                  "Y": 4.5
+                },
+                {
+                  "X": -6,
+                  "Y": 4.5
+                }
+              ]
+            },
+            "Reservation": null
+          },
+          "Access": {
+            "Occupancy": "Reservation",
+            "Ports": [
+              {
+                "Id": "north",
+                "Purpose": "Regional entrance",
+                "SourceRuleId": "mixed:entry",
+                "BoundaryPosition": {
+                  "X": 0,
+                  "Y": -4.5
+                },
+                "ApproachPosition": {
+                  "X": 0,
+                  "Y": -5.5
+                },
+                "Width": 1
+              }
+            ]
+          },
+          "Capacities": null,
+          "Services": null,
+          "ProgramInputs": null
+        },
+        {
+          "Id": "hall",
+          "Kind": "structure",
+          "Purpose": "Required hall",
+          "Properties": {},
+          "Parts": [
+            {
+              "Id": "machines",
+              "ArchetypeId": "machine",
+              "Count": 2,
+              "Purpose": "Production equipment",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            }
+          ],
+          "Connections": [],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Exact hall body",
+            "SourceRuleId": "mixed:hall",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -2.5,
+                  "Y": -1.5
+                },
+                {
+                  "X": 2.5,
+                  "Y": -1.5
+                },
+                {
+                  "X": 2.5,
+                  "Y": 1.5
+                },
+                {
+                  "X": -2.5,
+                  "Y": 1.5
+                }
+              ]
+            },
+            "Reservation": {
+              "Vertices": [
+                {
+                  "X": -2.75,
+                  "Y": -1.75
+                },
+                {
+                  "X": 2.75,
+                  "Y": -1.75
+                },
+                {
+                  "X": 2.75,
+                  "Y": 1.75
+                },
+                {
+                  "X": -2.75,
+                  "Y": 1.75
+                }
+              ]
+            }
+          },
+          "Access": {
+            "Occupancy": "Solid",
+            "Ports": [
+              {
+                "Id": "north",
+                "Purpose": "Body entrance",
+                "SourceRuleId": "mixed:body-door",
+                "BoundaryPosition": {
+                  "X": 0,
+                  "Y": -1.5
+                },
+                "ApproachPosition": {
+                  "X": 0,
+                  "Y": -2.5
+                },
+                "Width": 0.8
+              }
+            ]
+          },
+          "Capacities": null,
+          "Services": null,
+          "ProgramInputs": null
+        },
+        {
+          "Id": "research",
+          "Kind": "compound",
+          "Purpose": "Complete research with its surroundings",
+          "Properties": {},
+          "Parts": [
+            {
+              "Id": "lab",
+              "ArchetypeId": "lab",
+              "Count": 1,
+              "Purpose": "Required lab",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            },
+            {
+              "Id": "yard",
+              "ArchetypeId": "yard",
+              "Count": 1,
+              "Purpose": "Required work yard",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            }
+          ],
+          "Connections": [
+            {
+              "Id": "arrival",
+              "Kind": "arrival-access",
+              "Pattern": "AllPairs",
+              "FromPart": "self",
+              "ToPart": "lab",
+              "Bidirectional": true,
+              "Properties": null,
+              "LayerId": null
+            },
+            {
+              "Id": "work",
+              "Kind": "local-access",
+              "Pattern": "Pairs",
+              "FromPart": "lab",
+              "ToPart": "yard",
+              "Bidirectional": true,
+              "Properties": null,
+              "LayerId": null
+            }
+          ],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Source envelope for research",
+            "SourceRuleId": "mixed:research",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -7,
+                  "Y": -5
+                },
+                {
+                  "X": 7,
+                  "Y": -5
+                },
+                {
+                  "X": 7,
+                  "Y": 4
+                },
+                {
+                  "X": 5,
+                  "Y": 5
+                },
+                {
+                  "X": -7,
+                  "Y": 5
+                }
+              ]
+            },
+            "Reservation": null
+          },
+          "Access": {
+            "Occupancy": "Reservation",
+            "Ports": [
+              {
+                "Id": "north",
+                "Purpose": "Regional entrance",
+                "SourceRuleId": "mixed:entry",
+                "BoundaryPosition": {
+                  "X": 0,
+                  "Y": -5
+                },
+                "ApproachPosition": {
+                  "X": 0,
+                  "Y": -6
+                },
+                "Width": 1
+              }
+            ]
+          },
+          "Capacities": null,
+          "Services": null,
+          "ProgramInputs": null
+        },
+        {
+          "Id": "lab",
+          "Kind": "structure",
+          "Purpose": "Required lab",
+          "Properties": {},
+          "Parts": [],
+          "Connections": [],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Exact lab body",
+            "SourceRuleId": "mixed:lab",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -3,
+                  "Y": -1
+                },
+                {
+                  "X": 3,
+                  "Y": -1
+                },
+                {
+                  "X": 3,
+                  "Y": 1
+                },
+                {
+                  "X": -3,
+                  "Y": 1
+                }
+              ]
+            },
+            "Reservation": {
+              "Vertices": [
+                {
+                  "X": -3.25,
+                  "Y": -1.25
+                },
+                {
+                  "X": 3.25,
+                  "Y": -1.25
+                },
+                {
+                  "X": 3.25,
+                  "Y": 1.25
+                },
+                {
+                  "X": -3.25,
+                  "Y": 1.25
+                }
+              ]
+            }
+          },
+          "Access": {
+            "Occupancy": "Solid",
+            "Ports": [
+              {
+                "Id": "north",
+                "Purpose": "Body entrance",
+                "SourceRuleId": "mixed:body-door",
+                "BoundaryPosition": {
+                  "X": 0,
+                  "Y": -1
+                },
+                "ApproachPosition": {
+                  "X": 0,
+                  "Y": -2
+                },
+                "Width": 0.8
+              }
+            ]
+          },
+          "Capacities": null,
+          "Services": null,
+          "ProgramInputs": null
+        },
+        {
+          "Id": "yard",
+          "Kind": "ground-area",
+          "Purpose": "Work and supply yard",
+          "Properties": {},
+          "Parts": [
+            {
+              "Id": "cache",
+              "ArchetypeId": "cache",
+              "Count": 1,
+              "Purpose": "Required supply cache",
+              "CountParameter": null,
+              "Layout": null,
+              "Capacity": null,
+              "Variation": null,
+              "ProgramMix": null
+            }
+          ],
+          "Connections": [],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Work area",
+            "SourceRuleId": "mixed:yard",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -1.5,
+                  "Y": -1.5
+                },
+                {
+                  "X": 1.5,
+                  "Y": -1.5
+                },
+                {
+                  "X": 1.5,
+                  "Y": 1.5
+                },
+                {
+                  "X": -1.5,
+                  "Y": 1.5
+                }
+              ]
+            },
+            "Reservation": {
+              "Vertices": [
+                {
+                  "X": -1.75,
+                  "Y": -1.75
+                },
+                {
+                  "X": 1.75,
+                  "Y": -1.75
+                },
+                {
+                  "X": 1.75,
+                  "Y": 1.75
+                },
+                {
+                  "X": -1.75,
+                  "Y": 1.75
+                }
+              ]
+            }
+          },
+          "Access": {
+            "Occupancy": "Reservation",
+            "Ports": [
+              {
+                "Id": "north",
+                "Purpose": "Yard approach",
+                "SourceRuleId": "mixed:yard-door",
+                "BoundaryPosition": {
+                  "X": 0,
+                  "Y": -1.5
+                },
+                "ApproachPosition": {
+                  "X": 0,
+                  "Y": -2.5
+                },
+                "Width": 0.8
+              }
+            ]
+          },
+          "Capacities": null,
+          "Services": null,
+          "ProgramInputs": null
+        },
+        {
+          "Id": "cache",
+          "Kind": "equipment",
+          "Purpose": "Stored supplies",
+          "Properties": {},
+          "Parts": [],
+          "Connections": [],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Cache body",
+            "SourceRuleId": "mixed:cache",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -0.5,
+                  "Y": -0.5
+                },
+                {
+                  "X": 0.5,
+                  "Y": -0.5
+                },
+                {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                {
+                  "X": -0.5,
+                  "Y": 0.5
+                }
+              ]
+            },
+            "Reservation": null
+          },
+          "Access": {
+            "Occupancy": "Solid",
+            "Ports": []
+          },
+          "Capacities": null,
+          "Services": null,
+          "ProgramInputs": null
+        },
+        {
+          "Id": "machine",
+          "Kind": "equipment",
+          "Purpose": "Production machine",
+          "Properties": {},
+          "Parts": [],
+          "Connections": [],
+          "ChildRequirements": [],
+          "RequireWeaklyConnectedChildren": false,
+          "Structure": null,
+          "LayerId": null,
+          "PhysicalFootprint": {
+            "Unit": "meters",
+            "Purpose": "Machine body",
+            "SourceRuleId": "mixed:machine",
+            "Polygon": {
+              "Vertices": [
+                {
+                  "X": -0.4,
+                  "Y": -0.4
+                },
+                {
+                  "X": 0.4,
+                  "Y": -0.4
+                },
+                {
+                  "X": 0.4,
+                  "Y": 0.4
+                },
+                {
+                  "X": -0.4,
+                  "Y": 0.4
+                }
+              ]
+            },
+            "Reservation": null
+          },
+          "Access": {
+            "Occupancy": "Solid",
+            "Ports": []
+          },
+          "Capacities": null,
+          "Services": null,
+          "ProgramInputs": null
+        }
+      ]
+    }
+  },
+  "Chunks": null,
+  "TopologyRules": [
+    {
+      "Id": "mixed-journey",
+      "Purpose": "Reach every regional destination",
+      "SourceRuleId": "mixed:topology",
+      "ScopeNodeId": "mixed-region",
+      "StartNodeId": "mixed-region/camps-0",
+      "ConnectionKind": "regional-path",
+      "Stages": [
+        {
+          "Id": "exploration",
+          "Purpose": "Visit all functions",
+          "ExitNodeId": "mixed-region/research-1",
+          "MemberKinds": [
+            "compound"
+          ],
+          "MinimumMembers": 4,
+          "MaximumMembers": 4
+        }
+      ],
+      "Seed": "mixed-world-001",
+      "MaximumDegree": 4,
+      "ExtraConnections": 2,
+      "MaximumWork": 1000000,
+      "LayerId": null
+    }
+  ],
+  "RouteBudget": {
+    "Purpose": "Bound all realized regional travel work",
+    "SourceRuleId": "mixed:route-budget",
+    "MaximumWork": 200000000,
+    "MaximumDirections": 128
+  },
+  "Interiors": null,
+  "TerrainDemands": {
+    "Rules": [
+      {
+        "Id": "lowland",
+        "Purpose": "Derive required content from the complete lowland habitat",
+        "SourceRuleId": "demand:habitat:lowland",
+        "ParentNodeId": "mixed-region",
+        "PartId": "lowland-features",
+        "RegionId": "lowland",
+        "AmountPerMember": 50,
+        "DensityFieldId": "fertility",
+        "AllocationId": "lowland-habitat",
+        "MaximumCount": 1024,
+        "MaximumCells": 4096
+      },
+      {
+        "Id": "highland",
+        "Purpose": "Derive required content from the complete highland habitat",
+        "SourceRuleId": "demand:habitat:highland",
+        "ParentNodeId": "mixed-region",
+        "PartId": "highland-features",
+        "RegionId": "highland",
+        "AmountPerMember": 50,
+        "DensityFieldId": "fertility",
+        "AllocationId": "highland-habitat",
+        "MaximumCount": 1024,
+        "MaximumCells": 4096
+      },
+      {
+        "Id": "woodland",
+        "Purpose": "Derive required content from the complete woodland habitat",
+        "SourceRuleId": "demand:habitat:woodland",
+        "ParentNodeId": "mixed-region",
+        "PartId": "woodland-features",
+        "RegionId": "woodland",
+        "AmountPerMember": 80,
+        "DensityFieldId": "fertility",
+        "AllocationId": "woodland-habitat",
+        "MaximumCount": 1024,
+        "MaximumCells": 4096
+      }
+    ],
+    "MaximumWork": 5000000
+  },
+  "ProgramComposition": null,
+  "Drainage": null,
+  "Water": null,
+  "WindMoisture": null
+}

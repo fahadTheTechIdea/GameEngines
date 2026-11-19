@@ -1,0 +1,17 @@
+{
+  "format": 3, "id": "field.briefing",
+  "variables": [ { "id": "answer", "type": "string", "initial": "none", "allowed": ["none", "go", "wait"] } ],
+  "externalFacts": [ { "id": "foes", "type": "int", "min": 0, "max": 100000 }, { "id": "squads", "type": "int", "min": 0, "max": 100000 } ],
+  "speakers": [ { "id": "{SPEAKER}", "portraits": ["calm", "grim"] } ],
+  "quests": [ { "id": "hold", "title": "quest.hold.title", "start": "order", "stages": [
+      { "id": "order", "journal": "quest.hold.order", "advance": [ { "when": { "fact": "ext.foes", "op": "eq", "value": 0 }, "to": "done" } ] },
+      { "id": "done", "journal": "quest.hold.done", "advance": [], "ends": "completed" } ] } ],
+  "conversations": [ { "id": "briefing", "start": "hello", "nodes": [
+      { "id": "hello", "kind": "line", "speaker": "{SPEAKER}", "portrait": "calm", "line": "briefing.hello", "args": { "count": "ext.squads" }, "next": "ask" },
+      { "id": "ask", "kind": "choice", "pick": "player", "options": [
+          { "id": "go", "line": "briefing.go", "effects": [ { "set": "answer", "value": "go" }, { "startQuest": "hold" }, { "signal": "fire-at-will" } ], "next": "ack" },
+          { "id": "wait", "line": "briefing.wait", "effects": [ { "set": "answer", "value": "wait" }, { "signal": "hold-fire" } ], "next": "stand" } ] },
+      { "id": "ack", "kind": "line", "speaker": "{SPEAKER}", "portrait": "grim", "line": "briefing.ack", "next": "bye" },
+      { "id": "stand", "kind": "line", "speaker": "{SPEAKER}", "portrait": "calm", "line": "briefing.stand", "next": "bye" },
+      { "id": "bye", "kind": "end", "result": "briefed" } ] } ]
+}

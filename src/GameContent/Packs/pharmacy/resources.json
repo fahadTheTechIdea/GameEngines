@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "pack": "pharmacy",
+  "resources": [
+    { "id": "pharmacy.willow-bark", "name": "Willow bark", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["botanical"], "properties": { "base-price": 1 } },
+    { "id": "pharmacy.cinchona-bark", "name": "Cinchona bark", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["botanical"], "properties": { "base-price": 2 } },
+    { "id": "pharmacy.aloe", "name": "Aloe leaves", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["botanical"], "properties": { "base-price": 1.5 } },
+    { "id": "pharmacy.chamomile", "name": "Chamomile flowers", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["botanical"], "properties": { "base-price": 4 } },
+    { "id": "pharmacy.mint", "name": "Peppermint", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["botanical"], "properties": { "base-price": 6 } },
+    { "id": "pharmacy.ethanol", "name": "Pharmaceutical ethanol", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["solvent"], "properties": { "base-price": 3 } },
+    { "id": "pharmacy.salicin", "name": "Salicin extract", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 20 }, "grade": { "scheme": "quality", "levels": ["low", "standard", "high"] }, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["active"], "properties": { "base-price": 80 } },
+    { "id": "pharmacy.quinine", "name": "Quinine extract", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["active"], "properties": { "base-price": 100 } },
+    { "id": "pharmacy.tablets", "name": "Pain-relief tablets", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 5000 }, "grade": { "scheme": "quality", "levels": ["low", "standard", "high"] }, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["dosage-form"], "properties": { "base-price": 0.5 } },
+    { "id": "pharmacy.syrup", "name": "Antimalarial syrup", "class": "intermediate", "unit": "L", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": { "ticks": 30000, "result": "pharmacy.expired" }, "durability": null, "currency": null, "cpc": "3", "tags": ["dosage-form"], "properties": { "base-price": 30 } },
+    { "id": "pharmacy.gel", "name": "Antiseptic gel", "class": "intermediate", "unit": "L", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": { "ticks": 40000, "result": "pharmacy.expired" }, "durability": null, "currency": null, "cpc": "3", "tags": ["dosage-form"], "properties": { "base-price": 8 } },
+    { "id": "pharmacy.infusion", "name": "Chamomile infusion", "class": "consumable", "unit": "L", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": { "ticks": 5000, "result": "pharmacy.expired" }, "durability": null, "currency": null, "cpc": "2", "tags": ["herbal"], "properties": { "base-price": 2 } },
+    { "id": "pharmacy.bottle", "name": "Dispensing bottle", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["packaging"], "properties": { "base-price": 0.3 } },
+    { "id": "pharmacy.tablet-pack", "name": "Tablet pack", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["dispensed"], "properties": { "base-price": 22 } },
+    { "id": "pharmacy.syrup-bottle", "name": "Syrup bottle", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["dispensed"], "properties": { "base-price": 34 } },
+    { "id": "pharmacy.gel-bottle", "name": "Gel bottle", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["dispensed"], "properties": { "base-price": 9 } },
+    { "id": "pharmacy.slip", "name": "Prescription slip", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["paperwork"], "properties": {} },
+    { "id": "pharmacy.filled-prescription", "name": "Filled prescription", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["dispensed"], "properties": { "base-price": 28 } },
+    { "id": "pharmacy.first-aid-box", "name": "Pharmacy first aid box", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["dispensed"], "properties": { "base-price": 75 } },
+    { "id": "pharmacy.expired", "name": "Expired medicine", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["waste", "hazard"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "pharmacy.compounding-lab", "name": "Compounding lab", "levels": 2 },
+    { "id": "pharmacy.tablet-press", "name": "Tablet press", "levels": 1 },
+    { "id": "pharmacy.counter", "name": "Dispensing counter", "levels": 1 },
+    { "id": "pharmacy.still", "name": "Ethanol still", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "pharmacy.chemistry", "name": "Pharmaceutical chemistry", "max": 10 }
+  ]
+}

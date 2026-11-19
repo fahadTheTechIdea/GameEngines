@@ -1,0 +1,4 @@
+{
+  "entity_objective_predicates": [ { "id": "quick.has-marker", "prototype": "quick.marker", "minimum": 1 } ],
+  "objectives": [ { "id": "quick.first", "prerequisites": [], "predicate": "quick.has-marker", "deadline": null, "on_complete": null, "on_failure": null } ]
+}

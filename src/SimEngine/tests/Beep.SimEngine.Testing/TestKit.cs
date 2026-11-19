@@ -17,7 +17,7 @@ namespace Beep.SimEngine.Testing
         public static void AssertUnclaimedRequirementParity(Check check, SimGame game, int seat,
             string activity, EntityId target, int order, string node)
         {
-            ulong before = game.Hash(); long time = game.Clock.StepIndex;
+            ulong before = game.Hash(); long time = game.Tick;
             var view = game.Seat(seat).View.Feature<WorkView>();
             var proposed = new List<WorkRequirementView>(); var current = new List<WorkRequirementView>();
             var nodes = new List<ActivityNodeView>();
@@ -36,7 +36,7 @@ namespace Beep.SimEngine.Testing
             check.Equal(actual.Blocker, a.Result.Blocker, "proposed blocker equals actual scheduled blocker");
             check.Equal(actual.Blocker, b.Result.Blocker, "active requirement blocker equals actual scheduled blocker");
             check.Equal(before, game.Hash(), "readiness comparison reserves or consumes nothing");
-            check.Equal(time, game.Clock.StepIndex, "readiness comparison drives no game time");
+            check.Equal(time, game.Tick, "readiness comparison drives no game time");
         }
 
         /// <summary>Submits an order through a seat, runs one tick and returns the engine's answer to it.</summary>
@@ -69,7 +69,7 @@ namespace Beep.SimEngine.Testing
             if (game == null) throw new ArgumentNullException(nameof(game));
             if (done == null) throw new ArgumentNullException(nameof(done));
             if (maxUpdates < 0) throw new ArgumentOutOfRangeException(nameof(maxUpdates));
-            return Await(game, done, maxUpdates, remaining => { game.Update(); return 1; }, SimulationWaitBudgetUnit.LifecycleUpdates);
+            return Await(game, done, maxUpdates, remaining => { game.Update(game.Tick + 1); return 1; }, SimulationWaitBudgetUnit.LifecycleUpdates);
         }
 
         private static int Await(SimGame g, Func<bool> done, int budget, Func<int, int> advance, SimulationWaitBudgetUnit unit)

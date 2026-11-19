@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "pack": "space",
+  "resources": [
+    { "id": "space.minerals", "name": "Asteroid minerals", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 10000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["ore", "basic"], "properties": {} },
+    { "id": "space.volatiles", "name": "Volatile gases", "class": "gas", "unit": "m3", "origin": "natural", "stack": { "max": 10000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["gas", "strategic"], "properties": {} },
+    { "id": "space.rare-crystals", "name": "Rare crystals", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 1000 }, "grade": { "scheme": "rarity", "levels": ["common", "rare", "exotic"] }, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["strategic"], "properties": {} },
+    { "id": "space.food-rations", "name": "Food rations", "class": "consumable", "unit": "kg", "origin": "natural", "stack": { "max": 10000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["basic", "need"], "properties": {} },
+    { "id": "space.alloys", "name": "Starship alloys", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 10000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["advanced"], "properties": {} },
+    { "id": "space.slag", "name": "Refinery slag", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 10000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["waste"], "properties": {} },
+    { "id": "space.consumer-goods", "name": "Consumer goods", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 10000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["need"], "properties": {} },
+    { "id": "space.fuel-cells", "name": "Fuel cells", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["fuel"], "properties": {} },
+    { "id": "space.hull-plates", "name": "Hull plates", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["ship-part"], "properties": {} },
+    { "id": "space.thrusters", "name": "Ion thrusters", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["ship-part"], "properties": {} },
+    { "id": "space.reactors", "name": "Fusion reactors", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["ship-part"], "properties": {} },
+    { "id": "space.lasers", "name": "Pulse lasers", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["ship-part", "weapon"], "properties": {} },
+    { "id": "space.mining-laser", "name": "Mining laser", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 5000 }, "currency": null, "cpc": "4", "tags": ["tool", "mining"], "properties": {} },
+    { "id": "space.gas-scoop", "name": "Gas scoop", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 5000 }, "currency": null, "cpc": "4", "tags": ["tool", "mining"], "properties": {} },
+    { "id": "space.survey-probe", "name": "Survey probe", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["exploration"], "properties": {} },
+    { "id": "space.outpost-kit", "name": "Outpost kit", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 10 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["expansion"], "properties": {} },
+    { "id": "space.frigate", "name": "Frigate", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["ship", "warship"], "properties": { "hull": 400 } },
+    { "id": "space.freighter", "name": "Freighter", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["ship", "cargo"], "properties": { "cargo": 2000 } },
+    { "id": "space.research-data", "name": "Research data", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 100000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["research"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "space.refinery-platform", "name": "Refinery platform", "levels": 2 },
+    { "id": "space.foundry-ring", "name": "Foundry ring", "levels": 2 },
+    { "id": "space.shipyard", "name": "Shipyard", "levels": 3 },
+    { "id": "space.science-lab", "name": "Orbital science lab", "levels": 2 },
+    { "id": "space.habitat", "name": "Habitat ring", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "space.engineering", "name": "Ship engineering", "max": 20 },
+    { "id": "space.survey", "name": "Survey science", "max": 20 }
+  ]
+}

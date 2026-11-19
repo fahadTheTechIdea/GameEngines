@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "pack": "military",
+  "resources": [
+    { "id": "military.saltpeter", "name": "Saltpeter", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["chemical"], "properties": {} },
+    { "id": "military.grain-ration", "name": "Field ration", "class": "consumable", "unit": "{each}", "origin": "natural", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["supply", "food"], "properties": {} },
+    { "id": "military.recruit", "name": "Recruit", "class": "population", "unit": "{person}", "origin": "natural", "stack": { "max": 100000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["personnel"], "properties": {} },
+    { "id": "military.gunpowder", "name": "Gunpowder", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["chemical", "munition"], "properties": {} },
+    { "id": "military.fuel", "name": "Vehicle fuel", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 10000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["liquid", "fuel"], "properties": {} },
+    { "id": "military.rifle", "name": "Rifle", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["small-arm"], "properties": { "cost-steel": 2 } },
+    { "id": "military.ammo", "name": "Ammunition crate", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["munition", "supply"], "properties": {} },
+    { "id": "military.shell", "name": "Artillery shell", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["munition", "supply"], "properties": {} },
+    { "id": "military.cannon", "name": "Cannon", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["heavy-arm"], "properties": {} },
+    { "id": "military.engine", "name": "Vehicle engine", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["vehicle-part"], "properties": {} },
+    { "id": "military.truck", "name": "Supply truck", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["vehicle", "logistics"], "properties": { "capacity-kg": 3000 } },
+    { "id": "military.tank", "name": "Tank", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["vehicle", "armor"], "properties": { "armor": 60 } },
+    { "id": "military.radio", "name": "Field radio", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["communications"], "properties": {} },
+    { "id": "military.medkit", "name": "Medical kit", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["supply", "medical"], "properties": {} },
+    { "id": "military.rifleman", "name": "Rifleman", "class": "population", "unit": "{person}", "origin": "crafted", "stack": { "max": 100000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["personnel", "infantry"], "properties": {} },
+    { "id": "military.tank-crew", "name": "Tank crew", "class": "population", "unit": "{person}", "origin": "crafted", "stack": { "max": 100000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["personnel", "armor"], "properties": {} },
+    { "id": "military.supply-depot", "name": "Supply depot", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["structure", "logistics"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "military.arsenal", "name": "Arsenal", "levels": 2 },
+    { "id": "military.vehicle-works", "name": "Vehicle works", "levels": 3 },
+    { "id": "military.barracks", "name": "Barracks", "levels": 2 },
+    { "id": "military.field-hospital", "name": "Field hospital", "levels": 1 },
+    { "id": "military.fuel-depot", "name": "Fuel depot", "levels": 1 },
+    { "id": "military.signals-workshop", "name": "Signals workshop", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "military.gunsmithing", "name": "Gunsmithing", "max": 10 },
+    { "id": "military.mechanics", "name": "Vehicle mechanics", "max": 10 }
+  ]
+}

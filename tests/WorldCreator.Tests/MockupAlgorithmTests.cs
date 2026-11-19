@@ -11,7 +11,7 @@ internal static class MockupAlgorithmTests
     public static async Task RunAsync(string? cliPath)
     {
         var input = MockupGenerationFixture.Create();
-        var engine = new DesertWorldGenerator(TestCatalogs.Registry);
+        var engine = new MockupWorldGenerator(TestCatalogs.Registry);
         var world = await engine.GenerateAsync(input);
         Check(world.Design is not null && world.Objects.All(o => o.VisualSource is {
             MockupId:"synthetic-industrial-mockup",MockupRevision:"simulated-layout-r1" }),"all objects preserve mockup lineage");
@@ -157,7 +157,7 @@ internal static class MockupAlgorithmTests
     {
         var region = MockupGenerationFixture.Rect(32,32,480,480);
         var definition = new ModernCatalog().Structures.Single(d => d.Id == type);
-        return TestCatalogs.Contextualize(new(512,512,42,Biome.Desert,1,new(1,
+        return TestCatalogs.Contextualize(new(512,512,1,new(1,
             new(1,"synthetic-landmark-layout","simulated-r1","synthetic-style",
                 [new("world",MockupGenerationFixture.Rect(0,0,512,512),"world"),new("landmark-site",region,"civic-composition")],[]),1,
             [new("approach","world",new([new(8,32),new(504,32)]),"road")],

@@ -1,0 +1,1 @@
+{ "behavior": "guard", "tick": 0, "keys": { "threat": 55, "health": 80, "distance": 90 }, "percepts": [] }

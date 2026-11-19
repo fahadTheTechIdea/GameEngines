@@ -1,0 +1,199 @@
+{
+  "Version": 1,
+  "Id": "framework-city-art-scopes",
+  "WorldSha256": "e47d851539baabc787191d7702549540aed878d5f00572a4f701d7479e4c7208",
+  "Bindings": [
+    {
+      "ArchetypeId": "house",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "townhouse",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "apartment",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "shop",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "cafe",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "restaurant",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "office",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "clinic",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "civic",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "library",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "school-building",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "warehouse",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "workshop",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "guardhouse",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "garden",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "entry-walk",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "courtyard",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "playground",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "yard",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "plaza",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "park",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "utility-yard",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "production-hall",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "house-site",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "apartment-site",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "school-site",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "factory-site",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "old-center",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "garden-neighborhood",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "riverside",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "mixed-center",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "work-district",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "outer-neighborhood",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "city",
+      "Role": "Group"
+    }
+  ],
+  "Scopes": [
+    {
+      "Id": "city-overview",
+      "ParentId": null,
+      "Purpose": "Complete city overview indexing every district detail and constituent",
+      "MemberRootIds": []
+    },
+    {
+      "Id": "garden-neighborhood",
+      "ParentId": "city-overview",
+      "Purpose": "Residential neighborhood responding to slopes and park edges",
+      "MemberRootIds": [
+        "framework-reference-city/garden-neighborhood-0"
+      ]
+    },
+    {
+      "Id": "mixed-center",
+      "ParentId": "city-overview",
+      "Purpose": "Mixed commercial and residential center",
+      "MemberRootIds": [
+        "framework-reference-city/mixed-center-0"
+      ]
+    },
+    {
+      "Id": "old-center",
+      "ParentId": "city-overview",
+      "Purpose": "Older center with irregular streets and connected civic spaces",
+      "MemberRootIds": [
+        "framework-reference-city/old-center-0"
+      ]
+    },
+    {
+      "Id": "outer-neighborhood",
+      "ParentId": "city-overview",
+      "Purpose": "Outer residential neighborhood with a local center",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0"
+      ]
+    },
+    {
+      "Id": "riverside",
+      "ParentId": "city-overview",
+      "Purpose": "River-edge residential district with a continuous public landscape",
+      "MemberRootIds": [
+        "framework-reference-city/riverside-0"
+      ]
+    },
+    {
+      "Id": "work-district",
+      "ParentId": "city-overview",
+      "Purpose": "Productive district with complete factory compounds and local services",
+      "MemberRootIds": [
+        "framework-reference-city/work-district-0"
+      ]
+    }
+  ]
+}

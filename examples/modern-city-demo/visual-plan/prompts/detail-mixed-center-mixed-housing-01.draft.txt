@@ -1,0 +1,38 @@
+DRAFT DETAIL SCENE: mixed-center / mixed-housing / mixed-center-mixed-housing-01
+
+Use the genuinely confirmed framework test profile 99de9f248453: crisp 16-bit pixel_mid game art, 3/4 overhead orthographic, roofs and substantial walls visible, non-isometric square-ground-map convention, no vanishing-point perspective or diamond city. Keep the camera fixed while buildings face their own purposeful access paths. Natural mockup resolution is independent of production scale. Later production is 32 pixels/metre with 0.5m presentation cells; do not impose those cells as city blocks or draw a grid. No fixed palette has been selected. Reuse actual eligible approved reference pixels; no rejected or unapproved source image may be attached.
+
+Create a full-bleed scene mockup using the whole image. Isolated-reference magenta backgrounds must not appear inside the scene. Keep buildings and site access readable, with clear playable circulation. Include all declared compound parts and surroundings. Roads, paths and district boundaries follow the approved composition and terrain; no global grid, equal rectangular district packing or vacant-cell fallback. Place every prop intentionally from its reference/site programme. Actual visible props not yet in the metadata must be added to the reusable catalogue and reconciled before map compilation; do not claim this pre-layout inventory already contains every final prop.
+
+Declared complete content for this view (counts include nested site constituents):
+- apartment: 18
+- apartment-site: 18
+- courtyard: 18
+- entry-walk: 18
+
+These exact metadata subtrees own the view; keep each complete site intact:
+- framework-reference-city/mixed-center-0/homes-0
+- framework-reference-city/mixed-center-0/homes-1
+- framework-reference-city/mixed-center-0/homes-10
+- framework-reference-city/mixed-center-0/homes-11
+- framework-reference-city/mixed-center-0/homes-12
+- framework-reference-city/mixed-center-0/homes-13
+- framework-reference-city/mixed-center-0/homes-14
+- framework-reference-city/mixed-center-0/homes-15
+- framework-reference-city/mixed-center-0/homes-16
+- framework-reference-city/mixed-center-0/homes-17
+- framework-reference-city/mixed-center-0/homes-2
+- framework-reference-city/mixed-center-0/homes-3
+- framework-reference-city/mixed-center-0/homes-4
+- framework-reference-city/mixed-center-0/homes-5
+- framework-reference-city/mixed-center-0/homes-6
+- framework-reference-city/mixed-center-0/homes-7
+- framework-reference-city/mixed-center-0/homes-8
+- framework-reference-city/mixed-center-0/homes-9
+
+Required individual reference images: apartment-low-rise:v001, entry-walk-reference:v001, courtyard-reference:v001.
+This view contains 18 building bodies. Keep each distinguishable and do not invent additional buildings. The attached manifest supplies all exact node identities. Surroundings, entrances and access must remain legible; a natural-resolution scene cannot certify production detail.
+
+The parent district is Mixed commercial and residential center. Coordinate shared access/terrain landmarks with sibling views; record correspondence after the actual images exist. If the same feature disagrees across views, revise the design before map compilation; do not scale or move an object arbitrarily to force a fit. Logical district interfaces are intent only and must later be realized by explicit captured paths/junctions.
+
+DRAFT ONLY. Resolve current canonical GameArts settings, select and audit every exact required reference revision before generation. Any unresolved reference blocks execution. Register the actual generated image and exact prompt canonically, then require real owner review. This text and its declared coverage are not generated artwork or an approval. After review, vision must identify every required instance and surrounding component. Missing/occluded/ambiguous items require explicit evidence and revision or additional detail views, never omissions, arbitrary scattering, shrinking footprints or filler. Roof outlines are not ground footprints. Record calibration and ground-body anchors separately, marking inferred hidden geometry honestly.

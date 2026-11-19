@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The authoring tool for dialogue documents: check, explain, export and import translators' sheets, coverage, graph. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><AssemblyName>DialogueEngine.Cli</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DialogueEngine.Core/DialogueEngine.Core.csproj" />
+  </ItemGroup>
+</Project>

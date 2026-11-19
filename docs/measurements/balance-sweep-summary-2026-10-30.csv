@@ -1,0 +1,7 @@
+engine,document,variant,seeds,horizon,metrics,metrics_varying_over_seeds,wall_seconds_debug_build
+world-events,valley.world.json,sample,200,365 steps,40,36,7.2
+relationship,village.relationship.json,sample,200,90 days,37,1,11
+economy,town.economy.json,sample,50,365 periods,196,0,6.8
+economy,town.economy.json,scratch-copy-price-noise-60,50,365 periods,196,71,5.1
+economy,isles.economy.json,sample-empty-scenario,50,365 periods,184,0,
+economy,isles.economy.json,scratch-copy-price-noise-60-empty-scenario,50,365 periods,184,44,

@@ -10,7 +10,7 @@ public sealed record PedestrianJunction(string Id, string FirstPathId,
 public sealed class ControlledPedestrianReachability
 {
     private const double Tolerance = 1e-6;
-    public IReadOnlyList<string> Validate(DummyVillageWorldDocument world,
+    public IReadOnlyList<string> Validate(WorldSceneDocument world,
         IReadOnlyList<PedestrianJunction> junctions)
     {
         ArgumentNullException.ThrowIfNull(world);

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Diplomacy.Bridges/GameRuntime.Diplomacy.Bridges.csproj" />
+    <ProjectReference Include="../GameRuntime.Economy.Bridges/GameRuntime.Economy.Bridges.csproj" />
+    <EmbeddedResource Include="../../CalendarEngine/samples/gregorian.calendar.json" LogicalName="gregorian.calendar.json" />
+    <EmbeddedResource Include="../../DiplomacyEngine/samples/isles.economy.json" LogicalName="isles.economy.json" />
+    <EmbeddedResource Include="../../DiplomacyEngine/samples/isles.diplomacy.json" LogicalName="isles.diplomacy.json" />
+    <EmbeddedResource Include="../../DiplomacyEngine/samples/isles.diplomacy.en.json" LogicalName="isles.diplomacy.en.json" WithCulture="false" />
+  </ItemGroup>
+</Project>

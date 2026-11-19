@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- A pure library: no clock, no files, no world. Time is a whole number of steps given by the caller. Checked arithmetic: an overflow is an exception, never a wrapped number. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><CheckForOverflowUnderflow>true</CheckForOverflowUnderflow></PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="TutorialEngine.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../EngineCommon/EngineCommon.Core/EngineCommon.Core.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Contracts/ScenarioEngine.Contracts.csproj" />
+  </ItemGroup>
+</Project>

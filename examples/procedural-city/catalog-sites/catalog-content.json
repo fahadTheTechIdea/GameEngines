@@ -1,0 +1,178 @@
+{
+  "SchemaVersion": 1,
+  "Id": "user.city-sites",
+  "CatalogId": "modern",
+  "SourceRuleId": "test.catalog-city-sites",
+  "Structures": [
+    {
+      "Id": "user.courtyard-studio",
+      "Function": "Employment",
+      "ServiceCapacity": 60,
+      "AllowedClasses": [
+        "Village",
+        "Town",
+        "City"
+      ],
+      "FavoredRoles": [],
+      "SizeVariants": [
+        {
+          "Id": "compact",
+          "WidthMeters": 6,
+          "DepthMeters": 8,
+          "HeightMeters": 4,
+          "ServiceCapacity": 1,
+          "SiteClearanceMeters": 6,
+          "AllowedClasses": null,
+          "MinimumRoadWidthMeters": 0
+        }
+      ],
+      "ScaleDemandPerResident": 0,
+      "SiteRules": [
+        {
+          "Id": "arrival",
+          "Kind": "Forecourt",
+          "Band": "Front",
+          "MinimumDepthMeters": 4,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        },
+        {
+          "Id": "garden",
+          "Kind": "Garden",
+          "Band": "Rear",
+          "MinimumDepthMeters": 3,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        },
+        {
+          "Id": "parking",
+          "Kind": "Parking",
+          "Band": "Right",
+          "MinimumDepthMeters": 5,
+          "InsetMeters": 0,
+          "Required": false,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        }
+      ],
+      "AccessWidthMeters": 6,
+      "MinimumRoadWidthMeters": 3,
+      "AllowedRoles": null,
+      "Category": "OfficeFinance",
+      "CapacityUnit": "workers",
+      "AutomaticDemand": false,
+      "PlacementKind": "FrontageSite",
+      "SitingProfile": {
+        "Id": "siting:office-building",
+        "Revision": 1,
+        "ResearchRuleIds": [
+          "S01",
+          "S42"
+        ],
+        "SourceIds": [
+          "R22"
+        ],
+        "AllowedDistricts": [
+          "CommercialCenter",
+          "MixedUse",
+          "Research"
+        ],
+        "AllowedTechnologies": [
+          "Standard"
+        ],
+        "Tags": [],
+        "Requirements": [
+          {
+            "Id": "customers",
+            "Kind": "PedestrianCatchment",
+            "Mode": "Pedestrian",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": null,
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          },
+          {
+            "Id": "potable-water",
+            "Kind": "PotableWater",
+            "Mode": "Utility",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": [
+              "potable",
+              "reliable"
+            ],
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          },
+          {
+            "Id": "power",
+            "Kind": "Electricity",
+            "Mode": "Utility",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": null,
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          },
+          {
+            "Id": "wastewater",
+            "Kind": "Wastewater",
+            "Mode": "Utility",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": null,
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          }
+        ],
+        "RequiredSurroundings": [
+          "AccessWalkway",
+          "Forecourt",
+          "Garden"
+        ],
+        "Provides": [
+          "ParentFacility"
+        ],
+        "OutputUnit": "game-service-units",
+        "OutputUnitsPerCapacity": 1
+      },
+      "Composition": {
+        "Representation": "SingleStructure",
+        "GeometryScope": "One studio building",
+        "ReviewBasis": "Authored catalog-city test program",
+        "PartRoles": []
+      }
+    }
+  ],
+  "Programs": [],
+  "Facilities": [],
+  "ReplaceStructureIds": null,
+  "ReplaceFacilityIds": null
+}

@@ -1,0 +1,25 @@
+{
+  "format": 1,
+  "id": "guard",
+  "every": 5,
+  "features": [
+    { "id": "threat", "fact": "key.threat", "min": 0, "max": 100, "initial": 0 },
+    { "id": "health", "fact": "key.health", "min": 0, "max": 100, "initial": 100 },
+    { "id": "distance", "fact": "key.distance", "min": 0, "max": 500, "initial": 500 }
+  ],
+  "actions": [ "attack", "flee", "hold", "patrol" ],
+  "root": "n0",
+  "nodes": [
+    { "id": "n0", "feature": "threat", "op": "lte", "threshold": 20, "left": "n1", "right": "n2" },
+    { "id": "n1", "feature": "health", "op": "lte", "threshold": 30, "left": "n3", "right": "n4" },
+    { "id": "n2", "feature": "health", "op": "lte", "threshold": 40, "left": "n5", "right": "n6" },
+    { "id": "n3", "action": "hold", "weight": 40 },
+    { "id": "n4", "action": "patrol", "weight": 60 },
+    { "id": "n5", "action": "flee", "weight": 90 },
+    { "id": "n6", "feature": "distance", "op": "lte", "threshold": 120, "left": "n7", "right": "n8" },
+    { "id": "n7", "action": "attack", "weight": 80 },
+    { "id": "n8", "feature": "distance", "op": "lte", "threshold": 520, "left": "n9", "right": "n10" },
+    { "id": "n9", "action": "hold", "weight": 50 },
+    { "id": "n10", "action": "patrol", "weight": 30 }
+  ]
+}

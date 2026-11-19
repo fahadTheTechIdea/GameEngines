@@ -1,0 +1,43 @@
+{
+  "Version": 1,
+  "Status": "ProposedOnly",
+  "Scope": "Framework reference art test, not a commissioned game",
+  "OwnerConfirmed": false,
+  "Choices": {
+    "project_name": {
+      "value": "name",
+      "text": "framework-city-reference"
+    },
+    "world_kind": {
+      "value": "free_world"
+    },
+    "look": {
+      "value": "pixel_mid"
+    },
+    "viewpoint": {
+      "value": "top_down"
+    },
+    "scale": {
+      "value": "32"
+    },
+    "directions": {
+      "value": "per_object"
+    },
+    "animation": {
+      "value": "hybrid"
+    },
+    "image_generator": {
+      "value": "built_in_image_gen"
+    },
+    "engine": {
+      "value": "godot"
+    },
+    "palette": {
+      "value": "none"
+    }
+  },
+  "CanonicalOptionValidation": "Passed; this is not owner selection/confirmation",
+  "CanonicalSetupSha256": "545bfe0301e720e57809c11dc884928793d2626b36b664f26b9e24fc3033457b",
+  "TestOnlyPresentationCellMeters": 0.5,
+  "TestOnlyMaximumPoseIntervalSeconds": 0.05
+}

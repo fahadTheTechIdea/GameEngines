@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "pack": "tycoon",
+  "resources": [
+    { "id": "tycoon.polymer-pellets", "name": "Polymer pellets", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["industrial"], "properties": {} },
+    { "id": "tycoon.paint", "name": "Paint", "class": "fluid", "unit": "L", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["industrial"], "properties": {} },
+    { "id": "tycoon.sugar", "name": "Sugar", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["food"], "properties": {} },
+    { "id": "tycoon.plastic-toy", "name": "Plastic toy", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["retail", "toy"], "properties": { "base-price": 12 } },
+    { "id": "tycoon.wooden-toy", "name": "Wooden toy", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["retail", "toy"], "properties": { "base-price": 15 } },
+    { "id": "tycoon.gift-box", "name": "Gift box", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["retail", "toy"], "properties": { "base-price": 30 } },
+    { "id": "tycoon.ad-campaign", "name": "Advertising campaign", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["marketing"], "properties": {} },
+    { "id": "tycoon.software-feature", "name": "Software feature", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["software"], "properties": {} },
+    { "id": "tycoon.software-product", "name": "Software product", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 10 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["software", "retail"], "properties": { "base-price": 500 } },
+    { "id": "tycoon.support-contract", "name": "Support contract", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["software", "service"], "properties": {} },
+    { "id": "tycoon.ride-ticket", "name": "Ride ticket", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["park", "ticket"], "properties": { "base-price": 8 } },
+    { "id": "tycoon.candy-floss", "name": "Candy floss", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": { "ticks": 4000, "result": null }, "durability": null, "currency": null, "cpc": "2", "tags": ["park", "snack"], "properties": { "base-price": 4 } },
+    { "id": "tycoon.souvenir", "name": "Park souvenir", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["park", "retail"], "properties": { "base-price": 10 } },
+    { "id": "tycoon.carousel", "name": "Carousel ride", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["park", "ride"], "properties": { "capacity": 16 } },
+    { "id": "tycoon.coaster-car", "name": "Coaster car", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["park", "ride"], "properties": { "capacity": 8 } },
+    { "id": "tycoon.latex", "name": "Latex", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["industrial"], "properties": {} },
+    { "id": "tycoon.lemons", "name": "Lemons", "class": "consumable", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": { "ticks": 15000, "result": null }, "durability": null, "currency": null, "cpc": "0", "tags": ["food", "park"], "properties": {} },
+    { "id": "tycoon.balloon", "name": "Balloon", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["retail", "park"], "properties": { "base-price": 2 } },
+    { "id": "tycoon.plush-toy", "name": "Plush toy", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["retail", "toy"], "properties": { "base-price": 18 } },
+    { "id": "tycoon.puzzle-box", "name": "Puzzle box", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["retail", "toy"], "properties": { "base-price": 9 } },
+    { "id": "tycoon.lemonade", "name": "Lemonade", "class": "consumable", "unit": "L", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["drink", "park"], "properties": { "base-price": 3 } },
+    { "id": "tycoon.beta-build", "name": "Beta build", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["software"], "properties": {} },
+    { "id": "tycoon.bug-report", "name": "Bug report", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["software"], "properties": {} },
+    { "id": "tycoon.park-map", "name": "Park map", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["retail", "park"], "properties": { "base-price": 1 } }
+  ],
+  "stations": [
+    { "id": "tycoon.toy-line", "name": "Toy line", "levels": 2 },
+    { "id": "tycoon.studio", "name": "Software studio", "levels": 2 },
+    { "id": "tycoon.snack-bar", "name": "Snack bar", "levels": 1 },
+    { "id": "tycoon.ride-control", "name": "Ride control room", "levels": 1 },
+    { "id": "tycoon.ride-works", "name": "Ride works", "levels": 2 },
+    { "id": "tycoon.gift-shop", "name": "Gift shop", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "tycoon.programming", "name": "Programming", "max": 10 },
+    { "id": "tycoon.marketing", "name": "Marketing", "max": 10 }
+  ]
+}

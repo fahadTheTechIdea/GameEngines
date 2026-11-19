@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Core/GameRuntime.Core.csproj" />
+    <ProjectReference Include="../GameRuntime.Headless/GameRuntime.Headless.csproj" />
+    <ProjectReference Include="../GameRuntime.Scenario/GameRuntime.Scenario.csproj" />
+    <ProjectReference Include="../GameRuntime.Sim/GameRuntime.Sim.csproj" />
+    <ProjectReference Include="../GameRuntime.Services/GameRuntime.Services.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Persistence/ScenarioEngine.Persistence.csproj" />
+    <ProjectReference Include="../../SimEngine/help/quickstart/Game.Module/QuickGame.Module.csproj" />
+    <None Include="SimContent/**/*.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="ObjectiveContent/**/*.json" CopyToOutputDirectory="PreserveNewest" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Core/ScenarioEngine.Core.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Content/ScenarioEngine.Content.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Diagnostics/ScenarioEngine.Diagnostics.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/samples/Counter.GameLayer/Counter.GameLayer.csproj" />
+  </ItemGroup>
+</Project>

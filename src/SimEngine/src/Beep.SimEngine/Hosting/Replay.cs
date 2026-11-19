@@ -241,7 +241,7 @@ namespace Beep.SimEngine.Hosting
                     {
                         if (record.Step != game.Tick + 1) return Refuse("replay.order", "checkpoint is not next game step", game.Tick, i);
                         callback = "step.update";
-                        if (game.RunTicks(1) != 1 || game.Fault != null) return Refuse("replay.fault", "recorded step cannot complete: " + game.Fault, game.Tick, i);
+                        if (!game.Update(game.Tick + 1) || game.Fault != null) return Refuse("replay.fault", "recorded step cannot complete: " + game.Fault, game.Tick, i);
                         callback = "checkpoint.hash";
                         actual = game.Hash();
                         if (actual != record.Hash) return Refuse("replay.state", "checkpoint differs", game.Tick, i, record.Hash, actual);

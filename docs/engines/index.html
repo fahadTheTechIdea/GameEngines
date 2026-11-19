@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html" aria-current="page">All engines</a>
+      <a href="../../README.md">Repository</a>
+      <a href="../../skills/README.md">Skills</a>
+      <a href="../ENGINE_GRAPH.md">Engine graph</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Documentation index</p>
+  <h1>GameFrameWork engines</h1>
+  <p class="lede">One page per engine, generated from the source under <code>src/</code>. Each page covers the boundary, the public surface, the document or content format, determinism and persistence, command-line tools, GameRuntime integration and the source map. Each engine also has a skill in <code>skills/</code>.</p>
+  <div class="badge-row">
+    <span class="tag">17 engines</span>
+    <span class="tag">source-verified 2026-11-06</span>
+    <span class="tag">HTML + skills</span>
+  </div>
+</header>
+
+<h2 class="anchor" id="foundation">Foundation and orchestration</h2>
+<div class="grid">
+  <div class="card">
+    <h3><a href="EngineCommon.html">EngineCommon</a></h3>
+    <p>Strict JSON and coded refusals, the one condition grammar, stateless seeded rolls, digests, locale/CLDR/RTL, graph algorithms, balance and tail tooling, test guards.</p>
+    <p><span class="tag">shared foundation</span> <span class="tag">net8.0</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="GameContent.html">GameContent</a></h3>
+    <p>Versioned packs of resources, recipes, stations, skills, eras, items and formations, validated as a whole and converted into the other engines.</p>
+    <p><span class="tag">catalog</span> <span class="tag">converters</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="GameRuntime.html">GameRuntime</a></h3>
+    <p>The session host: one clock, ordered components, queued events, channels that always answer, checkpoints, journals, replay, console/headless/Godot hosts.</p>
+    <p><span class="tag">orchestration</span> <span class="tag">deterministic ticks</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="ScenarioEngine.html">ScenarioEngine</a></h3>
+    <p>Mission kernel: validated scenario content, facts and conditions, objective graphs, endings, game layers, transactional commands, snapshots, saves, replay.</p>
+    <p><span class="tag">missions</span> <span class="tag">replay</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="SimEngine.html">SimEngine</a></h3>
+    <p>Deterministic simulation kernel: modules, systems, entities, authored content, work, resources, logistics, production, spatial maps, incidents, save/hash/lockstep.</p>
+    <p><span class="tag">simulation</span> <span class="tag">netstandard2.1</span></p>
+  </div>
+</div>
+
+<h2 class="anchor" id="world">World and resources</h2>
+<div class="grid">
+  <div class="card">
+    <h3><a href="WorldCreator.html">WorldCreator</a></h3>
+    <p>World metadata from game catalogs and recipes: archetypes, hierarchy, regions, placement, access, networks, routes, interiors, chunks, ground cover.</p>
+    <p><span class="tag">metadata</span> <span class="tag">deterministic digests</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="WorldEventsEngine.html">WorldEventsEngine</a></h3>
+    <p>Climate regimes, weather and hydrology, phased hazards, SIR/SEIR outbreaks, event cards and a storyteller director, with effects and facts.</p>
+    <p><span class="tag">living world</span> <span class="tag">format 2</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="SpatialEngine.html">SpatialEngine</a></h3>
+    <p><strong>Parked sketch.</strong> Cell/point types, exact integer distance, terrain def and reserved codes. Working spatial simulation lives in SimEngine.</p>
+    <p><span class="tag">parked</span> <span class="tag">not in solution</span></p>
+  </div>
+</div>
+
+<h2 class="anchor" id="society">People and society</h2>
+<div class="grid">
+  <div class="card">
+    <h3><a href="RelationshipEngine.html">RelationshipEngine</a></h3>
+    <p>Needs, mood and moodlets, opinions on axes, memories, ladders, bonds, gifts, interactions, gossip, communities, standing and balance.</p>
+    <p><span class="tag">social simulation</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="DialogueEngine.html">DialogueEngine</a></h3>
+    <p>Branching conversations, choices, random/variant nodes, calls, priorities, quests, content warnings, history, save/reload, Yarn/Ink import.</p>
+    <p><span class="tag">narrative</span> <span class="tag">format 3</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="DiplomacyEngine.html">DiplomacyEngine</a></h3>
+    <p>Regard and acceptance, proposals and treaties, wars and exhaustion, coalitions, espionage, internal politics, facts for other layers.</p>
+    <p><span class="tag">factions</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="TutorialEngine.html">TutorialEngine</a></h3>
+    <p>First-run language/story/entry journey, steps completed by observed events, hints, tips, skills/mastery, skip/replay, accessibility and save.</p>
+    <p><span class="tag">onboarding</span></p>
+  </div>
+</div>
+
+<h2 class="anchor" id="systems">Game systems</h2>
+<div class="grid">
+  <div class="card">
+    <h3><a href="CalendarEngine.html">CalendarEngine</a></h3>
+    <p>Invented or real calendars, whole-number dates, seasons/daylight, moons, holidays and recurrence, schedules with interrupts, <code>cal.*</code> facts.</p>
+    <p><span class="tag">time</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="EconomyEngine.html">EconomyEngine</a></h3>
+    <p>Markets, prices and stock, production lines with wear and margin, trade and budgets, routes and landed cost, currencies, loans, shocks.</p>
+    <p><span class="tag">format 6</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="CombatEngine.html">CombatEngine</a></h3>
+    <p>Deterministic group engagements: batteries, hit chance, damage, splash, suppression, personnel/platform pools, crew, fuel, march and resupply.</p>
+    <p><span class="tag">rules format 2</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="AlchemyEngine.html">AlchemyEngine</a></h3>
+    <p>Validated elements and recipes, ordered/order-free combining with catalysts and environment, exact chance, discovery book and save.</p>
+    <p><span class="tag">discovery</span></p>
+  </div>
+  <div class="card">
+    <h3><a href="AIEngine.html">AIEngine</a></h3>
+    <p>Behaviour trees, utility/random/query nodes, percept memory, typed keys and intents, a bounded scheduler, save/restore and decision traces.</p>
+    <p><span class="tag">decisions</span></p>
+  </div>
+</div>
+
+<h2 class="anchor" id="reading">How to read a page</h2>
+<ul>
+  <li><strong>Boundary</strong> — what the engine owns and what belongs to the game or another engine.</li>
+  <li><strong>Format / content</strong> — the strict document or content schema, with a working snippet.</li>
+  <li><strong>API</strong> — the public entry points and the important contracts.</li>
+  <li><strong>Determinism and persistence</strong> — seeds, digests, save checks, replay.</li>
+  <li><strong>CLI and GameRuntime</strong> — authoring tools and the component/event integration.</li>
+  <li><strong>Source map</strong> — where to read the code, plus the owned design record.</li>
+</ul>
+
+<p class="lede">The matching skills are under <code>skills/gameframework-&lt;engine&gt;/SKILL.md</code>. A skill is a compact operating guide; the HTML page is the fuller reference, and the owned markdown design record remains the design authority.</p>
+
+<footer class="page-foot">
+  <p>Generated from the engine source on 2026-11-06. Where a page and a code comment disagree, the source wins; where a page and an owned design record disagree, read both and record the decision.</p>
+</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,226 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "sites",
+          "ArchetypeId": "site",
+          "Count": 1,
+          "Purpose": "Required destination",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "fixed",
+          "ArchetypeId": "fixed",
+          "Count": 1,
+          "Purpose": "Authored destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                35,
+                25
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "site",
+          "Minimum": 2,
+          "Maximum": 2
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "site",
+      "Kind": "site",
+      "Purpose": "Required source-sized location",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "markers",
+          "ArchetypeId": "marker",
+          "Count": 1,
+          "Purpose": "Deferred constituent",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                0
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "village-house",
+        "VariantId": "cottage",
+        "Technology": "Standard"
+      },
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": [
+          {
+            "Id": "entry",
+            "Purpose": "Source entrance",
+            "SourceRuleId": "test:policy",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -5
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -9
+            },
+            "Width": 2
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": {
+        "Supplies": [],
+        "Requirements": [],
+        "UseStructureProfile": true,
+        "OutputQualities": null,
+        "Outputs": null
+      }
+    },
+    {
+      "Id": "fixed",
+      "Kind": "site",
+      "Purpose": "Fixed reachable destination",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": {
+        "Supplies": [
+          {
+            "Id": "neighborhood-access",
+            "Kind": "PedestrianCatchment",
+            "Unit": "game-service-units",
+            "Quantity": 100,
+            "Qualities": [],
+            "Origin": "utilitynetwork",
+            "Purpose": "Declared game supply",
+            "SourceRuleId": "test:policy",
+            "PortId": null,
+            "UpstreamSources": null
+          },
+          {
+            "Id": "potable-water",
+            "Kind": "PotableWater",
+            "Unit": "game-service-units",
+            "Quantity": 100,
+            "Qualities": [
+              "potable",
+              "reliable"
+            ],
+            "Origin": "utilitynetwork",
+            "Purpose": "Declared game supply",
+            "SourceRuleId": "test:policy",
+            "PortId": null,
+            "UpstreamSources": null
+          },
+          {
+            "Id": "power",
+            "Kind": "Electricity",
+            "Unit": "game-service-units",
+            "Quantity": 100,
+            "Qualities": [],
+            "Origin": "utilitynetwork",
+            "Purpose": "Declared game supply",
+            "SourceRuleId": "test:policy",
+            "PortId": null,
+            "UpstreamSources": null
+          },
+          {
+            "Id": "wastewater",
+            "Kind": "Wastewater",
+            "Unit": "game-service-units",
+            "Quantity": 100,
+            "Qualities": [],
+            "Origin": "utilitynetwork",
+            "Purpose": "Declared game supply",
+            "SourceRuleId": "test:policy",
+            "PortId": null,
+            "UpstreamSources": null
+          }
+        ],
+        "Requirements": [],
+        "UseStructureProfile": false,
+        "OutputQualities": null,
+        "Outputs": null
+      }
+    },
+    {
+      "Id": "marker",
+      "Kind": "object",
+      "Purpose": "Required point constituent",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

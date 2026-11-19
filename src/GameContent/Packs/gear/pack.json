@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "gear",
+  "version": "1.0.0",
+  "title": "Gear vocabulary: stats and crew skills of weapons, armor, tools and vehicles",
+  "language": "en",
+  "world": "timeless",
+  "genres": ["equipment"],
+  "dependencies": [],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

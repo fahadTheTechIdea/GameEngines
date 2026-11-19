@@ -11,7 +11,7 @@ public sealed class ScenarioSaveService(IScenarioSaveCodec codec, ISaveStore sto
             cancellationToken.ThrowIfCancellationRequested();
             if (snapshot.Phase is SessionPhase.Faulted or SessionPhase.Disposed or SessionPhase.Transitioning)
                 return new(false, "SAVE_PHASE");
-            var bytes = codec.Encode(new(1, ScenarioSaveCodec.BuildId, DateTimeOffset.UtcNow, snapshot));
+            var bytes = codec.Encode(new(2, ScenarioSaveCodec.BuildId, DateTimeOffset.UtcNow, snapshot));
             var verified = codec.Decode(bytes);
             if (!verified.Report.IsValid) return new(false, "SAVE_ENCODE_INVALID");
             reporter.Audit(new("SavePrepared", slotId, "prepared", snapshot.SessionId));

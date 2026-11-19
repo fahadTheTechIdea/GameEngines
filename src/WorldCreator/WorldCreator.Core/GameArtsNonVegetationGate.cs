@@ -6,7 +6,7 @@ public static class WorldArtDependencyInventory
 {
     /// <summary>Checks the dependency-bearing fields before enumerating untrusted JSON.
     /// A blank asset reference is an error, never an absent dependency.</summary>
-    public static IReadOnlyList<string> Validate(DummyVillageWorldDocument world)
+    public static IReadOnlyList<string> Validate(WorldSceneDocument world)
     {
         ArgumentNullException.ThrowIfNull(world);
         if (world.SemanticWorld?.Base is not { } package ||
@@ -27,7 +27,7 @@ public static class WorldArtDependencyInventory
         return issues;
     }
 
-    public static IReadOnlyList<string> Collect(DummyVillageWorldDocument world)
+    public static IReadOnlyList<string> Collect(WorldSceneDocument world)
     {
         ArgumentNullException.ThrowIfNull(world);
         return world.SemanticWorld.Base.ArtBindings.Select(x => x.AssetId)
@@ -42,7 +42,7 @@ public static class WorldArtDependencyInventory
 public sealed class GameArtsNonVegetationGate(IApprovedArtRegistry registry,
     IGameArtsApprovalAuthority approvals)
 {
-    public async Task<IReadOnlyList<string>> VerifyAsync(DummyVillageWorldDocument world,
+    public async Task<IReadOnlyList<string>> VerifyAsync(WorldSceneDocument world,
         string trustedAssetRoot, IReadOnlyList<GameArtsWorldBundleReference> references,
         CancellationToken token = default)
     {
@@ -100,13 +100,13 @@ public sealed class GameArtsNonVegetationGate(IApprovedArtRegistry registry,
                 issues.Add("NONVEGETATION_BUNDLE_UNREADABLE:" + id);
                 continue;
             }
-            if (!native.IsValid || native.Bundle?.AssetId != id)
+            if (!native.IsValid || native.Bundle?.AssetId != manifest.BundleAssetId)
             {
                 issues.Add("NONVEGETATION_BUNDLE_ASSET_MISMATCH:" + id);
                 continue;
             }
             var readiness = await new GameArtsProductionGate(approvals)
-                .CheckAsync(file, reference.ApprovedRevision, token);
+                .CheckAsync(file, reference.ApprovedRevision, id, manifest.BundleAssetId, token);
             issues.AddRange(readiness.Issues.Select(i => "NONVEGETATION_BUNDLE_" + id + ":" + i));
             if (!readiness.Ready && readiness.Issues.Count == 0)
                 issues.Add("NONVEGETATION_NOT_READY:" + id);

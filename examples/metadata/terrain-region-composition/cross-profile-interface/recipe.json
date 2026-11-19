@@ -1,0 +1,569 @@
+{
+  "SchemaVersion": 1,
+  "Id": "local-layouts",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Physical connections between local allocations, exact catalog-sized sites and constituent metadata. Adaptive repartition, full content, GameArts and native Godot acceptance remain open."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    0,
+    0
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "west",
+      "Kind": "west-travel",
+      "FromId": "local-layouts/sites-0",
+      "ToId": "local-layouts/sites-1",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "region-surface",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 40,
+          "Y": 0
+        },
+        {
+          "X": 40,
+          "Y": 20
+        },
+        {
+          "X": 0,
+          "Y": 20
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "land",
+        "Kind": "ground",
+        "Purpose": "Terrain for regions",
+        "SourceRuleId": "region:terrain",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 40,
+              "Y": 0
+            },
+            {
+              "X": 40,
+              "Y": 20
+            },
+            {
+              "X": 0,
+              "Y": 20
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 0,
+        "GradientX": 0.1,
+        "GradientY": 0
+      }
+    ],
+    "Terrain": null,
+    "HeightField": null
+  },
+  "RouteRules": [
+    {
+      "Id": "west-route",
+      "ConnectionKind": "west-travel",
+      "Profile": {
+        "Id": "walking",
+        "Purpose": "Connect required local programs",
+        "SourceRuleId": "interface:walking",
+        "Radius": 0.3,
+        "MaximumSlope": 1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 2,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 512,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 5000000,
+        "Objective": "LowestCost"
+      },
+      "FromPortId": "east",
+      "ToPortId": "west",
+      "Reuse": null,
+      "Interfaces": [
+        {
+          "ConnectionId": "local-layouts/explicit/west",
+          "InterfaceId": "west-link",
+          "MaximumCrossingCandidates": 3
+        }
+      ],
+      "Alignments": null
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "region-fields",
+    "Fields": [
+      {
+        "Id": "height",
+        "Purpose": "Elevation limit",
+        "SourceRuleId": "region:height",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Elevation",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "clamped",
+        "Purpose": "Clamped elevation",
+        "SourceRuleId": "region:clamp",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Field",
+            "Coefficient": 1,
+            "FieldId": "height"
+          }
+        ],
+        "Minimum": 0,
+        "Maximum": 7
+      }
+    ]
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "regional-sites",
+      "Purpose": "Place each required site in its terrain region",
+      "SourceRuleId": "region:placement",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 40,
+            "Y": 0
+          },
+          {
+            "X": 40,
+            "Y": 20
+          },
+          {
+            "X": 0,
+            "Y": 20
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "west-a",
+          "Purpose": "Arrival program",
+          "SourceRuleId": "layout:west-a",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "west",
+          "AllocationId": "west-a"
+        },
+        {
+          "Id": "west-b",
+          "Purpose": "Production program",
+          "SourceRuleId": "layout:west-b",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "east",
+          "AllocationId": "west-b"
+        }
+      ],
+      "Anchors": [
+        {
+          "Id": "a",
+          "Position": {
+            "X": 8,
+            "Y": 10
+          }
+        },
+        {
+          "Id": "b",
+          "Position": {
+            "X": 32,
+            "Y": 10
+          }
+        }
+      ],
+      "Relations": [
+        {
+          "Id": "a",
+          "FromId": "west-a",
+          "ToId": "a",
+          "Purpose": "Preserve first position",
+          "SourceRuleId": "interface:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "b",
+          "FromId": "west-b",
+          "ToId": "b",
+          "Purpose": "Preserve second position",
+          "SourceRuleId": "interface:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        }
+      ],
+      "MinimumSeparation": 0,
+      "MaximumCandidates": 4096,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 150000000,
+      "AllowBoundaryContact": false,
+      "Growth": null
+    },
+    "Bindings": [
+      {
+        "DemandId": "west-a",
+        "NodeId": "local-layouts/sites-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "west-b",
+        "NodeId": "local-layouts/sites-1",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      }
+    ],
+    "NestedStages": null,
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 32,
+    "SourceWorld": null,
+    "ConnectedLayouts": null,
+    "Programs": null
+  },
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": {
+    "Id": "usable-land",
+    "Purpose": "Connected usable regions",
+    "SourceRuleId": "region:program",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 40,
+          "Y": 0
+        },
+        {
+          "X": 40,
+          "Y": 20
+        },
+        {
+          "X": 0,
+          "Y": 20
+        }
+      ]
+    },
+    "Profile": {
+      "Id": "lower-ground",
+      "Purpose": "Usable game region",
+      "SourceRuleId": "region:usable",
+      "AllowedKinds": [
+        "ground"
+      ],
+      "Requirements": [
+        {
+          "Id": "regional-height",
+          "FieldId": "height",
+          "Purpose": "Distinct regional altitude domain",
+          "SourceRuleId": "composition:interface-height",
+          "Minimum": 0,
+          "Maximum": 2
+        }
+      ],
+      "Preferences": [
+        {
+          "Id": "preferred",
+          "FieldId": "height",
+          "Purpose": "Preferred gameplay altitude",
+          "SourceRuleId": "region:preferred",
+          "Ideal": 4,
+          "Tolerance": 20,
+          "Weight": 1
+        }
+      ]
+    },
+    "Seeds": [
+      {
+        "Id": "west",
+        "Purpose": "Required play area",
+        "SourceRuleId": "interface:region",
+        "Position": {
+          "X": 8,
+          "Y": 10
+        },
+        "MinimumArea": 400,
+        "Profile": null
+      },
+      {
+        "Id": "east",
+        "Purpose": "Upper-ground area",
+        "SourceRuleId": "composition:upper",
+        "Position": {
+          "X": 32,
+          "Y": 10
+        },
+        "MinimumArea": 400,
+        "Profile": {
+          "Id": "upper-ground",
+          "Purpose": "Usable game region",
+          "SourceRuleId": "region:usable",
+          "AllowedKinds": [
+            "ground"
+          ],
+          "Requirements": [
+            {
+              "Id": "regional-height",
+              "FieldId": "height",
+              "Purpose": "Distinct regional altitude domain",
+              "SourceRuleId": "composition:interface-height",
+              "Minimum": 2,
+              "Maximum": 4
+            }
+          ],
+          "Preferences": [
+            {
+              "Id": "preferred",
+              "FieldId": "height",
+              "Purpose": "Preferred gameplay altitude",
+              "SourceRuleId": "region:preferred",
+              "Ideal": 4,
+              "Tolerance": 20,
+              "Weight": 1
+            }
+          ]
+        }
+      }
+    ],
+    "MaximumCells": 1024,
+    "MaximumWork": 50000000
+  },
+  "LocalLayouts": {
+    "Layouts": [
+      {
+        "Id": "west-layout",
+        "RegionId": "west",
+        "Purpose": "Ordered local activity areas",
+        "SourceRuleId": "layout:west",
+        "Strategy": "OrientedGrid",
+        "Programs": [
+          {
+            "Id": "west-a",
+            "Purpose": "First required program",
+            "SourceRuleId": "interface:a",
+            "Anchor": {
+              "X": 8,
+              "Y": 10
+            },
+            "MinimumArea": 300,
+            "Influence": 0,
+            "Column": 0,
+            "Row": 0
+          }
+        ],
+        "Grid": {
+          "Origin": {
+            "X": 0,
+            "Y": 0
+          },
+          "RotationDegrees": 0,
+          "CellWidth": 20,
+          "CellHeight": 20
+        },
+        "ResidualPurpose": null,
+        "ParentAllocationId": null
+      },
+      {
+        "Id": "east-layout",
+        "RegionId": "east",
+        "Purpose": "Ordered local activity areas",
+        "SourceRuleId": "layout:west",
+        "Strategy": "OrientedGrid",
+        "Programs": [
+          {
+            "Id": "west-b",
+            "Purpose": "Second required program",
+            "SourceRuleId": "interface:b",
+            "Anchor": {
+              "X": 32,
+              "Y": 10
+            },
+            "MinimumArea": 300,
+            "Influence": 0,
+            "Column": 1,
+            "Row": 0
+          }
+        ],
+        "Grid": {
+          "Origin": {
+            "X": 0,
+            "Y": 0
+          },
+          "RotationDegrees": 0,
+          "CellWidth": 20,
+          "CellHeight": 20
+        },
+        "ResidualPurpose": null,
+        "ParentAllocationId": null
+      }
+    ],
+    "Interfaces": [
+      {
+        "Id": "west-link",
+        "FromId": "west-a",
+        "ToId": "west-b",
+        "Purpose": "Required shared passage",
+        "SourceRuleId": "interface:span",
+        "MinimumSpan": 10
+      }
+    ],
+    "MaximumCells": 4096,
+    "MaximumWork": 100000000
+  },
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": null,
+  "RouteBudget": null,
+  "Interiors": null
+}

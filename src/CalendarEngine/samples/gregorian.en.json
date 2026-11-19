@@ -1,0 +1,17 @@
+{ "format": 1, "locale": "en", "messages": {
+  "cal.weekday.monday": "Monday", "cal.weekday.tuesday": "Tuesday", "cal.weekday.wednesday": "Wednesday", "cal.weekday.thursday": "Thursday", "cal.weekday.friday": "Friday", "cal.weekday.saturday": "Saturday", "cal.weekday.sunday": "Sunday",
+  "cal.month.january": "January", "cal.month.february": "February", "cal.month.march": "March", "cal.month.april": "April", "cal.month.may": "May", "cal.month.june": "June",
+  "cal.month.july": "July", "cal.month.august": "August", "cal.month.september": "September", "cal.month.october": "October", "cal.month.november": "November", "cal.month.december": "December",
+  "cal.era.bce": "BCE", "cal.era.ce": "CE",
+  "cal.daypart.night": "night", "cal.daypart.dawn": "dawn", "cal.daypart.morning": "morning", "cal.daypart.noon": "noon", "cal.daypart.afternoon": "afternoon", "cal.daypart.evening": "evening", "cal.daypart.late-night": "late night",
+  "cal.season.spring": "spring", "cal.season.summer": "summer", "cal.season.autumn": "autumn", "cal.season.winter": "winter",
+  "cal.moon.moon": "the Moon", "cal.phase.new": "new moon", "cal.phase.waxing-crescent": "waxing crescent", "cal.phase.first-quarter": "first quarter", "cal.phase.waxing-gibbous": "waxing gibbous",
+  "cal.phase.full": "full moon", "cal.phase.waning-gibbous": "waning gibbous", "cal.phase.last-quarter": "last quarter", "cal.phase.waning-crescent": "waning crescent",
+  "cal.holiday.new-year": "New Year", "cal.holiday.leap-day": "Leap Day", "cal.holiday.labor-day": "Labor Day", "cal.holiday.thanksgiving": "Thanksgiving", "cal.holiday.harvest-week": "Harvest Week", "cal.holiday.christmas": "Christmas",
+  "cal.format.long": "{weekday}, {month} {day}, {year_of_era} {era}",
+  "cal.format.short": "{year}-{month_number}-{day}",
+  "cal.format.time": "{hour_padded}:{minute_padded} in the {daypart}",
+  "cal.format.ordinal": { "type": "ordinal", "select": "day", "one": "the {day}st of {month}", "two": "the {day}nd of {month}", "few": "the {day}rd of {month}", "other": "the {day}th of {month}" },
+  "cal.place.home": "home", "cal.place.shop": "the shop", "cal.place.tavern": "the tavern", "cal.place.church": "the church", "cal.place.guardhouse": "the guardhouse", "cal.place.square": "the square",
+  "cal.act.sleep": "sleeping", "cal.act.eat": "eating", "cal.act.work": "working", "cal.act.worship": "worshipping", "cal.act.idle": "resting", "cal.act.celebrate": "celebrating", "cal.act.defend": "on guard"
+} }

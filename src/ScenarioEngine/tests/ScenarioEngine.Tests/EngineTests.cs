@@ -10,19 +10,12 @@ namespace ScenarioEngine.Tests;
 public sealed class EngineTests
 {
     [Fact]
-    public void MotherGameInitializesUpdatesPausesAndCleansUp()
+    public void SessionRunsAndCleansUp()
     {
         var h = new Harness();
-        using var game = new CounterGame(h.Factory);
-        Assert.Throws<InvalidOperationException>(() => game.Update(Harness.Input(1)));
-        var start = new GameStart(h.Scenario(), Harness.Options(), Harness.Frame(0));
-        game.Init(start);
+        using var game = h.Factory.Create(h.Scenario(), Harness.Options(), Harness.Frame(0));
         Assert.Equal(SessionPhase.Running, game.Snapshot.Phase);
-        Assert.Throws<InvalidOperationException>(() => game.Init(start));
-        game.Pause();
-        Assert.False(game.Update(Harness.Input(1)).Committed);
-        Assert.True(game.Submit(Harness.Increment()).Accepted);
-        game.Resume();
+        Assert.True(game.Enqueue(Harness.Increment()).Accepted);
         Assert.True(game.Update(Harness.Input(1)).Committed);
         Assert.Equal(1, Harness.Value(game.Snapshot));
         game.Dispose();
@@ -37,11 +30,11 @@ public sealed class EngineTests
         for (var tick = 1; tick <= 3; tick++)
         {
             Assert.True(simulation.Enqueue(Harness.Increment(tick, "cmd-" + tick)).Accepted);
-            Assert.True(simulation.Step(Harness.Input(tick)).Committed);
+            Assert.True(simulation.Update(Harness.Input(tick)).Committed);
         }
         Assert.Equal("goal_reached", simulation.Snapshot.EndingId);
         Assert.Equal(ObjectiveStatus.Completed, simulation.Snapshot.Objectives["count_three"]);
-        Assert.False(simulation.Step(Harness.Input(4)).Committed);
+        Assert.False(simulation.Update(Harness.Input(4)).Committed);
         Assert.Single(h.Reporter.Audits, a => a.Operation == "ScenarioEnded");
     }
 
@@ -54,10 +47,10 @@ public sealed class EngineTests
         var first = sim.Enqueue(command);
         Assert.Equal(first, sim.Enqueue(command));
         Assert.Equal("COMMAND_ID_CONFLICT", sim.Enqueue(command with { Payload = ContractJson.Element(new { amount = 2 }) }).Code);
-        Assert.True(sim.Step(Harness.Input(1)).Committed);
+        Assert.True(sim.Update(Harness.Input(1)).Committed);
         Assert.Equal(1, Harness.Value(sim.Snapshot));
         Assert.Equal("APPLIED", sim.Enqueue(command).Code);
-        Assert.True(sim.Step(Harness.Input(2)).Committed);
+        Assert.True(sim.Update(Harness.Input(2)).Committed);
         Assert.Equal(1, Harness.Value(sim.Snapshot));
     }
 
@@ -79,13 +72,11 @@ public sealed class EngineTests
     public void CancelQueuedChecksOwnerAndIsIdempotent()
     {
         using var sim = new Harness().Start();
-        sim.Pause();
         sim.Enqueue(Harness.Increment());
         Assert.Equal("COMMAND_DENIED", sim.CancelQueued("other", "one").Code);
         Assert.True(sim.CancelQueued("player", "one").Accepted);
         Assert.True(sim.CancelQueued("player", "one").Accepted);
-        sim.Resume();
-        Assert.True(sim.Step(Harness.Input(1)).Committed);
+        Assert.True(sim.Update(Harness.Input(1)).Committed);
         Assert.Equal(0, Harness.Value(sim.Snapshot));
     }
 
@@ -115,7 +106,7 @@ public sealed class EngineTests
         var frame = new WorldFrame(0, 1, [new(1, "test_counter.adjustment", null, ContractJson.Element(new { delta = 100 }))]);
         for (var i = 2; i <= 9; i++)
             frame = frame with { Observations = frame.Observations.Add(new(i, "test_counter.adjustment", null, ContractJson.Element(new { delta = 100 }))) };
-        var step = sim.Step(new(1, frame));
+        var step = sim.Update(new(1, frame));
         Assert.True(step.Committed);
         Assert.Equal(1000, Harness.Value(sim.Snapshot));
         Assert.Equal(CommandStatus.Rejected, sim.Snapshot.Receipts["one"].Status);
@@ -132,7 +123,7 @@ public sealed class EngineTests
         }));
         using var sim = h.Start();
         sim.Enqueue(Harness.Increment());
-        var step = sim.Step(Harness.Input(1));
+        var step = sim.Update(Harness.Input(1));
         Assert.False(step.Committed);
         Assert.Equal(SessionPhase.Faulted, sim.Snapshot.Phase);
         Assert.Equal(0, sim.Snapshot.Tick);
@@ -149,12 +140,12 @@ public sealed class EngineTests
         StepResult? nested = null;
         var h = new Harness(new DecoratingLayer((result, _) =>
         {
-            nested = sim!.Step(Harness.Input(1));
+            nested = sim!.Update(Harness.Input(1));
             return result;
         }));
         using var owned = h.Start();
         sim = owned;
-        Assert.True(sim.Step(Harness.Input(1)).Committed);
+        Assert.True(sim.Update(Harness.Input(1)).Committed);
         Assert.Equal("ENGINE_BUSY", nested!.Code);
         Assert.Equal(1, sim.Snapshot.Tick);
     }
@@ -164,8 +155,8 @@ public sealed class EngineTests
     {
         using var sim = new Harness().Start();
         var wrongSequence = new WorldFrame(0, 1, [new(2, "test_counter.adjustment", null, ContractJson.Element(new { delta = 1 }))]);
-        Assert.Equal("WORLD_FRAME_GAP", sim.Step(new(1, wrongSequence)).Code);
-        Assert.Equal("WORLD_GENERATION", sim.Step(new(1, Harness.Frame(1, 1))).Code);
+        Assert.Equal("WORLD_FRAME_GAP", sim.Update(new(1, wrongSequence)).Code);
+        Assert.Equal("WORLD_GENERATION", sim.Update(new(1, Harness.Frame(1, 1))).Code);
         Assert.Equal(SessionPhase.Running, sim.Snapshot.Phase);
         Assert.Equal(0, sim.Snapshot.Tick);
     }
@@ -188,9 +179,9 @@ public sealed class EngineTests
         using var b = h.Start(scenario);
         using var changed = h.Start(scenario);
         a.Enqueue(Harness.Increment()); b.Enqueue(Harness.Increment()); changed.Enqueue(Harness.Increment());
-        Assert.Equal(a.Step(Harness.Input(1)).RuleStateHash, b.Step(Harness.Input(1)).RuleStateHash);
+        Assert.Equal(a.Update(Harness.Input(1)).RuleStateHash, b.Update(Harness.Input(1)).RuleStateHash);
         var frame = new WorldFrame(0, 1, [new(1, "test_counter.adjustment", null, ContractJson.Element(new { delta = 1 }))]);
-        Assert.NotEqual(ScenarioEngine.Core.ScenarioEngine.StateHash(a.Snapshot), changed.Step(new(1, frame)).RuleStateHash);
+        Assert.NotEqual(ScenarioEngine.Core.ScenarioEngine.StateHash(a.Snapshot), changed.Update(new(1, frame)).RuleStateHash);
     }
 
     [Fact]
@@ -208,6 +199,6 @@ public sealed class EngineTests
         using var sim = new Harness().Start();
         using (var doc = JsonDocument.Parse("""{"amount":1}"""))
             Assert.True(sim.Enqueue(Harness.Increment() with { Payload = doc.RootElement }).Accepted);
-        Assert.True(sim.Step(Harness.Input(1)).Committed);
+        Assert.True(sim.Update(Harness.Input(1)).Committed);
     }
 }

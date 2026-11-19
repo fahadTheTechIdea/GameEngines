@@ -22,7 +22,7 @@ public sealed class ModernInfrastructureDesignStrategy : IInfrastructureDesignSt
         var catalog = design.BuildingCatalog.ToDictionary(d => d.Id, StringComparer.Ordinal);
         var profiles = design.RoadRules.ToDictionary(r => r.PathId, StringComparer.Ordinal);
         var ids = new HashSet<string>(StringComparer.Ordinal);
-        var terrainQuery = new MockupTerrainQuery(design);
+        var terrainQuery = new MockupTerrainQuery(design,token);
         foreach (var rule in rules.OrderBy(r => r?.Id, StringComparer.Ordinal))
         {
             token.ThrowIfCancellationRequested();

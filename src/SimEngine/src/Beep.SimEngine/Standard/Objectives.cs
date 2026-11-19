@@ -200,6 +200,7 @@ namespace Beep.SimEngine.Standard
             {
                 Entry entry = decision.Entry; entry.State = decision.State; entry.Observation = decision.Observation; entry.Failure = decision.Failure;
                 if (decision.Activate) entry.Activated = tick.Tick;
+                if (decision.Activate) world.Events.Publish(new ObjectiveStateChanged(entry.Company, entry.Definition.Id, ObjectiveState.Active));
                 entry.Blocker = entry.State == ObjectiveState.Failing ? entry.Failure : entry.Observation.Blocker;
                 if (entry.State != ObjectiveState.Completing && entry.State != ObjectiveState.Failing) continue;
                 IObjectiveEffect effect = entry.State == ObjectiveState.Completing ? entry.Definition.OnComplete : entry.Definition.OnFailure;
@@ -215,6 +216,7 @@ namespace Beep.SimEngine.Standard
                 effect?.Apply(context);
                 entry.State = entry.State == ObjectiveState.Completing ? ObjectiveState.Completed : ObjectiveState.Failed;
                 entry.Settled = tick.Tick; entry.Blocker = entry.State == ObjectiveState.Completed ? Code.None : entry.Failure;
+                world.Events.Publish(new ObjectiveStateChanged(entry.Company, entry.Definition.Id, entry.State));
             }
         }
         public void CopyObjectives(PlayerId viewer, IList<ObjectiveSnapshot> destination)
@@ -286,5 +288,18 @@ namespace Beep.SimEngine.Standard
             try { if (id != null) ContractIdentity.ValidateId(id, "objective blocker"); if (sync.Reading) code = id == null ? Code.None : new Code(id); }
             catch (ArgumentException e) { throw new CorruptStateException(e.Message); }
         }
+    }
+}
+
+namespace Beep.SimEngine.Standard
+{
+    /// <summary>A company's objective became active, completed or failed. Published when it happens, not polled.</summary>
+    public readonly struct ObjectiveStateChanged
+    {
+        public const string EventId = "sim.objective-changed";
+        public PlayerId Company { get; }
+        public string Objective { get; }
+        public ObjectiveState State { get; }
+        public ObjectiveStateChanged(PlayerId company, string objective, ObjectiveState state) { Company = company; Objective = objective; State = state; }
     }
 }

@@ -12,7 +12,7 @@ public sealed record CrossingApproach(string CrossingId,
 public sealed class CrossingApproachValidator
 {
     private const double Epsilon = 1e-5;
-    public IReadOnlyList<string> Validate(DummyVillageWorldDocument world,
+    public IReadOnlyList<string> Validate(WorldSceneDocument world,
         IReadOnlyList<CrossingApproach> approaches, double maximumCurbRiseMeters)
     {
         ArgumentNullException.ThrowIfNull(world);

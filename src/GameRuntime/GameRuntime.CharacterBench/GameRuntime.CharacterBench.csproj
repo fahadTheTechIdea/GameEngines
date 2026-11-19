@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Sim/GameRuntime.Sim.csproj" />
+    <ProjectReference Include="../GameRuntime.Characters/GameRuntime.Characters.csproj" />
+    <None Include="Content/**/*.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../GameRuntime.Tests/HaulContent/lab/access.json" Link="Content/bench/access.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../GameRuntime.Tests/HaulContent/lab/resources.json" Link="Content/bench/resources.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../GameRuntime.Tests/HaulContent/lab/navigation.json" Link="Content/bench/navigation.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../GameRuntime.Tests/HaulContent/lab/work.json" Link="Content/bench/work.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

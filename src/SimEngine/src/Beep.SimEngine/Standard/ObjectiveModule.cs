@@ -33,6 +33,7 @@ namespace Beep.SimEngine.Standard
                 bindings.Add(company, System.Array.AsReadOnly(objectives));
             }
             var objectivesSystem = new ObjectiveSystem(composer.World, bindings);
+            composer.Events.Register<ObjectiveStateChanged>(ObjectiveStateChanged.EventId, 1);
             composer.Services.Bind<IObjectives>(objectivesSystem); composer.AddSystem(objectivesSystem, 800);
             composer.AddViewFeature(Id, 2, (world, viewer) => new ObjectiveView(world, viewer));
         }

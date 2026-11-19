@@ -1,0 +1,13 @@
+{
+  "units": [
+    { "id": "unit.slot", "dimension": "count", "scale": { "numerator": 1, "denominator": 1 }, "discrete": true },
+    { "id": "unit.sample", "dimension": "count", "scale": { "numerator": 1, "denominator": 1 }, "discrete": true }
+  ],
+  "resources": [
+    { "id": "lab.sample", "unit": "unit.sample", "category": "kit", "phase": "solid", "traits": [], "capacity": { "unit.slot": 1 } }
+  ],
+  "capacity_policies": [
+    { "id": "lab.shelf", "limits": { "unit.slot": 40 } },
+    { "id": "lab.cart", "limits": { "unit.slot": 10 } }
+  ]
+}

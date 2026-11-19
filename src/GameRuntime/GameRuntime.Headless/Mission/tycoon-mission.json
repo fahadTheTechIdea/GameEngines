@@ -1,0 +1,98 @@
+{
+  "manifest": {
+    "contentApiVersion": 1,
+    "packId": "gameruntime.tycoon",
+    "packVersion": "1.0.0",
+    "gameLayerId": "gf_tycoon",
+    "gameLayerVersion": "1.0.0",
+    "trustTier": "data_only",
+    "entryScenarioIds": ["tycoon_run"],
+    "dependencies": [],
+    "files": [
+      { "path": "scenario.json", "kind": "scenario" },
+      { "path": "zone.json", "kind": "zone" },
+      { "path": "objective.json", "kind": "objective" },
+      { "path": "ending-profit.json", "kind": "ending" },
+      { "path": "ending-timeout.json", "kind": "ending" },
+      { "path": "localization.json", "kind": "localization" }
+    ]
+  },
+  "documents": {
+    "scenario.json": {
+      "kind": "scenario",
+      "contentApiVersion": 1,
+      "id": "tycoon_run",
+      "titleKey": "tycoon.title",
+      "startZoneId": "office",
+      "zoneIds": ["office"],
+      "objectiveIds": ["earn_profit"],
+      "endingIds": ["profit", "timeout"],
+      "closingCondition": {
+        "any": [
+          { "fact": "gf_tycoon.profit", "op": "gte", "value": 1500 },
+          { "fact": "core.tick", "op": "gte", "value": 900 }
+        ]
+      },
+      "layerData": { "startingStock": 40, "pricePerUnit": 35, "foundingBonus": 100 }
+    },
+    "zone.json": {
+      "kind": "zone",
+      "contentApiVersion": 1,
+      "id": "office",
+      "titleKey": "zone.title",
+      "sceneRole": "tycoon_office",
+      "anchors": [{ "id": "desk", "positionMm": [0, 0, 0] }],
+      "exits": []
+    },
+    "objective.json": {
+      "kind": "objective",
+      "contentApiVersion": 1,
+      "id": "earn_profit",
+      "titleKey": "objective.title",
+      "dependencies": [],
+      "activateWhen": { "fact": "core.tick", "op": "gte", "value": 0 },
+      "completeWhen": { "fact": "gf_tycoon.profit", "op": "gte", "value": 1500 },
+      "failWhen": { "all": [
+        { "fact": "core.tick", "op": "gte", "value": 900 },
+        { "fact": "gf_tycoon.profit", "op": "lt", "value": 1500 }
+      ] },
+      "successEffects": [],
+      "failureEffects": []
+    },
+    "ending-profit.json": {
+      "kind": "ending",
+      "contentApiVersion": 1,
+      "id": "profit",
+      "titleKey": "ending.profit.title",
+      "summaryKey": "ending.profit.summary",
+      "priority": 100,
+      "condition": { "fact": "gf_tycoon.profit", "op": "gte", "value": 1500 },
+      "outcomeTags": ["won"]
+    },
+    "ending-timeout.json": {
+      "kind": "ending",
+      "contentApiVersion": 1,
+      "id": "timeout",
+      "titleKey": "ending.timeout.title",
+      "summaryKey": "ending.timeout.summary",
+      "priority": 10,
+      "condition": { "fact": "core.tick", "op": "gte", "value": 900 },
+      "outcomeTags": ["lost"]
+    },
+    "localization.json": {
+      "kind": "localization",
+      "contentApiVersion": 1,
+      "id": "english",
+      "locale": "en",
+      "entries": {
+        "tycoon.title": "Tycoon Run",
+        "zone.title": "Office",
+        "objective.title": "Earn a profit of 1500",
+        "ending.profit.title": "Profit",
+        "ending.profit.summary": "The company reached its profit goal.",
+        "ending.timeout.title": "Out of time",
+        "ending.timeout.summary": "The company did not reach its profit goal in time."
+      }
+    }
+  }
+}

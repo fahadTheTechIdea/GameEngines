@@ -6,21 +6,1229 @@ using WorldCreator.Core.Geometry;
 using WorldCreator.Core.Planning;
 using WorldCreator.Worlds;
 using WorldCreator.Godot;
-if(args.Length is 1 or 2 && args[0]=="--city") { await ProceduralCityTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); await CityFrontageTests.RunAsync(); await CityPackageTests.RunAsync(); return; }
-if(args.Length==1 && args[0]=="--city-packages") { await CityPackageTests.RunAsync(); return; }
-if(args.Length==1 && args[0]=="--city-frontages") { await CityFrontageTests.RunAsync(); return; }
-if(args.Length==2 && args[0]=="--write-city-frontage-examples") { await CityFrontageTests.WriteExamplesAsync(args[1]); return; }
-if(args.Length==2 && args[0]=="--write-city-examples") { await ProceduralCityTests.WriteExamplesAsync(args[1]); return; }
-if(args.Length is 1 or 2 && args[0]=="--metadata") { await WorldMetadataTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==2&&args[0]=="--world-population-gate")
+{
+    try{await WorldPopulationGateTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-component-metadata")
+{
+    try{await WorldComponentMetadataTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-connection-gate")
+{
+    try{await WorldConnectionGateTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-adaptive-layout-gate")
+{
+    try{await WorldAdaptiveLayoutGateTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-placement-memo")
+{
+    try{await WorldPlacementMemoTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==1&&args[0]=="--world-route-height-sources")
+{
+    try{WorldRouteJunctionTests.SourceHeights();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-route-memo")
+{
+    try{await WorldRouteMemoTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-coastal-mixed")
+{
+    try{await WorldCoastalMixedWorldTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-route-junctions")
+{
+    try{await WorldRouteJunctionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-progression-selector-domains")
+{
+    try{await WorldProgressionSelectorTests.DomainsAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-progression-selectors")
+{
+    try{await WorldProgressionSelectorTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-study-completion")
+{
+    try{await WorldStudyCompletionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==3&&args[0]=="--world-cli-completion")
+{
+    try{await WorldCliCompletionTests.RunAsync(args[1],args[2]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-interior-chunks")
+{
+    try{await WorldInteriorChunkTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-blueprint-session")
+{
+    try{await WorldRegionalBlueprintSessionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-design-pinned-seed")
+{
+    try{await WorldRegionalDesignProtectionTests.PinnedSeedAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-design-protections")
+{
+    try{await WorldRegionalDesignProtectionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-design-session")
+{
+    try{await WorldRegionalDesignSessionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-captured-design-replay")
+{
+    try{await WorldNoncityTerrainMatrixTests.CapturedDesignReplayAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-captured-terrain-fine")
+{
+    try{await WorldNoncityTerrainMatrixTests.FineCapturedTerrainAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-captured-terrain-regions")
+{
+    try{await WorldNoncityTerrainMatrixTests.CapturedTerrainAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-supplied-heightfield")
+{
+    try{await WorldNoncityTerrainMatrixTests.SuppliedHeightfieldAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-generated-terrain-joint")
+{
+    try{await WorldNoncityTerrainMatrixTests.GeneratedWorldAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==1&&args[0]=="--world-noncity-terrain-preflight")
+{
+    try{WorldNoncityTerrainMatrixTests.Preflight();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-noncity-terrain-matrix")
+{
+    try{await WorldNoncityTerrainMatrixTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-partition-preference-edit")
+{
+    try{await WorldPartitionPreferenceEditTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-partition-preferences")
+{
+    try{await WorldPartitionPreferenceTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-preferred-region-anchor")
+{
+    try{await WorldPreferredRegionAnchorTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-blueprint-option-sets")
+{
+    try{await WorldRegionalBlueprintOptionSetTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-blueprint-design")
+{
+    try{await WorldRegionalBlueprintDesignTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-seeded-blueprint")
+{
+    try{await WorldRegionalSeededBlueprintTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-offset-physical-study")
+{
+    try{await WorldOffsetPhysicalStudy.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-offset-resolution")
+{
+    try{await WorldRegionPartitionTests.BentResolutionAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-offset-seed")
+{
+    try{await WorldRegionalDesignWorldSeedTests.BendPositionSeedAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-blueprint")
+{
+    try{await WorldRegionalBlueprintTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-terrain-adaptation")
+{
+    try{await WorldTerrainAdaptationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-terrain-comparison")
+{
+    try{await WorldTerrainComparisonTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==1&&args[0]=="--world-sampled-overlay-parity")
+{
+    try{WorldSampledOverlayTests.Run();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-design-replay")
+{
+    try{await WorldRegionalDesignReplayTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-bent-terrain-edit")
+{
+    try{await WorldRegionPartitionTests.BentTerrainAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-bent-world-seed")
+{
+    try{await WorldRegionalDesignWorldSeedTests.BendSeedAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-bent-feedback")
+{
+    try{await WorldRegionPartitionTests.BentFeedbackAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-bent-regional-world")
+{
+    try{await WorldRegionPartitionTests.BentRegionalAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-bent-regions")
+{
+    try{await WorldRegionPartitionTests.BentAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-seed-corpus")
+{
+    try{await WorldRegionalSeedCorpusTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-design-world-seed")
+{
+    try{await WorldRegionalDesignWorldSeedTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-design-variety")
+{
+    try{await WorldRegionalDesignVarietyTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-joint-semantic")
+{
+    try{await WorldRegionalJointTests.SemanticAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-semantic-choice")
+{
+    try{await WorldRegionalProgramChoiceTests.SemanticChoiceAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-design-bindings")
+{
+    try{await WorldRegionalDesignBindingTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-multi-structure")
+{
+    try{await WorldRegionalMultiStructureTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-scoped-requirements")
+{
+    try{await WorldRegionalScopedRequirementsTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-design")
+{
+    try{await WorldRegionalDesignTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-position-protection")
+{
+    try{await WorldPositionProtectionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-topology-intent")
+{
+    try{await WorldTopologyIntentTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0] is "--world-capacity-provenance" or "--world-capacity-provenance-prior")
+{
+    try{await WorldCapacityProvenanceTests.RunAsync(args[1],args[0]=="--world-capacity-provenance-prior");}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-terrain-program-choice")
+{
+    try{await WorldTerrainProgramChoiceTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-terrain-capacity")
+{
+    try{await WorldTerrainCapacityTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-mixed-capacity")
+{
+    try{await WorldRegionalMixedCapacityTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-mixed-variant-capacity")
+{
+    try{await WorldMixedVariantCapacityTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-protected-terrain-integration")
+{
+    try{await WorldProtectedTerrainIntegrationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-region-clamp-matrix") { WorldRegionClampMatrixTests.Run(args[1]); return; }
+if(args.Length==2&&args[0]=="--world-seeded-regional-world") { try{await WorldSeededRegionalWorldTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2&&args[0]=="--world-regional-weights") { try{await WorldRegionalWorldWeightTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2&&args[0]=="--world-seeded-route-probe") { try{await WorldSeededRegionalWorldTests.RouteProbeAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2&&args[0]=="--world-directional-regional-program") { await WorldDirectionalRegionalProgramTests.RunAsync(args[1]); return; }
+if(args.Length==2&&args[0]=="--world-terrain-directional-detail") { await WorldTerrainDirectionalDetailTests.RunAsync(args[1]); return; }
+if(args.Length==2&&args[0]=="--world-terrain-falloff") { try{await WorldTerrainFalloffTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2&&args[0]=="--world-global-requirements") { await WorldGlobalRequirementsTests.RunAsync(args[1]); return; }
+if(args.Length==2&&args[0]=="--world-regional-progression") { await WorldRegionalProgressionTests.RunAsync(args[1]); return; }
+if(args.Length==2&&args[0]=="--world-regional-progression-selection") { await WorldRegionalProgressionSelectionTests.RunAsync(args[1]); return; }
+if(args.Length==2&&args[0]=="--world-regional-journey") { await WorldRegionalJourneyTests.RunAsync(args[1]); return; }
+if(args.Length==2&&args[0]=="--world-regional-corridor-journey") { await WorldRegionalCorridorJourneyTests.RunAsync(args[1]); return; }
+if(args.Length==2&&args[0]=="--world-regional-interior-journey") { await WorldRegionalInteriorJourneyTests.RunAsync(args[1]); return; }
+if(args.Length==2&&args[0]=="--world-terrain-roughness-world") { await WorldTerrainRoughnessWorldTests.RunAsync(args[1]); return; }
+if(args.Length==2&&args[0]=="--world-terrain-roughness") { await WorldTerrainRoughnessTests.RunAsync(args[1]); return; }
+if(args.Length==1&&args[0]=="--world-terrain-protected-detail")
+{
+    try{WorldTerrainTests.ProtectedDetail();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-source-ground-lifecycle")
+{
+    try{await WorldSourceGroundAllocationTests.RunLifecycleAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-source-ground-choices")
+{
+    try{await WorldSourceGroundAllocationTests.RunChoicesAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0] is "--world-source-ground-allocation" or "--world-source-ground-control")
+{
+    try{await WorldSourceGroundAllocationTests.RunAsync(args[1],args[0]=="--world-source-ground-control");}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0] is "--world-hierarchical-ground-capacity" or "--world-hierarchical-ground-control")
+{
+    try{await WorldHierarchicalGroundCapacityTests.RunAsync(args[1],args[0]=="--world-hierarchical-ground-control");}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-published-source-read")
+{
+    try{await WorldPublishedSourceTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-published-source-probe")
+{
+    try{await WorldPublishedSourceTests.ProbeAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0] is "--world-irregular-surroundings" or "--world-irregular-surroundings-control")
+{
+    try{await WorldIrregularSurroundingsTests.RunAsync(args[1],args[0]=="--world-irregular-surroundings-control");}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-terrain-policy-contract")
+{
+    try{await WorldTerrainPolicyContractTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0] is "--world-regional-assembly-scale" or "--world-regional-assembly-control")
+{
+    try{await WorldRegionalAssemblyScaleTests.RunAsync(args[1],args[0]=="--world-regional-assembly-control");}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0] is "--world-local-constraint-search" or "--world-local-constraint-control")
+{
+    try{await WorldLocalConstraintSearchTests.RunAsync(args[1],args[0]=="--world-local-constraint-control");}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0] is "--world-region-relation-search" or "--world-region-relation-control")
+{
+    try{await WorldRegionPartitionTests.RelationsAsync(args[1],args[0]=="--world-region-relation-control");}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-region-partition-pins")
+{
+    try{await WorldRegionPartitionTests.PinsAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-overlay-scale")
+{
+    try{await WorldRegionalOverlayInvalidationTests.ScaleOnlyAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-overlay-invalidation")
+{
+    try{await WorldRegionalOverlayInvalidationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry detail in error.Data)Console.Error.WriteLine(detail.Key+": "+JsonSerializer.Serialize(detail.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-protection-changes")
+{
+    try{await WorldRegionalProtectionChangeTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry detail in error.Data)Console.Error.WriteLine(detail.Key+": "+JsonSerializer.Serialize(detail.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-demand-plan")
+{
+    try{await WorldRegionalDemandPlanTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry detail in error.Data)Console.Error.WriteLine(detail.Key+": "+JsonSerializer.Serialize(detail.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-pose-controls")
+{
+    try{await WorldPoseControlTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry detail in error.Data)Console.Error.WriteLine(detail.Key+": "+JsonSerializer.Serialize(detail.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-connected-capacity")
+{
+    try{await WorldConnectedCapacityTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry detail in error.Data)Console.Error.WriteLine(detail.Key+": "+JsonSerializer.Serialize(detail.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-choice-enumeration")
+{
+    try{await WorldRegionalRedesignTests.EnumerationAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-redesign-joint")
+{
+    try{await WorldRegionalRedesignTests.JointAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length is 2 or 3&&args[0]=="--world-regional-redesign")
+{
+    try{await WorldRegionalRedesignTests.RunAsync(args[^1],args.Length==3?args[1]:null);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-partitions")
+{
+    try{await WorldRegionalPartitionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--write-regional-partition-example")
+{
+    try{await WorldRegionalPartitionTests.WriteAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0] is "--world-regional-controls" or "--world-region-pins")
+{
+    try{if(args[0]=="--world-region-pins")await WorldRegionalControlTests.PinsAsync(args[1]);else await WorldRegionalControlTests.RunAsync(args[1]);}
+    catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==3&&args[0]=="--world-global-component-case")
+{
+    try{await WorldGlobalComponentTests.RunAsync(args[2],args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-global-components")
+{
+    try{await WorldGlobalComponentTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-region-alternate-spans")
+{
+    try{await WorldRegionPartitionTests.AlternateSpansAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-region-interface-route")
+{
+    try{await WorldRegionPartitionTests.RegionInterfaceRouteAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-region-shared-span")
+{
+    try{await WorldRegionPartitionTests.SharedSpanAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==1&&args[0]=="--world-topology-return-oracle") { WorldTopologyReturnOracleTests.Run(); return; }
+if(args.Length==1&&args[0]=="--world-topology-alternative-oracle")
+{
+    try{WorldTopologyAlternativeOracleTests.Run();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-stage-loops")
+{
+    try{await WorldTopologyStageLoopTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-contour-facing")
+{
+    try{await WorldContourFacingTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-region-facing")
+{
+    try{await WorldRegionFacingTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==1&&args[0]=="--world-regional-network-preflight")
+{
+    try{WorldRegionalNetworkTests.Preflight();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-semantic-terrain")
+{
+    try{await WorldRegionalNetworkTests.SemanticTerrainAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-semantic-endpoints")
+{
+    try{await WorldRegionalNetworkTests.SemanticAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-network-composed")
+{
+    try{await WorldRegionalNetworkTests.ComposedAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length is 1 or 2&&args[0]=="--world-route-cost-bounds")
+{
+    try{WorldRouteCostBoundTests.Run(args.Length==2?args[1]:null);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0] is "--world-regional-networks" or "--world-regional-network-smoke")
+{
+    try{await WorldRegionalNetworkTests.RunAsync(args[1],args[0]=="--world-regional-network-smoke");}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-topology")
+{
+    try{await WorldRegionalTopologyTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==1&&args[0]=="--world-nested-source-geometry")
+{
+    try{WorldNestedSourceTests.BoundaryGeometry();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==3&&args[0]=="--world-nested-source-case")
+{
+    try{await WorldNestedSourceTests.RunAsync(args[2],only:args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-nested-source-lifecycle")
+{
+    try{await WorldNestedSourceTests.ControlsAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0] is "--world-nested-sources" or "--world-nested-source-smoke")
+{
+    try{await WorldNestedSourceTests.RunAsync(args[1],args[0]=="--world-nested-sources");}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-source-programs")
+{
+    try{await WorldSourceProgramTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-nested-ownership-lifecycle")
+{
+    try{await WorldNestedOwnershipTests.RunLifecycleAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-nested-ownership")
+{
+    try{await WorldNestedOwnershipTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-spatial-program-analysis")
+{
+    try{await WorldSpatialProgramAnalysisTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-joint-lifecycle")
+{
+    try{await WorldRegionalJointTests.RunLifecycleAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-joint-terrain")
+{
+    try{await WorldRegionalJointTests.RunTerrainAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-joint")
+{
+    try{await WorldRegionalJointTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-source-history")
+{
+    try{await WorldRegionalProgramChoiceTests.RunSourceHistoryAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-program-history")
+{
+    try{await WorldRegionalProgramChoiceTests.RunHistoryAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-program-choices")
+{
+    try{await WorldRegionalProgramChoiceTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-physical-feedback")
+{
+    try{await WorldRegionalPhysicalFeedbackTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-rounding-network")
+{
+    try{await WorldRegionalRoundingNetworkTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-rounding")
+{
+    try{await WorldRegionalRoundingTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-coupling")
+{
+    try{await WorldRegionalCouplingTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-terrain-program-analysis")
+{
+    try{await WorldTerrainProgramAnalysisTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-ownership-density")
+{
+    try{await WorldOwnershipDensityTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-portable-population")
+{
+    try{await WorldPortablePopulationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-source-domains")
+{
+    try{await WorldSourceDomainTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-ground-cover")
+{
+    try{await WorldGroundCoverTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==1&&args[0]=="--world-program-analysis")
+{
+    try{WorldProgramAnalysisTests.Run();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-program-demand")
+{
+    try{await WorldRegionalOwnershipTests.DemandAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-ownership-units")
+{
+    try{await WorldRegionalOwnershipTests.UnitsAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-ownership-scale")
+{
+    try{await WorldRegionalOwnershipTests.ScaleAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-regional-ownership")
+{
+    try{await WorldRegionalOwnershipTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-region-demand")
+{
+    try{await WorldRegionDemandTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-seeded-partitions")
+{
+    try{await WorldRegionPartitionTests.SeededAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-region-allocation-weights")
+{
+    try{await WorldRegionPartitionTests.WeightsAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-local-allocation-weights")
+{
+    try{await WorldProgramSpaceTests.WeightsAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-weighted-layout-adaptation")
+{
+    try{await WorldWeightedLayoutAdaptationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-ring-terrain")
+{
+    try{await WorldRingTerrainAdaptationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-spiral-layout")
+{
+    try{await WorldSpiralLayoutTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-spiral-facing")
+{
+    try{await WorldSpiralFacingTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-spiral-terrain")
+{
+    try{await WorldSpiralTerrainTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==3&&args[0]=="--world-population-cli")
+{
+    try{await WorldPopulationCliTests.RunAsync(args[1],args[2]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-population-multiscope")
+{
+    try{await WorldPopulationMultiScopeTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-population-rotation")
+{
+    try{await WorldPopulationRotationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-population-rigid")
+{
+    try{await WorldPopulationRigidTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;
+}
+if(args.Length==2&&args[0]=="--world-region-partition")
+{
+    try{await WorldRegionPartitionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-regional-session-validation")
+{
+    try{await WorldRegionalSessionTests.ValidationAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==3&&args[0]=="--world-regional-session-scale")
+{
+    try{await WorldRegionalSessionTests.ScaleAsync(args[1],args[2]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-regional-session")
+{
+    try{await WorldRegionalSessionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-regional-content-scale")
+{
+    try{await WorldRegionalContentTests.ReadAndScaleAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-regional-content")
+{
+    try{await WorldRegionalContentTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-metadata-terrain-capture")
+{
+    try{await WorldMetadataTerrainCaptureTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-regional-terrain-windows")
+{
+    try{await WorldRegionalTerrainWindowTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-terrain-windows")
+{
+    try{await WorldTerrainWindowTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-fence-assembly")
+{
+    try{await WorldFenceAssemblyTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);for(Exception? cause=error;cause is not null;cause=cause.InnerException)foreach(System.Collections.DictionaryEntry entry in cause.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-generic-surroundings")
+{
+    try{await WorldGenericSurroundingsTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-direct-inputs")
+{
+    try{await WorldDirectInputTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-digest-resources")
+{
+    try{await WorldDigestResourceTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==3&&args[0]=="--world-composed-resources")
+{
+    try{await WorldComposedResourceTests.RunAsync(double.Parse(args[1],System.Globalization.CultureInfo.InvariantCulture),args[2]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-morphology")
+{
+    try{await WorldMorphologyTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-semantic-openings")
+{
+    try{await WorldSemanticOpeningTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-broad-composition")
+{
+    try{await WorldBroadCompositionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-mixed-growth")
+{
+    try{await WorldMixedGrowthTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-parent-routes")
+{
+    try{await WorldParentRouteTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-interior-population")
+{
+    try{await WorldInteriorPopulationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+JsonSerializer.Serialize(entry.Value));Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-domain-session-operations")
+{
+    try{await WorldDomainSessionOperationsTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-population-scale-lifecycle")
+{
+    try{await WorldPopulationScaleTests.LifecycleAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-placement-index")
+{
+    try{await WorldPlacementEnvelopeIndexTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-population-scale")
+{
+    try{await WorldPopulationScaleTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry d in error.Data)Console.Error.WriteLine(d.Key+": "+d.Value);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-session-operations")
+{
+    try{await WorldSessionOperationsTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-population-facing")
+{
+    try{await WorldPopulationFacingTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-generated-boundaries")
+{
+    try{await WorldGeneratedBoundaryTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-generation-study")
+{
+    try{await WorldGenerationStudyTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-root-region-coordination")
+{
+    try{await WorldRootRegionCoordinationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length is 2 or 3&&args[0]=="--world-contract-audit")
+{
+    try{await WorldContractAuditTests.RunAsync(args[1],args.Length==3?args[2]:null);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-sampled-regions")
+{
+    try{await WorldSampledRegionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-network-regions")
+{
+    try{await WorldNetworkRegionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-network-memo")
+{
+    try{await WorldNetworkMemoTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-network-policies")
+{
+    try{await WorldNetworkPolicyTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+entry.Value);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1&&args[0]=="--world-footprint-predicates")
+{
+    try{WorldFootprintPredicateTests.Run();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-mixed-route-regions")
+{
+    try{await WorldMixedRouteRegionTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine(entry.Key+": "+entry.Value);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-route-guidance")
+{
+    try{await WorldRouteGuidanceTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-parameter-bindings")
+{
+    try{await WorldParameterBindingTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-world-interior-floor-example")
+{
+    try{await WorldInteriorFloorRequirementTests.WriteExampleAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-interior-floor-requirements")
+{
+    try{await WorldInteriorFloorRequirementTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-physical-accounting")
+{
+    try{await WorldPhysicalAccountingTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-ground-use-capacity")
+{
+    try{await WorldGroundUseCapacityTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1&&args[0]=="--world-placement-resume")
+{
+    try{WorldPlacementResumeTests.Run();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-nested-source-fit")
+{
+    try{await WorldNestedSourceFitTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-provisional-relations")
+{
+    try{await WorldProvisionalRelationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-relation-candidates")
+{
+    try{await WorldRelationCandidateTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-complete-source-coordination")
+{
+    try{await WorldCompleteSourceCoordinationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-nested-coordination")
+{
+    try{await WorldNestedCoordinationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-source-pair-coordination")
+{
+    try{await WorldSourcePairCoordinationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-population-coordination")
+{
+    try{await WorldPopulationCoordinationTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-source-contacts")
+{
+    try{await WorldSourceContactTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-partitioned-domains")
+{
+    try{await WorldPartitionedStorageTests.DomainsAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--world-partitioned-dense")
+{
+    try{await WorldPartitionedStorageTests.DenseAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==4&&args[0]=="--world-partitioned-history")
+{
+    try{await WorldDenseRegionTests.MetadataAsync(args[1],args[2],args[3],true);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1&&args[0]=="--world-partitioned-storage")
+{
+    try{await WorldPartitionedStorageTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1&&args[0] is "--world-region-feedback" or "--world-region-feedback-ranked")
+{
+    try{if(args[0].EndsWith("ranked",StringComparison.Ordinal))WorldRegionFeedbackTests.Ranked();else await WorldRegionFeedbackTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry e in error.Data)Console.Error.WriteLine($"{e.Key}: {e.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-region-feedback-examples"){await WorldRegionFeedbackTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-region-intents")
+{
+    try{await WorldRegionIntentTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry e in error.Data)Console.Error.WriteLine($"{e.Key}: {e.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-region-intent-examples"){await WorldRegionIntentTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-region-intents-geometry")
+{
+    try{WorldRegionIntentTests.Geometry();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-program-composition-examples"){await WorldProgramCompositionTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0] is "--world-program-composition" or "--world-program-composition-ranked")
+{
+    try{if(args[0].EndsWith("ranked",StringComparison.Ordinal))WorldProgramCompositionTests.Ranked();else await WorldProgramCompositionTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry e in error.Data)Console.Error.WriteLine($"{e.Key}: {e.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-program-mix-examples"){await WorldProgramMixTests.WriteExamples(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-program-mix")
+{
+    try{await WorldProgramMixTests.Physical();}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry e in error.Data)Console.Error.WriteLine($"{e.Key}: {e.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1&&args[0]=="--world-program-mix-solver")
+{
+    try{WorldProgramMixTests.Solver();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1&&args[0] is "--world-area-population" or "--world-area-geometry")
+{
+    try{if(args[0]=="--world-area-geometry")WorldAreaPopulationTests.Geometry();else await WorldAreaPopulationTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine($"{entry.Key}: {entry.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-area-population-examples"){await WorldAreaPopulationTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-prescribed-program")
+{
+    try{WorldPrescribedPopulationTests.NestedProgram();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1&&args[0]=="--world-prescribed-population")
+{
+    try{await WorldPrescribedPopulationTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine($"{entry.Key}: {entry.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-prescribed-population-examples"){await WorldPrescribedPopulationTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-contour-population")
+{
+    try{await WorldContourPopulationTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine($"{entry.Key}: {entry.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-contour-population-examples"){await WorldContourPopulationTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-region-composition")
+{
+    try{await WorldRegionCompositionTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine($"{entry.Key}: {entry.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-region-composition-examples"){await WorldRegionCompositionTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-entrance-travel")
+{
+    try{await WorldEntranceTravelTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine($"{entry.Key}: {entry.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-entrance-travel-examples"){await WorldEntranceTravelTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-generated-interiors")
+{
+    try{await WorldGeneratedInteriorTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine($"{entry.Key}: {entry.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-generated-interior-examples"){await WorldGeneratedInteriorTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-mixed-scale")
+{
+    try{await WorldMixedScaleTests.RunAsync();}
+    catch(Exception error){Console.Error.WriteLine(error is ArgumentException&&error.Message.Contains("BUDGET")?error.Message:error.ToString());foreach(System.Collections.DictionaryEntry entry in error.Data)Console.Error.WriteLine($"{entry.Key}: {entry.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-mixed-scale-examples") {await WorldMixedScaleTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-route-budget")
+{
+    try{await WorldRouteBudgetTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1&&args[0]=="--world-programs")
+{
+    try{await WorldProgramInstantiationTests.RunAsync();}
+    catch(Exception error){Console.Error.WriteLine(error);foreach(System.Collections.DictionaryEntry item in error.Data)Console.Error.WriteLine($"{item.Key}: {item.Value}");Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-program-examples") {await WorldProgramInstantiationTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--operation-store-sharing")
+{
+    try{await OperationStoreSharingTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1&&args[0]=="--world-connected-growth")
+{
+    try{await WorldConnectedGrowthTests.RunAsync();}
+    catch(Exception error)
+    {
+        Console.Error.WriteLine(error);
+        foreach(System.Collections.DictionaryEntry detail in error.Data)Console.Error.WriteLine($"{detail.Key}: {detail.Value}");
+        Environment.ExitCode=1;
+    }
+    return;
+}
+if(args.Length==2&&args[0]=="--write-connected-growth-examples") {await WorldConnectedGrowthTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==1&&args[0]=="--world-topology")
+{
+    try{await WorldTopologyTests.RunAsync();}
+    catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1&&args[0]=="--world-topology-capacity")
+{
+    try{await WorldTopologyCapacityTests.RunAsync();}
+    catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==2&&args[0]=="--write-topology-examples") {await WorldTopologyTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length==2&&args[0]=="--metadata-art-handoff") {await MetadataArtHandoffTests.RunAsync(args[1]);return;}
+if(args.Length==2&&args[0]=="--metadata-capture") {await MetadataCaptureTests.RunAsync(args[1]);return;}
+if(args.Length==2&&args[0]=="--metadata-ground") {await MetadataGroundTests.RunAsync(args[1]);return;}
+if(args.Length==3&&args[0]=="--metadata-ground-views") {await MetadataGroundViewTests.RunAsync(args[1],args[2]);return;}
+if(args.Length==2&&args[0]=="--metadata-scene") {await MetadataSceneTests.RunAsync(args[1]);return;}
+if(args.Length==2&&args[0]=="--metadata-production") {await MetadataProductionTests.RunAsync(args[1]);return;}
+if(args.Length==3&&args[0]=="--tile-topology") {await WorldTileTopologyTests.RunAsync(args[1],args[2]);return;}
+if(args.Length==5&&args[0]=="--native-static-world") {await NativeStaticWorldTests.RunAsync(args[1],args[2],args[3],args[4]);return;}
+if(args.Length==5&&args[0]=="--native-movement") {await NativeStaticWorldTests.RunAsync(args[1],args[2],args[3],args[4],true);return;}
+if(args.Length==6&&args[0]=="--native-components") {await NativeStaticWorldTests.RunAsync(args[1],args[2],args[3],args[5],movement:true,componentDirectory:args[4]);return;}
+if(args.Length==5&&args[0]=="--gamearts-lifecycle") {await GameArtsLifecycleRegistryTests.RunAsync(args[1],args[2],args[3],args[4]);return;}
+if(args.Length==5&&args[0]=="--gamearts-lifecycle-process") {await GameArtsLifecycleProcessTests.RunAsync(args[1],args[2],args[3],args[4]);return;}
+if(args.Length==5&&args[0]=="--canonical-world-cli") {await CanonicalWorldCommandTests.RunAsync(args[1],args[2],args[3],args[4]);return;}
+if(args.Length==4&&args[0]=="--canonical-world-cli-negative") {await CanonicalWorldCommandTests.NegativeAsync(args[1],args[2],args[3]);return;}
+if(args.Length==1 && args[0]=="--world-protection") { await WorldProtectionTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--world-chunk-package") { try{await WorldChunkPackageTests.RunAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length is 1 or 2 && args[0]=="--world-chunks") { try{await WorldChunkTests.RunAsync(args.Length==2?args[1]:null);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--world-mixed-program") { await WorldMixedProgramTests.RunAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-scale") { await WorldScaleTests.RunAsync(args.Length==2?args[1]:null); return; }
+if(args.Length==1 && args[0]=="--world-variation") { await WorldVariationTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-variation-example") { await WorldVariationTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-protection-example") { await WorldProtectionTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-region-population") { await WorldRegionPopulationTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-region-population-example") { await WorldRegionPopulationTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-network-population") { await WorldNetworkPopulationTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-network-population-example") { await WorldNetworkPopulationTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-route-population") { try{await WorldRoutePopulationTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-route-population-example") { await WorldRoutePopulationTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-population") { await WorldPopulationTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-population-example") { await WorldPopulationTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-dependencies") { await WorldDependencyTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-dependency-example") { await WorldDependencyTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-regeneration") { await WorldRegenerationTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-regeneration-quick") { await WorldRegenerationTests.QuickAsync(); return; }
+if(args.Length==2 && args[0]=="--write-regeneration-example") { await WorldRegenerationTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-landform-search") { WorldLandformRouteTests.DirectCases(); return; }
+if(args.Length==1 && args[0]=="--world-landform-routes") { await WorldLandformRouteTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-landform-routes") { await WorldLandformRouteTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-interior") { await WorldInteriorTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-interior-example") { await WorldInteriorTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-physical-routing-geometry") {try{WorldPhysicalRoutingTests.Geometry();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;}
+if(args.Length==1 && args[0]=="--world-physical-routing") {try{await WorldPhysicalRoutingTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}return;}
+if(args.Length==2 && args[0]=="--write-physical-routing-example") {await WorldPhysicalRoutingTests.WriteExampleAsync(args[1]);return;}
+if(args.Length==1 && args[0]=="--world-terrain-demand-measure") { try{await WorldTerrainDemandTests.MeasureAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-terrain-demand") { try{await WorldTerrainDemandTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);if(error.Data["PlacementFailures"] is {} failures)Console.Error.WriteLine(System.Text.Json.JsonSerializer.Serialize(failures,WorldJson.CreateOptions()));Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-terrain-demand-examples") {await WorldTerrainDemandTests.WriteExamplesAsync(args[1]);return;}
+if(args.Length is 1 or 2 && args[0]=="--world-capability-progression") { try{await WorldCapabilityProgressionTests.RunAsync(args.Length==2?args[1]:null);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-capability-progression-example") { await WorldCapabilityProgressionTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-progression") { try{await WorldProgressionTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-progression-example") { await WorldProgressionTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-terrain-compounds") { await WorldTerrainCompoundTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-terrain-compounds") { await WorldTerrainCompoundTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-compounds") { await WorldCompoundIntegrationTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-compound-example") { await WorldCompoundIntegrationTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-adaptation") { await WorldLayoutAdaptationTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-layout-rotation") { await WorldLayoutAdaptationTests.RotationAsync(); return; }
+if(args.Length==1 && args[0]=="--world-regional-frames") { await WorldRegionalFrameTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-layout-strategies") { await WorldLayoutStrategyTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-region-relations-oracle") { WorldRegionRelationTests.Oracle(); return; }
+if(args.Length==1 && args[0]=="--world-joint-layouts") { await WorldJointLayoutTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-domains") { await WorldDomainTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-domain-journeys") { await WorldDomainJourneyTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--world-regional-domain-world") { await WorldRegionalDomainWorldTests.RunAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--world-regional-marker-domains") { await WorldRegionalMarkerDomainTests.RunAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--world-regional-domain-design") { await WorldRegionalDomainDesignTests.RunAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--world-regional-physical-domains") { await WorldRegionalPhysicalDomainsTests.RunAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--world-domain-progression") { await WorldDomainProgressionTests.RunAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--world-domain-journey-capabilities") { await WorldDomainJourneyCapabilitiesTests.RunAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--world-domain-chunk-index") { await WorldDomainChunkIndexTests.RunAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--world-regional-domain-chunk-index") { await WorldDomainChunkIndexTests.RunRegionalAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--world-domain-transfers") { await WorldDomainTransferTests.RunAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-numeric-buffer-edits")
+{
+    try{await WorldDenseRegionTests.BuffersAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==4 && args[0]=="--world-dense-metadata")
+{
+    try{await WorldDenseRegionTests.MetadataAsync(args[1],args[2],args[3]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1 && args[0]=="--world-dense-lake")
+{
+    try{WorldDenseRegionTests.Lake();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1 && args[0] is "--world-dense-regions" or "--world-dense-regions-probe")
+{
+    try{if(args[0]=="--world-dense-regions")WorldDenseRegionTests.Run();else WorldDenseRegionTests.Probe();}
+    catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;}
+    return;
+}
+if(args.Length==1 && args[0]=="--world-network-domain-endpoints") { WorldMixedDomainTests.NetworkEndpoints(); return; }
+if(args.Length==1 && args[0]=="--world-mixed-domains") { await WorldMixedDomainTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-mixed-domain-example") { await WorldMixedDomainTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-domain-session") { await WorldDomainSessionTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-domain-journey-example") { await WorldDomainJourneyTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-world-domains-example") { await WorldDomainTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-joint-layout-examples") { await WorldJointLayoutTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-region-relations") { await WorldRegionRelationTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-region-relations-example") { await WorldRegionRelationTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-layout-strategy-examples") { await WorldLayoutStrategyTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-regional-frame-examples") { await WorldRegionalFrameTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-layout-rotation-example") { await WorldLayoutAdaptationTests.WriteRotationExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-adaptation-example") { await WorldLayoutAdaptationTests.WriteExampleAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-interfaces") { await WorldInterfaceTests.RunAsync(args.Length==2?args[1]:null); return; }
+if(args.Length==2 && args[0]=="--write-interface-example") { await WorldInterfaceTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-local-layouts") { await WorldLocalLayoutTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-binary-partitions") { await WorldBinaryPartitionTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-anchor-partitions") { await WorldAnchorPartitionTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-program-spaces") { await WorldProgramSpaceTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-sampled-environment") { try{await WorldSampledEnvironmentTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-wind-metadata") { try{await WorldWindMetadataTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-wind-metadata-physical") { try{await WorldWindMetadataTests.PhysicalAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-world-wind-metadata-example") { await WorldWindMetadataTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-wind-physical") { try{await WorldSampledEnvironmentTests.PhysicalAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-world-wind-examples") { await WorldSampledEnvironmentTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-water-physical") { try{await WorldWaterMetadataTests.FullPhysicalAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-water-metadata") { try{await WorldWaterMetadataTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-world-water-metadata-example") { try{await WorldWaterMetadataTests.WriteExampleAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-water") { try{await WorldWaterTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-retained-water") { try{await WorldRetainedWaterTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-retained-water-core-examples") { await WorldRetainedWaterTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-retained-water-metadata") { try{await WorldRetainedWaterMetadataTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-retained-water-physical") { try{await WorldRetainedWaterMetadataTests.PhysicalAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-retained-water-probe") { try{await WorldRetainedWaterMetadataTests.ProbeAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-world-retained-water-example") { await WorldRetainedWaterMetadataTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-world-water-example") { try{await WorldWaterTests.WriteExampleAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-drainage-metadata") { try{await WorldDrainageMetadataTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-world-drainage-metadata-example") { try{await WorldDrainageMetadataTests.WriteExampleAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-drainage") { try{await WorldDrainageTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-world-drainage-examples") { try{await WorldDrainageTests.WriteExamplesAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-validation-replay") { try{await WorldValidationReplayTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--world-validation-profile") { try{await WorldValidationReplayTests.ProfileAsync(args[1]);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0]=="--world-connected-full") { try{await WorldConnectedAreaTests.FullAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-connected-area-examples") { await WorldConnectedAreaTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-connected-area") { try{await WorldConnectedAreaTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==1 && args[0] is "--world-interior-anchors" or "--world-steep-source") { try{await WorldTerrainPartitionTests.RunAsync(args[0]=="--world-steep-source");}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-interior-anchor-examples") { await WorldTerrainPartitionTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-layered-landforms") { try{await WorldLayeredLandformTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-layered-landform-examples") { await WorldLayeredLandformTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-area-adaptation") { try{await WorldAreaAdaptationTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-area-adaptation-examples") { await WorldAreaAdaptationTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-layered-integration") { try{await WorldLayeredIntegrationTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length==2 && args[0]=="--write-layered-integration-examples") { await WorldLayeredIntegrationTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-program-space-examples") { await WorldProgramSpaceTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-anchor-partition-example") { await WorldAnchorPartitionTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-partition-adaptation") { await WorldPartitionAdaptationTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--world-publication") { await MetadataPublicationTests.RunAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-partition-adaptation-examples") { await WorldPartitionAdaptationTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-binary-partition-example") { await WorldBinaryPartitionTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-local-layout-example") { await WorldLocalLayoutTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-regions") { await WorldRegionTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-region-example") { await WorldRegionTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-corridor-capacity") { await WorldCorridorCapacityTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-corridor-resilience") { await WorldCorridorResilienceTests.RunAsync(); return; }
+if(args.Length==1 && args[0]=="--world-physical-loops") { await WorldPhysicalLoopTests.RunAsync(); return; }
+if(args.Length==2 && args[0] is "--world-diverse-programs" or "--world-diverse-interior" or "--world-diverse-adaptive" or "--world-diverse-footprints")
+{
+    try{await WorldDiverseProgramTests.ProbeAsync(args[1],args[0] is "--world-diverse-interior" or "--world-diverse-adaptive",args[0]=="--world-diverse-adaptive",args[0]=="--world-diverse-footprints");}
+    catch(Exception error)
+    {
+        Console.Error.WriteLine(error);
+        if(error.Data["PlacementFailures"] is {} failures)Console.Error.WriteLine(System.Text.Json.JsonSerializer.Serialize(failures,WorldJson.CreateOptions()));
+        if(error.Data["MaximumWork"] is {} maximum)Console.Error.WriteLine($"MaximumWork={maximum}; UsedWork={error.Data["UsedWork"]}; RequestedWork={error.Data["RequestedWork"]}");
+        Environment.ExitCode=1;
+    }
+    return;
+}
+if(args.Length==2 && args[0]=="--inspect-diverse-layout") {await WorldDiverseProgramTests.InspectAsync(args[1]);return;}
+if(args.Length==1 && args[0]=="--world-footprint-anchors")
+{try{await WorldFootprintAnchorTests.RunAsync();}catch(Exception error){Console.Error.WriteLine(error);if(error.Data["PlacementFailures"] is {} failures)Console.Error.WriteLine(System.Text.Json.JsonSerializer.Serialize(failures,WorldJson.CreateOptions()));Environment.ExitCode=1;}return;}
+if(args.Length==2 && args[0]=="--write-corridor-capacity-example") { await WorldCorridorCapacityTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-route-reuse") { await WorldRouteReuseTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-route-reuse-example") { await WorldRouteReuseTests.WriteExampleAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-corridors") { await WorldCorridorTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==2 && args[0]=="--write-corridor-example") { await WorldCorridorTests.WriteExampleAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--current-contracts") { await CurrentContractTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-surface") { try{await WorldSurfaceTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length is 1 or 2 && args[0]=="--world-terrain") { await WorldTerrainTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==1 && args[0]=="--world-field-areas") { WorldFieldAreaTests.Run(); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-placement") { await WorldPlacementTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-hierarchy") { await WorldHierarchyPlacementTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-access") { try{await WorldPhysicalAccessTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length is 1 or 2 && args[0]=="--world-feedback") { try{await WorldPlacementFeedbackTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null);}catch(Exception error){Console.Error.WriteLine(error);Environment.ExitCode=1;} return; }
+if(args.Length is 1 or 2 && args[0]=="--world-capacity") { await WorldCapacityTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-clearance") { await WorldClearanceTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-surroundings") { await WorldSurroundingsTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-resource-area") { await WorldResourceAreaTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==2 && args[0]=="--write-resource-area-example") { await WorldResourceAreaTests.WriteExampleAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-context") { await WorldContextTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==2 && args[0]=="--write-wilderness-context-example") { await WorldContextTests.WriteExampleAsync(args[1],true); return; }
+if(args.Length==2 && args[0]=="--write-context-example") { await WorldContextTests.WriteExampleAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-supply-policy") { await WorldSupplyPolicyTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==2 && args[0]=="--write-supply-policy-example") { await WorldSupplyPolicyTests.WriteExampleAsync(Path.GetFullPath(args[1])); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-services") { await WorldServiceTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==2 && args[0]=="--write-service-example") { await WorldServiceTests.WriteExampleAsync(Path.GetFullPath(args[1])); return; }
+if(args.Length==2 && args[0]=="--write-physical-service-example") { await WorldServiceTests.WriteExampleAsync(Path.GetFullPath(args[1]),true); return; }
+if(args.Length==2 && args[0]=="--write-surroundings-example") { await WorldSurroundingsTests.WriteExampleAsync(Path.GetFullPath(args[1])); return; }
+if(args.Length==2 && args[0]=="--write-clearance-example") { await WorldClearanceTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-capacity-example") { await WorldCapacityTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-feedback-example") { await WorldPlacementFeedbackTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-access-example") { await WorldPhysicalAccessTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-hierarchy-example") { await WorldHierarchyPlacementTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-placement-example") { await WorldPlacementTests.WriteExampleAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-footprints") { await WorldFootprintTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==2 && args[0]=="--write-footprint-example") { await WorldFootprintTests.WriteExampleAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-environment") { await WorldEnvironmentTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==2 && args[0]=="--write-environment-example") { await WorldEnvironmentTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-terrain-example") { await WorldTerrainTests.WriteExampleAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-routes") { await WorldRouteTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length is 1 or 2 && args[0]=="--world-networks") { await WorldNetworkTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==2 && args[0]=="--write-network-example") { await WorldNetworkTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-route-example") { await WorldRouteTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--write-surface-example") { await WorldSurfaceTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--street-blocks") { await CityStreetBlockTests.RunAsync(); return; }
+if(args.Length==2 && args[0]=="--write-street-block-fixture") { await CityStreetBlockTests.WriteFixtureAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--metadata-layers") { await MetadataLayerTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
+if(args.Length==2 && args[0]=="--write-layer-example") { await MetadataLayerTests.WriteExampleAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--world-intersection-performance") { WorldIntersectionPerformanceTests.Run(); return; }
+if(args.Length==2 && args[0]=="--world-regional-return-topology") { await WorldRegionalTopologyTests.RunAsync(args[1],true,1); return; }
+if(args.Length==2 && args[0]=="--world-regional-directed-topology") { await WorldRegionalTopologyTests.RunAsync(args[1],true); return; }
+if(args.Length==2 && args[0]=="--world-directed-return-topology") { await WorldDirectedReturnTopologyTests.RunAsync(args[1]); return; }
+if(args.Length==2 && args[0]=="--world-directed-topology") { await WorldDirectedTopologyTests.RunAsync(args[1]); return; }
+if(args.Length==1 && args[0]=="--metadata-layouts") { MetadataLayoutTests.Run(); return; }
+if(args.Length==2 && args[0]=="--write-layout-examples") { await MetadataLayoutTests.WriteExamplesAsync(args[1]); return; }
+if(args.Length is 1 or 2 && args[0]=="--metadata") { MetadataLayoutTests.Run(); await MetadataLayerTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); await WorldMetadataTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
 if(args.Length==2 && args[0]=="--write-metadata-examples") { await WorldMetadataTests.WriteExamplesAsync(args[1]); return; }
 if (args.Length is 1 or 2 && args[0]=="--structure-pipeline") { await StructureFirstPipelineTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
 if (args.Length==2 && args[0]=="--write-structure-godot-fixture") { await StructureFirstPipelineTests.RunAsync(godotOutput:Path.GetFullPath(args[1])); return; }
 if (args.Length is 1 or 2 && args[0]=="--catalog-authoring") { await CatalogContentAuthoringTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
 if (args.Length==2 && args[0]=="--write-catalog-content-fixture") { await File.WriteAllTextAsync(args[1],JsonSerializer.Serialize(CatalogContentAuthoringTests.Content(),WorldJson.CreateOptions(writeIndented:true))); return; }
 if (args.Length is 1 or 2 && args[0]=="--composition") { await FacilityCompositionTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
-if (args.Length==3 && args[0]=="--write-facility-fixture") { await File.WriteAllTextAsync(args[2],JsonSerializer.Serialize(FacilityCompositionTests.Create(args[1]),WorldJson.CreateOptions(writeIndented:true))); return; }
 if (args.Length==1 && args[0]=="--catalogs") { await CatalogContractTests.RunAsync(); return; }
-if (args.Length==1 && args[0]=="--capture") { await MockupCaptureTests.RunAsync(); return; }
+if (args.Length is 1 or 2 && args[0]=="--capture") { await MockupCaptureTests.RunAsync(args.Length==2?Path.GetFullPath(args[1]):null); return; }
 if (args.Length==1 && args[0]=="--roads") { await CurvedRoadTests.RunAsync(); return; }
 if (args.Length==1 && args[0]=="--siting") { await SitingAlgorithmTests.RunAsync(); return; }
 if (args.Length==2 && args[0]=="--write-siting-fixture")
@@ -54,8 +1262,38 @@ if (args.Length == 2 && args[0] == "--write-generation-fixture")
 var cliPath = args.Length == 2 && args[0] == "--cli" ? Path.GetFullPath(args[1]) : null;
 if (args.Length != 0 && cliPath is null)
     throw new ArgumentException("Supported test option: --cli <WorldCreator.Cli.dll>");
-var generator = new DesertWorldGenerator(TestCatalogs.Registry);
-var req = MockupGenerationFixture.Create(32,32,1,123);
+await CurrentContractTests.RunAsync(cliPath);
+await WorldSurfaceTests.RunAsync(cliPath);
+await WorldRegionalTerrainWindowTests.RunAsync();
+await WorldTerrainWindowTests.RunAsync();
+await WorldTerrainTests.RunAsync(cliPath);
+WorldFieldAreaTests.Run();
+await WorldEnvironmentTests.RunAsync(cliPath);
+await WorldFootprintTests.RunAsync(cliPath);
+await WorldPlacementTests.RunAsync(cliPath);
+await WorldHierarchyPlacementTests.RunAsync(cliPath);
+await WorldPhysicalAccessTests.RunAsync(cliPath);
+await WorldPlacementFeedbackTests.RunAsync(cliPath);
+await WorldCapacityTests.RunAsync(cliPath);
+await WorldClearanceTests.RunAsync(cliPath);
+await WorldSurroundingsTests.RunAsync(cliPath);
+await WorldServiceTests.RunAsync(cliPath);
+await WorldSupplyPolicyTests.RunAsync(cliPath);
+await WorldContextTests.RunAsync(cliPath);
+await WorldProtectionTests.RunAsync();
+await WorldVariationTests.RunAsync();
+await WorldChunkTests.RunAsync();
+await WorldResourceAreaTests.RunAsync(cliPath);
+await WorldRouteTests.RunAsync(cliPath);
+await WorldCorridorTests.RunAsync(cliPath);
+await WorldRouteReuseTests.RunAsync();
+await WorldCorridorCapacityTests.RunAsync();
+await WorldRegionTests.RunAsync();
+await WorldLocalLayoutTests.RunAsync();
+await WorldNetworkTests.RunAsync(cliPath);
+await MetadataLayerTests.RunAsync(cliPath);
+var generator = new MockupWorldGenerator(TestCatalogs.Registry);
+var req = MockupGenerationFixture.Create(32,32,1);
 var first = await generator.GenerateAsync(req);
 var second = await generator.GenerateAsync(req);
 Assert(JsonSerializer.Serialize(first) == JsonSerializer.Serialize(second), "Determinism");
@@ -65,8 +1303,8 @@ Assert(first.Objects.Any(o => o.Kind == "gate"), "Gate metadata");
 var dir = Path.Combine(Path.GetTempPath(), "gameframework-test-" + Guid.NewGuid().ToString("N"));
 try
 {
-    await new GodotWorldExporter().ExportAsync(first, dir);
-    Assert(File.Exists(Path.Combine(dir, "GeneratedWorld.tscn")) && File.Exists(Path.Combine(dir, "world.json")), "Export outputs");
+    await new WorldDocumentExporter().ExportAsync(first, dir);
+    Assert(File.Exists(Path.Combine(dir, "plan.svg")) && File.Exists(Path.Combine(dir, "world.json")), "Export outputs");
 }
 finally { if (Directory.Exists(dir)) Directory.Delete(dir, true); }
 
@@ -82,7 +1320,7 @@ var empty = new InMemoryRegistry(null);
 var missing = await new WorldBuildGate(empty).CheckAsync(blueprint);
 Assert(!missing.Ready && missing.Issues.Any(i => i.Code == "ART_MISSING"), "Missing GameArts asset rejection");
 const string hash = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-var manifest = new ApprovedArtManifest(1, "warehouse", "approved-r1", "7.5",
+var manifest = new ApprovedArtManifest(2, "warehouse", "warehouse", "approved-r1", "7.5",
     ArtApprovalState.Approved, new[]
     {
         new SpriteSheetManifest("door-s", "door_s.png", "door_s.json", hash, hash, "door", new[] { "S" })
@@ -318,7 +1556,6 @@ Assert(JsonSerializer.Serialize(programPlanner.Plan(new(SettlementClass.Village,
 // Public-realm features are anchored to actual streets, never uniformly scattered.
 var publicStreet = new StreetCorridor("public-main",
     new WorldPolyline(new[] { new WorldPoint(0, 0), new WorldPoint(100, 0) }), crossSection);
-var publicRules = new PublicRealmRules(25, 1, 1.5);
 var publicDesign = MockupGenerationFixture.Create().Design! with {
     Blueprint = new(1,"synthetic-public-mockup","simulated-r1","synthetic-style",
         [new("public-region",MockupGenerationFixture.Rect(-5,-5,105,30),"street-composition")],[]),
@@ -337,8 +1574,6 @@ var reserved = new SpatialReservationIndex();
 Assert(reserved.TryReserve(new WorldPoint(0, 0), 2), "First reservation succeeds");
 Assert(!reserved.TryReserve(new WorldPoint(1, 0), 2), "Overlapping accessory rejected");
 Assert(reserved.TryReserve(new WorldPoint(5, 0), 2), "Separated accessory allowed");
-Assert(new PublicRealmPlanner().Plan([publicStreet],publicRules).Diagnostics.Contains("MOCKUP_PUBLIC_REALM_DESIGN_REQUIRED"),
-    "Distance-only street furniture fallback is retired");
 Assert(JsonSerializer.Serialize(new PublicRealmPlanner().Plan(publicDesign)) ==
     JsonSerializer.Serialize(publicPlan), "Public realm deterministic");
 
@@ -461,7 +1696,7 @@ var unapprovedMockup = new VisualWorldPlanner().Plan(visual with { ApprovedRevis
 Assert(!unapprovedMockup.IsValid, "No world build without approved mockup revision");
 
 
-var pattern = new RegionPattern("garden-hedge", "square", "hedge", "define garden boundary", 8, 4, "approved-garden-row-v1");
+var pattern = new RegionPattern("garden-hedge", "square", "hedge", "define garden boundary", 8, 4, "approved-garden-row-v1",2,4,56);
 var repeated = new VisualRegionPatternGenerator().Generate(visual, pattern);
 Assert(repeated.Issues.Count == 0 && repeated.Decisions.Count == 8,
     "Approved visual region produces repeated planned hedge elements");
@@ -675,31 +1910,15 @@ try
      "nodes":{"base":{"frame_index":0,"world_matrix_2d":[[1,0,0],[0,1,0],[0,0,1]]}}}]}
     """);
     var gate = new GameArtsProductionGate(new TestApprovalAuthority(true));
-    var result = await gate.CheckAsync(bundlePath, "r1");
+    var result = await gate.CheckAsync(bundlePath, "r1", "lifecycle-sample", "sample");
     Assert(!result.Ready && result.Approved && result.Issues.Any(i => i.StartsWith("ATLAS_MISSING")),
         "Approved but incomplete bundles cannot pass readiness");
     var unapproved = await new GameArtsProductionGate(new TestApprovalAuthority(false))
-        .CheckAsync(bundlePath, "r1");
+        .CheckAsync(bundlePath, "r1", "lifecycle-sample", "sample");
     Assert(!unapproved.Ready && unapproved.Issues.Contains("LIFECYCLE_APPROVAL_NOT_VERIFIED"),
         "Technical checks cannot bypass approval authority");
 }
 finally { Directory.Delete(approvalRoot, true); }
-
-var villageDir = Path.Combine(Path.GetTempPath(), "gameframework-village-" + Guid.NewGuid().ToString("N"));
-try
-{
-    await new DummyVillageAssembler().ExportAsync(villageDir);
-    foreach (var name in new[] { "project.godot", "Village.tscn", "Village.gd", "design.json" })
-        Assert(File.Exists(Path.Combine(villageDir,name)), "Dummy village emits " + name);
-    using var village = JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(villageDir, "design.json")));
-    Assert(village.RootElement.GetProperty("Objects").GetArrayLength() == 7,
-        "Dummy village creates two homes, separate doors, two trees and a sign");
-    var gd = await File.ReadAllTextAsync(Path.Combine(villageDir, "Village.gd"));
-    Assert(gd.Contains("door_open") && gd.Contains("for hx in [3, 12]"),
-        "Dummy scene draws separate animated doors on planned buildings");
-}
-finally { if (Directory.Exists(villageDir)) Directory.Delete(villageDir, true); }
-
 
 var packageBuilder = new WorldAssemblyPackageBuilder();
 var (portable, portableReport) = packageBuilder.Build(visual,
@@ -1175,7 +2394,7 @@ try
 finally { if (File.Exists(productionOutput)) File.Delete(productionOutput); }
 
 
-var villageFixture = DummyVillageWorldFixture.Create();
+var villageFixture = SemanticWorldFixture.Create();
 Assert(villageFixture.Base.Objects.Count == 3 && villageFixture.Terrain.Count == 3 &&
     villageFixture.Paths.Count == 2 && villageFixture.Landscape.Count == 2,
     "Reusable C# village has houses, sign, planned ground, paths and garden zones");
@@ -1183,7 +2402,7 @@ Assert(villageFixture.Base.MockupId == "fixture-village-mockup" &&
     villageFixture.Base.ArtStyleId == "cozy-pixel-village",
     "Village design preserves its simulated visual mockup and art style");
 Assert(JsonSerializer.Serialize(villageFixture) ==
-    JsonSerializer.Serialize(DummyVillageWorldFixture.Create()),
+    JsonSerializer.Serialize(SemanticWorldFixture.Create()),
     "Village world specification is byte-identical across repeated builds");
 var villageGarden = new LandscapeWorldPlanner().Generate(villageFixture, new[] {
     new LandscapeDesignGrammar("western-garden", "rows", "fixture-flowers", 1, 2, 1),
@@ -1194,7 +2413,7 @@ Assert(villageGarden.IsValid && villageGarden.Features.Count > 0 &&
     "Garden geometries are derived from approved fixture regions");
 
 
-var completeVillage = DummyVillageAssemblyFixture.Create();
+var completeVillage = SemanticWorldAssemblyFixture.Create();
 Assert(completeVillage.Vegetation.Count > 0 &&
     completeVillage.BuildingFootprints.Count == 2 &&
     completeVillage.GroundMaterials.Pieces.Count > 0 &&
@@ -1204,11 +2423,11 @@ Assert(completeVillage.Vegetation.All(p =>
     p.SpeciesAssetId is "fixture-flower" or "fixture-tree"),
     "Every planned plant carries a declared art identity");
 Assert(JsonSerializer.Serialize(completeVillage) ==
-    JsonSerializer.Serialize(DummyVillageAssemblyFixture.Create()),
+    JsonSerializer.Serialize(SemanticWorldAssemblyFixture.Create()),
     "Complete semantic world assembly reproducible from fixed design");
 
 
-var villageDocument = DummyVillageWorldExporter.Assemble();
+var villageDocument = WorldSceneFixtureExporter.Assemble();
 Assert(villageDocument.ArtifactKind == "simulation-fixture" &&
     !villageDocument.ProductionApproved &&
     villageDocument.Buildings.Select(b => b.ObjectId)
@@ -1218,13 +2437,13 @@ Assert(villageDocument.TerrainMaterials.Count > 0 &&
     villageDocument.GardenBeds.Count > 0 && villageDocument.Vegetation.Count > 0,
     "Portable world includes terrain, planting beds and vegetation in one document");
 Assert(JsonSerializer.Serialize(villageDocument) ==
-    JsonSerializer.Serialize(DummyVillageWorldExporter.Assemble()),
+    JsonSerializer.Serialize(WorldSceneFixtureExporter.Assemble()),
     "Portable dummy village JSON stable across independent assemblies");
 var exportedVillagePath = Path.Combine(Path.GetTempPath(),
     "gfw-village-" + Guid.NewGuid().ToString("N") + ".json");
 try
 {
-    await DummyVillageWorldExporter.ExportAsync(exportedVillagePath);
+    await WorldSceneFixtureExporter.ExportAsync(exportedVillagePath);
     using var exportedVillage = JsonDocument.Parse(await File.ReadAllTextAsync(exportedVillagePath));
     Assert(exportedVillage.RootElement.GetProperty("ProductionApproved").GetBoolean() == false &&
         exportedVillage.RootElement.GetProperty("Buildings").GetArrayLength() == 2 &&
@@ -1236,7 +2455,7 @@ finally { if (File.Exists(exportedVillagePath)) File.Delete(exportedVillagePath)
 
 
 var worldQuality = new WorldQualityAnalyzer();
-var qualityRules = new WorldQualityRules(0.99, 21, 1);
+var qualityRules = new WorldQualityRules(0.99, 21, 1, "village-ground");
 var goodQuality = worldQuality.Analyze(villageDocument, qualityRules);
 Assert(goodQuality.MeetsRules &&
     Math.Abs(goodQuality.NominalTerrainCoverageRatio - 1) < 1e-8 &&
@@ -1716,7 +2935,7 @@ try
                 } } } }
         });
         await File.WriteAllTextAsync(Path.Combine(multiAssetRoot, bundleName), bundleText);
-        manifests.Add(assetId, new ApprovedArtManifest(1, assetId, simulatedRevision,
+        manifests.Add(assetId, new ApprovedArtManifest(2, assetId, assetId, simulatedRevision,
             "fixture-test", ArtApprovalState.Approved,
             new[] { new SpriteSheetManifest(assetId, imageName, atlasName,
                 ArtHash(icon), ArtHash(System.Text.Encoding.UTF8.GetBytes(atlasText)),
@@ -1763,7 +2982,7 @@ try
         composedSettlement, multiInputs, cliPath);
     using (var originalDoc = JsonDocument.Parse(await File.ReadAllTextAsync(multiOutput)))
     {
-        var tamperedDocument = JsonSerializer.Deserialize<DummyVillageWorldDocument>(
+        var tamperedDocument = JsonSerializer.Deserialize<WorldSceneDocument>(
             originalDoc.RootElement.GetRawText())!;
         var missingDependency = tamperedDocument with {
             AssetDependencies = tamperedDocument.AssetDependencies!
@@ -1822,9 +3041,8 @@ await FacilityCompositionTests.RunAsync(cliPath);
 await CatalogContentAuthoringTests.RunAsync(cliPath);
 await StructureFirstPipelineTests.RunAsync(cliPath);
 await WorldMetadataTests.RunAsync(cliPath);
-await ProceduralCityTests.RunAsync(cliPath);
-await CityFrontageTests.RunAsync();
-await CityPackageTests.RunAsync();
+
+await CityStreetBlockTests.RunAsync();
 await MockupCaptureTests.RunAsync(cliPath);
 await CurvedRoadTests.RunAsync(cliPath);
 Console.WriteLine("PASS: engine regression harness (synthetic artwork; real approval and Godot runtime not verified).");
@@ -1841,6 +3059,7 @@ sealed class TestApprovalAuthority(bool approved) : IGameArtsApprovalAuthority
 {
     public Task<bool> IsApprovedAsync(string assetId, string revision,
         CancellationToken token = default) => Task.FromResult(approved);
+    public Task<bool> IsApprovedArtifactAsync(string id,string revision,string hash,CancellationToken token=default)=>IsApprovedAsync(id,revision,token);
 }
 sealed class InMemoryRegistry(ApprovedArtManifest? manifest) : IApprovedArtRegistry
 {

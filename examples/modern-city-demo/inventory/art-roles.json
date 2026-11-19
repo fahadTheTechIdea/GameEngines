@@ -1,0 +1,138 @@
+[
+  {
+    "ArchetypeId": "house",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "townhouse",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "apartment",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "shop",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "cafe",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "restaurant",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "office",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "clinic",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "civic",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "library",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "school-building",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "warehouse",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "workshop",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "guardhouse",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "garden",
+    "Role": "Ground"
+  },
+  {
+    "ArchetypeId": "entry-walk",
+    "Role": "Ground"
+  },
+  {
+    "ArchetypeId": "courtyard",
+    "Role": "Ground"
+  },
+  {
+    "ArchetypeId": "playground",
+    "Role": "Ground"
+  },
+  {
+    "ArchetypeId": "yard",
+    "Role": "Ground"
+  },
+  {
+    "ArchetypeId": "plaza",
+    "Role": "Ground"
+  },
+  {
+    "ArchetypeId": "park",
+    "Role": "Ground"
+  },
+  {
+    "ArchetypeId": "utility-yard",
+    "Role": "Ground"
+  },
+  {
+    "ArchetypeId": "production-hall",
+    "Role": "Structure"
+  },
+  {
+    "ArchetypeId": "house-site",
+    "Role": "Group"
+  },
+  {
+    "ArchetypeId": "apartment-site",
+    "Role": "Group"
+  },
+  {
+    "ArchetypeId": "school-site",
+    "Role": "Group"
+  },
+  {
+    "ArchetypeId": "factory-site",
+    "Role": "Group"
+  },
+  {
+    "ArchetypeId": "old-center",
+    "Role": "Group"
+  },
+  {
+    "ArchetypeId": "garden-neighborhood",
+    "Role": "Group"
+  },
+  {
+    "ArchetypeId": "riverside",
+    "Role": "Group"
+  },
+  {
+    "ArchetypeId": "mixed-center",
+    "Role": "Group"
+  },
+  {
+    "ArchetypeId": "work-district",
+    "Role": "Group"
+  },
+  {
+    "ArchetypeId": "outer-neighborhood",
+    "Role": "Group"
+  },
+  {
+    "ArchetypeId": "city",
+    "Role": "Group"
+  }
+]

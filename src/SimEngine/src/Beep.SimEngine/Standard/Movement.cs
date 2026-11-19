@@ -69,10 +69,16 @@ namespace Beep.SimEngine.Standard
         private IReadOnlyList<TileCoord> _pathView;
         public Mover() { _pathView = _path.AsReadOnly(); }
         public MoveStatus Status { get; private set; }
-        public TileRect Goal { get; private set; }
+        public TileRect Goal { get => _goal; private set { _goal = value; _routeChecked = false; } }
+        private TileRect _goal;
         public IReadOnlyList<TileCoord> Path => _pathView;
         public int PathIndex { get; private set; }
-        public FixVec2 RouteOrigin { get; private set; }
+        public FixVec2 RouteOrigin { get => _routeOrigin; private set { _routeOrigin = value; _routeChecked = false; } }
+        private FixVec2 _routeOrigin;
+        // True once the whole route chain (bounds, adjacency, ending in the goal) was checked for the current path, origin and goal.
+        // Every writer of those three clears it, so a route is walked once per change rather than once per observation.
+        private bool _routeChecked;
+        private void ClearRoute() { _path.Clear(); _routeChecked = false; }
         /// <summary>Game ticks this mover has spent moving since its last order (for telemetry and ETAs).</summary>
         public long TicksMoving { get; private set; }
 
@@ -108,7 +114,7 @@ namespace Beep.SimEngine.Standard
             _ = checked(Entity.Version + 1); _movementClass = profile;
             if (Status == MoveStatus.Moving || Status == MoveStatus.Unreachable)
             {
-                _path.Clear(); PathIndex = -1; RouteOrigin = Entity.Get<ITilePresence>().Position;
+                ClearRoute(); PathIndex = -1; RouteOrigin = Entity.Get<ITilePresence>().Position;
                 Status = MoveStatus.Moving;
             }
             Entity.Touch();
@@ -131,7 +137,7 @@ namespace Beep.SimEngine.Standard
             _ = checked(Entity.Version + 1);
             Goal = goal;
             Status = MoveStatus.Moving;
-            _path.Clear();
+            ClearRoute();
             PathIndex = -1;
             RouteOrigin = Entity.Get<ITilePresence>().Position;
             TicksMoving = 0;
@@ -144,7 +150,7 @@ namespace Beep.SimEngine.Standard
             _ = checked(Entity.Version + 1);
             Status = MoveStatus.Idle;
             Goal = default;
-            _path.Clear();
+            ClearRoute();
             PathIndex = 0;
             RouteOrigin = FixVec2.Zero;
             Entity.Touch();
@@ -294,10 +300,11 @@ namespace Beep.SimEngine.Standard
             Fix budget = TickBudget(world, speedModifier);
             NavGrid grid = world.Services.Get<NavService>().Grid(MovementClass);
             if (region != null && PathIndex >= 0 && !CurrentRouteAllowed(region))
-            { PathIndex = -1; _path.Clear(); RouteOrigin = Entity.Get<ITilePresence>().Position; }
+            { PathIndex = -1; ClearRoute(); RouteOrigin = Entity.Get<ITilePresence>().Position; }
             if (PathIndex < 0)
             {
                 RouteOrigin = Entity.Get<ITilePresence>().Position;
+                _routeChecked = false;
                 PathSearchResult result = grid.FindPath(Entity.Get<ITilePresence>().Tile, Goal, _path,
                     permitsStep: region == null ? null : (a, b) => PermitsStep(region, a, b), actor: Entity);
                 if (result == PathSearchResult.BudgetExceeded) return;
@@ -328,7 +335,7 @@ namespace Beep.SimEngine.Standard
                     // only; the unchanged live check above must pass before any step.
                     if (TrySegment(tile => grid.WaitingTrafficCostFor(Entity, tile), pos, Path[PathIndex], out _, out _, out _)) break;
                     // A changed route is replanned from the current physical position next tick.
-                    PathIndex = -1; _path.Clear(); RouteOrigin = pos; break;
+                    PathIndex = -1; ClearRoute(); RouteOrigin = pos; break;
                 }
                 if (budget >= needed) { pos = target; budget -= needed; PathIndex++; }
                 else { pos = FixVec2.MoveTowards(pos, target, budget / factor); budget = Fix.Zero; }
@@ -341,8 +348,18 @@ namespace Beep.SimEngine.Standard
         }
 
         private void FinishRoute(MoveStatus status)
-        { Status = status; _path.Clear(); PathIndex = 0; RouteOrigin = FixVec2.Zero; }
-        private TileSpaceGeometry Geometry => SpatialSpaceContracts.ReadGeometry(Def.SpaceDefinition, Entity.Scenario);
+        { Status = status; ClearRoute(); PathIndex = 0; RouteOrigin = FixVec2.Zero; }
+        // The selected geometry is immutable for a (space definition, scenario) pair, so the full
+        // declaration check runs once per mover and every later bounds test reads the checked value.
+        private TileSpaceGeometry _geometry; private bool _geometryRead;
+        private TileSpaceGeometry Geometry
+        {
+            get
+            {
+                if (!_geometryRead) { _geometry = SpatialSpaceContracts.ReadGeometry(Def.SpaceDefinition, Entity.Scenario); _geometryRead = true; }
+                return _geometry;
+            }
+        }
         private bool InBounds(TileCoord tile) => Geometry.Contains(new TileRect(tile,
             Entity.Get<ITilePresence>().Footprint.W, Entity.Get<ITilePresence>().Footprint.H));
         private bool ValidGoal(TileRect goal) => Geometry.Contains(goal);
@@ -359,17 +376,24 @@ namespace Beep.SimEngine.Standard
             }
             if (!InBounds(origin.Tile) || index < -1 || index == -1 && path.Count != 0 || index >= 0 && (path.Count == 0 || index >= path.Count))
                 throw new CorruptStateException("invalid active native route origin/index/phase");
-            TileCoord previous = origin.Tile;
-            for (int i = 0; i < path.Count; i++)
+            bool live = ReferenceEquals(path, _path);
+            if (!live || !_routeChecked)
             {
-                if (!InBounds(path[i]) || !Adjacent(previous, path[i])) throw new CorruptStateException("native route has out-of-bounds or disconnected steps");
-                previous = path[i];
+                TileCoord previous = origin.Tile;
+                // Geometry and footprint are read once; the per-step test is the same containment check as InBounds.
+                TileSpaceGeometry geometry = Geometry; TileRect footprint = Entity.Get<ITilePresence>().Footprint;
+                for (int i = 0; i < path.Count; i++)
+                {
+                    if (!geometry.Contains(new TileRect(path[i], footprint.W, footprint.H)) || !Adjacent(previous, path[i])) throw new CorruptStateException("native route has out-of-bounds or disconnected steps");
+                    previous = path[i];
+                }
+                if (path.Count > 0 && !goal.Contains(previous)) throw new CorruptStateException("native route ends outside its actual goal");
+                if (live) _routeChecked = true;
             }
-            if (path.Count > 0 && !goal.Contains(previous)) throw new CorruptStateException("native route ends outside its actual goal");
         }
         public void ValidateCheckpoint()
         {
-            ValidatePayload(Status, Goal, Path, PathIndex, TicksMoving, RouteOrigin);
+            ValidatePayload(Status, Goal, _path, PathIndex, TicksMoving, RouteOrigin);
             ValidatePresence();
         }
         private void ValidatePresence()
@@ -405,9 +429,10 @@ namespace Beep.SimEngine.Standard
             { TileCoord tile = s.Reading ? default : _path[i]; s.Tile(ref tile); if (s.Reading) candidate.Add(tile); }
             int index = PathIndex; long age = TicksMoving; FixVec2 origin = RouteOrigin;
             s.Int(ref index); s.Long(ref age); s.Vec(ref origin);
-            ValidatePayload(status, goal, candidate, index, age, origin);
+            // Writing already validated these very fields through ValidateCheckpoint above; only loaded data is new.
+            if (s.Reading) ValidatePayload(status, goal, candidate, index, age, origin);
             if (s.Reading)
-            { _movementClass = selected; Status = status; Goal = goal; _path = candidate; _pathView = _path.AsReadOnly(); PathIndex = index; TicksMoving = age; RouteOrigin = origin; }
+            { _movementClass = selected; Status = status; Goal = goal; _path = candidate; _routeChecked = false; _pathView = _path.AsReadOnly(); PathIndex = index; TicksMoving = age; RouteOrigin = origin; }
         }
     }
 

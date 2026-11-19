@@ -1,0 +1,206 @@
+{
+  "SchemaVersion": 1,
+  "Id": "grid-game-map",
+  "WidthMeters": 1600,
+  "HeightMeters": 1200,
+  "StreetProfile": {
+    "LaneWidthMeters": 3,
+    "LaneCount": 2,
+    "SidewalkLeftMeters": 1.5,
+    "SidewalkRightMeters": 1.5,
+    "CurbLeftMeters": 0.25,
+    "CurbRightMeters": 0.25,
+    "MedianMeters": 0,
+    "TotalWidthMeters": 9.5
+  },
+  "MinimumBlockSpanMeters": 80,
+  "SetbackMeters": 3,
+  "Districts": [
+    {
+      "Id": "civic",
+      "Purpose": "Central services and trade",
+      "AreaWeight": 1,
+      "Program": {
+        "TargetFrontageMeters": 28,
+        "Mix": [
+          {
+            "TypeId": "house",
+            "Weight": 1,
+            "AllowedRoadRoles": null
+          },
+          {
+            "TypeId": "shop",
+            "Weight": 2,
+            "AllowedRoadRoles": [
+              "major",
+              "collector"
+            ]
+          }
+        ],
+        "WholeBlockSites": false
+      }
+    },
+    {
+      "Id": "residential",
+      "Purpose": "Neighborhood homes with shops on connecting streets",
+      "AreaWeight": 1.5,
+      "Program": {
+        "TargetFrontageMeters": 26,
+        "Mix": [
+          {
+            "TypeId": "house",
+            "Weight": 4,
+            "AllowedRoadRoles": null
+          },
+          {
+            "TypeId": "shop",
+            "Weight": 1,
+            "AllowedRoadRoles": [
+              "major",
+              "collector"
+            ]
+          }
+        ],
+        "WholeBlockSites": false
+      }
+    },
+    {
+      "Id": "employment",
+      "Purpose": "Workplaces and compound sites",
+      "AreaWeight": 1,
+      "Program": {
+        "TargetFrontageMeters": 38,
+        "Mix": [
+          {
+            "TypeId": "workshop",
+            "Weight": 1,
+            "AllowedRoadRoles": null
+          }
+        ],
+        "WholeBlockSites": false
+      }
+    }
+  ],
+  "MaximumBlocks": 256,
+  "MaximumParcels": 3000,
+  "MaximumStructures": 5000,
+  "Coverage": "CompleteDeclaredScope",
+  "RemainingScopes": null,
+  "Design": {
+    "NetworkLayoutId": "planned-grid",
+    "PrimaryCenterId": "central",
+    "Centers": [
+      {
+        "Id": "central",
+        "DistrictId": "civic",
+        "Purpose": "Public and commercial center",
+        "PositionFraction": {
+          "X": 0.5,
+          "Y": 0.5
+        },
+        "InfluenceMeters": 320
+      },
+      {
+        "Id": "neighborhood",
+        "DistrictId": "residential",
+        "Purpose": "Eastern neighborhood center",
+        "PositionFraction": {
+          "X": 0.68,
+          "Y": 0.5
+        },
+        "InfluenceMeters": 400
+      },
+      {
+        "Id": "works",
+        "DistrictId": "employment",
+        "Purpose": "Southern employment center",
+        "PositionFraction": {
+          "X": 0.5,
+          "Y": 0.76
+        },
+        "InfluenceMeters": 400
+      }
+    ],
+    "Approaches": [
+      {
+        "Id": "west-approach",
+        "Purpose": "West regional connection",
+        "PositionFraction": {
+          "X": 0,
+          "Y": 0.5
+        }
+      },
+      {
+        "Id": "east-approach",
+        "Purpose": "East regional connection",
+        "PositionFraction": {
+          "X": 1,
+          "Y": 0.5
+        }
+      },
+      {
+        "Id": "north-approach",
+        "Purpose": "North regional connection",
+        "PositionFraction": {
+          "X": 0.5,
+          "Y": 0
+        }
+      },
+      {
+        "Id": "south-approach",
+        "Purpose": "South regional connection",
+        "PositionFraction": {
+          "X": 0.5,
+          "Y": 1
+        }
+      }
+    ],
+    "LayoutParameters": {
+      "HalfWidthMeters": 600,
+      "HalfHeightMeters": 400,
+      "TargetBlockWidthMeters": 140,
+      "TargetBlockDepthMeters": 140,
+      "RotationDegrees": 0
+    },
+    "MajorStreetProfile": {
+      "LaneWidthMeters": 3.5,
+      "LaneCount": 2,
+      "SidewalkLeftMeters": 2,
+      "SidewalkRightMeters": 2,
+      "CurbLeftMeters": 0.25,
+      "CurbRightMeters": 0.25,
+      "MedianMeters": 2,
+      "TotalWidthMeters": 13.5
+    },
+    "RequiredSites": [
+      {
+        "Id": "town-hall",
+        "TypeId": "civic",
+        "CenterId": "central",
+        "Purpose": "One declared town hall",
+        "Count": 1
+      },
+      {
+        "Id": "works-site",
+        "TypeId": "compound",
+        "CenterId": "works",
+        "Purpose": "One declared compound with constituent workspaces",
+        "Count": 1
+      }
+    ],
+    "Parks": [
+      {
+        "Id": "central-green",
+        "CenterId": "central",
+        "Purpose": "Central public green",
+        "Count": 1
+      },
+      {
+        "Id": "neighborhood-green",
+        "CenterId": "neighborhood",
+        "Purpose": "Neighborhood recreation space",
+        "Count": 1
+      }
+    ]
+  }
+}

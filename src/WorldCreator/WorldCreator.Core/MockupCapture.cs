@@ -18,7 +18,7 @@ public enum CaptureCoverage { Partial, Complete }
 public enum CaptureJunctionKind { AtGrade, GradeSeparated, Unresolved }
 public enum CaptureWidthKind { Carriageway, FullCorridor }
 public sealed record CaptureRoad(double WidthPixels, CaptureWidthKind WidthKind, int? Level,
-    IReadOnlyList<string> AccessModes);
+    IReadOnlyList<string> AccessModes, IReadOnlyList<double>? SegmentWidthsPixels=null);
 public sealed record CaptureBinding(string Kind, string TargetId);
 /// <summary>Ground footprint, independent of the crown. ParentId identifies its planted-ground polygon.</summary>
 public sealed record CaptureVegetationPlacement(double GroundRadiusPixels, IReadOnlyList<string> ProtectedFeatureIds);

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "pack": "kingdom",
+  "resources": [
+    { "id": "kingdom.barley", "name": "Barley", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["crop"], "properties": { "base-price": 0.5 } },
+    { "id": "kingdom.hops", "name": "Hops", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["crop"], "properties": { "base-price": 3 } },
+    { "id": "kingdom.honey", "name": "Wild honey", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["forage"], "properties": { "base-price": 8 } },
+    { "id": "kingdom.beeswax", "name": "Beeswax", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["forage"], "properties": { "base-price": 12 } },
+    { "id": "kingdom.flax", "name": "Flax", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 300 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["crop"], "properties": { "base-price": 1 } },
+    { "id": "kingdom.limestone", "name": "Limestone", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["quarry"], "properties": { "base-price": 0.3 } },
+    { "id": "kingdom.malt", "name": "Malted barley", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 300 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["brewing"], "properties": { "base-price": 1 } },
+    { "id": "kingdom.beer", "name": "Barley beer", "class": "consumable", "unit": "L", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["drink"], "properties": { "base-price": 2 } },
+    { "id": "kingdom.mead", "name": "Honey mead", "class": "consumable", "unit": "L", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["drink"], "properties": { "base-price": 6 } },
+    { "id": "kingdom.candle", "name": "Beeswax candle", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["household"], "properties": { "base-price": 1.5 } },
+    { "id": "kingdom.linen", "name": "Linen", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["textile"], "properties": { "base-price": 3 } },
+    { "id": "kingdom.tunic", "name": "Linen tunic", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["clothing"], "properties": { "base-price": 14 } },
+    { "id": "kingdom.quicklime", "name": "Quicklime", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 300 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["building"], "properties": { "base-price": 1 } },
+    { "id": "kingdom.lime-mortar", "name": "Lime mortar", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 300 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["building"], "properties": { "base-price": 0.6 } },
+    { "id": "kingdom.ashlar", "name": "Cut stone block", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["building"], "properties": { "base-price": 6 } },
+    { "id": "kingdom.wall-section", "name": "Castle wall section", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["fortification"], "properties": { "base-price": 400 } },
+    { "id": "kingdom.gatehouse", "name": "Gatehouse", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["fortification"], "properties": { "base-price": 1200 } },
+    { "id": "kingdom.mail", "name": "Mail hauberk", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 400 }, "currency": null, "cpc": "4", "tags": ["armour"], "properties": { "base-price": 150 } },
+    { "id": "kingdom.longsword", "name": "Longsword", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 300 }, "currency": null, "cpc": "4", "tags": ["weapon"], "properties": { "base-price": 80 } },
+    { "id": "kingdom.shield", "name": "Wooden shield", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 200 }, "currency": null, "cpc": "4", "tags": ["armour"], "properties": { "base-price": 30 } },
+    { "id": "kingdom.levy-kit", "name": "Levy kit", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["military"], "properties": { "base-price": 100 } },
+    { "id": "kingdom.levy-troop", "name": "Sworn levy", "class": "population", "unit": "{person}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["military"], "properties": {} },
+    { "id": "kingdom.tax-roll", "name": "Tax roll", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["governance"], "properties": {} },
+    { "id": "kingdom.decree", "name": "Royal decree", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["governance"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "kingdom.brewhouse", "name": "Brewhouse", "levels": 1 },
+    { "id": "kingdom.chandlery", "name": "Chandlery", "levels": 1 },
+    { "id": "kingdom.weaver", "name": "Weaver's hall", "levels": 1 },
+    { "id": "kingdom.mason-yard", "name": "Mason's yard", "levels": 2 },
+    { "id": "kingdom.armoury", "name": "Armoury", "levels": 2 },
+    { "id": "kingdom.exchequer", "name": "Exchequer", "levels": 1 },
+    { "id": "kingdom.market-cross", "name": "Market cross", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "kingdom.stonemasonry", "name": "Stonemasonry", "max": 10 },
+    { "id": "kingdom.armouring", "name": "Armouring", "max": 10 }
+  ]
+}

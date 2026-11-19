@@ -16,8 +16,16 @@ public sealed record CapturePromptPacket(string Status, CaptureSource Source,
     IReadOnlyList<CapturePromptTask> Tasks, IReadOnlyList<string> AtlasWorkflow);
 
 /// <summary>Verified source bytes and contract validation precede any export. A capture is never an art approval.</summary>
-public static class MockupCapturePipeline
+public static partial class MockupCapturePipeline
 {
+    public static async Task<MockupCaptureDocument> ReadCaptureAsync(string file, CancellationToken token = default)
+    {
+        await using var stream = File.OpenRead(file);
+        if (stream.Length > 16777216) throw new ArgumentException("CAPTURE_DOCUMENT_SIZE_LIMIT");
+        return await JsonSerializer.DeserializeAsync<MockupCaptureDocument>(stream, MockupCaptureJson.Options(), token)
+            ?? throw new ArgumentException("CAPTURE_DOCUMENT_REQUIRED");
+    }
+
     public static async Task<byte[]> ReadSourceAsync(MockupCaptureDocument capture, string trustedRoot, CancellationToken token = default)
     {
         RequireValid(capture, token);
@@ -73,9 +81,11 @@ public static class MockupCapturePipeline
                 f.Semantic.StartsWith("landscape.",StringComparison.Ordinal) ? "#b5ed45" : f.Road is not null || f.Semantic.StartsWith("road.",StringComparison.Ordinal) ? "#00e5ff" : f.Semantic == "building.roof" ? "#ffc247" : "#e8a8ff";
             var group = new XElement(svg + "g", new XAttribute("data-feature", f.Id), new XAttribute("data-semantic", f.Semantic),
                 new XElement(svg + "title", $"{f.Id}: {f.Semantic}; {f.Evidence}; {f.Review}; uncertainty ±{N(f.UncertaintyPixels)}px. {f.Notes}"));
-            if (f.Road is { } road) group.Add(new XElement(svg + "polyline", new XAttribute("points", string.Join(" ", f.Points.Select(p => $"{N(p.X)},{N(p.Y)}"))),
-                new XAttribute("class", "width-band"), new XAttribute("fill", "none"), new XAttribute("stroke", color),
-                new XAttribute("stroke-width", N(road.WidthPixels)), new XAttribute("opacity", "0.12")));
+            if (f.Road is { } road)
+                for(int segment=1;segment<f.Points.Count;segment++)
+                    group.Add(new XElement(svg + "polyline", new XAttribute("points", string.Join(" ", new[]{f.Points[segment-1],f.Points[segment]}.Select(p => $"{N(p.X)},{N(p.Y)}"))),
+                        new XAttribute("class", "width-band"), new XAttribute("fill", "none"), new XAttribute("stroke", color),
+                        new XAttribute("stroke-width", N(road.SegmentWidthsPixels?[segment-1]??road.WidthPixels)), new XAttribute("opacity", "0.12")));
             XElement shape = f.Shape == CaptureShape.Point
                 ? new(svg + "circle", new XAttribute("cx", N(f.Points[0].X)), new XAttribute("cy", N(f.Points[0].Y)), new XAttribute("r", N(f.VegetationPlacement?.GroundRadiusPixels ?? 5)))
                 : new(svg + (f.Shape == CaptureShape.Polygon ? "polygon" : "polyline"),
@@ -133,7 +143,7 @@ const search=document.getElementById('search'),layer=document.getElementById('la
 const groups=new Map([...map.querySelectorAll('[data-feature]')].map(g=>[g.dataset.feature,g]));
 const crop=document.getElementById('crop');crop.append(svg.querySelector('image').cloneNode(true));
 function frame(b){svg.setAttribute('viewBox',`${b.x} ${b.y} ${b.width} ${b.height}`)}
-function select(f){const road=f.road?`\nWidth: ${f.road.widthPixels}px (${f.road.widthKind}); level: ${f.road.level??'unknown'}`:'';const p=f.points[0],c=data.calibration;const ground=f.semantic.startsWith('vegetation.')&&c?`\nTree base: source (${p.x}, ${p.y}) → world (${(c.a*p.x+c.b*p.y+c.c).toFixed(2)}, ${(c.d*p.x+c.e*p.y+c.f).toFixed(2)})m. Same source location.`:'';document.getElementById('detail').textContent=`${f.id}\n${f.semantic}\n${f.evidence} · ${f.review} · ±${f.uncertaintyPixels}px${road}${ground}\nParent: ${f.parentId??'scene'}\n${f.binding?'Bound to '+f.binding.kind+': '+f.binding.targetId:'Detail only; outside current city compilation scope'}\n\n${f.notes}${f.vegetationPlacement?'\nGround base radius: '+f.vegetationPlacement.groundRadiusPixels+'px; planted-ground parent and '+f.vegetationPlacement.protectedFeatureIds.length+' protected boundaries checked.':''}`;const xs=f.points.map(p=>p.x),ys=f.points.map(p=>p.y),pad=35;let x=Math.max(0,Math.min(...xs)-pad),y=Math.max(0,Math.min(...ys)-pad),w=Math.min(data.source.width-x,Math.max(...xs)-x+pad),h=Math.min(data.source.height-y,Math.max(...ys)-y+pad);frame({x,y,width:w,height:h});crop.hidden=false;crop.setAttribute('viewBox',`${x} ${y} ${w} ${h}`);for(const g of groups.values())g.classList.remove('selected');groups.get(f.id)?.classList.add('selected')}
+function select(f){const road=f.road?`\nWidth: ${f.road.widthPixels}px${f.road.segmentWidthsPixels?' first segment, '+f.road.segmentWidthsPixels.length+' measured segments':''} (${f.road.widthKind}); level: ${f.road.level??'unknown'}`:'';const p=f.points[0],c=data.calibration;const ground=f.semantic.startsWith('vegetation.')&&c?`\nTree base: source (${p.x}, ${p.y}) → world (${(c.a*p.x+c.b*p.y+c.c).toFixed(2)}, ${(c.d*p.x+c.e*p.y+c.f).toFixed(2)})m. Same source location.`:'';document.getElementById('detail').textContent=`${f.id}\n${f.semantic}\n${f.evidence} · ${f.review} · ±${f.uncertaintyPixels}px${road}${ground}\nParent: ${f.parentId??'scene'}\n${f.binding?'Bound to '+f.binding.kind+': '+f.binding.targetId:'Detail only; outside current city compilation scope'}\n\n${f.notes}${f.vegetationPlacement?'\nGround base radius: '+f.vegetationPlacement.groundRadiusPixels+'px; planted-ground parent and '+f.vegetationPlacement.protectedFeatureIds.length+' protected boundaries checked.':''}`;const xs=f.points.map(p=>p.x),ys=f.points.map(p=>p.y),pad=35;let x=Math.max(0,Math.min(...xs)-pad),y=Math.max(0,Math.min(...ys)-pad),w=Math.min(data.source.width-x,Math.max(...xs)-x+pad),h=Math.min(data.source.height-y,Math.max(...ys)-y+pad);frame({x,y,width:w,height:h});crop.hidden=false;crop.setAttribute('viewBox',`${x} ${y} ${w} ${h}`);for(const g of groups.values())g.classList.remove('selected');groups.get(f.id)?.classList.add('selected')}
 for(const a of data.inspectionAreas??[]){const o=document.createElement('option');o.value=a.id;o.textContent=`${a.id} · ${a.status}`;area.append(o)}
 const initial=new URLSearchParams(location.search);for(const control of [layer,area]){const value=initial.get(control.id);if(value!==null&&[...control.options].some(o=>o.value===value))control.value=value;}
 function filter(){const a=data.inspectionAreas?.find(a=>a.id===area.value),allowed=a?new Set(a.featureIds):null,q=search.value.trim().toLowerCase(),list=document.getElementById('features');list.replaceChildren();let count=0;for(const f of data.features){const matchLayer=!layer.value||(layer.value==='green'?(f.semantic.startsWith('vegetation.')||f.semantic.startsWith('landscape.')||f.semantic.startsWith('sport.')):(f.semantic.startsWith(layer.value+'.')||(layer.value==='landscape'&&f.vegetationPlacement&&data.features.some(g=>g.id===f.parentId&&g.semantic.startsWith('landscape.')))));const show=matchLayer&&(!evidence.value||f.evidence===evidence.value)&&(!allowed||allowed.has(f.id))&&(!q||`${f.id} ${f.semantic} ${f.notes}`.toLowerCase().includes(q));groups.get(f.id)?.classList.toggle('filtered',!show);if(show){count++;const b=document.createElement('button');b.type='button';b.textContent=`${f.id} · ${f.semantic}`;b.onclick=()=>select(f);list.append(b)}}document.getElementById('visible').textContent=`${count} visible / ${data.features.length} annotations. Count does not measure completeness.`;const gaps=document.getElementById('region-gaps');gaps.replaceChildren();for(const gap of a?.remainingWork??['Select an inspection region to see specific remaining detail work.']){const li=document.createElement('li');li.textContent=gap;gaps.append(li)}}

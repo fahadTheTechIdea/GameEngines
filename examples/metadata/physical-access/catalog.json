@@ -1,0 +1,91 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "sites",
+          "ArchetypeId": "site",
+          "Count": 3,
+          "Purpose": "Required structures",
+          "CountParameter": null,
+          "Layout": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "site",
+          "Minimum": 3,
+          "Maximum": 3
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null
+    },
+    {
+      "Id": "site",
+      "Kind": "site",
+      "Purpose": "Source-sized solid structure",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Solid structure footprint",
+        "SourceRuleId": "catalog:site",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -4,
+              "Y": -4
+            },
+            {
+              "X": 4,
+              "Y": -4
+            },
+            {
+              "X": 4,
+              "Y": 4
+            },
+            {
+              "X": -4,
+              "Y": 4
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": [
+          {
+            "Id": "entry",
+            "Purpose": "North entrance",
+            "SourceRuleId": "catalog:entry",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -4
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -10
+            },
+            "Width": 2
+          }
+        ]
+      }
+    }
+  ]
+}

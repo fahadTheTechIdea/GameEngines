@@ -1,0 +1,31 @@
+{
+  "format": 1,
+  "pack": "colony",
+  "resources": [
+    { "id": "colony.vegetables", "name": "Vegetables", "class": "consumable", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": { "ticks": 7000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "0", "tags": ["food", "crop"], "properties": { "nutrition": 0.4 } },
+    { "id": "colony.herbs", "name": "Healing herbs", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["crop", "medicinal"], "properties": {} },
+    { "id": "colony.vegetable-pie", "name": "Vegetable pie", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 30 }, "grade": null, "perishable": { "ticks": 9000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["food"], "properties": { "nutrition": 1.2, "mood": 3 } },
+    { "id": "colony.ale", "name": "Ale", "class": "consumable", "unit": "L", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["drink", "mood"], "properties": { "mood": 5 } },
+    { "id": "colony.medicine", "name": "Herbal medicine", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 30 }, "grade": { "scheme": "quality", "levels": ["crude", "standard", "fine"] }, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["medical"], "properties": {} },
+    { "id": "colony.firewood", "name": "Firewood", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["fuel"], "properties": { "fuel-kj-per-kg": 14000 } },
+    { "id": "colony.shirt", "name": "Shirt", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 900 }, "currency": null, "cpc": "2", "tags": ["clothing"], "properties": { "warmth": 8 } },
+    { "id": "colony.boots", "name": "Work boots", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 1500 }, "currency": null, "cpc": "2", "tags": ["clothing"], "properties": { "warmth": 4 } },
+    { "id": "colony.blanket", "name": "Blanket", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 5 }, "grade": null, "perishable": null, "durability": { "uses": 2000 }, "currency": null, "cpc": "2", "tags": ["comfort"], "properties": { "comfort": 6 } },
+    { "id": "colony.tool-kit", "name": "Tool kit", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 400 }, "currency": null, "cpc": "4", "tags": ["tool"], "properties": {} },
+    { "id": "colony.cottage", "name": "Cottage", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["building", "housing"], "properties": { "beds": 4 } },
+    { "id": "colony.storage-shed", "name": "Storage shed", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["building", "storage"], "properties": { "capacity": 500 } },
+    { "id": "colony.well", "name": "Well", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["building", "water"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "colony.mill", "name": "Mill", "levels": 1 },
+    { "id": "colony.kitchen", "name": "Kitchen", "levels": 2 },
+    { "id": "colony.brewery", "name": "Brewery", "levels": 1 },
+    { "id": "colony.apothecary", "name": "Apothecary", "levels": 2 },
+    { "id": "colony.tailor", "name": "Tailor bench", "levels": 2 },
+    { "id": "colony.smithy", "name": "Smithy", "levels": 2 }
+  ],
+  "skills": [
+    { "id": "colony.healing", "name": "Healing", "max": 10 },
+    { "id": "colony.crafting", "name": "Crafting", "max": 10 }
+  ]
+}

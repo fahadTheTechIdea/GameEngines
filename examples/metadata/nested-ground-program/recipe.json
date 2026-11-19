@@ -1,0 +1,600 @@
+{
+  "SchemaVersion": 1,
+  "Id": "ground-capacity",
+  "GameProfile": "framework",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Required source-ground capacity qualification; terrain variety, traversal and whole-world design are separate."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    25,
+    20
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "flat",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 60,
+          "Y": 0
+        },
+        {
+          "X": 60,
+          "Y": 40
+        },
+        {
+          "X": 0,
+          "Y": 40
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "ground",
+        "Kind": "ground",
+        "Purpose": "Capacity fixture terrain",
+        "SourceRuleId": "test:terrain",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 60,
+              "Y": 0
+            },
+            {
+              "X": 60,
+              "Y": 40
+            },
+            {
+              "X": 0,
+              "Y": 40
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 0,
+        "GradientX": 0,
+        "GradientY": 0
+      }
+    ],
+    "Terrain": null,
+    "HeightField": null
+  },
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "coordinates",
+    "Fields": [
+      {
+        "Id": "x",
+        "Purpose": "Declared coordinate",
+        "SourceRuleId": "test:coordinate",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "X",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ],
+    "SampledFields": null
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "ground",
+      "Purpose": "Retain declared ground",
+      "SourceRuleId": "test:ground",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 60,
+            "Y": 0
+          },
+          {
+            "X": 60,
+            "Y": 40
+          },
+          {
+            "X": 0,
+            "Y": 40
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "ground",
+          "Purpose": "Required ground",
+          "SourceRuleId": "test:ground",
+          "Footprint": null,
+          "Profile": {
+            "Id": "ground",
+            "Purpose": "Retain required source program",
+            "SourceRuleId": "test:ground",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        }
+      ],
+      "Anchors": [
+        {
+          "Id": "center",
+          "Position": {
+            "X": 15,
+            "Y": 15
+          }
+        }
+      ],
+      "Relations": [
+        {
+          "Id": "pin",
+          "FromId": "ground",
+          "ToId": "center",
+          "Purpose": "Retain authored anchor",
+          "SourceRuleId": "test:pin",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        }
+      ],
+      "MinimumSeparation": 0,
+      "MaximumCandidates": 2048,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 20000000,
+      "AllowBoundaryContact": false,
+      "Growth": null,
+      "Execution": "Prescribed",
+      "Nogoods": null
+    },
+    "Bindings": [
+      {
+        "DemandId": "ground",
+        "NodeId": "ground-capacity/ground-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      }
+    ],
+    "NestedStages": [
+      {
+        "Id": "branches",
+        "ParentNodeId": "ground-capacity/ground-0",
+        "Request": {
+          "Id": "branches",
+          "Purpose": "Keep both required source branches",
+          "SourceRuleId": "hierarchy:branches",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "left",
+              "Purpose": "Left source branch",
+              "SourceRuleId": "hierarchy:left",
+              "Footprint": null,
+              "Profile": {
+                "Id": "ground",
+                "Purpose": "Retain required source program",
+                "SourceRuleId": "test:ground",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "right",
+              "Purpose": "Right source branch",
+              "SourceRuleId": "hierarchy:right",
+              "Footprint": null,
+              "Profile": {
+                "Id": "ground",
+                "Purpose": "Retain required source program",
+                "SourceRuleId": "test:ground",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "a",
+              "Position": {
+                "X": -5,
+                "Y": 0
+              }
+            },
+            {
+              "Id": "b",
+              "Position": {
+                "X": 5,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "a",
+              "FromId": "left",
+              "ToId": "a",
+              "Purpose": "Declared branch anchor",
+              "SourceRuleId": "hierarchy:a",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "b",
+              "FromId": "right",
+              "ToId": "b",
+              "Purpose": "Declared branch anchor",
+              "SourceRuleId": "hierarchy:b",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Prescribed",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "left",
+            "NodeId": "ground-capacity/ground-0/inner-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "right",
+            "NodeId": "ground-capacity/ground-0/inner-1",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ]
+      },
+      {
+        "Id": "fixtures-0",
+        "ParentNodeId": "ground-capacity/ground-0/inner-0",
+        "Request": {
+          "Id": "fixtures-0",
+          "Purpose": "Retain every exact fixture",
+          "SourceRuleId": "hierarchy:fixtures",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "a",
+              "Purpose": "First required fixture",
+              "SourceRuleId": "hierarchy:fixture",
+              "Footprint": null,
+              "Profile": {
+                "Id": "ground",
+                "Purpose": "Retain required source program",
+                "SourceRuleId": "test:ground",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "b",
+              "Purpose": "Second required fixture",
+              "SourceRuleId": "hierarchy:fixture",
+              "Footprint": null,
+              "Profile": {
+                "Id": "ground",
+                "Purpose": "Retain required source program",
+                "SourceRuleId": "test:ground",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "anchor-a",
+              "Position": {
+                "X": 0,
+                "Y": -4
+              }
+            },
+            {
+              "Id": "anchor-b",
+              "Position": {
+                "X": 0,
+                "Y": 4
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "a",
+              "FromId": "a",
+              "ToId": "anchor-a",
+              "Purpose": "Declared fixture anchor",
+              "SourceRuleId": "hierarchy:a",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "b",
+              "FromId": "b",
+              "ToId": "anchor-b",
+              "Purpose": "Declared fixture anchor",
+              "SourceRuleId": "hierarchy:b",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Prescribed",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "a",
+            "NodeId": "ground-capacity/ground-0/inner-0/fixtures-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "b",
+            "NodeId": "ground-capacity/ground-0/inner-0/fixtures-1",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ]
+      },
+      {
+        "Id": "fixtures-1",
+        "ParentNodeId": "ground-capacity/ground-0/inner-1",
+        "Request": {
+          "Id": "fixtures-1",
+          "Purpose": "Retain every exact fixture",
+          "SourceRuleId": "hierarchy:fixtures",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "a",
+              "Purpose": "First required fixture",
+              "SourceRuleId": "hierarchy:fixture",
+              "Footprint": null,
+              "Profile": {
+                "Id": "ground",
+                "Purpose": "Retain required source program",
+                "SourceRuleId": "test:ground",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "b",
+              "Purpose": "Second required fixture",
+              "SourceRuleId": "hierarchy:fixture",
+              "Footprint": null,
+              "Profile": {
+                "Id": "ground",
+                "Purpose": "Retain required source program",
+                "SourceRuleId": "test:ground",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "anchor-a",
+              "Position": {
+                "X": 0,
+                "Y": -4
+              }
+            },
+            {
+              "Id": "anchor-b",
+              "Position": {
+                "X": 0,
+                "Y": 4
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "a",
+              "FromId": "a",
+              "ToId": "anchor-a",
+              "Purpose": "Declared fixture anchor",
+              "SourceRuleId": "hierarchy:a",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "b",
+              "FromId": "b",
+              "ToId": "anchor-b",
+              "Purpose": "Declared fixture anchor",
+              "SourceRuleId": "hierarchy:b",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Prescribed",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "a",
+            "NodeId": "ground-capacity/ground-0/inner-1/fixtures-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "b",
+            "NodeId": "ground-capacity/ground-0/inner-1/fixtures-1",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ]
+      }
+    ],
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 32,
+    "SourceWorld": null,
+    "ConnectedLayouts": null,
+    "Programs": null,
+    "RegionAnchors": null,
+    "AllocationAnchors": null,
+    "Nogoods": null
+  },
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": null,
+  "RouteBudget": null,
+  "Interiors": null,
+  "TerrainDemands": null,
+  "ProgramComposition": null,
+  "Drainage": null,
+  "Water": null,
+  "WindMoisture": null
+}

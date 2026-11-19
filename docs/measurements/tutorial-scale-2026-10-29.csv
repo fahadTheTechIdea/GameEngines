@@ -1,0 +1,31 @@
+run,measurement,median,min,max,unit,repeats
+1,load document,51.646,51.646,51.646,ms,1
+1,first evaluation,5.119,5.119,5.119,ms,1
+1,whole walk of 200 steps,17.164,17.164,17.164,ms,1
+1,ordinary evaluation (50 tips showing),0.065,0.060,0.107,ms,15
+1,allocation of an evaluation,16560,16560,16560,bytes,5
+1,one observation,0.000,0.000,0.029,ms,15
+1,save write,0.359,0.298,25.591,ms,5
+1,save open,0.829,0.742,11.976,ms,5
+1,state digest,0.150,0.149,0.214,ms,5
+1,save size,20,20,20,KB,1
+2,load document,49.709,49.709,49.709,ms,1
+2,first evaluation,6.530,6.530,6.530,ms,1
+2,whole walk of 200 steps,20.978,20.978,20.978,ms,1
+2,ordinary evaluation (50 tips showing),0.056,0.055,0.099,ms,15
+2,allocation of an evaluation,16560,16560,16560,bytes,5
+2,one observation,0.000,0.000,0.022,ms,15
+2,save write,0.337,0.289,24.811,ms,5
+2,save open,0.752,0.718,11.607,ms,5
+2,state digest,0.126,0.102,0.198,ms,5
+2,save size,20,20,20,KB,1
+3,load document,62.812,62.812,62.812,ms,1
+3,first evaluation,6.579,6.579,6.579,ms,1
+3,whole walk of 200 steps,18.461,18.461,18.461,ms,1
+3,ordinary evaluation (50 tips showing),0.061,0.058,0.107,ms,15
+3,allocation of an evaluation,16560,16560,16560,bytes,5
+3,one observation,0.000,0.000,0.024,ms,15
+3,save write,0.384,0.301,26.206,ms,5
+3,save open,0.732,0.712,11.549,ms,5
+3,state digest,0.106,0.104,0.156,ms,5
+3,save size,20,20,20,KB,1

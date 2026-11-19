@@ -4,6 +4,7 @@ using WorldCreator.Core.Planning;
 
 internal static class TestCatalogs
 {
+    public static string PluginPath => Path.Combine(AppContext.BaseDirectory,"WorldCreator.TestCatalog.dll");
     public static ISettlementCatalogRegistry Registry { get; } = new SettlementCatalogRegistry([new ModernCatalog()]);
 
     // Explicit authored synthetic services for geometric regression fixtures. Not a runtime fallback.

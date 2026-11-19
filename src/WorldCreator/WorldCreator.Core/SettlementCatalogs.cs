@@ -8,7 +8,7 @@ public sealed record SettlementCatalogSelection(string CatalogId, IReadOnlySet<s
 public sealed record CatalogVocabulary(IReadOnlySet<string> Functions, IReadOnlySet<string> Categories,
     IReadOnlySet<string> Districts, IReadOnlySet<string> Technologies, IReadOnlySet<string> Resources);
 public sealed record CatalogCompositionProvenance(IReadOnlyDictionary<string,string> CatalogDigests,
-    IReadOnlyDictionary<string,string> StructureOrigins, IReadOnlyDictionary<string,string> FacilityOrigins);
+    IReadOnlyDictionary<string,string> StructureOrigins, IReadOnlyDictionary<string,string> FacilityOrigins,IReadOnlyDictionary<string,string>? ObjectOrigins=null,IReadOnlyDictionary<string,string>? AreaOrigins=null);
 public sealed record SettlementCatalogDescriptor(string Id, string Name, IReadOnlySet<string> Capabilities,
     IReadOnlySet<string> RequiredCatalogs, CatalogVocabulary Vocabulary,
     CatalogCompositionProvenance? Composition = null, IReadOnlyDictionary<string,string>? AuthoredContentDigests = null);
@@ -24,6 +24,8 @@ public interface ISettlementCatalogProvider
     ISettlementDemandPolicy Demand { get; }
     IInfrastructureDesignStrategy Infrastructure { get; }
     IReadOnlyList<FacilityDefinition> Facilities { get; }
+    IReadOnlyList<SiteObjectDefinition> Objects => [];
+    IReadOnlyList<SiteAreaDefinition> Areas => [];
 }
 public interface ISettlementDemandPolicy
 {
@@ -35,8 +37,8 @@ public interface ISettlementCatalogPolicy
     BuildingDefinition Resolve(BuildingDefinition definition, string technology);
     IReadOnlySet<string> RequiredCapabilities(BuildingDefinition definition, string technology);
     IReadOnlySet<string> RequiredCapabilities(MockupWorldDesign design);
-    IReadOnlyList<string> ValidateSupply(MockupWorldDesign design, BuildingDefinition definition, StructureResourceRequirement requirement,
-        SitingResourceSource source, StructureSitingContext context, CancellationToken token=default);
+    IReadOnlyList<CatalogSupplyIssue> ValidateSupply(BuildingDefinition definition, StructureResourceRequirement requirement,
+        CatalogSupplySource source, CatalogSupplyContext context, CancellationToken token=default);
     bool RequiresNeighborPolicy(IReadOnlySet<string> firstTags, IReadOnlySet<string> secondTags);
 }
 public interface ISettlementCatalogRegistry
@@ -46,7 +48,7 @@ public interface ISettlementCatalogRegistry
 }
 public sealed record RegisteredSettlementCatalog(SettlementCatalogDescriptor Descriptor,
     IReadOnlyList<BuildingDefinition> Structures, ISettlementCatalogPolicy Policy, ISettlementDemandPolicy Demand, IInfrastructureDesignStrategy Infrastructure,
-    ResolvedSettlementCatalog Provenance, IReadOnlyList<FacilityDefinition> Facilities);
+    ResolvedSettlementCatalog Provenance, IReadOnlyList<FacilityDefinition> Facilities,IReadOnlyList<SiteObjectDefinition>? Objects=null,IReadOnlyList<SiteAreaDefinition>? Areas=null);
 
 /// <summary>One current contract. No implicit catalog, load-order replacement or compatibility fallback.</summary>
 public sealed class SettlementCatalogRegistry : ISettlementCatalogRegistry
@@ -66,7 +68,7 @@ public sealed class SettlementCatalogRegistry : ISettlementCatalogRegistry
             if (d is null || !ValidId(d.Id) || string.IsNullOrWhiteSpace(d.Name) || d.Capabilities is null ||
                 d.Capabilities.Any(c=>!ValidId(c)) || d.RequiredCatalogs is null || d.RequiredCatalogs.Any(c=>!ValidId(c)) ||
                 d.Vocabulary is null || provider.Policy is null || !ValidId(provider.Policy.Id) || provider.Demand is null || provider.Infrastructure is null ||
-                provider.Structures is not { Count: >0 and <=10000 }) throw new ArgumentException("CATALOG_PROVIDER_INVALID");
+                provider.Structures is not { Count: >=0 and <=10000 }||provider.Objects is null||provider.Areas is null||provider.Structures.Count+provider.Objects.Count+provider.Areas.Count==0) throw new ArgumentException("CATALOG_PROVIDER_INVALID");
             if (d.Composition is { } composition && (composition.CatalogDigests is null || composition.StructureOrigins is null || composition.FacilityOrigins is null))
                 throw new ArgumentException("CATALOG_IMPORT_PROVENANCE_INVALID");
             if (d.AuthoredContentDigests?.Any(p=>!ValidId(p.Key) || p.Value is null || p.Value.Length!=64 || p.Value.Any(c=>!char.IsAsciiHexDigit(c)))==true)
@@ -82,7 +84,9 @@ public sealed class SettlementCatalogRegistry : ISettlementCatalogRegistry
                 Composition=d.Composition is null?null:new(
                     d.Composition.CatalogDigests.OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal),
                     d.Composition.StructureOrigins.OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal),
-                    d.Composition.FacilityOrigins.OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal)),
+                    d.Composition.FacilityOrigins.OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal),
+                    (d.Composition.ObjectOrigins??new Dictionary<string,string>()).OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal),
+                    (d.Composition.AreaOrigins??new Dictionary<string,string>()).OrderBy(p=>p.Key,StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal)),
                 Vocabulary=new(Freeze(v.Functions),Freeze(v.Categories),Freeze(v.Districts),Freeze(v.Technologies),Freeze(v.Resources)) };
             var definitions=provider.Structures.Select(FreezeDefinition).OrderBy(s=>s.Id,StringComparer.Ordinal).ToArray();
             if (definitions.Select(s=>s.Id).Distinct(StringComparer.Ordinal).Count()!=definitions.Length)
@@ -100,16 +104,18 @@ public sealed class SettlementCatalogRegistry : ISettlementCatalogRegistry
                         throw new ArgumentException("CATALOG_POLICY_CONTRACT_INVALID:"+definition.Id);
                 }
             }
-            var facilities=FacilityCompositionPlanner.Snapshot(provider.Facilities,definitions,token);
+            var objects=SiteObjectPlanner.Snapshot(provider.Objects,token);
+            var areas=SiteAreaPlanner.Snapshot(provider.Areas,token);
+            var facilities=FacilityCompositionPlanner.Snapshot(provider.Facilities,definitions,token,objects,areas);
             var implementations=new[] { provider.GetType().Assembly,provider.Policy.GetType().Assembly,provider.Demand.GetType().Assembly,
                     provider.Infrastructure.GetType().Assembly,typeof(ISettlementCatalogProvider).Assembly }
                 .Distinct().OrderBy(a=>a.FullName,StringComparer.Ordinal).ToDictionary(a=>a.GetName().Name!,a=>
                     string.IsNullOrEmpty(a.Location)?"module:"+a.ManifestModule.ModuleVersionId.ToString("N"):
                     "sha256:"+Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(a.Location))),StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal);
             string digest=Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(
-                new { Descriptor=d,Structures=definitions,Facilities=facilities,Policy=provider.Policy.Id,Implementations=implementations.OrderBy(p=>p.Key,StringComparer.Ordinal) },WorldJson.CreateOptions())));
+                new { Descriptor=d,Structures=definitions,Objects=objects,Areas=areas,Facilities=facilities,Policy=provider.Policy.Id,Implementations=implementations.OrderBy(p=>p.Key,StringComparer.Ordinal) },WorldJson.CreateOptions())));
             if (!registered.TryAdd(d.Id,new(d,Array.AsReadOnly(definitions),provider.Policy,provider.Demand,provider.Infrastructure,
-                new(d.Id,d.Name,digest,d.Capabilities,provider.Policy.Id,implementations,d.Composition,d.AuthoredContentDigests),facilities))) throw new ArgumentException("CATALOG_DUPLICATE_ID:"+d.Id);
+                new(d.Id,d.Name,digest,d.Capabilities,provider.Policy.Id,implementations,d.Composition,d.AuthoredContentDigests),facilities,objects,areas))) throw new ArgumentException("CATALOG_DUPLICATE_ID:"+d.Id);
         }
         var active=new HashSet<string>(StringComparer.Ordinal); var done=new HashSet<string>(StringComparer.Ordinal);
         foreach (var id in registered.Keys.Order(StringComparer.Ordinal)) Visit(id);
@@ -125,7 +131,9 @@ public sealed class SettlementCatalogRegistry : ISettlementCatalogRegistry
             {
                 if (!registered[id].Descriptor.RequiredCatalogs.SetEquals(composition.CatalogDigests.Keys) ||
                     !registered[id].Structures.Select(s=>s.Id).ToHashSet(StringComparer.Ordinal).SetEquals(composition.StructureOrigins.Keys) ||
-                    !registered[id].Facilities.Select(f=>f.Id).ToHashSet(StringComparer.Ordinal).SetEquals(composition.FacilityOrigins.Keys))
+                    !registered[id].Facilities.Select(f=>f.Id).ToHashSet(StringComparer.Ordinal).SetEquals(composition.FacilityOrigins.Keys)||
+                    !(registered[id].Objects??[]).Select(o=>o.Id).ToHashSet(StringComparer.Ordinal).SetEquals((composition.ObjectOrigins??new Dictionary<string,string>()).Keys)||
+                    !(registered[id].Areas??[]).Select(a=>a.Id).ToHashSet(StringComparer.Ordinal).SetEquals((composition.AreaOrigins??new Dictionary<string,string>()).Keys))
                     throw new ArgumentException("CATALOG_IMPORT_PROVENANCE_INVALID:"+id);
                 foreach (var import in composition.CatalogDigests)
                     if (!registered.TryGetValue(import.Key,out var source) || source.Provenance.ContentSha256!=import.Value)
@@ -135,6 +143,12 @@ public sealed class SettlementCatalogRegistry : ISettlementCatalogRegistry
                         throw new ArgumentException("CATALOG_IMPORT_ORIGIN_INVALID:"+origin.Key);
                 foreach (var origin in composition.FacilityOrigins)
                     if (!composition.CatalogDigests.ContainsKey(origin.Value) || !registered[origin.Value].Facilities.Any(f=>f.Id==origin.Key))
+                        throw new ArgumentException("CATALOG_IMPORT_ORIGIN_INVALID:"+origin.Key);
+                foreach(var origin in composition.ObjectOrigins??new Dictionary<string,string>())
+                    if(!composition.CatalogDigests.ContainsKey(origin.Value)||!(registered[origin.Value].Objects??[]).Any(o=>o.Id==origin.Key))
+                        throw new ArgumentException("CATALOG_IMPORT_ORIGIN_INVALID:"+origin.Key);
+                foreach(var origin in composition.AreaOrigins??new Dictionary<string,string>())
+                    if(!composition.CatalogDigests.ContainsKey(origin.Value)||!(registered[origin.Value].Areas??[]).Any(a=>a.Id==origin.Key))
                         throw new ArgumentException("CATALOG_IMPORT_ORIGIN_INVALID:"+origin.Key);
             }
             active.Remove(id); done.Add(id);

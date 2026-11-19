@@ -1,0 +1,634 @@
+{
+  "SchemaVersion": 1,
+  "Id": "interior-content",
+  "Archetypes": [
+    {
+      "Id": "floor",
+      "Kind": "floor",
+      "Purpose": "Interior floor",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "entry",
+          "ArchetypeId": "entry-room",
+          "Count": 1,
+          "Purpose": "Required entry",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "relay",
+          "ArchetypeId": "relay-room",
+          "Count": 1,
+          "Purpose": "Required relay",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "exit",
+          "ArchetypeId": "exit-room",
+          "Count": 1,
+          "Purpose": "Required exit",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "east-hall",
+          "ArchetypeId": "east-hall",
+          "Count": 1,
+          "Purpose": "Required east-hall",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "south-hall",
+          "ArchetypeId": "south-hall",
+          "Count": 1,
+          "Purpose": "Required south-hall",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "entry-room",
+      "Kind": "room",
+      "Purpose": "Interior entry-room",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "east",
+          "ArchetypeId": "east-door",
+          "Count": 1,
+          "Purpose": "Required east",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "content",
+          "ArchetypeId": "content",
+          "Count": 1,
+          "Purpose": "Required content",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized entry-room",
+        "SourceRuleId": "interior:entry-room",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -3,
+              "Y": -3
+            },
+            {
+              "X": 3,
+              "Y": -3
+            },
+            {
+              "X": 3,
+              "Y": 3
+            },
+            {
+              "X": -3,
+              "Y": 3
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "relay-room",
+      "Kind": "room",
+      "Purpose": "Interior relay-room",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "west",
+          "ArchetypeId": "west-door",
+          "Count": 1,
+          "Purpose": "Required west",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "south",
+          "ArchetypeId": "south-door",
+          "Count": 1,
+          "Purpose": "Required south",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "content",
+          "ArchetypeId": "content",
+          "Count": 1,
+          "Purpose": "Required content",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized relay-room",
+        "SourceRuleId": "interior:relay-room",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -3,
+              "Y": -3
+            },
+            {
+              "X": 3,
+              "Y": -3
+            },
+            {
+              "X": 3,
+              "Y": 3
+            },
+            {
+              "X": -3,
+              "Y": 3
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "exit-room",
+      "Kind": "room",
+      "Purpose": "Interior exit-room",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "north",
+          "ArchetypeId": "north-door",
+          "Count": 1,
+          "Purpose": "Required north",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "content",
+          "ArchetypeId": "content",
+          "Count": 1,
+          "Purpose": "Required content",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized exit-room",
+        "SourceRuleId": "interior:exit-room",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -3,
+              "Y": -3
+            },
+            {
+              "X": 3,
+              "Y": -3
+            },
+            {
+              "X": 3,
+              "Y": 3
+            },
+            {
+              "X": -3,
+              "Y": 3
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "east-hall",
+      "Kind": "passage",
+      "Purpose": "Interior east-hall",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized east-hall",
+        "SourceRuleId": "interior:east-hall",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -4,
+              "Y": -1
+            },
+            {
+              "X": 4,
+              "Y": -1
+            },
+            {
+              "X": 4,
+              "Y": 1
+            },
+            {
+              "X": -4,
+              "Y": 1
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "south-hall",
+      "Kind": "passage",
+      "Purpose": "Interior south-hall",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized south-hall",
+        "SourceRuleId": "interior:south-hall",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -1,
+              "Y": -3
+            },
+            {
+              "X": 1,
+              "Y": -3
+            },
+            {
+              "X": 1,
+              "Y": 3
+            },
+            {
+              "X": -1,
+              "Y": 3
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "east-door",
+      "Kind": "opening",
+      "Purpose": "Interior east-door",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized east-door",
+        "SourceRuleId": "interior:east-door",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.25,
+              "Y": -0.5
+            },
+            {
+              "X": 0.25,
+              "Y": -0.5
+            },
+            {
+              "X": 0.25,
+              "Y": 0.5
+            },
+            {
+              "X": -0.25,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": [
+          {
+            "Id": "east",
+            "Purpose": "Doorway approach",
+            "SourceRuleId": "interior:opening",
+            "BoundaryPosition": {
+              "X": 0.25,
+              "Y": 0
+            },
+            "ApproachPosition": {
+              "X": 1.25,
+              "Y": 0
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "west-door",
+      "Kind": "opening",
+      "Purpose": "Interior west-door",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized west-door",
+        "SourceRuleId": "interior:west-door",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.25,
+              "Y": -0.5
+            },
+            {
+              "X": 0.25,
+              "Y": -0.5
+            },
+            {
+              "X": 0.25,
+              "Y": 0.5
+            },
+            {
+              "X": -0.25,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": [
+          {
+            "Id": "west",
+            "Purpose": "Doorway approach",
+            "SourceRuleId": "interior:opening",
+            "BoundaryPosition": {
+              "X": -0.25,
+              "Y": 0
+            },
+            "ApproachPosition": {
+              "X": -1.25,
+              "Y": 0
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "south-door",
+      "Kind": "opening",
+      "Purpose": "Interior south-door",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized south-door",
+        "SourceRuleId": "interior:south-door",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.25
+            },
+            {
+              "X": 0.5,
+              "Y": -0.25
+            },
+            {
+              "X": 0.5,
+              "Y": 0.25
+            },
+            {
+              "X": -0.5,
+              "Y": 0.25
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": [
+          {
+            "Id": "south",
+            "Purpose": "Doorway approach",
+            "SourceRuleId": "interior:opening",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": 0.25
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": 1.25
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "north-door",
+      "Kind": "opening",
+      "Purpose": "Interior north-door",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized north-door",
+        "SourceRuleId": "interior:north-door",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.25
+            },
+            {
+              "X": 0.5,
+              "Y": -0.25
+            },
+            {
+              "X": 0.5,
+              "Y": 0.25
+            },
+            {
+              "X": -0.5,
+              "Y": 0.25
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": [
+          {
+            "Id": "north",
+            "Purpose": "Doorway approach",
+            "SourceRuleId": "interior:opening",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -0.25
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -1.25
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "content",
+      "Kind": "equipment",
+      "Purpose": "Interior content",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized content",
+        "SourceRuleId": "interior:content",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            {
+              "X": -0.5,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

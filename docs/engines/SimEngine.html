@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SimEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="SimEngine.html" aria-current="page">SimEngine</a>
+      <a href="../ENGINE_GRAPH.md">Engine graph</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation · simulation kernel</p>
+  <h1>SimEngine</h1>
+  <p class="lede">A deterministic simulation kernel for colony, tycoon, logistics and process games: modules, systems, entities and components, authored JSON content, work and resource transactions, maps and navigation, production, logistics, incidents, knowledge, objective progress, save/hash and lockstep replay.</p>
+  <div class="badge-row">
+    <span class="tag">netstandard2.1</span>
+    <span class="tag">fixed point</span>
+    <span class="tag">one clock · one Sync</span>
+    <span class="tag">save · hash · replay</span>
+  </div>
+</header>
+
+<div class="note"><strong>Scope note.</strong> SimEngine is a large, actively developed subsystem with its own engineering instructions (<code>src/SimEngine/AGENTS.md</code>), README, master tracker and verification records. This page is a source-verified orientation, not a completeness claim. Follow the owned documents for current stage status.</div>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and layout</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#modules">Modules and systems</a></li>
+    <li><a href="#entities">Entities, components and defs</a></li>
+    <li><a href="#content">Authored content</a></li>
+    <li><a href="#work">Work, resources and production</a></li>
+    <li><a href="#spatial">Maps, navigation and space</a></li>
+    <li><a href="#simulation">Simulation lifecycle</a></li>
+    <li><a href="#determinism">Determinism, save, hash and replay</a></li>
+    <li><a href="#hosting">Hosting and GameRuntime</a></li>
+    <li><a href="#testing">Build and verification</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>SimEngine simulates a world over time: entities with components, systems that run on a schedule, resources and promises, work jobs and workers, production processes, logistics, incidents, knowledge, objectives and spatial maps. It is engine-independent: no renderer, platform SDK or game assembly dependency. A game is a <code>GameDefinition</code> of modules plus authored JSON content.</p>
+<div class="grid">
+  <div class="card"><h3>Simulation first</h3><p>Money, markets and Tycoon rules are an optional module. Resource-only survival and colony games run without them.</p></div>
+  <div class="card"><h3>Deterministic core</h3><p>Fixed-point gameplay maths, stable IDs and order, one seeded random source, one game clock, and one <code>Sync</code> per stateful owner.</p></div>
+  <div class="card"><h3>Extend, never parallel</h3><p>New behavior extends the existing registries, stores, codecs and projections. A second scheduler, clock, stock ledger or state owner is a defect.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and layout</h2>
+<table>
+  <thead><tr><th>Path</th><th>Contents</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/SimEngine/src/Beep.SimEngine</code></td><td>The single engine assembly (netstandard2.1, C# 9): <code>Kernel</code>, <code>Content</code>, <code>Core</code>, <code>Standard</code>, <code>Map</code>, <code>Hosting</code>, <code>Commands</code>, <code>Views</code>, <code>App</code>, <code>Math</code>.</td></tr>
+    <tr><td><code>src/SimEngine/help/quickstart</code></td><td>Minimal game module and host proving factory → initialize → update → hash → save/load.</td></tr>
+    <tr><td><code>src/SimEngine/tests/Beep.SimEngine.Testing</code></td><td>Test support and focused suites.</td></tr>
+    <tr><td><code>src/SimEngine/docs/migration</code></td><td>Per-stage verification records and source manifests.</td></tr>
+    <tr><td><code>src/SimEngine/plans</code></td><td>Master tracker and enhancement designs.</td></tr>
+  </tbody>
+</table>
+<p><code>AGENTS.md</code> is the engineering rulebook (ownership, determinism, content authoring, test policy); <code>README.md</code> is the long-form guide; <code>plans/enhancements/MASTER_TRACKER.md</code> is the live plan.</p>
+
+<h2 id="architecture" class="anchor">Architecture</h2>
+<pre><code>GameDefinition            modules + content types
+   ↓
+ContentSet.Load(source)   manifest → JSON defs → ResolvedContent
+   ↓
+GameFactory.NewGame(...)  World + modules composed, scenario, startup
+   ↓
+SimGame / World           one clock, systems, entities, services, commands
+   ↓
+PlayerSeat                commands in, results/notifications/views out
+   ↓
+SaveGame / Replay / Lockstep</code></pre>
+<ul>
+  <li><code>World</code> owns content, settings, seeded random, entities, events, services, players, commands, the fault gate and the sole clock.</li>
+  <li><code>GameModule</code> declares content types and composes systems, services, commands, map layers, world-generation stages and view features.</li>
+  <li><code>GameSystem</code> runs on a <code>Schedule</code> (every tick, periodic, or spread across entity buckets).</li>
+  <li>Hosts read immutable views/snapshots, submit commands and drive <code>Initialize</code>/<code>Update</code>. They never touch mutable world state.</li>
+</ul>
+
+<h2 id="modules">Modules and systems</h2>
+<p>Built-in modules include:</p>
+<p><code>ContentAccess</code>, <code>WorldSetup</code>, <code>Work</code>, <code>WorkSignals</code>, <code>Inventory</code>, <code>InventorySignals</code>, <code>Logistics</code>, <code>LogisticsRecoveryPolicy</code>, <code>DispatchPolicy</code>, <code>Motion</code>, <code>Infrastructure</code>, <code>Transformation</code>, <code>Construction</code>, <code>Technology</code>, <code>KnowledgeVisibility</code>, <code>CompanyKnowledge</code>, <code>Exploration</code>, <code>IncidentResponse</code>, <code>IncidentProcess</code>, <code>IncidentPropagation</code>, <code>ScenarioPressure</code>, <code>Objective</code>, <code>PlayerControllers</code>, <code>Automation</code>, <code>CompanyAlert</code>, <code>MachineFleets</code>, <code>PlanHistory</code>, <code>GameConditions</code>, <code>EnvironmentalMetrics</code>, <code>ResourceFlows</code>, <code>SpatialResources</code>, <code>TileNavigation</code>, <code>TileConditions</code>, <code>TileConstructionRules</code>, <code>TileTerrainWork</code>, <code>Weather</code>, <code>EquipmentCondition</code>, <code>Character</code>, <code>UtilitySignals</code>, <code>RemoteSignals</code>, <code>EventDispatchPolicy</code>, <code>LockstepPolicy</code>, <code>Operations</code>, and the optional <code>Tycoon</code> economy module.</p>
+<p>A module add-on is code-availability and dependency only; all startup and gameplay intent is authored JSON. Content is selected through the master manifest; a missing or invalid definition fails explicitly rather than becoming a hidden default.</p>
+
+<h2 id="entities">Entities, components and defs</h2>
+<pre><code>EntityDef  (authored prototype)
+   └── ComponentDef / ComponentDef&lt;T&gt;   (capability fields)
+Entity     (live instance)
+   └── Component / Component&lt;TDef&gt;      (state + behavior)</code></pre>
+<ul>
+  <li>Entities are created through <code>World.Spawn(def, owner, configure)</code>; removal goes through guards (<code>CheckDespawn</code>) so stock, promises and claims are never silently discarded.</li>
+  <li>A component carries one responsibility and one <code>Sync</code> for its state. Related behavior lives in partial files of the same owner, not a new service.</li>
+  <li><code>Entity.Update</code> is the only place a component's resolved state is committed; systems operate on live entities through their existing owners.</li>
+  <li>Multi-part lifecycle hooks (<code>IEntityInitialization</code>, <code>IEntityRemovalGuard</code>, <code>IEntityReplacementState</code>) are not entities or capability slots.</li>
+</ul>
+
+<h2 id="content">Authored content</h2>
+<ul>
+  <li>A <code>manifest.json</code> lists modules and their documents. <code>ContentSet.Load(source, types)</code> reads and resolves them into <code>ResolvedContent</code>.</li>
+  <li>Every definition is a <code>Def</code> registered against a section and capability key; strict JSON readers live in the definition or its declaration, not in a game host.</li>
+  <li>Definitions are validated and frozen before publication. Missing references, duplicate identities, ambiguous capability keys and invalid metadata refuse before <code>Initialize</code>.</li>
+  <li>Scenario JSON declares a time quantum, game mode, modules, startup/world setup and initial entities. There is no implicit scenario time or hidden default world.</li>
+</ul>
+
+<h2 id="work">Work, resources and production</h2>
+<ul>
+  <li><strong>Work</strong> is an activity graph: activities contain nodes with executors, roles, durations and requirements. <code>WorkBoard</code> owns evaluation, jobs, spending, progress and history; <code>WorkSystem</code> owns matching, travel and physical execution.</li>
+  <li><strong>Resources</strong> are exact quantities with units; inventory ownership is one <code>ResourceInventoryState</code>, and promises are owned receipt records. <code>ResourceTransactions</code> is the sole transfer/claim/conversion authority.</li>
+  <li><strong>Logistics</strong> owns demands, stock bands, routes, carriers, loading/unloading and recovery; it is not a separate scheduler.</li>
+  <li><strong>Production</strong> (<code>Transformer</code>/<code>TransformerManager</code>) consumes inputs and time, keeps WIP and tools, and commits whole results; continuous and batch modes are authored explicitly.</li>
+  <li><strong>Construction</strong> uses a site, a work graph, real materials and timed completion; removal goes through recovery/disposition.</li>
+  <li><strong>Tycoon</strong> is optional: values, accounts, income, monetary costs, suppliers and advanced rules. No money is required for unpriced physical work.</li>
+</ul>
+
+<h2 id="spatial">Maps, navigation and space</h2>
+<ul>
+  <li><code>MapLayer</code>/<code>MapLayer&lt;T&gt;</code> store sparse typed values (byte, int, fixed) and own their codec, invalidation and privacy.</li>
+  <li><code>TileMap</code> is the native tile space; independent point-space providers implement the same spatial contracts without being forced into tiles.</li>
+  <li><code>ITileNavigationRule</code>, <code>LayeredTileNavigation</code>, <code>NavGrid</code> and <code>PathSearch</code> own routing; <code>Mover</code> owns actual motion, fractional position, route checks and fuel/exposure gates.</li>
+  <li>Regions, areas, docks, placement, occupancy and visibility are provider-owned contracts; no host interprets geometry.</li>
+</ul>
+
+<h2 id="simulation">Simulation lifecycle</h2>
+<pre><code>var definition = QuickModule.CreateDefinition();
+var files    = new DiskFileSource(Path.Combine(AppContext.BaseDirectory, "Content"));
+var factory  = new GameFactory(definition, ContentSet.Load(files, definition.ContentTypes));
+var game     = factory.NewGame(new NewGameRequest { Scenario = "quick", Seed = 42 });
+game.Initialize();
+game.Update();                       // one deterministic engine-time step
+ulong hash   = game.Hash();
+byte[] save  = game.Save();
+var back     = factory.Load(save);</code></pre>
+<ul>
+  <li><code>NewGameRequest</code>: scenario, seed, seats/controllers, spectate, horizon, mods and typed game-mode overrides.</li>
+  <li><code>SimGame.Seat(i)</code> gives a <code>PlayerSeat</code>: <code>Submit</code>, <code>Preview</code>, <code>ReadResults</code>, <code>ReadNotifications</code>, <code>Snapshot</code>, <code>View</code>.</li>
+  <li>A failed system or provider faults the session; no later phase runs and the world cannot be saved or hashed as healthy.</li>
+  <li><code>GameClock</code> is the only current time. <code>World.Step</code> advances it after successful gameplay; every duration derives from the authored quantum.</li>
+</ul>
+
+<h2 id="determinism">Determinism, save, hash and replay</h2>
+<ul>
+  <li>Fixed-point gameplay maths, stable entity/component ids and canonical ordering. No wall clock, floating-point gameplay or platform-timing decision.</li>
+  <li>Every stateful responsibility has exactly one <code>Sync(IStateSync)</code> that owns save, load and hash.</li>
+  <li><code>World.Hash()</code> / <code>HashBreakdown()</code> give the canonical state digest; saves carry build, scenario and seed identity and refuse incompatible or corrupt data.</li>
+  <li><code>SimGame.RecordReplay(limits)</code> records admitted inputs and verifies hashes and results; lockstep sessions compare peer state.</li>
+  <li>Faulted, pending or mid-commit states cannot checkpoint. Saves are never migrated by guessing.</li>
+</ul>
+
+<h2 id="hosting">Hosting and GameRuntime</h2>
+<p><code>GameRuntime.Sim</code> wraps SimEngine in a runtime component: <code>SimComponent</code> drives the world, <code>SimEffectDispatcher</code> applies mission effects, <code>SimEventOutbox</code> publishes world events, and <code>DirectorBridgeModule</code> bridges scenario pressure. Headless proofs (<code>GameRuntime.Field.Headless</code>, <code>GameRuntime.Briefing.Headless</code>, <code>GameRuntime.Headless</code>) show complete sessions without a renderer.</p>
+
+<h2 id="testing">Build and verification</h2>
+<pre><code>dotnet build src/SimEngine/Beep.SimEngine.slnx -c Release
+dotnet run --project src/SimEngine/help/quickstart/Host/QuickGame.Host.csproj -c Release</code></pre>
+<p>SimEngine's rule is focused verification: build when compilation needs checking, run only the affected suite for a completed slice, and keep the broad regression gate open until explicitly authorized. Stage evidence is recorded under <code>docs/migration</code> with exact commands, identities and limits; counts and focused cases are not a full-suite claim.</p>
+
+<h2 id="source">Source map</h2>
+<dl class="kv">
+  <dt>Kernel</dt><dd><code>World.cs</code>, <code>Modules.cs</code>, <code>Systems.cs</code>, <code>Entities.cs</code>, <code>EntityCapability.cs</code>, <code>EntityLifecycle.cs</code>, <code>SaveGame.cs</code>, <code>ViewFeatureRegistration.cs</code></dd>
+  <dt>Content</dt><dd><code>Content/ContentSet.cs</code>, <code>DiskFileSource.cs</code>, <code>ResolvedContent</code>, <code>ContentTypes</code></dd>
+  <dt>Core</dt><dd><code>Core/GameTime.cs</code>, <code>GameClock.cs</code> (Hosting), <code>ResourceTransactions.cs</code>, <code>ResourceReservations.cs</code>, <code>WorkProgress.cs</code>, <code>Capacity.cs</code></dd>
+  <dt>Standard</dt><dd><code>Standard/</code> — work, inventory, logistics, motion, transformation, construction, technology, incidents, knowledge, objectives, spatial resources</dd>
+  <dt>Hosting</dt><dd><code>Hosting/SimGame.cs</code>, <code>GameFactory.cs</code>, <code>Replay.cs</code>, <code>Lockstep.cs</code>, <code>GameClock.cs</code></dd>
+  <dt>Views</dt><dd><code>Views/</code> — player, work, logistics, transformation, operations, construction, motion, knowledge</dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/SimEngine</code>. The owned authority is <a href="../../src/SimEngine/README.md">README</a>, <a href="../../src/SimEngine/AGENTS.md">AGENTS.md</a> and <a href="../../src/SimEngine/plans/enhancements/MASTER_TRACKER.md">MASTER_TRACKER</a>.</p>
+</footer>
+</main>
+</body>
+</html>

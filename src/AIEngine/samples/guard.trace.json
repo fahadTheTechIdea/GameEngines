@@ -1,0 +1,23 @@
+{ "format": 1, "document": "guard.ai", "behavior": "guard",
+  "nodes": [
+    { "node": "n0", "source": "n0", "role": "select" },
+    { "node": "n0.left", "source": "n0", "role": "branch" },
+    { "node": "n0.test", "source": "n0", "role": "test" },
+    { "node": "n1", "source": "n1", "role": "select" },
+    { "node": "n1.left", "source": "n1", "role": "branch" },
+    { "node": "n1.test", "source": "n1", "role": "test" },
+    { "node": "n3", "source": "n3", "role": "leaf" },
+    { "node": "n4", "source": "n4", "role": "leaf" },
+    { "node": "n2", "source": "n2", "role": "select" },
+    { "node": "n2.left", "source": "n2", "role": "branch" },
+    { "node": "n2.test", "source": "n2", "role": "test" },
+    { "node": "n5", "source": "n5", "role": "leaf" },
+    { "node": "n6", "source": "n6", "role": "select" },
+    { "node": "n6.left", "source": "n6", "role": "branch" },
+    { "node": "n6.test", "source": "n6", "role": "test" },
+    { "node": "n7", "source": "n7", "role": "leaf" },
+    { "node": "n9", "source": "n9", "role": "leaf" } ],
+  "pruned": [
+    { "source": "n8", "why": "collapsed: the test 'distance lte 520' always passes while 'distance' is within 121 to 500" },
+    { "source": "n10", "why": "unreachable: under 'n10', which the test of n8 never selects" } ]
+}

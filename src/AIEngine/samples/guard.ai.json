@@ -1,0 +1,31 @@
+{ "format": 1, "id": "guard.ai",
+  "keys": [
+    { "id": "distance", "type": "int", "initial": 500, "min": 0, "max": 500, "source": "host" },
+    { "id": "health", "type": "int", "initial": 100, "min": 0, "max": 100, "source": "host" },
+    { "id": "threat", "type": "int", "initial": 0, "min": 0, "max": 100, "source": "host" } ],
+  "percepts": [],
+  "intents": [
+    { "id": "attack", "args": [ { "id": "weight", "type": "int", "min": 40, "max": 90 } ] },
+    { "id": "flee", "args": [ { "id": "weight", "type": "int", "min": 40, "max": 90 } ] },
+    { "id": "hold", "args": [ { "id": "weight", "type": "int", "min": 40, "max": 90 } ] },
+    { "id": "patrol", "args": [ { "id": "weight", "type": "int", "min": 40, "max": 90 } ] } ],
+  "behaviors": [
+    { "id": "guard", "every": 5, "root":
+      { "id": "n0", "kind": "selector", "resume": false, "children": [
+        { "id": "n0.left", "kind": "sequence", "resume": false, "children": [
+          { "id": "n0.test", "kind": "condition", "when": { "fact": "key.threat", "op": "lte", "value": 20 } },
+          { "id": "n1", "kind": "selector", "resume": false, "children": [
+            { "id": "n1.left", "kind": "sequence", "resume": false, "children": [
+              { "id": "n1.test", "kind": "condition", "when": { "fact": "key.health", "op": "lte", "value": 30 } },
+              { "id": "n3", "kind": "act", "intent": "hold", "args": { "weight": 40 } } ] },
+            { "id": "n4", "kind": "act", "intent": "patrol", "args": { "weight": 60 } } ] } ] },
+        { "id": "n2", "kind": "selector", "resume": false, "children": [
+          { "id": "n2.left", "kind": "sequence", "resume": false, "children": [
+            { "id": "n2.test", "kind": "condition", "when": { "fact": "key.health", "op": "lte", "value": 40 } },
+            { "id": "n5", "kind": "act", "intent": "flee", "args": { "weight": 90 } } ] },
+          { "id": "n6", "kind": "selector", "resume": false, "children": [
+            { "id": "n6.left", "kind": "sequence", "resume": false, "children": [
+              { "id": "n6.test", "kind": "condition", "when": { "fact": "key.distance", "op": "lte", "value": 120 } },
+              { "id": "n7", "kind": "act", "intent": "attack", "args": { "weight": 80 } } ] },
+            { "id": "n9", "kind": "act", "intent": "hold", "args": { "weight": 50 } } ] } ] } ] } } ]
+}

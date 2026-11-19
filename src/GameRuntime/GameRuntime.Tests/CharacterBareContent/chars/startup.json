@@ -1,0 +1,4 @@
+{
+  "world_setup_profiles": [{ "id": "chars.start", "entries": [], "includes": [] }],
+  "entity_setups": []
+}

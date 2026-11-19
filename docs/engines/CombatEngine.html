@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CombatEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="CombatEngine.html" aria-current="page">CombatEngine</a>
+      <a href="../COMBAT_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>CombatEngine</h1>
+  <p class="lede">Deterministic group engagements: batteries, rates of fire, range bands, accuracy and cover, armor and penetration, splash, suppression and rout, personnel and platform pools, crew, fuel and march, with an explained shot log.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">pure resolver</span>
+    <span class="tag">seeded rolls</span>
+    <span class="tag">state hash</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#rules">Rules document</a></li>
+    <li><a href="#groups">Groups and batteries</a></li>
+    <li><a href="#resolution">Engagement resolution</a></li>
+    <li><a href="#damage">Hit chance and damage</a></li>
+    <li><a href="#logistics">Movement, fuel and resupply</a></li>
+    <li><a href="#determinism">Determinism and hash</a></li>
+    <li><a href="#component">GameRuntime integration</a></li>
+    <li><a href="#testing">Testing and calibration</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>CombatEngine resolves one engagement between two groups and returns the changed groups, per-battery reports, an optional shot log and a state hash. It is a pure function: no clock, no files, no internal state, no mutable randomness. Weapons, armor and unit numbers arrive with the request from the game's catalog; the rules document holds only the curves and factors.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Rules validation, shot accounting, hit chance, damage, splash, suppression, rout, pool accounting, movement and fuel, resupply rules, hashing.</p></div>
+  <div class="card"><h3>It does not own</h3><p>The item catalog, formations, pathfinding, AI target choice, animation, or strategic victory conditions.</p></div>
+  <div class="card"><h3>Explained, not simulated blindly</h3><p>Every earned shot lands in exactly one outcome and carries a code: hit, miss, out of range, no ammo, wasted.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/CombatEngine/CombatEngine.Core</code></td><td>Rules loader, resolver, hit/damage rules, logistics, state hash.</td><td>net8.0</td></tr>
+    <tr><td><code>src/CombatEngine/CombatEngine.Tests</code></td><td>Resolver, calibration, platform, fuel, hardening, property and source-guard tests.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Combat</code></td><td><code>CombatComponent</code> applies engagement, round, move and resupply requests as events.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.CombatStock</code></td><td>Bridges stock consumption and resupply into SimEngine/catalogs.</td><td>net8.0</td></tr>
+  </tbody>
+</table>
+<p>Reference rules: <code>src/CombatEngine/Content/combat-rules.json</code> (format 2).</p>
+
+<h2 id="rules" class="anchor">Rules document</h2>
+<pre><code>{ "format": 2,
+  "armor_constant": 100, "minimum_damage": 1, "non_piercing_cut_percent": 50,
+  "hit_chance": { "floor_permille": 50, "ceiling_permille": 950 },
+  "personnel_health": 100,
+  "damage_types": [ { "id": "pierce", "armor_factor_percent": 70, "armor_checked": true } ],
+  "range_bands":  [ { "up_to_percent": 25, "accuracy_percent": 100 } ],
+  "cover":        [ { "id": "heavy", "accuracy_percent": 55, "damage_percent": 100 } ],
+  "training":     [ { "id": "veteran", "accuracy_percent": 115, "damage_percent": 105, "morale_permille": 950 } ],
+  "suppression":  { "hits": 8, "accuracy_percent": 60 },
+  "rout":         { "strength_percent": 25 },
+  "splash":       { "spacing_milli": 2000, "max_targets": 6, "damage_percent": 50 },
+  "limits":       { "max_engagement_seconds": 3600, "max_shots_per_battery": 1000000 },
+  "morale":       { "casualty_loss_percent": 100, "suppression_loss_permille": 40, "recovery_permille": 30, "rout_below_permille": 250 },
+  "terrain":      [ { "id": "forest", "accuracy_percent": 65, "movement_percent": 50 } ],
+  "movement":     { "foot_speed_milli_per_second": 1400 } }</code></pre>
+<p>Strict JSON: unknown or missing fields, out-of-range values, duplicate ids and non-ascending range bands are refused (<code>COMBAT_RULES_*</code>).</p>
+
+<h2 id="groups" class="anchor">Groups and batteries</h2>
+<p><code>Group</code> is an immutable value with two pools: personnel (<code>Health</code>, <code>MemberHealth</code>, <code>InitialMembers</code>) and platforms (<code>PlatformHealth</code>, <code>PlatformUnitHealth</code>, <code>InitialPlatforms</code>). Casualties follow the personnel pool; firepower follows survivors; a platform acts only while it has crew.</p>
+<ul>
+  <li><code>Members</code>, <code>Platforms</code>, <code>OperablePlatforms</code>, <code>Destroyed</code>, <code>Standing</code> (<code>destroyed</code>, <code>routed</code>, <code>suppressed</code>, <code>active</code>).</li>
+  <li><code>MarchSpeedMilli(footSpeed)</code> blends mounted and walking pace by share of people (harmonic mean); a structure never moves.</li>
+  <li><code>FuelRoom</code> shrinks with lost platforms; <code>SpeedMilli</code> is thousandths of a metre per second.</li>
+</ul>
+<p><code>Battery</code> is a weapon plus optional ammunition, rounds, carry fraction, capacity and crew per unit. <code>WeaponSpec</code> carries damage type, damage, penetration, range, accuracy, rate per minute and splash; <code>AmmoSpec</code> may override damage, penetration and splash.</p>
+
+<h2 id="resolution" class="anchor">Engagement resolution</h2>
+<pre><code>var result = resolver.Fire(new EngagementRequest(
+    Attacker: group, Defender: enemy, DistanceMilli: 220_000,
+    Seconds: 30, Cover: "heavy", Terrain: "forest",
+    Seed: 7, Attempt: 1, LoggedShots: 200));
+
+// result.Attacker / result.Defender : changed copies
+// result.Batteries : BatteryReport per battery
+// result.Shots     : up to LoggedShots explained shots
+// result.Codes     : engagement-level codes (routed, destroyed)
+// result.Hash      : state hash</code></pre>
+<ul>
+  <li>Shots earned = <code>(carried + units × ratePerMinuteMilli × seconds / 60) / 1000</code>, capped by <code>MaxShotsPerBattery</code>.</li>
+  <li>Each shot is fired against a finite health pool. A platform hit is chosen by a separate roll by share of pool health, so it never disturbs the hit roll.</li>
+  <li>Out of range, no ammo and a destroyed target end or divert the remaining shots with codes.</li>
+  <li><code>Round(groups, orders, seconds, seed, attempt, loggedShots)</code> resolves simultaneous ordered fires from a group list; <code>Exchange(first, second, …)</code> resolves both directions and returns two results.</li>
+</ul>
+
+<h2 id="damage" class="anchor">Hit chance and damage</h2>
+<pre><code>chance = accuracyPermille × band% × training% × terrain%   (integer division)
+if suppressed: chance = chance × suppressedAccuracy% / 100
+if not area:   chance = chance × cover% / 100
+chance = clamp(chance, floor, ceiling)                       // per-mille
+
+armor   = armorRating × damageType.armorFactor% / 100
+eff     = max(0, armor - penetration)
+damage  = scaled × armorConstant / (armorConstant + eff)
+if armorChecked and penetration &lt; armor: damage = damage × (100 - nonPiercingCut%) / 100
+damage  = max(minimumDamage, damage)</code></pre>
+<p>Range bands use the first band whose <code>up_to_percent</code> reaches the distance share of weapon range. Area weapons ignore cover when they hit. Splash may hit additional targets within <code>spacingMilli</code>, at <code>splashDamagePercent</code>, up to <code>maxTargets</code>. Suppression after enough hits lowers accuracy until recovery.</p>
+
+<h2 id="logistics" class="anchor">Movement, fuel and resupply</h2>
+<table>
+  <thead><tr><th>Call</th><th>Rule</th></tr></thead>
+  <tbody>
+    <tr><td><code>Logistics.Reinforce(group, offered)</code></td><td>Fills back to <code>InitialMembers</code> at full health; destroyed or routed groups take no one.</td></tr>
+    <tr><td><code>Logistics.Refuel(group, offeredMilli)</code></td><td>Fills standing platforms' tanks only; a group that burns no fuel is refused.</td></tr>
+    <tr><td><code>Logistics.Resupply(group, batteryId, offered)</code></td><td>Fills a battery to capacity; the caller removes only what was accepted.</td></tr>
+    <tr><td><code>MovementRule.March(...)</code></td><td>Distance, fuel burned and motor seconds from terrain movement percent and march speed.</td></tr>
+    <tr><td><code>StandingRule</code></td><td>Applies casualties, suppression, recovery and rout thresholds from <code>MoraleRules</code>.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="determinism" class="anchor">Determinism and hash</h2>
+<p>The only randomness is <code>CombatRoll.Permille(seed, attempt, group, battery, shotIndex)</code> — SHA-256 over an invariant string, no generator state. Any shot can be re-rolled to check it. <code>StateHash.Of(groups)</code> gives a canonical digest for journals and replay. Arithmetic is checked; overflow is refused as <code>COMBAT_NUMERIC_RANGE</code> rather than wrapped.</p>
+
+<h2 id="component" class="anchor">GameRuntime integration</h2>
+<p><code>CombatComponent(resolver, initialGroups, seed, loggedShots)</code> queues requests and applies them in <code>Update</code>: engagement, round, move, resupply, reinforce, refuel.</p>
+<table>
+  <thead><tr><th>Request in</th><th>Result out</th></tr></thead>
+  <tbody>
+    <tr><td><code>combat.engagement-requested</code>, <code>combat.round-requested</code>, <code>combat.move-requested</code>, <code>combat.resupply-requested</code>, <code>combat.reinforce-requested</code>, <code>combat.refuel-requested</code></td><td><code>combat.engagement</code>, <code>combat.casualty</code>, <code>combat.ammo-spent</code>, <code>combat.platforms-lost</code>, <code>combat.moved</code>, <code>combat.resupplied</code>, <code>combat.reinforced</code>, <code>combat.refuelled</code>, <code>combat.fuel-burned</code>, <code>combat.standing</code>, <code>combat.engagement-refused</code>, <code>combat.forces-restored</code></td></tr>
+  </tbody>
+</table>
+<p><code>CombatCheckpoint</code> saves tick, attempt, engagement count, distance and groups. Declare <code>CombatEventCatalog</code> before <code>Init</code>.</p>
+
+<h2 id="testing" class="anchor">Testing and calibration</h2>
+<pre><code>dotnet run --project src/CombatEngine/CombatEngine.Tests -c Release</code></pre>
+<p>Suites: <code>ResolverTests</code>, <code>CalibrationTests</code>, <code>PlatformTests</code>, <code>FuelTests</code>, <code>HardeningTests</code>, <code>PropertyTests</code>, <code>RuleMathTests</code>, <code>RulesLoaderTests</code>, <code>RulesFormat2Tests</code> and <code>SourceGuardTests</code>. Calibration is "plausible, not historical" — a game may retune the rules document without code changes.</p>
+
+<h2 id="source" class="anchor">Source map</h2>
+<dl class="kv">
+  <dt>Resolver</dt><dd><code>CombatResolver.cs</code>, <code>CombatResolver.Round.cs</code>, <code>CombatRound.cs</code>, <code>CombatRoll.cs</code></dd>
+  <dt>Rules</dt><dd><code>CombatRules.cs</code>, <code>CombatRulesLoader.cs</code>, <code>RulesJson.cs</code>, <code>CombatCodes.cs</code></dd>
+  <dt>Model</dt><dd><code>Group.cs</code>, <code>Battery.cs</code>, <code>WeaponSpec.cs</code>, <code>AmmoSpec.cs</code>, <code>EngagementRequest.cs</code></dd>
+  <dt>Math</dt><dd><code>HitRule.cs</code>, <code>DamageRule.cs</code>, <code>MovementRule.cs</code>, <code>StandingRule.cs</code>, <code>Logistics.cs</code></dd>
+  <dt>Hash</dt><dd><code>StateHash.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/CombatEngine</code> and <code>src/GameRuntime/GameRuntime.Combat*</code>. Research, model rationale and calibration: <a href="../COMBAT_ENGINE.md">docs/COMBAT_ENGINE.md</a> and <a href="../COMBAT_STOCK_FLOW.md">docs/COMBAT_STOCK_FLOW.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

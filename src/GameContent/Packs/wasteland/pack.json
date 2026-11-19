@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "wasteland",
+  "version": "1.0.0",
+  "title": "Post-apocalyptic wasteland: scavenge, purify, patch together",
+  "language": "en",
+  "world": "timeless",
+  "genres": ["post-apocalyptic"],
+  "dependencies": [{ "id": "core", "version": "1.0.0" }],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

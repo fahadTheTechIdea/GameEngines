@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "pack": "mining",
+  "resources": [
+    { "id": "mining.bauxite", "name": "Bauxite", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 5000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["ore"], "properties": { "base-price": 0.2 } },
+    { "id": "mining.nickel-ore", "name": "Nickel ore", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 5000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["ore"], "properties": { "base-price": 2 } },
+    { "id": "mining.lead-ore", "name": "Lead ore", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 5000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["ore"], "properties": { "base-price": 1 } },
+    { "id": "mining.zinc-ore", "name": "Zinc ore", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 5000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["ore"], "properties": { "base-price": 1 } },
+    { "id": "mining.sulphur", "name": "Native sulphur", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 2000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["chemical"], "properties": { "base-price": 0.5 } },
+    { "id": "mining.nitrate", "name": "Ammonium nitrate", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["chemical"], "properties": { "base-price": 1.5 } },
+    { "id": "mining.diesel", "name": "Mine diesel", "class": "fluid", "unit": "L", "origin": "natural", "stack": { "max": 5000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["fuel"], "properties": { "base-price": 1.2 } },
+    { "id": "mining.charge", "name": "Blasting charge", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["explosive"], "properties": { "base-price": 0.5 } },
+    { "id": "mining.broken-rock", "name": "Broken rock", "class": "raw", "unit": "kg", "origin": "crafted", "stack": { "max": 10000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["spoil"], "properties": { "base-price": 0.05 } },
+    { "id": "mining.tailings", "name": "Process tailings", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 10000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["waste"], "properties": { "base-price": 0.05 } },
+    { "id": "mining.backfill", "name": "Inert backfill", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 10000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["waste"], "properties": { "base-price": 0.1 } },
+    { "id": "mining.acid", "name": "Sulphuric acid", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["chemical"], "properties": { "base-price": 1 } },
+    { "id": "mining.alumina", "name": "Alumina", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 2000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["intermediate"], "properties": { "base-price": 0.8 } },
+    { "id": "mining.aluminium-ingot", "name": "Aluminium ingot", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["metal"], "properties": { "base-price": 6 } },
+    { "id": "mining.nickel-ingot", "name": "Nickel ingot", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["metal"], "properties": { "base-price": 9 } },
+    { "id": "mining.lead-ingot", "name": "Lead ingot", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["metal"], "properties": { "base-price": 3 } },
+    { "id": "mining.zinc-ingot", "name": "Zinc ingot", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["metal"], "properties": { "base-price": 3 } },
+    { "id": "mining.brass-ingot", "name": "Brass ingot", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["metal", "alloy"], "properties": { "base-price": 6 } },
+    { "id": "mining.rock-bolts", "name": "Rock bolts", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["support"], "properties": { "base-price": 0.6 } },
+    { "id": "mining.rock-drill", "name": "Pneumatic rock drill", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 800 }, "currency": null, "cpc": "4", "tags": ["tool"], "properties": { "base-price": 90 } },
+    { "id": "mining.drift", "name": "Supported drift", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["structure"], "properties": { "base-price": 700 } },
+    { "id": "mining.fan", "name": "Ventilation fan", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 4000 }, "currency": null, "cpc": "4", "tags": ["safety"], "properties": { "base-price": 260 } },
+    { "id": "mining.haul-truck", "name": "Mine haul truck", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 6000 }, "currency": null, "cpc": "4", "tags": ["vehicle"], "properties": { "base-price": 900 } }
+  ],
+  "stations": [
+    { "id": "mining.mine-face", "name": "Mine face", "levels": 2 },
+    { "id": "mining.crusher", "name": "Crushing plant", "levels": 1 },
+    { "id": "mining.smelter", "name": "Smelter", "levels": 2 },
+    { "id": "mining.acid-plant", "name": "Acid plant", "levels": 1 },
+    { "id": "mining.metal-market", "name": "Metal exchange", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "mining.blasting", "name": "Blasting", "max": 10 }
+  ]
+}

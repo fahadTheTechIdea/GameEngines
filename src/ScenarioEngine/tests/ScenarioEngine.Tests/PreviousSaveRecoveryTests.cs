@@ -15,7 +15,7 @@ public sealed class PreviousSaveRecoveryTests
         var ct = TestContext.Current.CancellationToken;
         Assert.True((await service.SaveAsync("slot", simulation.Snapshot, ct)).Committed);
         simulation.Enqueue(Harness.Increment());
-        simulation.Step(Harness.Input(1));
+        simulation.Update(Harness.Input(1));
         Assert.True((await service.SaveAsync("slot", simulation.Snapshot, ct)).Committed);
         var corruptBytes = new byte[] { 1, 2, 3 };
         await File.WriteAllBytesAsync(Path.Combine(root, "slot.json"), corruptBytes, ct);

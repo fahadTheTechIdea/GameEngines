@@ -340,11 +340,11 @@ namespace Beep.SimEngine.Standard
             var scope = EntityObservation.CaptureProvider(world, target,
                 target == null ? (Action<IStateSync>)null : target.Sync, "work.effect");
             var spatial = EntityObservation.CaptureSpace(world, world.Space);
-            var clock = world.Clock; long at = clock.StepIndex; int speed = clock.Speed; bool paused = clock.Paused;
+            var clock = world.Clock; long at = clock.StepIndex;
             try
             {
                 WorkEffectResult result = effect.Apply(world, order, node);
-                if (!ReferenceEquals(world.Clock, clock) || clock.StepIndex != at || clock.Speed != speed || clock.Paused != paused)
+                if (!ReferenceEquals(world.Clock, clock) || clock.StepIndex != at)
                     throw new InvalidOperationException("work effects cannot mutate the game clock");
                 if (result.Status < WorkEffectStatus.Applied || result.Status > WorkEffectStatus.Failed ||
                     (result.Status == WorkEffectStatus.Applied) != result.Blocker.IsNone)

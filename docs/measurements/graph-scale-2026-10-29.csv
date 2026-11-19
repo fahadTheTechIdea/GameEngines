@@ -1,0 +1,49 @@
+run,measurement,median,min,max,unit,repeats
+1,build 10,000 nodes x 20 edges,83.42,41.41,113.58,ms,15
+1,dijkstra full tree,10.59,4.70,16.29,ms,15
+1,bellman-ford full tree,6.39,3.99,6.66,ms,15
+1,bfs full reach,0.69,0.48,0.71,ms,15
+1,connected components,0.76,0.73,1.19,ms,15
+1,degrees and top 10,1.23,1.21,2.12,ms,15
+1,min-cost flow 200 markets x 400 routes,0.55,0.38,5.11,ms,15
+1,label propagation 1,000 actors x 20 edges,0.72,0.50,2.93,ms,15
+1,trust iteration 1,000 actors x 20 edges,18.44,7.20,77.65,ms,15
+1,allocation of a reused dijkstra run,0,0,0,bytes,1
+1,allocation of a min-cost flow run,9856,9856,9856,bytes,1
+1,allocation of a trust iteration run,0,0,0,bytes,1
+1,allocation of a label propagation run,176,176,176,bytes,1
+1,flow result,1794 units at cost 90984 in 56 augmentations,,,,
+1,label propagation result,7 communities in 5 rounds,,,,
+1,trust result,converged yes after 16 iterations residual 13604,,,,
+2,build 10,000 nodes x 20 edges,68.34,41.41,108.48,ms,15
+2,dijkstra full tree,10.44,2.87,13.56,ms,15
+2,bellman-ford full tree,3.95,3.70,4.55,ms,15
+2,bfs full reach,0.46,0.43,0.74,ms,15
+2,connected components,1.17,0.71,1.19,ms,15
+2,degrees and top 10,0.82,0.80,1.45,ms,15
+2,min-cost flow 200 markets x 400 routes,0.35,0.32,3.33,ms,15
+2,label propagation 1,000 actors x 20 edges,0.49,0.44,2.20,ms,15
+2,trust iteration 1,000 actors x 20 edges,7.88,6.92,72.77,ms,15
+2,allocation of a reused dijkstra run,0,0,0,bytes,1
+2,allocation of a min-cost flow run,9856,9856,9856,bytes,1
+2,allocation of a trust iteration run,0,0,0,bytes,1
+2,allocation of a label propagation run,176,176,176,bytes,1
+2,flow result,1794 units at cost 90984 in 56 augmentations,,,,
+2,label propagation result,7 communities in 5 rounds,,,,
+2,trust result,converged yes after 16 iterations residual 13604,,,,
+3,build 10,000 nodes x 20 edges,59.92,39.92,108.43,ms,15
+3,dijkstra full tree,10.54,3.07,15.16,ms,15
+3,bellman-ford full tree,3.68,3.53,5.66,ms,15
+3,bfs full reach,0.43,0.42,0.48,ms,15
+3,connected components,0.72,0.71,0.73,ms,15
+3,degrees and top 10,0.80,0.78,1.37,ms,15
+3,min-cost flow 200 markets x 400 routes,0.31,0.29,3.27,ms,15
+3,label propagation 1,000 actors x 20 edges,0.51,0.47,2.30,ms,15
+3,trust iteration 1,000 actors x 20 edges,7.54,6.77,75.06,ms,15
+3,allocation of a reused dijkstra run,0,0,0,bytes,1
+3,allocation of a min-cost flow run,9856,9856,9856,bytes,1
+3,allocation of a trust iteration run,0,0,0,bytes,1
+3,allocation of a label propagation run,176,176,176,bytes,1
+3,flow result,1794 units at cost 90984 in 56 augmentations,,,,
+3,label propagation result,7 communities in 5 rounds,,,,
+3,trust result,converged yes after 16 iterations residual 13604,,,,

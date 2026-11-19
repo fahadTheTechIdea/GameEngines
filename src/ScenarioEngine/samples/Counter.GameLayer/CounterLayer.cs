@@ -26,9 +26,10 @@ public sealed class CounterLayer : IGameLayer
         Schema("""{"type":"object","required":["initialValue"],"additionalProperties":false,"properties":{"initialValue":{"type":"integer","minimum":0,"maximum":100}}}"""));
     public ValidationReport Validate(JsonElement content) => ValidationReport.Valid;
     public ILayerRuntime Create(LayerStartContext context) => new Runtime(context);
-    private sealed class Runtime(LayerStartContext start) : ILayerRuntime
+    private sealed class Runtime(LayerStartContext start) : ILayerRuntime, IIdleTickRuntime
     {
         public LayerSnapshot InitialState { get; } = new(ContractJson.Element(new { value = start.Scenario.LayerData.GetProperty("initialValue").GetInt64() }));
+        public bool CanSkipIdleTick(LayerSnapshot state) => true;
         public LayerStepResult Resolve(LayerSnapshot previous, LayerTickContext context)
         {
             var value = previous.Data.GetProperty("value").GetInt64();
@@ -67,8 +68,4 @@ public sealed class CounterLayer : IGameLayer
             return ValidationReport.Valid;
         }
     }
-}
-public sealed class CounterGame(IScenarioSessionFactory sessions) : GameBase(sessions)
-{
-    protected override LayerIdentity GameLayer => new("test_counter", "1.0.0");
 }

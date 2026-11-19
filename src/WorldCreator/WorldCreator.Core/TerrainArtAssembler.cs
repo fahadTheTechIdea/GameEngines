@@ -50,8 +50,7 @@ public sealed class TerrainArtAssembler(IApprovedArtRegistry registry)
                 manifest = await registry.ResolveAsync(binding.AssetId, cancellationToken);
                 approved[binding.AssetId] = manifest;
             }
-            if (manifest is null || manifest.ApprovalState != ArtApprovalState.Approved ||
-                manifest.AssetId != binding.AssetId)
+            if (!WorldAssetDependencyManifestBuilder.IsComplete(manifest, binding.AssetId))
             {
                 errors.Add("TERRAIN_ART_NOT_APPROVED:" + piece.Id);
                 continue;

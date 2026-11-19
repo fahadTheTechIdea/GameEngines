@@ -1,0 +1,417 @@
+{
+  "SchemaVersion": 1,
+  "Id": "fence-catalog",
+  "Archetypes": [
+    {
+      "Id": "world",
+      "Kind": "world",
+      "Purpose": "Complete fenced compound and required journey",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "compound",
+          "ArchetypeId": "compound",
+          "Count": 1,
+          "Purpose": "Required compound",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        },
+        {
+          "Id": "inside",
+          "ArchetypeId": "marker",
+          "Count": 1,
+          "Purpose": "Required inside destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                0
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        },
+        {
+          "Id": "outside",
+          "ArchetypeId": "marker",
+          "Count": 1,
+          "Purpose": "Required outside destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                -10
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "compound",
+      "Kind": "compound",
+      "Purpose": "Complete authored compound",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "reference",
+          "ArchetypeId": "reference",
+          "Count": 1,
+          "Purpose": "Boundary and entrance source",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        },
+        {
+          "Id": "panels-before",
+          "ArchetypeId": "panel",
+          "Count": 4,
+          "Purpose": "All panels before the declared gate",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        },
+        {
+          "Id": "panels-after",
+          "ArchetypeId": "panel",
+          "Count": 26,
+          "Purpose": "All panels after the declared gate",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        },
+        {
+          "Id": "posts-before",
+          "ArchetypeId": "post",
+          "Count": 5,
+          "Purpose": "All posts before the declared gate",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        },
+        {
+          "Id": "posts-after",
+          "ArchetypeId": "post",
+          "Count": 26,
+          "Purpose": "All posts after the declared gate",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        },
+        {
+          "Id": "gate",
+          "ArchetypeId": "marker",
+          "Count": 1,
+          "Purpose": "Declared open gate marker",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                -6
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Exact compound reservation",
+        "SourceRuleId": "fence:compound",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -12,
+              "Y": -8
+            },
+            {
+              "X": 12,
+              "Y": -8
+            },
+            {
+              "X": 12,
+              "Y": 8
+            },
+            {
+              "X": -12,
+              "Y": 8
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "reference",
+      "Kind": "gate-interface",
+      "Purpose": "Declared gate interface",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Exact open gate approach area",
+        "SourceRuleId": "fence:reference",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -1.8,
+              "Y": -1
+            },
+            {
+              "X": 1.8,
+              "Y": -1
+            },
+            {
+              "X": 1.8,
+              "Y": 1
+            },
+            {
+              "X": -1.8,
+              "Y": 1
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": [
+          {
+            "Id": "gate",
+            "Purpose": "Required open gate",
+            "SourceRuleId": "fence:gate",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -1
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -3
+            },
+            "Width": 3.6
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "marker",
+      "Kind": "destination",
+      "Purpose": "Required destination",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "panel",
+      "Kind": "panel",
+      "Purpose": "Required physical panel",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Exact authored panel source",
+        "SourceRuleId": "fence:panel",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.9,
+              "Y": -0.1
+            },
+            {
+              "X": 0.9,
+              "Y": -0.1
+            },
+            {
+              "X": 0.9,
+              "Y": 0.1
+            },
+            {
+              "X": -0.9,
+              "Y": 0.1
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "post",
+      "Kind": "post",
+      "Purpose": "Required physical post",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Exact authored post source",
+        "SourceRuleId": "fence:post",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.1,
+              "Y": -0.1
+            },
+            {
+              "X": 0.1,
+              "Y": -0.1
+            },
+            {
+              "X": 0.1,
+              "Y": 0.1
+            },
+            {
+              "X": -0.1,
+              "Y": 0.1
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "barrier",
+      "Kind": "barrier",
+      "Purpose": "Required physical barrier",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Exact authored barrier source",
+        "SourceRuleId": "fence:barrier",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -1.9,
+              "Y": -0.1
+            },
+            {
+              "X": 1.9,
+              "Y": -0.1
+            },
+            {
+              "X": 1.9,
+              "Y": 0.1
+            },
+            {
+              "X": -1.9,
+              "Y": 0.1
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    }
+  ]
+}

@@ -25,6 +25,7 @@ namespace Beep.SimEngine.Standard
         }
         public override void Compose(WorldComposer composer)
         {
+            composer.Events.Register<TechnologyLearned>(TechnologyLearned.EventId, 1);
             var knowledge = new TechnologyService(composer.World); composer.Services.Bind(knowledge);
             composer.Services.Bind<ITechnologyKnowledge>(knowledge);
             composer.AddViewFeature("sim.technology", 2, (world, viewer) => new TechnologyView(world, viewer));

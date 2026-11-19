@@ -1,0 +1,9 @@
+{
+  "facts": { "cal.season": "spring", "story.plague": 0 },
+  "script": [
+    { "period": 10, "do": "trade", "market": "riverton", "good": "grain", "quantity": 400 },
+    { "period": 20, "do": "shock", "shock": "drought", "market": "riverton", "scale": 1000 },
+    { "period": 45, "do": "shock", "shock": "devaluation", "market": "seaport", "scale": 1000 },
+    { "period": 60, "do": "settle", "schedule": "decree" }
+  ]
+}

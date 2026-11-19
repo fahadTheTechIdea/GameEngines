@@ -1,0 +1,178 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "sites",
+          "ArchetypeId": "site",
+          "Count": 2,
+          "Purpose": "Required activity sites",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "resources",
+          "ArchetypeId": "resource",
+          "Count": 4,
+          "Purpose": "Required region resource stations",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "site",
+          "Minimum": 2,
+          "Maximum": 2
+        },
+        {
+          "Kind": "resource",
+          "Minimum": 4,
+          "Maximum": 4
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "site",
+      "Kind": "site",
+      "Purpose": "Source-sized activity site",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Unscaled required footprint",
+        "SourceRuleId": "region:site",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -4,
+              "Y": -3
+            },
+            {
+              "X": 4,
+              "Y": -3
+            },
+            {
+              "X": 4,
+              "Y": 3
+            },
+            {
+              "X": -4,
+              "Y": 3
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -5,
+              "Y": -4
+            },
+            {
+              "X": 5,
+              "Y": -4
+            },
+            {
+              "X": 5,
+              "Y": 4
+            },
+            {
+              "X": -5,
+              "Y": 4
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "resource",
+      "Kind": "resource",
+      "Purpose": "Required resource station",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Complete resource footprint and clearance",
+        "SourceRuleId": "game:resource",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -1,
+              "Y": -0.8
+            },
+            {
+              "X": 1,
+              "Y": -0.8
+            },
+            {
+              "X": 1,
+              "Y": 0.8
+            },
+            {
+              "X": -1,
+              "Y": 0.8
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -1.3,
+              "Y": -1.1
+            },
+            {
+              "X": 1.3,
+              "Y": -1.1
+            },
+            {
+              "X": 1.3,
+              "Y": 1.1
+            },
+            {
+              "X": -1.3,
+              "Y": 1.1
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

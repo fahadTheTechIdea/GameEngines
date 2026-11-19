@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="GameRuntime.Tests" />
+    <ProjectReference Include="../GameRuntime.Core/GameRuntime.Core.csproj" />
+    <ProjectReference Include="../GameRuntime.Services/GameRuntime.Services.csproj" />
+    <ProjectReference Include="../GameRuntime.Sim/GameRuntime.Sim.csproj" />
+    <ProjectReference Include="../GameRuntime.Characters/GameRuntime.Characters.csproj" />
+    <ProjectReference Include="../GameRuntime.Combat/GameRuntime.Combat.csproj" />
+    <ProjectReference Include="../GameRuntime.CombatStock/GameRuntime.CombatStock.csproj" />
+    <ProjectReference Include="../GameRuntime.AI/GameRuntime.AI.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Diagnostics/ScenarioEngine.Diagnostics.csproj" />
+    <ProjectReference Include="../../GameContent/GameContent.Catalog/GameContent.Catalog.csproj" />
+    <ProjectReference Include="../../GameContent/GameContent.Catalog.Combat/GameContent.Catalog.Combat.csproj" />
+    <ProjectReference Include="../../GameContent/GameContent.Catalog.Characters/GameContent.Catalog.Characters.csproj" />
+    <EmbeddedResource Include="field-ai.json" LogicalName="field-ai.json" />
+    <None Include="FieldContent/**/*.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../CombatEngine/Content/combat-rules.json" Link="Content/combat-rules.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../GameContent/Packs/**/*.json" Link="Packs/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

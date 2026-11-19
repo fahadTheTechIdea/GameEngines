@@ -1,0 +1,337 @@
+{
+  "SchemaVersion": 1,
+  "Id": "water-world",
+  "GameProfile": "terrain-reference",
+  "CatalogId": "drainage-catalog",
+  "RootArchetypeId": "world",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Bounded water/region/travel framework reference; landmark interactions, climate, lakes, broad design and runtime remain open."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    0,
+    0
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": null,
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "land",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 4,
+          "Y": 0
+        },
+        {
+          "X": 4,
+          "Y": 4
+        },
+        {
+          "X": 0,
+          "Y": 4
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [],
+    "Terrain": null,
+    "HeightField": {
+      "SchemaVersion": 1,
+      "Id": "field",
+      "Kind": "land",
+      "Purpose": "Protected source terrain",
+      "SourceRuleId": "drainage:terrain",
+      "Unit": "meters",
+      "Origin": {
+        "X": 0,
+        "Y": 0
+      },
+      "StepX": 1,
+      "StepY": 1,
+      "Columns": 5,
+      "Rows": 5,
+      "Heights": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "RouteRules": [
+    {
+      "Id": "crossing",
+      "ConnectionKind": "trail",
+      "Profile": {
+        "Id": "wader",
+        "Purpose": "Explicit water-capable travel",
+        "SourceRuleId": "water:wader",
+        "Radius": 0.05,
+        "MaximumSlope": 100,
+        "KindCosts": {
+          "land": 1,
+          "water": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.05,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 200000000,
+        "Objective": "LowestCost"
+      },
+      "FromPortId": null,
+      "ToPortId": null,
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "environment",
+    "Fields": [
+      {
+        "Id": "constant",
+        "Purpose": "Explicit baseline",
+        "SourceRuleId": "water:baseline",
+        "Unit": "relative",
+        "Offset": 1,
+        "Terms": [],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "humidity",
+        "Purpose": "Derived moisture limits playable terrain",
+        "SourceRuleId": "wind:humidity",
+        "Unit": "relative",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "SampledField",
+            "Coefficient": 1,
+            "FieldId": "weather-humidity"
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ],
+    "SampledFields": null
+  },
+  "SuitabilityRules": null,
+  "Placement": null,
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": {
+    "Id": "dry-regions",
+    "Purpose": "Required dry components",
+    "SourceRuleId": "water:regions",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 4,
+          "Y": 0
+        },
+        {
+          "X": 4,
+          "Y": 4
+        },
+        {
+          "X": 0,
+          "Y": 4
+        }
+      ]
+    },
+    "Profile": {
+      "Id": "dry",
+      "Purpose": "Required dry terrain",
+      "SourceRuleId": "water:land",
+      "AllowedKinds": [
+        "land"
+      ],
+      "Requirements": [
+        {
+          "Id": "dry-air",
+          "FieldId": "humidity",
+          "Purpose": "Explicit gameplay moisture limit",
+          "SourceRuleId": "wind:dry",
+          "Minimum": 0,
+          "Maximum": 0.65
+        }
+      ],
+      "Preferences": []
+    },
+    "Seeds": [
+      {
+        "Id": "north",
+        "Purpose": "North destination region",
+        "SourceRuleId": "water:north",
+        "Position": {
+          "X": 2,
+          "Y": 3
+        },
+        "MinimumArea": 1,
+        "Profile": null
+      },
+      {
+        "Id": "south",
+        "Purpose": "South destination region",
+        "SourceRuleId": "water:south",
+        "Position": {
+          "X": 2,
+          "Y": 1
+        },
+        "MinimumArea": 1,
+        "Profile": null
+      }
+    ],
+    "MaximumCells": 1024,
+    "MaximumWork": 50000000,
+    "Intents": null,
+    "AnchorPrecision": 0.1,
+    "MaximumAnchorCells": 65536,
+    "MaximumIntentCandidates": 1024,
+    "MaximumIntentStates": 100000,
+    "ExcludedAssignments": null,
+    "IntentRelations": null
+  },
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": {
+    "Version": 1,
+    "Id": "storage",
+    "Purpose": "Index required destinations",
+    "SourceRuleId": "drainage:chunks",
+    "Origin": {
+      "X": 0,
+      "Y": 0
+    },
+    "Width": 2,
+    "Height": 2,
+    "MaximumChunks": 4096,
+    "MaximumReferences": 200000,
+    "MaximumWork": 20000000
+  },
+  "TopologyRules": null,
+  "RouteBudget": null,
+  "Interiors": null,
+  "TerrainDemands": null,
+  "ProgramComposition": null,
+  "Drainage": {
+    "SchemaVersion": 1,
+    "Id": "inland-flow",
+    "Purpose": "Optional environmental design",
+    "SourceRuleId": "drainage:rule",
+    "RateUnit": "liters-per-second",
+    "Terminals": [
+      {
+        "Id": "outlet",
+        "Column": 0,
+        "Row": 2,
+        "Kind": "Outlet",
+        "Purpose": "Authored outlet",
+        "SourceRuleId": "drainage:outlet"
+      }
+    ],
+    "Sources": [
+      {
+        "Id": "headwater",
+        "Column": 4,
+        "Row": 2,
+        "Rate": 16,
+        "Purpose": "Authored inflow",
+        "SourceRuleId": "drainage:source"
+      }
+    ],
+    "LossFractionPerEdge": 0,
+    "MaximumSamples": 16384,
+    "MaximumWork": 20000000
+  },
+  "Water": {
+    "SchemaVersion": 1,
+    "Id": "stream",
+    "Kind": "water",
+    "Purpose": "Game-authored wet ribbon",
+    "SourceRuleId": "water:width",
+    "MinimumFlow": 1,
+    "BaseWidth": 0.5,
+    "WidthPerRate": 0,
+    "MaximumWidth": 10000,
+    "Priority": 1000,
+    "MaximumSegments": 512,
+    "MaximumPatches": 1024,
+    "MaximumWork": 20000000
+  },
+  "WindMoisture": {
+    "SchemaVersion": 1,
+    "Id": "weather",
+    "Purpose": "Explicit environmental world controls",
+    "SourceRuleId": "wind:world",
+    "Direction": {
+      "X": 1,
+      "Y": 0
+    },
+    "BoundaryHumidity": 1,
+    "BaseCondensation": 0.2,
+    "RiseCondensationPerUnit": 0,
+    "EvaporationByKind": {
+      "water": 0.2,
+      "land": 0
+    },
+    "MaximumSamples": 16384,
+    "MaximumWork": 20000000
+  }
+}

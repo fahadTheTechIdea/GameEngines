@@ -1,5 +1,0 @@
-{
-  "resource_flow_journals": [
-    {"id":"diagnostics.running-inputs","retained_records_per_company":128}
-  ]
-}

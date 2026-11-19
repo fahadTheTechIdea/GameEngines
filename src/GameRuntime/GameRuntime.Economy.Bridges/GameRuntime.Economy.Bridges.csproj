@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- How the economy engine meets the others: the calendar (time and dates for settlements), the dialogue engine (facts and outcomes), the AI engine (percepts) and the SimEngine ledger (trades as inventory flows). One class per bridge. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Economy/GameRuntime.Economy.csproj" />
+    <ProjectReference Include="../GameRuntime.Calendar/GameRuntime.Calendar.csproj" />
+    <ProjectReference Include="../GameRuntime.Dialogue/GameRuntime.Dialogue.csproj" />
+    <ProjectReference Include="../GameRuntime.AI/GameRuntime.AI.csproj" />
+    <ProjectReference Include="../GameRuntime.Sim/GameRuntime.Sim.csproj" />
+    <ProjectReference Include="../GameRuntime.CombatStock/GameRuntime.CombatStock.csproj" />
+    <ProjectReference Include="../GameRuntime.Alchemy/GameRuntime.Alchemy.csproj" />
+    <ProjectReference Include="../../GameContent/GameContent.Catalog/GameContent.Catalog.csproj" />
+  </ItemGroup>
+</Project>

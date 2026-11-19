@@ -104,7 +104,7 @@ internal static class MockupCaptureTests
                 Notes = "Synthetic authored geometry for engine handoff; not proof of image localization." }], Junctions = [],
                 Calibration = new(4,0,0,0,4,0,"Synthetic authored game scale",0.01,[new(new(0,0),0,0),new(new(100,0),400,0),new(new(0,100),0,400)]) };
             var generationDesign = MockupCapturePipeline.ApplyToDesign(engineCapture, generationTemplate);
-            var generated = await new WorldCreator.Worlds.DesertWorldGenerator(TestCatalogs.Registry).GenerateAsync(generationRequest with { Design = generationDesign });
+            var generated = await new WorldCreator.Worlds.MockupWorldGenerator(TestCatalogs.Registry).GenerateAsync(generationRequest with { Design = generationDesign });
             Check(generated.Request.Design!.Capture!.Source.Sha256 == capture.Source.Sha256 && generated.Siting!.Status == SitingEvaluationStatus.Passed,
                 "complete actual engine world preserves capture lineage and passes existing contextual siting");
             var staleDesign = generationDesign with { Paths = generationDesign.Paths.Select((p,i) => i == 0 ? p with { Centerline = new(p.Centerline.Points.Select(q => q.Offset(0,1)).ToArray()) } : p).ToArray() };

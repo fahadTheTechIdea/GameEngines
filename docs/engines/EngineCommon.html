@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EngineCommon — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="EngineCommon.html" aria-current="page">EngineCommon</a>
+      <a href="../ENGINE_GRAPH.md">Engine graph</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation · shared foundation</p>
+  <h1>EngineCommon</h1>
+  <p class="lede">The libraries every engine shares: strict JSON reading and coded refusals, the one condition grammar, stateless seeded rolls, digests, localisation with CLDR plurals and RTL, graph algorithms, balance tooling and the offline tail tool.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">shared foundation</span>
+    <span class="tag">no engine dependency</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#strict">Strict documents and refusals</a></li>
+    <li><a href="#conditions">Conditions</a></li>
+    <li><a href="#rolls">Deterministic rolls and digests</a></li>
+    <li><a href="#locale">Locale, plurals and direction</a></li>
+    <li><a href="#graph">Graph library</a></li>
+    <li><a href="#balance">Balance library</a></li>
+    <li><a href="#tail">Tail tool</a></li>
+    <li><a href="#test">Test support and guards</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>EngineCommon is not a game system; it is the shared foundation the game systems are built on. It exists so that every engine refuses bad input the same way, reads conditions the same way, rolls random numbers the same way, formats localised text the same way, and can be tested with the same guards.</p>
+<div class="grid">
+  <div class="card"><h3>Depend on it</h3><p>Every engine core references <code>EngineCommon.Core</code>; graph, balance and test support are added only where used.</p></div>
+  <div class="card"><h3>Depend on nothing</h3><p>It references no engine. Facts come from <code>ScenarioEngine.Contracts</code>, the shared contract assembly.</p></div>
+  <div class="card"><h3>One rule, one place</h3><p>If two engines need the same rule, it belongs here — not copied into both.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/EngineCommon/EngineCommon.Core</code></td><td>Strict JSON, refusals, conditions, deterministic rolls, digest, enum names, locale and plurals.</td></tr>
+    <tr><td><code>src/EngineCommon/EngineCommon.Graph</code></td><td>CSR graph, shortest paths, flow, topological order, traversal, degrees, communities, trust.</td></tr>
+    <tr><td><code>src/EngineCommon/EngineCommon.Balance</code></td><td>Seed sweeps, rare-event estimation, splitting, summaries, integer roots.</td></tr>
+    <tr><td><code>src/EngineCommon/EngineCommon.TailTool</code></td><td>Offline CLI for tail-shape and modality analysis of recorded samples.</td></tr>
+    <tr><td><code>src/EngineCommon/EngineCommon.TestSupport</code></td><td>Roslyn syntax guards used by test projects across the repository.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="strict">Strict documents and refusals</h2>
+<p><code>StrictJson</code> is constructed with the engine's own <code>RefusalCodes</code> (format, unknown field, missing field, range, duplicate, reference) so a refusal always carries the right prefix.</p>
+<pre><code>var json = new StrictJson(EconomyCodes.ForDocument);
+var root = json.Object(element, "market", ["id", "currency", "pairs"], "policies");
+long treasury = json.Long(root, "treasury", "market", 0, EconomyFacts.MaxMoney);
+var id = json.Id(root, "id", "market");</code></pre>
+<ul>
+  <li><strong>Every field present</strong> unless declared optional; <strong>no unknown field</strong>; duplicate names refused; numbers are whole and range-checked; ids use a fixed alphabet.</li>
+  <li>Nothing is repaired or defaulted. A failure is an <code>EngineRefusedException</code> whose <code>Code</code> names the first rule that failed.</li>
+  <li>Every engine declares its codes in a static class and a <code>RefusalCodes ForDocument</code>.</li>
+</ul>
+
+<h2 id="conditions">Conditions</h2>
+<p>The grammar belongs to <code>ScenarioEngine.Contracts</code>: <code>all</code>, <code>any</code>, <code>not</code>, and <code>{ "fact", "op", "value" }</code> with depth and size limits. <code>EngineCommon.Conditions</code> reads it strictly, checks every fact against the engine's declarations and reports the facts it needs.</p>
+<pre><code>Condition when = conditions.Read(element, "shock.when", hostFacts);
+IReadOnlyList&lt;string&gt; needed = Conditions.FactsOf(when);
+bool holds = Conditions.Evaluate(when, values);</code></pre>
+<p><code>ConditionExplanation.Describe</code> renders why a condition held or failed for a trace or an <code>explain</code> command.</p>
+
+<h2 id="rolls">Deterministic rolls and digests</h2>
+<pre><code>ulong value = DeterministicRoll.Next(seed, "economy-price:town:bread", index);
+long roll    = DeterministicRoll.Below(seed, stream, index, bound);
+int permille = DeterministicRoll.Permille(seed, stream, index);</code></pre>
+<p>SplitMix64 over FNV-1a of the stream name: a pure function of seed, stream and index, with no state, so calls may be made in any order and replay identically. Never use <code>Random</code> or wall-clock time in an engine.</p>
+<p><code>Digest.Of(text)</code> / <code>Of(bytes)</code> is upper-case SHA-256 hex — the digest every document and save carries.</p>
+
+<h2 id="locale">Locale, plurals and direction</h2>
+<ul>
+  <li><code>LocaleTable.Load(text)</code> — strict format 1: <code>locale</code> plus <code>messages</code>; a message is text or a form object with <code>select</code>, <code>other</code> and CLDR categories.</li>
+  <li><code>LocaleRenderer.Render(table, key, args)</code> — substitutes <code>MessageArg</code> values; numbers select a CLDR cardinal/ordinal form, text selects by value. Missing key, missing form and bad placeholders are refused (<code>LocaleCodes</code>).</li>
+  <li><code>PluralRules.Categories(locale)</code> — supported locales only; the data is <code>Locale/cldr-plurals.json</code>.</li>
+  <li><code>TextDirection.IsRightToLeft(locale)</code> — for layout and mirrored punctuation.</li>
+  <li><code>CoverageRules.Report(keys, table, notGiven)</code> — missing keys, unknown keys and placeholders the key does not give; <code>Check</code> refuses at the first problem.</li>
+  <li><code>LocaleChain</code> — fallback from a specific locale to a base locale.</li>
+</ul>
+
+<h2 id="graph">Graph library</h2>
+<p>All algorithms run on <code>CsrGraph</code> (compressed sparse row) with a reused <code>GraphScratch</code>, so a large graph is not reallocated per query.</p>
+<table>
+  <thead><tr><th>Algorithm</th><th>Entry point</th></tr></thead>
+  <tbody>
+    <tr><td>Build</td><td><code>GraphBuilder.Create(nodes, out builder)</code>; <code>Add</code>, <code>AddUndirected</code>, <code>Build()</code>; bounds in <code>GraphLimits</code>.</td></tr>
+    <tr><td>Shortest paths</td><td><code>Dijkstra.Run(graph, source, target, scratch)</code> → <code>ShortestPaths.PathTo(graph, target)</code>; <code>BellmanFord.Run</code> for negative edges.</td></tr>
+    <tr><td>Traversal</td><td><code>Bfs.Run(graph, sources, maxDepth, reuse)</code>, <code>Components.Run</code>.</td></tr>
+    <tr><td>Order</td><td><code>TopologicalSort.Run</code> → order or <code>GraphCodes.Cycle</code>.</td></tr>
+    <tr><td>Flow</td><td><code>MinCostFlow.Run(graph, source, sink, maxFlow, maxAugmentations, scratch)</code>; <code>Decompose</code> into paths.</td></tr>
+    <tr><td>Degrees</td><td><code>Degrees.Run(graph, reuse)</code> → <code>DegreeTable.Top(measure, k)</code>.</td></tr>
+    <tr><td>Communities</td><td><code>LabelPropagation.Run(graph, initialLabels, maxRounds, scratch)</code>.</td></tr>
+    <tr><td>Trust</td><td><code>TrustIteration.Run(graph, preTrust, alpha, maxIterations, epsilon, scratch)</code>.</td></tr>
+  </tbody>
+</table>
+<p>Every result has an <code>Explain()</code> and a refusal code; overflow and oversize are refused, never wrapped.</p>
+
+<h2 id="balance">Balance library</h2>
+<ul>
+  <li><code>SeedSweep.Run(options, perSeed)</code> and <code>RunWithEvents</code> — run the same document over many seeds and collect metrics; <code>Render</code> prints the table.</li>
+  <li><code>SeedDocument.WithSeed(document, seed)</code> — replace the seed of a JSON document for a sweep.</li>
+  <li><code>FixedEffortSplitting</code> — multi-stage splitting to estimate rare probabilities; <code>DerivedSeed</code> derives independent seeds.</li>
+  <li><code>AutoEfforts.Plan</code> — allocate a run budget across stages from a pilot.</li>
+  <li><code>ConditionalEstimator.Run</code> — conditional Monte Carlo with weighted informative outcomes.</li>
+  <li><code>SplitSummary.Of</code> — mean, standard error, interval, median, min/max, extinct runs.</li>
+  <li><code>SampleStats</code> — percentiles, means and fixed formatting; <code>IntegerRoot</code> — exact integer roots.</li>
+</ul>
+
+<h2 id="tail">Tail tool</h2>
+<p><code>EngineCommon.TailTool</code> reads recorded samples and reports tail shape without a live engine: <code>TailCli</code>, <code>TailSample</code>, <code>PeaksOverThreshold</code>, <code>DipTest</code>, <code>SilvermanTest</code>, <code>ModalityCheck</code>, <code>BoundCheck</code>. It is a measurement tool, not part of a game session.</p>
+
+<h2 id="test">Test support and guards</h2>
+<p><code>EngineCommon.TestSupport/SyntaxGuards</code> provides Roslyn checks used by guard tests: no wall clock, no coalescing that hides a refusal, no duplicated rule text, and repository-wide rules. A guard that reads source is a real test only when it can fail; see <code>docs/ENGINE_ALGORITHM_REVIEW.md</code> for the review standard.</p>
+
+<h2 id="testing">Testing</h2>
+<pre><code>dotnet run --project src/EngineCommon/EngineCommon.Tests -c Release
+dotnet run --project src/EngineCommon/EngineCommon.Graph.Tests -c Release
+dotnet run --project src/EngineCommon/EngineCommon.Balance.Tests -c Release</code></pre>
+
+<h2 id="source">Source map</h2>
+<dl class="kv">
+  <dt>Core</dt><dd><code>EngineCommon.Core/StrictJson.cs</code>, <code>Conditions.cs</code>, <code>ConditionExplanation.cs</code>, <code>DeterministicRoll.cs</code>, <code>Digest.cs</code>, <code>EnumNames.cs</code>, <code>RefusalCodes.cs</code>, <code>EngineRefusedException.cs</code></dd>
+  <dt>Locale</dt><dd><code>Locale/LocaleTable.cs</code>, <code>LocaleRenderer.cs</code>, <code>PluralRules.cs</code>, <code>PluralRule.cs</code>, <code>PluralOperands.cs</code>, <code>CoverageRules.cs</code>, <code>LocaleChain.cs</code>, <code>TextDirection.cs</code>, <code>cldr-plurals.json</code></dd>
+  <dt>Graph</dt><dd><code>EngineCommon.Graph/CsrGraph.cs</code>, <code>GraphBuilder.cs</code>, <code>Dijkstra.cs</code>, <code>BellmanFord.cs</code>, <code>MinCostFlow.cs</code>, <code>TopologicalOrder.cs</code>, <code>Traversal.cs</code>, <code>Degrees.cs</code>, <code>LabelPropagation.cs</code>, <code>TrustIteration.cs</code></dd>
+  <dt>Balance</dt><dd><code>EngineCommon.Balance/*.cs</code></dd>
+  <dt>Tail</dt><dd><code>EngineCommon.TailTool/*.cs</code></dd>
+  <dt>Guards</dt><dd><code>EngineCommon.TestSupport/SyntaxGuards*.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/EngineCommon</code>. How the engines depend on each other: <a href="../ENGINE_GRAPH.md">docs/ENGINE_GRAPH.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

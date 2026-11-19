@@ -1,0 +1,73 @@
+mode,run,measurement,median,min,max,unit,repeats
+direct,1,period without recipes,35.28,32.92,40.61,ms,15
+direct,1,period with 30 recipes x 50 markets,38.24,35.31,43.35,ms,15
+direct,1,difference of medians,2.96,,,ms,15
+direct,1,allocation of a period without,3122,,,KB,5
+direct,1,allocation of a period with,3310,,,KB,5
+direct,1,plan every line of every market (explain path),0.14,0.12,0.59,ms,15
+direct,1,save write,196.49,,,ms,1
+direct,1,save open,250.69,,,ms,1
+direct,1,save size,5962,,,KB,1
+direct,1,batches on their way,2000,,,count,1
+direct,1,runs started last period (all lines),58663,,,runs,1
+direct,1,lines held back by an input or room,127,,,lines,1
+direct,2,period without recipes,48.25,40.93,78.81,ms,15
+direct,2,period with 30 recipes x 50 markets,52.03,42.71,81.72,ms,15
+direct,2,difference of medians,3.79,,,ms,15
+direct,2,allocation of a period without,3122,,,KB,5
+direct,2,allocation of a period with,3309,,,KB,5
+direct,2,plan every line of every market (explain path),0.20,0.14,0.71,ms,15
+direct,2,save write,224.78,,,ms,1
+direct,2,save open,264.23,,,ms,1
+direct,2,save size,5962,,,KB,1
+direct,2,batches on their way,2000,,,count,1
+direct,2,runs started last period (all lines),58663,,,runs,1
+direct,2,lines held back by an input or room,127,,,lines,1
+direct,3,period without recipes,53.32,47.46,150.76,ms,15
+direct,3,period with 30 recipes x 50 markets,56.80,48.01,217.77,ms,15
+direct,3,difference of medians,3.47,,,ms,15
+direct,3,allocation of a period without,3124,,,KB,5
+direct,3,allocation of a period with,3308,,,KB,5
+direct,3,plan every line of every market (explain path),0.68,0.23,3.52,ms,15
+direct,3,save write,632.20,,,ms,1
+direct,3,save open,702.34,,,ms,1
+direct,3,save size,5962,,,KB,1
+direct,3,batches on their way,2000,,,count,1
+direct,3,runs started last period (all lines),58663,,,runs,1
+direct,3,lines held back by an input or room,127,,,lines,1
+landed,1,period without recipes,49.90,43.56,60.37,ms,15
+landed,1,period with 30 recipes x 50 markets,56.35,51.04,74.27,ms,15
+landed,1,difference of medians,6.45,,,ms,15
+landed,1,allocation of a period without,3149,,,KB,5
+landed,1,allocation of a period with,3482,,,KB,5
+landed,1,plan every line of every market (explain path),0.19,0.17,0.37,ms,15
+landed,1,save write,96.27,,,ms,1
+landed,1,save open,129.80,,,ms,1
+landed,1,save size,6445,,,KB,1
+landed,1,batches on their way,1994,,,count,1
+landed,1,runs started last period (all lines),59353,,,runs,1
+landed,1,lines held back by an input or room,56,,,lines,1
+landed,2,period without recipes,59.55,46.85,80.36,ms,15
+landed,2,period with 30 recipes x 50 markets,70.77,54.38,111.93,ms,15
+landed,2,difference of medians,11.22,,,ms,15
+landed,2,allocation of a period without,3151,,,KB,5
+landed,2,allocation of a period with,3481,,,KB,5
+landed,2,plan every line of every market (explain path),0.29,0.18,3.34,ms,15
+landed,2,save write,188.17,,,ms,1
+landed,2,save open,242.75,,,ms,1
+landed,2,save size,6445,,,KB,1
+landed,2,batches on their way,1994,,,count,1
+landed,2,runs started last period (all lines),59353,,,runs,1
+landed,2,lines held back by an input or room,56,,,lines,1
+landed,3,period without recipes,75.69,63.29,126.15,ms,15
+landed,3,period with 30 recipes x 50 markets,86.39,74.63,158.26,ms,15
+landed,3,difference of medians,10.69,,,ms,15
+landed,3,allocation of a period without,3149,,,KB,5
+landed,3,allocation of a period with,3481,,,KB,5
+landed,3,plan every line of every market (explain path),0.20,0.17,0.87,ms,15
+landed,3,save write,116.92,,,ms,1
+landed,3,save open,160.64,,,ms,1
+landed,3,save size,6445,,,KB,1
+landed,3,batches on their way,1994,,,count,1
+landed,3,runs started last period (all lines),59353,,,runs,1
+landed,3,lines held back by an input or room,56,,,lines,1

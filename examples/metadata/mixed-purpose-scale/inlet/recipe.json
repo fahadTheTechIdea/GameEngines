@@ -1,0 +1,1225 @@
+{
+  "SchemaVersion": 1,
+  "Id": "mixed-region",
+  "GameProfile": "mixed-purpose-exploration",
+  "CatalogId": "mixed-purpose-content",
+  "RootArchetypeId": "world",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Mixed reusable physical programs on controlled terrain; broader generator diversity, physical interiors and runtime remain open. Godot deferred."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    0,
+    0
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": null,
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "mixed-ground",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": -100,
+          "Y": -70
+        },
+        {
+          "X": 110,
+          "Y": -55
+        },
+        {
+          "X": 120,
+          "Y": 65
+        },
+        {
+          "X": 40,
+          "Y": 100
+        },
+        {
+          "X": -90,
+          "Y": 85
+        },
+        {
+          "X": -115,
+          "Y": 0
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "ground",
+        "Kind": "ground",
+        "Purpose": "Continuous sloping ground",
+        "SourceRuleId": "mixed:terrain",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": -100,
+              "Y": -70
+            },
+            {
+              "X": 110,
+              "Y": -55
+            },
+            {
+              "X": 120,
+              "Y": 65
+            },
+            {
+              "X": 40,
+              "Y": 100
+            },
+            {
+              "X": -90,
+              "Y": 85
+            },
+            {
+              "X": -115,
+              "Y": 0
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 3,
+        "GradientX": 0.015,
+        "GradientY": 0.005
+      },
+      {
+        "Id": "water",
+        "Kind": "water",
+        "Purpose": "Water excludes a preferred connection area",
+        "SourceRuleId": "mixed:water",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 12,
+              "Y": -5
+            },
+            {
+              "X": 30,
+              "Y": -5
+            },
+            {
+              "X": 30,
+              "Y": 20
+            },
+            {
+              "X": 12,
+              "Y": 20
+            }
+          ]
+        },
+        "Priority": 1,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 3,
+        "GradientX": 0.015,
+        "GradientY": 0.005
+      }
+    ],
+    "Terrain": null,
+    "HeightField": null
+  },
+  "RouteRules": [
+    {
+      "Id": "regional",
+      "ConnectionKind": "regional-path",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Reach every declared function",
+        "SourceRuleId": "mixed:walk",
+        "Radius": 0.15,
+        "MaximumSlope": 0.1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 1,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 1024,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 100000000,
+        "Objective": "FirstFeasible"
+      },
+      "FromPortId": "north",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    },
+    {
+      "Id": "arrival",
+      "ConnectionKind": "arrival-access",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Reach every declared function",
+        "SourceRuleId": "mixed:walk",
+        "Radius": 0.15,
+        "MaximumSlope": 0.1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 1,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 1024,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 10000000,
+        "Objective": "FirstFeasible"
+      },
+      "FromPortId": "north",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    },
+    {
+      "Id": "local",
+      "ConnectionKind": "local-access",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Reach every declared function",
+        "SourceRuleId": "mixed:walk",
+        "Radius": 0.15,
+        "MaximumSlope": 0.1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 1,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 1024,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 10000000,
+        "Objective": "FirstFeasible"
+      },
+      "FromPortId": "north",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "game-fields",
+    "Fields": [
+      {
+        "Id": "height",
+        "Purpose": "Elevation",
+        "SourceRuleId": "mixed:height",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Elevation",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "slope",
+        "Purpose": "Ground slope",
+        "SourceRuleId": "mixed:slope",
+        "Unit": "ratio",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Slope",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ]
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "region-program",
+      "Purpose": "Grow all required destinations",
+      "SourceRuleId": "mixed:region",
+      "Boundary": null,
+      "Demands": [
+        {
+          "Id": "camp",
+          "Purpose": "Required complete camp",
+          "SourceRuleId": "mixed:camp",
+          "Footprint": null,
+          "Profile": {
+            "Id": "camp",
+            "Purpose": "Usable ground for camp",
+            "SourceRuleId": "mixed:camp",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height",
+                "FieldId": "height",
+                "Purpose": "Buildable elevation",
+                "SourceRuleId": "mixed:height",
+                "Minimum": -10,
+                "Maximum": 20
+              },
+              {
+                "Id": "slope",
+                "FieldId": "slope",
+                "Purpose": "Usable ground slope",
+                "SourceRuleId": "mixed:slope",
+                "Minimum": 0,
+                "Maximum": 0.1
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred game location",
+                "SourceRuleId": "mixed:altitude",
+                "Ideal": 3,
+                "Tolerance": 5,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "workshop",
+          "Purpose": "Required complete workshop",
+          "SourceRuleId": "mixed:workshop",
+          "Footprint": null,
+          "Profile": {
+            "Id": "workshop",
+            "Purpose": "Usable ground for workshop",
+            "SourceRuleId": "mixed:workshop",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height",
+                "FieldId": "height",
+                "Purpose": "Buildable elevation",
+                "SourceRuleId": "mixed:height",
+                "Minimum": -10,
+                "Maximum": 20
+              },
+              {
+                "Id": "slope",
+                "FieldId": "slope",
+                "Purpose": "Usable ground slope",
+                "SourceRuleId": "mixed:slope",
+                "Minimum": 0,
+                "Maximum": 0.1
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred game location",
+                "SourceRuleId": "mixed:altitude",
+                "Ideal": 2.7,
+                "Tolerance": 5,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "research",
+          "Purpose": "Required complete research",
+          "SourceRuleId": "mixed:research",
+          "Footprint": null,
+          "Profile": {
+            "Id": "research",
+            "Purpose": "Usable ground for research",
+            "SourceRuleId": "mixed:research",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height",
+                "FieldId": "height",
+                "Purpose": "Buildable elevation",
+                "SourceRuleId": "mixed:height",
+                "Minimum": -10,
+                "Maximum": 20
+              },
+              {
+                "Id": "slope",
+                "FieldId": "slope",
+                "Purpose": "Usable ground slope",
+                "SourceRuleId": "mixed:slope",
+                "Minimum": 0,
+                "Maximum": 0.1
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred game location",
+                "SourceRuleId": "mixed:altitude",
+                "Ideal": 4,
+                "Tolerance": 5,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        }
+      ],
+      "Anchors": [
+        {
+          "Id": "arrival",
+          "Position": {
+            "X": 0,
+            "Y": 0
+          }
+        }
+      ],
+      "Relations": [],
+      "MinimumSeparation": 1,
+      "MaximumCandidates": 8192,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 100000000,
+      "AllowBoundaryContact": false,
+      "Growth": null
+    },
+    "Bindings": [
+      {
+        "DemandId": "camp",
+        "NodeId": "mixed-region",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "camps",
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "workshop",
+        "NodeId": "mixed-region",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "workshops",
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "research",
+        "NodeId": "mixed-region",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": "research",
+        "SiteLayout": null,
+        "Population": null
+      }
+    ],
+    "NestedStages": null,
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 1024,
+    "MaximumFeasibilityAttempts": 32,
+    "SourceWorld": null,
+    "ConnectedLayouts": [
+      {
+        "Id": "regional-growth",
+        "Purpose": "Connect mixed regional functions",
+        "SourceRuleId": "mixed:growth",
+        "StageId": "region-program",
+        "RootNodeId": "mixed-region/camps-0",
+        "AnchorId": "arrival",
+        "ConnectionKinds": [
+          "regional-path"
+        ],
+        "DirectionAnglesDegrees": [
+          17,
+          76,
+          143,
+          211,
+          288
+        ],
+        "Gap": 3,
+        "MaximumConnectionDistance": 90
+      }
+    ],
+    "Programs": [
+      {
+        "Id": "camp-contents",
+        "Purpose": "Complete camp program",
+        "SourceRuleId": "mixed:camp",
+        "ScopeNodeId": "mixed-region",
+        "ParentArchetypeId": "camp",
+        "MinimumParents": 4,
+        "MaximumParents": 4,
+        "Request": {
+          "Id": "contents",
+          "Purpose": "Place hut beside work area",
+          "SourceRuleId": "mixed:contents",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "body",
+              "Purpose": "Required source body",
+              "SourceRuleId": "mixed:body",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Usable ground for contents",
+                "SourceRuleId": "mixed:contents",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Buildable elevation",
+                    "SourceRuleId": "mixed:height",
+                    "Minimum": -10,
+                    "Maximum": 20
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Usable ground slope",
+                    "SourceRuleId": "mixed:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.1
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred game location",
+                    "SourceRuleId": "mixed:altitude",
+                    "Ideal": 3,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "yard",
+              "Purpose": "Required source yard",
+              "SourceRuleId": "mixed:yard",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Usable ground for contents",
+                "SourceRuleId": "mixed:contents",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Buildable elevation",
+                    "SourceRuleId": "mixed:height",
+                    "Minimum": -10,
+                    "Maximum": 20
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Usable ground slope",
+                    "SourceRuleId": "mixed:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.1
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred game location",
+                    "SourceRuleId": "mixed:altitude",
+                    "Ideal": 3,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "entrance",
+              "Position": {
+                "X": -2,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [],
+          "MinimumSeparation": 0.5,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 10000000,
+          "AllowBoundaryContact": false,
+          "Growth": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "body",
+            "PartId": "hut",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "yard",
+            "PartId": "yard",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ],
+        "Growth": {
+          "RootPartId": "hut",
+          "RootIndex": 0,
+          "AnchorId": "entrance",
+          "ConnectionKinds": [
+            "local-access"
+          ],
+          "DirectionAnglesDegrees": [
+            0,
+            90,
+            180,
+            270
+          ],
+          "Gap": 0.5,
+          "MaximumConnectionDistance": 9
+        }
+      },
+      {
+        "Id": "workshop-contents",
+        "Purpose": "Complete workshop program",
+        "SourceRuleId": "mixed:workshop",
+        "ScopeNodeId": "mixed-region",
+        "ParentArchetypeId": "workshop",
+        "MinimumParents": 4,
+        "MaximumParents": 4,
+        "Request": {
+          "Id": "contents",
+          "Purpose": "Place hall beside work area",
+          "SourceRuleId": "mixed:contents",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "body",
+              "Purpose": "Required source body",
+              "SourceRuleId": "mixed:body",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Usable ground for contents",
+                "SourceRuleId": "mixed:contents",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Buildable elevation",
+                    "SourceRuleId": "mixed:height",
+                    "Minimum": -10,
+                    "Maximum": 20
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Usable ground slope",
+                    "SourceRuleId": "mixed:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.1
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred game location",
+                    "SourceRuleId": "mixed:altitude",
+                    "Ideal": 3,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "yard",
+              "Purpose": "Required source yard",
+              "SourceRuleId": "mixed:yard",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Usable ground for contents",
+                "SourceRuleId": "mixed:contents",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Buildable elevation",
+                    "SourceRuleId": "mixed:height",
+                    "Minimum": -10,
+                    "Maximum": 20
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Usable ground slope",
+                    "SourceRuleId": "mixed:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.1
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred game location",
+                    "SourceRuleId": "mixed:altitude",
+                    "Ideal": 3,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "entrance",
+              "Position": {
+                "X": -2,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [],
+          "MinimumSeparation": 0.5,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 10000000,
+          "AllowBoundaryContact": false,
+          "Growth": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "body",
+            "PartId": "hall",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "yard",
+            "PartId": "yard",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ],
+        "Growth": {
+          "RootPartId": "hall",
+          "RootIndex": 0,
+          "AnchorId": "entrance",
+          "ConnectionKinds": [
+            "local-access"
+          ],
+          "DirectionAnglesDegrees": [
+            0,
+            90,
+            180,
+            270
+          ],
+          "Gap": 0.5,
+          "MaximumConnectionDistance": 9
+        }
+      },
+      {
+        "Id": "research-contents",
+        "Purpose": "Complete research program",
+        "SourceRuleId": "mixed:research",
+        "ScopeNodeId": "mixed-region",
+        "ParentArchetypeId": "research",
+        "MinimumParents": 4,
+        "MaximumParents": 4,
+        "Request": {
+          "Id": "contents",
+          "Purpose": "Place lab beside work area",
+          "SourceRuleId": "mixed:contents",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "body",
+              "Purpose": "Required source body",
+              "SourceRuleId": "mixed:body",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Usable ground for contents",
+                "SourceRuleId": "mixed:contents",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Buildable elevation",
+                    "SourceRuleId": "mixed:height",
+                    "Minimum": -10,
+                    "Maximum": 20
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Usable ground slope",
+                    "SourceRuleId": "mixed:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.1
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred game location",
+                    "SourceRuleId": "mixed:altitude",
+                    "Ideal": 3,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "yard",
+              "Purpose": "Required source yard",
+              "SourceRuleId": "mixed:yard",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Usable ground for contents",
+                "SourceRuleId": "mixed:contents",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Buildable elevation",
+                    "SourceRuleId": "mixed:height",
+                    "Minimum": -10,
+                    "Maximum": 20
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Usable ground slope",
+                    "SourceRuleId": "mixed:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.1
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred game location",
+                    "SourceRuleId": "mixed:altitude",
+                    "Ideal": 3,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "entrance",
+              "Position": {
+                "X": -2,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [],
+          "MinimumSeparation": 0.5,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 10000000,
+          "AllowBoundaryContact": false,
+          "Growth": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "body",
+            "PartId": "lab",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "yard",
+            "PartId": "yard",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ],
+        "Growth": {
+          "RootPartId": "lab",
+          "RootIndex": 0,
+          "AnchorId": "entrance",
+          "ConnectionKinds": [
+            "local-access"
+          ],
+          "DirectionAnglesDegrees": [
+            0,
+            90,
+            180,
+            270
+          ],
+          "Gap": 0.5,
+          "MaximumConnectionDistance": 9
+        }
+      },
+      {
+        "Id": "yard-storage",
+        "Purpose": "Store supplies in every yard",
+        "SourceRuleId": "mixed:storage",
+        "ScopeNodeId": "mixed-region",
+        "ParentArchetypeId": "yard",
+        "MinimumParents": 12,
+        "MaximumParents": 12,
+        "Request": {
+          "Id": "cache",
+          "Purpose": "Required supply station",
+          "SourceRuleId": "mixed:cache",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "cache",
+              "Purpose": "Required supply station",
+              "SourceRuleId": "mixed:cache",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Usable ground for contents",
+                "SourceRuleId": "mixed:contents",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Buildable elevation",
+                    "SourceRuleId": "mixed:height",
+                    "Minimum": -10,
+                    "Maximum": 20
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Usable ground slope",
+                    "SourceRuleId": "mixed:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.1
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred game location",
+                    "SourceRuleId": "mixed:altitude",
+                    "Ideal": 3,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "station",
+              "Position": {
+                "X": 0,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "pin",
+              "FromId": "cache",
+              "ToId": "station",
+              "Purpose": "Required supply station",
+              "SourceRuleId": "mixed:cache",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 1000000,
+          "AllowBoundaryContact": false,
+          "Growth": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "cache",
+            "PartId": "cache",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ],
+        "Growth": null
+      },
+      {
+        "Id": "production-equipment",
+        "Purpose": "Machines within production halls",
+        "SourceRuleId": "mixed:machines",
+        "ScopeNodeId": "mixed-region",
+        "ParentArchetypeId": "hall",
+        "MinimumParents": 4,
+        "MaximumParents": 4,
+        "Request": {
+          "Id": "equipment",
+          "Purpose": "Fit every production machine",
+          "SourceRuleId": "mixed:equipment",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "machine",
+              "Purpose": "Required production equipment",
+              "SourceRuleId": "mixed:machine",
+              "Footprint": null,
+              "Profile": {
+                "Id": "contents",
+                "Purpose": "Usable ground for contents",
+                "SourceRuleId": "mixed:contents",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height",
+                    "FieldId": "height",
+                    "Purpose": "Buildable elevation",
+                    "SourceRuleId": "mixed:height",
+                    "Minimum": -10,
+                    "Maximum": 20
+                  },
+                  {
+                    "Id": "slope",
+                    "FieldId": "slope",
+                    "Purpose": "Usable ground slope",
+                    "SourceRuleId": "mixed:slope",
+                    "Minimum": 0,
+                    "Maximum": 0.1
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "altitude",
+                    "FieldId": "height",
+                    "Purpose": "Preferred game location",
+                    "SourceRuleId": "mixed:altitude",
+                    "Ideal": 3,
+                    "Tolerance": 5,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [],
+          "Relations": [],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 1000000,
+          "AllowBoundaryContact": false,
+          "Growth": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "machine",
+            "PartId": "machines",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": {
+              "Purpose": "Production line",
+              "SourceRuleId": "mixed:production-line",
+              "Path": {
+                "Path": {
+                  "Points": [
+                    {
+                      "X": -1,
+                      "Y": 0
+                    },
+                    {
+                      "X": 1,
+                      "Y": 0
+                    }
+                  ]
+                },
+                "Spacing": 2,
+                "StartDistance": 0,
+                "EndInset": 0,
+                "NormalOffset": 0
+              },
+              "Boundary": null,
+              "Sockets": null,
+              "Route": null,
+              "Region": null
+            }
+          }
+        ],
+        "Growth": null
+      }
+    ]
+  },
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": [
+    {
+      "Id": "mixed-journey",
+      "Purpose": "Reach every regional destination",
+      "SourceRuleId": "mixed:topology",
+      "ScopeNodeId": "mixed-region",
+      "StartNodeId": "mixed-region/camps-0",
+      "ConnectionKind": "regional-path",
+      "Stages": [
+        {
+          "Id": "exploration",
+          "Purpose": "Visit all functions",
+          "ExitNodeId": "mixed-region/research-3",
+          "MemberKinds": [
+            "compound"
+          ],
+          "MinimumMembers": 10,
+          "MaximumMembers": 10
+        }
+      ],
+      "Seed": "mixed-world-001",
+      "MaximumDegree": 4,
+      "ExtraConnections": 2,
+      "MaximumWork": 1000000,
+      "LayerId": null
+    }
+  ],
+  "RouteBudget": {
+    "Purpose": "Bound all realized regional travel work",
+    "SourceRuleId": "mixed:route-budget",
+    "MaximumWork": 200000000,
+    "MaximumDirections": 128
+  }
+}

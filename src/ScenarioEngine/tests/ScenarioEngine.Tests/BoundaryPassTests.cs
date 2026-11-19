@@ -10,7 +10,7 @@ public sealed class BoundaryPassTests
     public void NullObservationIsRefusedWithoutFaultingSession()
     {
         using var simulation = new Harness().Start();
-        var result = simulation.Step(new(1, new(0, 1, [null!])));
+        var result = simulation.Update(new(1, new(0, 1, [null!])));
         Assert.False(result.Committed);
         Assert.Equal("WORLD_OBSERVATION_INVALID", result.Code);
         Assert.Equal(SessionPhase.Running, simulation.Snapshot.Phase);
@@ -59,7 +59,7 @@ public sealed class BoundaryPassTests
     {
         using var simulation = new Harness(new OpenPayloadLayer()).Start();
         using var payload = JsonDocument.Parse("{\"delta\":1,\"padding\":\"" + new string('界', 30000) + "\"}");
-        var result = simulation.Step(new(1, new(0, 1, [new(1, "test_counter.adjustment", null, payload.RootElement)])));
+        var result = simulation.Update(new(1, new(0, 1, [new(1, "test_counter.adjustment", null, payload.RootElement)])));
         Assert.False(result.Committed);
         Assert.Equal("WORLD_OBSERVATION_INVALID", result.Code);
         Assert.Equal(0, Harness.Value(simulation.Snapshot));
@@ -74,7 +74,7 @@ public sealed class BoundaryPassTests
         using var simulation = new Harness(new OpenPayloadLayer()).Start();
         var before = simulation.Snapshot;
         using var payload = JsonDocument.Parse(json);
-        var result = simulation.Step(new(1, new(0, 1, [new(1, "test_counter.adjustment", null, payload.RootElement)])));
+        var result = simulation.Update(new(1, new(0, 1, [new(1, "test_counter.adjustment", null, payload.RootElement)])));
         Assert.Equal("WORLD_OBSERVATION_INVALID", result.Code);
         Assert.Same(before, result.Snapshot);
     }
@@ -87,7 +87,7 @@ public sealed class BoundaryPassTests
         using var payload = JsonDocument.Parse("{\"delta\":1,\"padding\":\"" + new string('a', 60000) + "\"}");
         var observations = Enumerable.Range(1, 18)
             .Select(i => new WorldObservation(i, "test_counter.adjustment", null, payload.RootElement));
-        var result = simulation.Step(new(1, new(0, 1, [.. observations])));
+        var result = simulation.Update(new(1, new(0, 1, [.. observations])));
         Assert.Equal("WORLD_FRAME_LIMIT", result.Code);
         Assert.Same(before, result.Snapshot);
     }
@@ -99,9 +99,9 @@ public sealed class BoundaryPassTests
         var document = JsonDocument.Parse("{\"delta\":1}");
         var payload = document.RootElement;
         document.Dispose();
-        var refused = simulation.Step(new(1, new(0, 1, [new(1, "test_counter.adjustment", null, payload)])));
+        var refused = simulation.Update(new(1, new(0, 1, [new(1, "test_counter.adjustment", null, payload)])));
         Assert.Equal("WORLD_OBSERVATION_INVALID", refused.Code);
-        Assert.True(simulation.Step(Harness.Input(1)).Committed);
+        Assert.True(simulation.Update(Harness.Input(1)).Committed);
     }
 
     private sealed class OpenPayloadLayer : IGameLayer

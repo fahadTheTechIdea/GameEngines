@@ -1,0 +1,14 @@
+[
+  {
+    "Path": "examples/metadata/composed-world/definition.json",
+    "SHA256": "8766c19a84ca26a78c31fe8758805839419b440870c2e646dbcf47d1ca8ad52e"
+  },
+  {
+    "Path": "examples/metadata/multi-level-world/definition.json",
+    "SHA256": "ccaca5efa86918bdf37aa8b20736e79e5bb6ab94997e074170a963de95cd17ae"
+  },
+  {
+    "Path": "examples/metadata/diverse-programs/coastal/recipe.json",
+    "SHA256": "0402eaadbafd5357faf3080f128b2ae016521276ac33905281ed20e116e203c9"
+  }
+]

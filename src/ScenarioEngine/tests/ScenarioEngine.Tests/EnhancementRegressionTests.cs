@@ -11,7 +11,6 @@ public sealed class EnhancementRegressionTests
         var h = new Harness();
         var options = Harness.Options() with { Controllers = ImmutableHashSet.Create(StringComparer.OrdinalIgnoreCase, "player") };
         using var sim = h.Factory.Create(h.Scenario(), options, Harness.Frame(0));
-        sim.Start();
         Assert.Equal("COMMAND_DENIED", sim.Enqueue(Harness.Increment(controller: "PLAYER")).Code);
     }
 

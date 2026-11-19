@@ -1,0 +1,177 @@
+{
+  "SchemaVersion": 1,
+  "Id": "terrain-routes",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Authored terrain and destinations; procedural regions, structures, junctions, artwork and runtime remain open"
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    5,
+    5
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "flat",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 120,
+          "Y": 0
+        },
+        {
+          "X": 120,
+          "Y": 40
+        },
+        {
+          "X": 70,
+          "Y": 40
+        },
+        {
+          "X": 70,
+          "Y": 100
+        },
+        {
+          "X": 0,
+          "Y": 100
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "ground",
+        "Kind": "meadow",
+        "Purpose": "Exploration ground",
+        "SourceRuleId": "authored-ground",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 120,
+              "Y": 0
+            },
+            {
+              "X": 120,
+              "Y": 40
+            },
+            {
+              "X": 70,
+              "Y": 40
+            },
+            {
+              "X": 70,
+              "Y": 100
+            },
+            {
+              "X": 0,
+              "Y": 100
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 10,
+        "GradientX": 0,
+        "GradientY": 0
+      },
+      {
+        "Id": "obstacle",
+        "Kind": "water",
+        "Purpose": "Exploration ground",
+        "SourceRuleId": "authored-ground",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 45,
+              "Y": 0
+            },
+            {
+              "X": 55,
+              "Y": 0
+            },
+            {
+              "X": 55,
+              "Y": 25
+            },
+            {
+              "X": 45,
+              "Y": 25
+            }
+          ]
+        },
+        "Priority": 1,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 10,
+        "GradientX": 0,
+        "GradientY": 0
+      }
+    ]
+  },
+  "RouteRules": [
+    {
+      "Id": "walk-links",
+      "ConnectionKind": "travel-intent",
+      "Profile": {
+        "Id": "walking",
+        "Purpose": "Connect authored exploration destinations",
+        "SourceRuleId": "test:walking",
+        "Radius": 1,
+        "MaximumSlope": 0.5,
+        "KindCosts": {
+          "meadow": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.5,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 40000000
+      }
+    }
+  ]
+}

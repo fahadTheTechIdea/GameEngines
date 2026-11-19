@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "arms-medieval",
+  "version": "1.0.0",
+  "title": "Medieval and gunpowder arms: swords, bows, plate, cannon and sailing warships",
+  "language": "en",
+  "world": "historical",
+  "genres": ["medieval-arms"],
+  "dependencies": [{ "id": "ages", "version": "1.0.0" }, { "id": "arms-ancient", "version": "1.0.0" }, { "id": "core", "version": "1.0.0" }, { "id": "gear", "version": "1.0.0" }, { "id": "matter", "version": "1.0.0" }, { "id": "military", "version": "1.0.0" }, { "id": "naval", "version": "1.0.0" }],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

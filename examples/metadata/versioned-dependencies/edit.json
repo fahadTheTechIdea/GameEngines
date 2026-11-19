@@ -1,0 +1,709 @@
+{
+  "Id": "review-label",
+  "Purpose": "Review the registered source world",
+  "SourceRuleId": "developer:review",
+  "ExpectedRecipeSha256": "76d9a169a5d6f4fae9dc181e3341a90bad35a676193370a8f78d877e64510b51",
+  "ExpectedCatalogSha256": "51323fd52677c2647b6f909c37013d54cb6e13374372aa25935cc26222eca0be",
+  "Recipe": {
+    "SchemaVersion": 1,
+    "Id": "placement-feedback",
+    "GameProfile": "registered-review",
+    "CatalogId": "surface-example",
+    "RootArchetypeId": "root",
+    "Scale": "region",
+    "Coverage": "PartialScope",
+    "RemainingScopes": [
+      "Bounded registered region and service checks only; source-area resources, full surroundings, junctions, world variety, artwork and native runtime remain open."
+    ],
+    "Parameters": {},
+    "Space": {
+      "Axes": [
+        "x",
+        "y"
+      ],
+      "Unit": "meters"
+    },
+    "Origin": [
+      0,
+      0
+    ],
+    "RequireAllPositions": true,
+    "MaximumNodes": 10000,
+    "MaximumConnections": 50000,
+    "AdditionalConnections": [
+      {
+        "Id": "pedestrian",
+        "Kind": "pedestrian",
+        "FromId": "placement-feedback/sites-0",
+        "ToId": "placement-feedback/fixed-0",
+        "Bidirectional": true,
+        "Properties": null,
+        "LayerId": null
+      },
+      {
+        "Id": "utility",
+        "Kind": "utility",
+        "FromId": "placement-feedback/sites-0",
+        "ToId": "placement-feedback/fixed-0",
+        "Bidirectional": true,
+        "Properties": null,
+        "LayerId": null
+      }
+    ],
+    "Layers": [
+      {
+        "Id": "intent",
+        "Kind": "game-intent",
+        "Purpose": "Declared exploration destinations",
+        "SourceRuleId": "example:destinations",
+        "DependsOn": [],
+        "Coverage": "CompleteDeclaredScope",
+        "RemainingScopes": []
+      }
+    ],
+    "Surface": {
+      "SchemaVersion": 1,
+      "Id": "feedback-terrain",
+      "Unit": "meters",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 40,
+            "Y": 0
+          },
+          {
+            "X": 40,
+            "Y": 30
+          },
+          {
+            "X": 0,
+            "Y": 30
+          }
+        ]
+      },
+      "Exclusions": [],
+      "Patches": [],
+      "Terrain": null,
+      "HeightField": {
+        "SchemaVersion": 1,
+        "Id": "flat",
+        "Kind": "ground",
+        "Purpose": "Feedback terrain",
+        "SourceRuleId": "test",
+        "Unit": "meters",
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "StepX": 5,
+        "StepY": 5,
+        "Columns": 9,
+        "Rows": 7,
+        "Heights": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "RouteRules": [
+      {
+        "Id": "pedestrian-route",
+        "ConnectionKind": "pedestrian",
+        "Profile": {
+          "Id": "foot",
+          "Purpose": "Walk between destinations",
+          "SourceRuleId": "example:walking",
+          "Radius": 0.3,
+          "MaximumSlope": 1,
+          "KindCosts": {
+            "ground": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "Search": {
+          "Clearance": 0.25,
+          "Waypoints": [],
+          "MaximumCandidates": 128,
+          "MaximumEdgeChecks": 32768,
+          "MaximumWork": 5000000
+        },
+        "FromPortId": "entry",
+        "ToPortId": null,
+        "Reuse": null,
+        "Interfaces": null
+      },
+      {
+        "Id": "utility-route",
+        "ConnectionKind": "utility",
+        "Profile": {
+          "Id": "foot",
+          "Purpose": "Walk between destinations",
+          "SourceRuleId": "example:walking",
+          "Radius": 0.3,
+          "MaximumSlope": 1,
+          "KindCosts": {
+            "ground": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "Search": {
+          "Clearance": 0.25,
+          "Waypoints": [],
+          "MaximumCandidates": 128,
+          "MaximumEdgeChecks": 32768,
+          "MaximumWork": 5000000
+        },
+        "FromPortId": "entry",
+        "ToPortId": null,
+        "Reuse": null,
+        "Interfaces": null
+      }
+    ],
+    "NetworkRules": null,
+    "Environment": {
+      "SchemaVersion": 1,
+      "Id": "coordinates",
+      "Fields": [
+        {
+          "Id": "x",
+          "Purpose": "Authored x axis",
+          "SourceRuleId": "test",
+          "Unit": "meters",
+          "Offset": 0,
+          "Terms": [
+            {
+              "Input": "X",
+              "Coefficient": 1,
+              "FieldId": null
+            }
+          ],
+          "Minimum": null,
+          "Maximum": null
+        },
+        {
+          "Id": "y",
+          "Purpose": "Authored y axis",
+          "SourceRuleId": "test",
+          "Unit": "meters",
+          "Offset": 0,
+          "Terms": [
+            {
+              "Input": "Y",
+              "Coefficient": 1,
+              "FieldId": null
+            }
+          ],
+          "Minimum": null,
+          "Maximum": null
+        }
+      ]
+    },
+    "SuitabilityRules": null,
+    "Placement": {
+      "Request": {
+        "Id": "sites",
+        "Purpose": "Place accessible required site",
+        "SourceRuleId": "test",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 40,
+              "Y": 0
+            },
+            {
+              "X": 40,
+              "Y": 30
+            },
+            {
+              "X": 0,
+              "Y": 30
+            }
+          ]
+        },
+        "Demands": [
+          {
+            "Id": "site",
+            "Purpose": "Required site",
+            "SourceRuleId": "test",
+            "Footprint": null,
+            "Profile": {
+              "Id": "site",
+              "Purpose": "Prefer a low central position",
+              "SourceRuleId": "test",
+              "AllowedKinds": [
+                "ground"
+              ],
+              "Requirements": [
+                {
+                  "Id": "x-band",
+                  "FieldId": "x",
+                  "Purpose": "Keep full footprint in the declared band",
+                  "SourceRuleId": "test",
+                  "Minimum": 6,
+                  "Maximum": 14
+                }
+              ],
+              "Preferences": [
+                {
+                  "Id": "prefer-x",
+                  "FieldId": "x",
+                  "Purpose": "Preferred x",
+                  "SourceRuleId": "test",
+                  "Ideal": 10,
+                  "Tolerance": 40,
+                  "Weight": 1
+                },
+                {
+                  "Id": "prefer-y",
+                  "FieldId": "y",
+                  "Purpose": "Preferred y",
+                  "SourceRuleId": "test",
+                  "Ideal": 5,
+                  "Tolerance": 30,
+                  "Weight": 1
+                }
+              ]
+            },
+            "Reservation": null,
+            "RegionId": null,
+            "AllocationId": null
+          }
+        ],
+        "Anchors": [],
+        "Relations": [],
+        "MinimumSeparation": 0,
+        "MaximumCandidates": 2048,
+        "MaximumSearchStates": 100000,
+        "MaximumWork": 50000000,
+        "AllowBoundaryContact": false
+      },
+      "Bindings": [
+        {
+          "DemandId": "site",
+          "NodeId": "placement-feedback/sites-0",
+          "UseCatalogFootprint": true,
+          "RotationDegrees": 0,
+          "PartId": null,
+          "SiteLayout": null
+        }
+      ],
+      "NestedStages": null,
+      "MaximumWork": 200000000,
+      "MaximumStageAttempts": 128,
+      "MaximumFeasibilityAttempts": 128
+    },
+    "Services": {
+      "Bindings": [
+        {
+          "ConsumerNodeId": "placement-feedback/sites-0",
+          "RequirementId": "neighborhood-access",
+          "ProviderNodeId": "placement-feedback/fixed-0",
+          "SupplyId": "neighborhood-access",
+          "ConnectionIds": [
+            "placement-feedback/explicit/pedestrian"
+          ],
+          "Purpose": "Required source policy",
+          "SourceRuleId": "test:policy"
+        },
+        {
+          "ConsumerNodeId": "placement-feedback/sites-0",
+          "RequirementId": "potable-water",
+          "ProviderNodeId": "placement-feedback/fixed-0",
+          "SupplyId": "potable-water",
+          "ConnectionIds": [
+            "placement-feedback/explicit/utility"
+          ],
+          "Purpose": "Required source policy",
+          "SourceRuleId": "test:policy"
+        },
+        {
+          "ConsumerNodeId": "placement-feedback/sites-0",
+          "RequirementId": "power",
+          "ProviderNodeId": "placement-feedback/fixed-0",
+          "SupplyId": "power",
+          "ConnectionIds": [
+            "placement-feedback/explicit/utility"
+          ],
+          "Purpose": "Required source policy",
+          "SourceRuleId": "test:policy"
+        },
+        {
+          "ConsumerNodeId": "placement-feedback/sites-0",
+          "RequirementId": "wastewater",
+          "ProviderNodeId": "placement-feedback/fixed-0",
+          "SupplyId": "wastewater",
+          "ConnectionIds": [
+            "placement-feedback/explicit/utility"
+          ],
+          "Purpose": "Required source policy",
+          "SourceRuleId": "test:policy"
+        }
+      ],
+      "Links": [
+        {
+          "ConnectionId": "placement-feedback/explicit/pedestrian",
+          "Capacity": 100,
+          "Unit": "game-service-units",
+          "Purpose": "Declared shared link",
+          "SourceRuleId": "test:policy"
+        },
+        {
+          "ConnectionId": "placement-feedback/explicit/utility",
+          "Capacity": 100,
+          "Unit": "game-service-units",
+          "Purpose": "Declared shared link",
+          "SourceRuleId": "test:policy"
+        }
+      ],
+      "MaximumWork": 2000000,
+      "CorridorCapacities": null
+    },
+    "Context": {
+      "Regions": [
+        {
+          "Id": "habitat",
+          "Use": "MixedUse",
+          "Boundary": {
+            "Vertices": [
+              {
+                "X": 0,
+                "Y": 15
+              },
+              {
+                "X": 40,
+                "Y": 15
+              },
+              {
+                "X": 40,
+                "Y": 30
+              },
+              {
+                "X": 0,
+                "Y": 30
+              }
+            ]
+          },
+          "SourceRuleId": "test:habitat"
+        }
+      ],
+      "Sites": [
+        {
+          "NodeId": "placement-feedback/sites-0",
+          "RegionId": "habitat",
+          "Tags": null
+        }
+      ],
+      "Separations": [],
+      "MaximumWork": 2000000,
+      "Exclusions": null
+    },
+    "Corridors": null,
+    "Regions": null,
+    "LocalLayouts": null,
+    "LayoutAdaptation": null,
+    "ProgressionRules": null
+  },
+  "Catalog": {
+    "SchemaVersion": 1,
+    "Id": "surface-example",
+    "Archetypes": [
+      {
+        "Id": "root",
+        "Kind": "region",
+        "Purpose": "Irregular exploration region",
+        "Properties": {},
+        "Parts": [
+          {
+            "Id": "sites",
+            "ArchetypeId": "site",
+            "Count": 1,
+            "Purpose": "Required destination",
+            "CountParameter": null,
+            "Layout": null,
+            "Capacity": null
+          },
+          {
+            "Id": "fixed",
+            "ArchetypeId": "fixed",
+            "Count": 1,
+            "Purpose": "Authored destination",
+            "CountParameter": null,
+            "Layout": {
+              "StrategyId": "line",
+              "Parameters": {
+                "Origin": [
+                  35,
+                  25
+                ],
+                "Step": [
+                  0,
+                  0
+                ]
+              }
+            },
+            "Capacity": null
+          }
+        ],
+        "Connections": [],
+        "ChildRequirements": [
+          {
+            "Kind": "site",
+            "Minimum": 2,
+            "Maximum": 2
+          }
+        ],
+        "RequireWeaklyConnectedChildren": false,
+        "Structure": null,
+        "LayerId": "intent",
+        "PhysicalFootprint": null,
+        "Access": null,
+        "Capacities": null,
+        "Services": null
+      },
+      {
+        "Id": "site",
+        "Kind": "site",
+        "Purpose": "Required source-sized location",
+        "Properties": {},
+        "Parts": [
+          {
+            "Id": "markers",
+            "ArchetypeId": "marker",
+            "Count": 1,
+            "Purpose": "Deferred constituent",
+            "CountParameter": null,
+            "Layout": {
+              "StrategyId": "line",
+              "Parameters": {
+                "Origin": [
+                  0,
+                  0
+                ],
+                "Step": [
+                  0,
+                  0
+                ]
+              }
+            },
+            "Capacity": null
+          }
+        ],
+        "Connections": [],
+        "ChildRequirements": [],
+        "RequireWeaklyConnectedChildren": false,
+        "Structure": {
+          "Catalog": {
+            "CatalogId": "modern",
+            "EnabledCapabilities": [
+              "modern.district-policy",
+              "modern.electricity-network",
+              "modern.facility-technology",
+              "modern.motor-road-network",
+              "modern.potable-water-network",
+              "modern.wastewater-network"
+            ]
+          },
+          "DefinitionId": "village-house",
+          "VariantId": "cottage",
+          "Technology": "Standard"
+        },
+        "LayerId": "intent",
+        "PhysicalFootprint": null,
+        "Access": {
+          "Occupancy": "Solid",
+          "Ports": [
+            {
+              "Id": "entry",
+              "Purpose": "Source entrance",
+              "SourceRuleId": "test:policy",
+              "BoundaryPosition": {
+                "X": 0,
+                "Y": -5
+              },
+              "ApproachPosition": {
+                "X": 0,
+                "Y": -9
+              },
+              "Width": 2
+            }
+          ]
+        },
+        "Capacities": null,
+        "Services": {
+          "Supplies": [],
+          "Requirements": [],
+          "UseStructureProfile": true,
+          "OutputQualities": null,
+          "Outputs": null
+        }
+      },
+      {
+        "Id": "fixed",
+        "Kind": "site",
+        "Purpose": "Fixed reachable destination",
+        "Properties": {},
+        "Parts": [],
+        "Connections": [],
+        "ChildRequirements": [],
+        "RequireWeaklyConnectedChildren": false,
+        "Structure": null,
+        "LayerId": "intent",
+        "PhysicalFootprint": null,
+        "Access": null,
+        "Capacities": null,
+        "Services": {
+          "Supplies": [
+            {
+              "Id": "neighborhood-access",
+              "Kind": "PedestrianCatchment",
+              "Unit": "game-service-units",
+              "Quantity": 100,
+              "Qualities": [],
+              "Origin": "utilitynetwork",
+              "Purpose": "Declared game supply",
+              "SourceRuleId": "test:policy",
+              "PortId": null,
+              "UpstreamSources": null,
+              "Area": null
+            },
+            {
+              "Id": "potable-water",
+              "Kind": "PotableWater",
+              "Unit": "game-service-units",
+              "Quantity": 100,
+              "Qualities": [
+                "potable",
+                "reliable"
+              ],
+              "Origin": "utilitynetwork",
+              "Purpose": "Declared game supply",
+              "SourceRuleId": "test:policy",
+              "PortId": null,
+              "UpstreamSources": null,
+              "Area": null
+            },
+            {
+              "Id": "power",
+              "Kind": "Electricity",
+              "Unit": "game-service-units",
+              "Quantity": 100,
+              "Qualities": [],
+              "Origin": "utilitynetwork",
+              "Purpose": "Declared game supply",
+              "SourceRuleId": "test:policy",
+              "PortId": null,
+              "UpstreamSources": null,
+              "Area": null
+            },
+            {
+              "Id": "wastewater",
+              "Kind": "Wastewater",
+              "Unit": "game-service-units",
+              "Quantity": 100,
+              "Qualities": [],
+              "Origin": "utilitynetwork",
+              "Purpose": "Declared game supply",
+              "SourceRuleId": "test:policy",
+              "PortId": null,
+              "UpstreamSources": null,
+              "Area": null
+            }
+          ],
+          "Requirements": [],
+          "UseStructureProfile": false,
+          "OutputQualities": null,
+          "Outputs": null
+        }
+      },
+      {
+        "Id": "marker",
+        "Kind": "object",
+        "Purpose": "Required point constituent",
+        "Properties": {},
+        "Parts": [],
+        "Connections": [],
+        "ChildRequirements": [],
+        "RequireWeaklyConnectedChildren": false,
+        "Structure": null,
+        "LayerId": "intent",
+        "PhysicalFootprint": null,
+        "Access": null,
+        "Capacities": null,
+        "Services": null
+      }
+    ]
+  }
+}

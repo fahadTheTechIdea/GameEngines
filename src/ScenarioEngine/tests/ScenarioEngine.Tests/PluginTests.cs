@@ -25,19 +25,14 @@ public sealed class PluginTests
         var scenario = h.Scenario(pack);
         Assert.Equal(2, h.Registry.ListInstalled().Length);
         Assert.Equal(2, h.Content.ListPlayable().Length);
-        using var game = new SignalGame(h.Factory);
-        game.Init(new(scenario, Harness.Options(), Harness.Frame(0)));
-        Assert.True(game.Submit(new("toggle", "player", 1, 0, "test_signal.toggle", ContractJson.Element(new { }))).Accepted);
+        using var game = h.Factory.Create(scenario, Harness.Options(), Harness.Frame(0));
+        Assert.True(game.Enqueue(new("toggle", "player", 1, 0, "test_signal.toggle", ContractJson.Element(new { }))).Accepted);
         var result = game.Update(Harness.Input(1));
         Assert.True(result.Committed);
         Assert.True(game.Snapshot.Layer.Data.GetProperty("enabled").GetBoolean());
         Assert.Equal(SessionPhase.Ended, game.Snapshot.Phase);
     }
 
-    private sealed class SignalGame(IScenarioSessionFactory factory) : GameBase(factory)
-    {
-        protected override LayerIdentity GameLayer => new("test_signal", "1.0.0");
-    }
     private sealed class SignalLayer : IGameLayer
     {
         private static JsonElement Json(string text)

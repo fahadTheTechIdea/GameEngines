@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpatialEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="SpatialEngine.html" aria-current="page">SpatialEngine</a>
+      <a href="../SPATIAL_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation · parked sketch</p>
+  <h1>SpatialEngine</h1>
+  <p class="lede">A parked sketch of an integer grid-space kernel: cell and millimetre points, exact integer distance, a terrain definition and refusal codes. It is not a completed spatial engine and is not wired into a game session.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">parked</span>
+    <span class="tag">not in the solution</span>
+    <span class="tag">no tests</span>
+  </div>
+</header>
+
+<div class="warn">
+  <strong>Status: parked (2026-10-28).</strong> Pass 28 was stopped after research and the design record. Only the core sketch exists: <code>src/SpatialEngine/SpatialEngine.Core</code>, with no map reader, no pathfinding, no query engine, no save, no tests, and no project reference from a game. Do not describe it as a working spatial engine.
+</div>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose and status</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#types">The sketch</a></li>
+    <li><a href="#boundary">Boundary with Godot and SimEngine</a></li>
+    <li><a href="#design">What the design record covers</a></li>
+    <li><a href="#next">If this work resumes</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose and status</h2>
+<p>The intended purpose was a reusable, engine-independent grid space for games that need deterministic geometry: cells and millimetre points, integer-only distance, terrain costs, field of view, paths and line of sight, with a checksummed state.</p>
+<p>Only the numeric core was written. It is useful as a reference for exact integer distance and coordinate conventions; it is not a spatial engine.</p>
+
+<h2 id="projects" class="anchor">Projects</h2>
+<table>
+  <thead><tr><th>Project</th><th>State</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/SpatialEngine/SpatialEngine.Core</code></td><td>Sketch only: five source files. Not referenced by <code>GameFrameWork.slnx</code>; no CLI and no tests.</td></tr>
+    <tr><td><code>src/SpatialEngine/SpatialEngine.Cli</code></td><td>Does not exist.</td></tr>
+    <tr><td><code>src/SpatialEngine/SpatialEngine.Tests</code></td><td>Does not exist.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="types" class="anchor">The sketch</h2>
+<table>
+  <thead><tr><th>Type</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><code>Cell(int X, int Y)</code></td><td>A grid cell counted from the top-left corner.</td></tr>
+    <tr><td><code>Point(long X, long Y)</code></td><td>A point in whole millimetres. There is no floating point.</td></tr>
+    <tr><td><code>TerrainDef(int Index, string Id, int Cost, bool BlocksSight, char Symbol)</code></td><td>One terrain row: movement cost, sight blocking, map symbol.</td></tr>
+    <tr><td><code>Metric</code></td><td><code>CoordinateLimit</code> (10¹²), <code>Distance(dx, dy)</code> and <code>Distance(Point, Point)</code> — exact floor of the Euclidean distance using integer square root, so every machine agrees to the last millimetre.</td></tr>
+    <tr><td><code>SpatialCodes</code></td><td>The intended refusal and query codes: <code>SPT_FORMAT</code>, <code>SPT_*</code>, plus <code>Found</code>, <code>Blocked</code>, <code>Unreachable</code>, <code>Budget</code> and the save codes.</td></tr>
+  </tbody>
+</table>
+<pre><code>var a = new Point(0, 0);
+var b = new Point(3_000, 4_000);
+long mm = Metric.Distance(a, b);   // 5000, exact integer arithmetic</code></pre>
+<p>The codes describe a map document, calls, query outcomes and a checkpoint that the sketch does not yet implement. Treat them as reserved names, not as a contract in use.</p>
+
+<h2 id="boundary" class="anchor">Boundary with Godot and SimEngine</h2>
+<ul>
+  <li><strong>Simulation truth belongs to SimEngine.</strong> Its <code>MapLayer</code>/<code>TileMap</code>, <code>NavGrid</code>/<code>PathSearch</code>, <code>Mover</code>, regions and spatial-resource contracts already own deterministic paths, distances, line of sight, fog and hashed state.</li>
+  <li><strong>Presentation belongs to Godot.</strong> Rendering, camera, animation and input use Godot's native features; a game does not reimplement them.</li>
+  <li><strong>Do not build a third spatial authority.</strong> If a game needs geometry that enters the simulation hash or replay, extend SimEngine's existing spatial contracts. If it is only visual, use Godot.</li>
+</ul>
+
+<h2 id="design" class="anchor">What the design record covers</h2>
+<p><a href="../SPATIAL_ENGINE.md">docs/SPATIAL_ENGINE.md</a> records the research, the Godot boundary rule, the layer decision, the proposed map format 1, acceptance criteria and the parked result. It is a design document, not evidence of a working implementation.</p>
+
+<h2 id="next" class="anchor">If this work resumes</h2>
+<ol>
+  <li>Decide explicitly whether the capability belongs in SimEngine's spatial layer (likely) or in a genuinely separate kernel; record the decision in the design record.</li>
+  <li>If separate: add the project to the solution, write the map reader and validator with coded refusals, then the queries, checkpoint and tests — in that order.</li>
+  <li>Do not claim completion from the sketch. The current acceptance status is <strong>not run</strong>.</li>
+</ol>
+
+<h2 id="source" class="anchor">Source map</h2>
+<dl class="kv">
+  <dt>Sketch</dt><dd><code>SpatialEngine.Core/Cell.cs</code>, <code>Metric.cs</code>, <code>TerrainDef.cs</code>, <code>SpatialCodes.cs</code></dd>
+  <dt>Design</dt><dd><a href="../SPATIAL_ENGINE.md">docs/SPATIAL_ENGINE.md</a></dd>
+  <dt>Working alternative</dt><dd><a href="SimEngine.html">SimEngine</a> — map layers, navigation, movement, spatial resources, regions and visibility</dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/SpatialEngine</code> and <code>docs/SPATIAL_ENGINE.md</code>. Status: parked, untested, not in the solution.</p>
+</footer>
+</main>
+</body>
+</html>

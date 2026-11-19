@@ -26,9 +26,11 @@ public sealed class StructureSitingPlanner(ISettlementCatalogRegistry catalogs)
         var paths=design.Paths.ToDictionary(p=>p.Id,StringComparer.Ordinal);
         var catalog=design.BuildingCatalog.ToDictionary(d=>d.Id,StringComparer.Ordinal);
         var sources=plan.Sources.ToDictionary(s=>s.Id,StringComparer.Ordinal);
+        var supplyPolicy=new CatalogSupplyPolicy(plan.Sources.Select(s=>new CatalogSupplySource(s.Id,s.Kind,s.Unit,s.Origin.ToString().ToLowerInvariant(),
+            s.Qualities,s.Port,s.ProviderObjectId,s.UpstreamSourceIds??[])),token);
         var links=plan.Links.ToDictionary(l=>l.Id,StringComparer.Ordinal);
-        var sourceUsed=plan.Sources.ToDictionary(s=>s.Id,_=>0d,StringComparer.Ordinal);
-        var linkUsed=plan.Links.ToDictionary(l=>l.Id,_=>0d,StringComparer.Ordinal);
+        var capacity=new ServiceCapacityLedger(plan.Sources.Select(s=>new KeyValuePair<string,double>("source:"+s.Id,s.Capacity))
+            .Concat(plan.Links.Select(l=>new KeyValuePair<string,double>("link:"+l.Id,l.Capacity))).ToDictionary(p=>p.Key,p=>p.Value,StringComparer.Ordinal));
         var consumers=new List<Consumer>();
         foreach (var item in objects.Where(o=>o.ParentObjectId is null && o.VisualSource?.BuildingDefinitionId is not null).OrderBy(o=>o.Id,StringComparer.Ordinal))
         {
@@ -60,17 +62,10 @@ public sealed class StructureSitingPlanner(ISettlementCatalogRegistry catalogs)
             token.ThrowIfCancellationRequested();
             var profile=consumer.Definition.SitingProfile!;
             var footprint=consumer.Object.VisualSource!.Footprint!;
-            var district=plan.Districts.Single(d=>d.Id==consumer.Context.DistrictId);
-            Record(consumer,"SITING_DISTRICT_ACCEPTED",SitingEvaluationStatus.Passed,"Compatible district "+district.Id+" / "+district.Use);
-            if (footprint.Vertices.Any(p=>!regions[district.RegionId].Outline.ContainsPoint(p)))
-                Record(consumer,"SITING_FOOTPRINT_OUTSIDE_DISTRICT",SitingEvaluationStatus.Failed,"Physical structure extends outside its district.");
             var ownSurroundings=surroundings.Where(s=>s.BuildingId==consumer.Object.Id).ToArray();
             foreach (var required in profile.RequiredSurroundings)
                 Record(consumer,"SITING_SURROUNDINGS_"+required,ownSurroundings.Any(s=>s.Kind==required)?SitingEvaluationStatus.Passed:SitingEvaluationStatus.Failed,
                     "Required planned surrounding use: "+required);
-            foreach (var site in ownSurroundings)
-                if (site.Boundary.Vertices.Any(p=>!regions[district.RegionId].Outline.ContainsPoint(p)))
-                    Record(consumer,"SITING_SURROUNDINGS_OUTSIDE_DISTRICT",SitingEvaluationStatus.Failed,site.Id);
             foreach (var requirement in profile.Requirements.Where(r=>r.WhenTechnologies is null || r.WhenTechnologies.Contains(consumer.Context.Technology))
                          .OrderBy(r=>r.Id,StringComparer.Ordinal))
             {
@@ -85,7 +80,8 @@ public sealed class StructureSitingPlanner(ISettlementCatalogRegistry catalogs)
                 if (supply.Kind!=requirement.Kind || supply.Unit!=requirement.Unit) Reject("source type or units do not match");
                 if (requirement.RequiredOrigin is { } origin && supply.Origin!=origin) Reject("source origin does not match the selected technology");
                 if (requirement.RequiredQualities?.Any(q=>!supply.Qualities.Contains(q))==true) Reject("source quality/reliability is incompatible");
-                foreach (var reason in pack.Policy.ValidateSupply(design,consumer.Definition,requirement,supply,consumer.Context,token)) Reject(reason);
+                foreach (var issue in supplyPolicy.Evaluate(pack.Policy,consumer.Definition,requirement,supply.Id,consumer.Context.Technology,
+                    consumer.Context.Dependencies.ToDictionary(b=>b.RequirementId,b=>b.SourceId,StringComparer.Ordinal),token)) Reject(issue.Message);
                 if (supply.ProviderObjectId is { } provider)
                 {
                     if (!byId.TryGetValue(provider,out var parent)) Reject("provider is not a planned structure");
@@ -97,7 +93,7 @@ public sealed class StructureSitingPlanner(ISettlementCatalogRegistry catalogs)
                 var usedLinks=new List<string>();
                 if (requirement.SourceContainsSite)
                 {
-                    if (footprint.Vertices.Any(p=>!regions[supply.RegionId].Outline.ContainsPoint(p))) Reject("resource area does not contain the full site");
+                    if (!regions[supply.RegionId].Outline.ContainsPolygon(footprint)) Reject("resource area does not contain the full site");
                     if (binding.LinkIds.Count!=0) Reject("contained resources do not consume transport links");
                 }
                 else
@@ -127,13 +123,13 @@ public sealed class StructureSitingPlanner(ISettlementCatalogRegistry catalogs)
                         }
                     }
                 }
-                if (sourceUsed[supply.Id]+quantity>supply.Capacity+1e-8) Reject("shared source capacity exceeded");
+                if (!capacity.CanReserve("source:"+supply.Id,quantity)) Reject("shared source capacity exceeded");
                 foreach (var id in usedLinks)
-                    if (linkUsed[id]+quantity>links[id].Capacity+1e-8) Reject("shared link capacity exceeded: "+id);
+                    if (!capacity.CanReserve("link:"+id,quantity)) Reject("shared link capacity exceeded: "+id);
                 if (evaluations.Count(e=>e.ObjectId==consumer.Object.Id && e.RuleId=="SITING_DEPENDENCY_FAILED")==failures)
                 {
-                    sourceUsed[supply.Id]+=quantity;
-                    foreach (var id in usedLinks) linkUsed[id]+=quantity;
+                    var reservation=usedLinks.ToDictionary(id=>"link:"+id,_=>quantity,StringComparer.Ordinal);reservation.Add("source:"+supply.Id,quantity);
+                    if(!capacity.TryReserve(reservation))throw new InvalidOperationException("SITING_CAPACITY_COMMIT_FAILED");
                     allocations.Add(new(consumer.Object.Id,requirement.Id,supply.Id,usedLinks,quantity,requirement.Unit));
                     Record(consumer,"SITING_DEPENDENCY_ACCEPTED",SitingEvaluationStatus.Passed,requirement.Id+" supplied by "+supply.Id,
                         supply.Id,quantity,requirement.Unit,usedLinks);
@@ -143,10 +139,6 @@ public sealed class StructureSitingPlanner(ISettlementCatalogRegistry catalogs)
         foreach (var zone in plan.Exclusions)
         {
             token.ThrowIfCancellationRequested();
-            foreach (var consumer in consumers)
-                if (consumer.Definition.SitingProfile!.Tags.Overlaps(zone.ExcludedTags) &&
-                    Intersects(consumer.Object.VisualSource!.Footprint!,regions[zone.RegionId].Outline))
-                    Record(consumer,"SITING_EXCLUSION_CONFLICT",SitingEvaluationStatus.Failed,zone.Id+" / "+zone.RuleId);
             if (zone.ExcludedTags.Contains("public-green"))
                 foreach (var green in landscape)
                     if (Intersects(green.Boundary,regions[zone.RegionId].Outline))
@@ -156,23 +148,21 @@ public sealed class StructureSitingPlanner(ISettlementCatalogRegistry catalogs)
                     regions[zone.RegionId].Outline.DistanceToPoint(feature.Position)<=feature.ClearanceRadiusMeters+1e-8)
                     evaluations.Add(new(feature.Id,"SITING_PUBLIC_REALM_EXCLUSION_CONFLICT",SitingEvaluationStatus.Failed,zone.Id,["R21","R26"]));
         }
-        for (int i=0;i<consumers.Count;i++)
-        for (int j=0;j<i;j++)
+        if(consumers.Count>0)
         {
-            token.ThrowIfCancellationRequested();
-            var a=consumers[i]; var b=consumers[j];
-            var aTags=a.Definition.SitingProfile!.Tags; var bTags=b.Definition.SitingProfile!.Tags;
-            var applicable=plan.Separations.Where(r=>aTags.Contains(r.FirstTag)&&bTags.Contains(r.SecondTag) ||
-                bTags.Contains(r.FirstTag)&&aTags.Contains(r.SecondTag)).ToArray();
-            bool needsPolicy=pack.Policy.RequiresNeighborPolicy(aTags,bTags);
-            if (needsPolicy && applicable.Length==0)
-                Record(a,"SITING_SEPARATION_UNRESOLVED",SitingEvaluationStatus.Unresolved,"Missing explicit neighbor policy for "+b.Object.Id);
-            foreach (var rule in applicable)
+            var contextResults=new CatalogContextPolicy().Evaluate(
+                plan.Districts.Select(d=>new CatalogContextRegion(d.Id,d.Use,regions[d.RegionId].Outline,d.RuleId)).ToArray(),
+                consumers.Select(c=>new CatalogContextSite(c.Object.Id,c.Context.DistrictId,c.Object.VisualSource!.Footprint!,
+                    surroundings.Where(s=>s.BuildingId==c.Object.Id).Select(s=>s.Boundary).ToArray(),c.Definition.SitingProfile!.Tags,c.Definition.SitingProfile.AllowedDistricts)).ToArray(),
+                plan.Separations,consumers.ToDictionary(c=>c.Object.Id,_=>pack.Policy,StringComparer.Ordinal),token,200000000,
+                plan.Exclusions.Select(e=>new CatalogContextExclusion(e.Id,regions[e.RegionId].Outline,e.ExcludedTags,e.RuleId)).ToArray());
+            foreach(var e in contextResults)
             {
-                double distance=Distance(a.Object.VisualSource!.Footprint!,b.Object.VisualSource!.Footprint!);
-                evaluations.Add(new(a.Object.Id,"SITING_SEPARATION_"+rule.Id,distance+1e-8>=rule.MinimumMeters?
-                    SitingEvaluationStatus.Passed:SitingEvaluationStatus.Failed,
-                    $"Neighbor {b.Object.Id}: edge clearance {distance:R}m; minimum {rule.MinimumMeters:R}m; {rule.ParameterOrigin}",[rule.SourceId]));
+                string rule=e.RuleId switch {"region-use"=>e.Passed?"SITING_DISTRICT_ACCEPTED":"SITING_DISTRICT_INCOMPATIBLE",
+                    "region-containment"=>"SITING_FOOTPRINT_OUTSIDE_DISTRICT","neighbor-policy-required"=>"SITING_SEPARATION_UNRESOLVED",_=>e.RuleId.StartsWith("exclusion:",StringComparison.Ordinal)?"SITING_EXCLUSION_CONFLICT":"SITING_SEPARATION_"+e.RuleId[11..]};
+                if(e.RuleId=="region-containment"&&e.Passed)continue;
+                evaluations.Add(new(e.SiteId,rule,e.Passed?SitingEvaluationStatus.Passed:e.RuleId=="neighbor-policy-required"?SitingEvaluationStatus.Unresolved:SitingEvaluationStatus.Failed,
+                    e.RelatedId+(e.Distance is {} distance?$": edge clearance {distance:R}m; minimum {e.Minimum:R}m":""),[e.SourceRuleId]));
             }
         }
         var activeStack=new HashSet<string>(StringComparer.Ordinal); var done=new HashSet<string>(StringComparer.Ordinal);
@@ -242,6 +232,5 @@ public sealed class StructureSitingPlanner(ISettlementCatalogRegistry catalogs)
 
     private static bool Intersects(WorldPolygon a,WorldPolygon b) => LandscapePolygonTriangulator.Triangulate(a)
         .Any(triangle=>LandscapePolygonTriangulator.Triangulate(b).Any(other=>InfrastructureGeometry.Overlap(triangle,other)));
-    private static double Distance(WorldPolygon a,WorldPolygon b) => Intersects(a,b)?0:
-        Math.Min(a.Vertices.Min(b.DistanceToPoint),b.Vertices.Min(a.DistanceToPoint));
+
 }

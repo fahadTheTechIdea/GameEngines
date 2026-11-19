@@ -1,0 +1,103 @@
+{
+  "SchemaVersion": 1,
+  "Id": "component-catalog",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "program",
+      "Purpose": "Reusable nested component program",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "assemblies",
+          "ArchetypeId": "assembly",
+          "Count": 2,
+          "Purpose": "Both required assemblies",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "assembly",
+          "Minimum": 2,
+          "Maximum": 2
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "assembly",
+      "Kind": "assembly",
+      "Purpose": "Static assembly with separately represented parts",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "parts",
+          "ArchetypeId": "part",
+          "Count": 2,
+          "Purpose": "Both required moving parts",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "equipment",
+          "Minimum": 2,
+          "Maximum": 2
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null,
+      "Component": {
+        "Role": "StaticAssembly",
+        "Purpose": "Static parent assembly",
+        "SourceRuleId": "catalog:assembly"
+      }
+    },
+    {
+      "Id": "part",
+      "Kind": "equipment",
+      "Purpose": "Separately represented moving component",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null,
+      "Component": {
+        "Role": "MovingPart",
+        "Purpose": "Moving component identity; runtime motion deferred",
+        "SourceRuleId": "catalog:part"
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "pack": "wasteland",
+  "resources": [
+    { "id": "wasteland.scrap-metal", "name": "Scrap metal", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["salvage"], "properties": { "base-price": 0.8 } },
+    { "id": "wasteland.salvaged-wire", "name": "Salvaged wire", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["salvage"], "properties": { "base-price": 2 } },
+    { "id": "wasteland.tire-rubber", "name": "Tire rubber", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["salvage"], "properties": { "base-price": 1 } },
+    { "id": "wasteland.circuit-scrap", "name": "Burnt circuit scrap", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["salvage", "electronics"], "properties": { "base-price": 3 } },
+    { "id": "wasteland.dirty-water", "name": "Contaminated water", "class": "fluid", "unit": "L", "origin": "natural", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["water", "hazard"], "properties": { "base-price": 0.02 } },
+    { "id": "wasteland.canned-beans", "name": "Dented canned beans", "class": "consumable", "unit": "{each}", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": { "ticks": 20000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["salvage", "food"], "properties": { "base-price": 3 } },
+    { "id": "wasteland.fuel-scraps", "name": "Siphoned fuel scraps", "class": "fluid", "unit": "L", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["salvage", "fuel"], "properties": { "base-price": 2 } },
+    { "id": "wasteland.cloth-rags", "name": "Cloth rags", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["salvage", "textile"], "properties": { "base-price": 0.5 } },
+    { "id": "wasteland.glass-shards", "name": "Window shards", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["salvage"], "properties": { "base-price": 0.3 } },
+    { "id": "wasteland.mutant-root", "name": "Mutant root", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["forage", "food"], "properties": { "base-price": 2 } },
+    { "id": "wasteland.caps", "name": "Bottle caps", "class": "currency", "unit": "{coin}", "origin": "natural", "stack": { "max": 100000 }, "grade": null, "perishable": null, "durability": null, "currency": { "kind": "fictional", "code": "CAP" }, "cpc": null, "tags": ["money"], "properties": { "base-price": 1 } },
+    { "id": "wasteland.boiled-water", "name": "Boiled water", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["water", "drink"], "properties": { "base-price": 0.3 } },
+    { "id": "wasteland.ration", "name": "Scavenger ration", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": { "ticks": 24000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["food"], "properties": { "base-price": 7 } },
+    { "id": "wasteland.dressing", "name": "Rag dressing", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["medical"], "properties": { "base-price": 1 } },
+    { "id": "wasteland.tonic", "name": "Rad purge tonic", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["medical"], "properties": { "base-price": 12 } },
+    { "id": "wasteland.crude-fuel", "name": "Crude scrap fuel", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["fuel"], "properties": { "base-price": 2.5 } },
+    { "id": "wasteland.vest", "name": "Scrap plate vest", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 250 }, "currency": null, "cpc": "4", "tags": ["armour"], "properties": { "base-price": 40 } },
+    { "id": "wasteland.pipe-rifle", "name": "Pipe rifle", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 300 }, "currency": null, "cpc": "4", "tags": ["weapon"], "properties": { "base-price": 60 } },
+    { "id": "wasteland.slugs", "name": "Scrap slugs", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["ammunition"], "properties": { "base-price": 0.6 } },
+    { "id": "wasteland.molotov", "name": "Fire bottle", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["weapon"], "properties": { "base-price": 6 } },
+    { "id": "wasteland.generator", "name": "Scrap generator", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 600 }, "currency": null, "cpc": "4", "tags": ["power"], "properties": { "base-price": 300 } },
+    { "id": "wasteland.lantern", "name": "Fuel lantern", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 400 }, "currency": null, "cpc": "4", "tags": ["light"], "properties": { "base-price": 15 } },
+    { "id": "wasteland.snare", "name": "Wire snare", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 10 }, "grade": null, "perishable": null, "durability": { "uses": 20 }, "currency": null, "cpc": "4", "tags": ["trap"], "properties": { "base-price": 10 } },
+    { "id": "wasteland.patched-boots", "name": "Patched boots", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 500 }, "currency": null, "cpc": "4", "tags": ["clothing"], "properties": { "base-price": 12 } },
+    { "id": "wasteland.barricade", "name": "Scrap barricade", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["structure"], "properties": { "base-price": 200 } },
+    { "id": "wasteland.still", "name": "Solar water still", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["structure", "water"], "properties": { "base-price": 60 } }
+  ],
+  "stations": [
+    { "id": "wasteland.junk-bench", "name": "Junk bench", "levels": 2 },
+    { "id": "wasteland.cookfire", "name": "Cook fire", "levels": 1 },
+    { "id": "wasteland.still-rack", "name": "Distilling rack", "levels": 1 },
+    { "id": "wasteland.trade-post", "name": "Trading post", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "wasteland.scavenging", "name": "Scavenging", "max": 10 }
+  ]
+}

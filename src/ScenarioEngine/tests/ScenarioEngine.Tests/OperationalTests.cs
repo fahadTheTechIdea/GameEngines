@@ -9,14 +9,13 @@ namespace ScenarioEngine.Tests;
 public sealed class OperationalTests
 {
     [Fact]
-    public void MotherClassCanRestoreAReadySnapshotAndUpdate()
+    public void ReadySnapshotCanBeRestoredStartedAndStepped()
     {
         var h = new Harness();
         var scenario = h.Scenario();
         using var ready = h.Factory.Create(scenario, Harness.Options(), Harness.Frame(0));
-        using IGame restored = new CounterGame(h.Factory);
-        restored.Restore(scenario, ready.Snapshot, Harness.Frame(0));
-        restored.Submit(Harness.Increment());
+        using var restored = h.Factory.Restore(scenario, ready.Snapshot, Harness.Frame(0));
+        restored.Enqueue(Harness.Increment());
         Assert.True(restored.Update(Harness.Input(1)).Committed);
     }
 
@@ -29,7 +28,7 @@ public sealed class OperationalTests
         }));
         using var sim = h.Start();
         sim.Enqueue(Harness.Increment());
-        var step = sim.Step(Harness.Input(1));
+        var step = sim.Update(Harness.Input(1));
         Assert.False(step.Committed);
         Assert.Equal(0, sim.Snapshot.Tick);
         Assert.Equal(0, Harness.Value(sim.Snapshot));
@@ -37,20 +36,15 @@ public sealed class OperationalTests
     }
 
     [Fact]
-    public void EveryGameCanRestoreThroughTheMotherClassContract()
+    public void SnapshotCanBeRestoredAndUpdated()
     {
         var h = new Harness();
         var scenario = h.Scenario();
-        using var first = new CounterGame(h.Factory);
-        first.Init(new(scenario, Harness.Options(), Harness.Frame(0)));
-        first.Submit(Harness.Increment());
+        using var first = h.Factory.Create(scenario, Harness.Options(), Harness.Frame(0));
+        first.Enqueue(Harness.Increment());
         first.Update(Harness.Input(1));
-        first.Pause();
-        using IGame restored = new CounterGame(h.Factory);
-        restored.Restore(scenario, first.Snapshot, Harness.Frame(1));
-        Assert.Equal(SessionPhase.Paused, restored.Snapshot.Phase);
-        restored.Resume();
-        restored.Submit(Harness.Increment(2, "two"));
+        using var restored = h.Factory.Restore(scenario, first.Snapshot, Harness.Frame(1));
+        restored.Enqueue(Harness.Increment(2, "two"));
         Assert.True(restored.Update(Harness.Input(2)).Committed);
         Assert.Equal(2, Harness.Value(restored.Snapshot));
     }

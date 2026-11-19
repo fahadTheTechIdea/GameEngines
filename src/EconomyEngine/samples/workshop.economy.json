@@ -1,0 +1,317 @@
+{
+ "format": 6,
+ "id": "workshop-economy",
+ "seed": 20261031,
+ "time": {
+  "stepsPerDay": 24,
+  "periodSteps": 24
+ },
+ "limits": {
+  "maxShipments": 10,
+  "maxLoans": 1,
+  "maxShocks": 4,
+  "history": 8
+ },
+ "price": {
+  "responseMin": 200,
+  "responseMax": 3000,
+  "settlePeriods": 6,
+  "bandMargin": 40,
+  "noise": 0,
+  "arrearsPenalty": 300
+ },
+ "routing": {
+  "mode": "direct"
+ },
+ "recipes": [
+  {
+   "id": "forge-steel",
+   "key": "econ.recipe.forge-steel",
+   "inputs": [
+    {
+     "good": "ore",
+     "amount": 2
+    },
+    {
+     "good": "fuel",
+     "amount": 1
+    },
+    {
+     "good": "labour",
+     "amount": 1
+    }
+   ],
+   "outputs": [
+    {
+     "good": "steel",
+     "amount": 1
+    }
+   ],
+   "duration": 1,
+   "locked": false,
+   "requires": [
+    {
+     "good": "hammer",
+     "amount": 1
+    }
+   ]
+  },
+  {
+   "id": "make-nails",
+   "key": "econ.recipe.make-nails",
+   "inputs": [
+    {
+     "good": "steel",
+     "amount": 1
+    },
+    {
+     "good": "labour",
+     "amount": 1
+    }
+   ],
+   "outputs": [
+    {
+     "good": "nails",
+     "amount": 8
+    }
+   ],
+   "duration": 0,
+   "locked": false
+  }
+ ],
+ "currencies": [
+  {
+   "id": "crown",
+   "key": "econ.cur.crown",
+   "reference": true,
+   "anchor": 1000000,
+   "money": 2000000,
+   "growthPpm": 0,
+   "maxRateStepPpm": 0
+  }
+ ],
+ "goods": [
+  {
+   "id": "labour",
+   "key": "econ.good.labour",
+   "base": 1000,
+   "demandElasticity": 400,
+   "supplyElasticity": 600,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 0,
+   "tags": [
+    "labour"
+   ]
+  },
+  {
+   "id": "fuel",
+   "key": "econ.good.fuel",
+   "base": 1000,
+   "demandElasticity": 400,
+   "supplyElasticity": 600,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 2,
+   "tags": [
+    "energy"
+   ]
+  },
+  {
+   "id": "ore",
+   "key": "econ.good.ore",
+   "base": 4000,
+   "demandElasticity": 400,
+   "supplyElasticity": 600,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 6,
+   "tags": [
+    "material"
+   ]
+  },
+  {
+   "id": "steel",
+   "key": "econ.good.steel",
+   "base": 12000,
+   "demandElasticity": 400,
+   "supplyElasticity": 600,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 5,
+   "tags": [
+    "metal"
+   ]
+  },
+  {
+   "id": "hammer",
+   "key": "econ.good.hammer",
+   "base": 30000,
+   "demandElasticity": 400,
+   "supplyElasticity": 600,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 3,
+   "tags": [
+    "tool"
+   ]
+  },
+  {
+   "id": "nails",
+   "key": "econ.good.nails",
+   "base": 1500,
+   "demandElasticity": 400,
+   "supplyElasticity": 600,
+   "floor": 250,
+   "ceiling": 4000,
+   "speed": 300,
+   "maxStep": 80,
+   "inertia": 400,
+   "decay": 0,
+   "weight": 1,
+   "tags": [
+    "material"
+   ]
+  }
+ ],
+ "bands": [
+  {
+   "id": "cheap",
+   "key": "econ.band.cheap",
+   "from": 0
+  },
+  {
+   "id": "fair",
+   "key": "econ.band.fair",
+   "from": 800
+  },
+  {
+   "id": "dear",
+   "key": "econ.band.dear",
+   "from": 1250
+  },
+  {
+   "id": "scarce",
+   "key": "econ.band.scarce",
+   "from": 2000
+  }
+ ],
+ "schedules": [],
+ "policies": [],
+ "modifiers": [],
+ "shocks": [
+  {
+   "id": "strike",
+   "key": "econ.shock.strike",
+   "duration": 10,
+   "effects": [
+    {
+     "kind": "supply",
+     "good": "labour",
+     "tag": "",
+     "route": "",
+     "amount": -600
+    }
+   ]
+  }
+ ],
+ "markets": [
+  {
+   "id": "forge",
+   "key": "econ.market.forge",
+   "currency": "crown",
+   "treasury": 50000,
+   "staff": 0,
+   "spread": 50,
+   "pairs": [
+    {
+     "good": "labour",
+     "production": 90,
+     "consumption": 0,
+     "stock": 200,
+     "cover": 2,
+     "capacity": 100000
+    },
+    {
+     "good": "fuel",
+     "production": 80,
+     "consumption": 0,
+     "stock": 200,
+     "cover": 2,
+     "capacity": 100000
+    },
+    {
+     "good": "ore",
+     "production": 120,
+     "consumption": 0,
+     "stock": 400,
+     "cover": 2,
+     "capacity": 100000
+    },
+    {
+     "good": "steel",
+     "production": 0,
+     "consumption": 10,
+     "stock": 50,
+     "cover": 2,
+     "capacity": 100000
+    },
+    {
+     "good": "hammer",
+     "production": 0,
+     "consumption": 0,
+     "stock": 1,
+     "cover": 0,
+     "capacity": 100000
+    },
+    {
+     "good": "nails",
+     "production": 0,
+     "consumption": 40,
+     "stock": 0,
+     "cover": 2,
+     "capacity": 100000
+    }
+   ],
+   "policies": [],
+   "budget": [],
+   "lines": [
+    {
+     "recipe": "forge-steel",
+     "capacity": 60,
+     "throttle": {
+      "stop": 900,
+      "full": 1200
+     }
+    },
+    {
+     "recipe": "make-nails",
+     "capacity": 30
+    }
+   ]
+  }
+ ],
+ "routes": [],
+ "loans": [],
+ "facts": []
+}

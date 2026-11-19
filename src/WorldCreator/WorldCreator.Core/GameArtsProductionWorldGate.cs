@@ -80,13 +80,13 @@ public sealed class GameArtsProductionWorldGate(
                 issues.Add("GAMEARTS_BUNDLE_UNREADABLE:" + id);
                 continue;
             }
-            if (!native.IsValid || native.Bundle?.AssetId != id)
+            if (!native.IsValid || native.Bundle?.AssetId != manifest.BundleAssetId)
             {
                 issues.Add("GAMEARTS_BUNDLE_ASSET_MISMATCH:" + id);
                 continue;
             }
             var readiness = await new GameArtsProductionGate(approvals)
-                .CheckAsync(full, bundle.ApprovedRevision, token);
+                .CheckAsync(full, bundle.ApprovedRevision, id, manifest.BundleAssetId, token);
             issues.AddRange(readiness.Issues.Select(issue =>
                 "GAMEARTS_BUNDLE_" + id + ":" + issue));
             if (!readiness.Ready && readiness.Issues.Count == 0)

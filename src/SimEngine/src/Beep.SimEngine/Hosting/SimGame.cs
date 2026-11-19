@@ -7,7 +7,6 @@ namespace Beep.SimEngine.Hosting
     public enum GameState : byte
     {
         Running = 0,
-        Paused = 1,
         Faulted = 2,
         Ended = 3,
         /// <summary>Lockstep: waiting for a peer's orders for the next tick.</summary>
@@ -156,7 +155,7 @@ namespace Beep.SimEngine.Hosting
     /// Controllers submit before each tick. The elapsed-time overload accepts a platform delta, while
     /// tools may run a batch with RunTicks. Drawing/rendering belongs to a future game platform only.
     /// </summary>
-    public sealed class SimGame : IGameCycle
+    public sealed class SimGame
     {
         private readonly PlayerSeat[] _seats;
         private readonly Func<bool> _tick;
@@ -192,7 +191,6 @@ namespace Beep.SimEngine.Hosting
             => World.Fault != null ? GameState.Faulted
              : Net != null && (Net.State == NetState.Desynced || Net.State == NetState.Broken) ? GameState.Desynced
              : !World.Outcome.IsNone ? GameState.Ended
-             : Clock.Paused ? GameState.Paused
              : Net != null && Net.State == NetState.Stalled ? GameState.Stalled
              : GameState.Running;
 
@@ -209,15 +207,11 @@ namespace Beep.SimEngine.Hosting
             if (options == null) throw new ArgumentNullException(nameof(options));
             if (Net != null) throw new InvalidOperationException("this game is already in lockstep");
             Net = new NetSession(this, options);
-            Clock.Sequenced = true;
             return Net;
         }
 
         public WorldFault Fault => World.Fault;
 
-        /// <summary>The session's sole current-time and pacing owner.</summary>
-        public GameClock Clock => World.GameClock;
-        IGameClock IGameCycle.Clock => Clock;
 
         public int SeatCount => _seats.Length;
         public PlayerSeat Seat(int index) => _seats[index];
@@ -233,13 +227,10 @@ namespace Beep.SimEngine.Hosting
         public GameSnapshot Snapshot { get; private set; }
 
         public bool Initialized { get; private set; }
-        public GameUpdate Time { get; private set; }
-        /// <summary>
-        /// Called once after each Update has settled its fixed ticks, while still in the Update phase.
-        /// Observers may read engine results or submit input; they cannot run another lifecycle phase.
-        /// Gameplay systems remain the authoritative fixed-tick participants.
-        /// </summary>
-        public event Action<GameUpdate> Updated;
+
+        /// <summary>Authored pace of this session's time definition, read-only, for the host's clock. The simulation does not act on it.</summary>
+        public int AuthoredTicksPerSecond => World.GameClock.AuthoredTicksPerSecond;
+        public int AuthoredFrameTicks => World.GameClock.AuthoredFrameTicks;
 
         /// <summary>Once: exposes the composed or restored session as ready to update. Idempotent.</summary>
         public void Initialize()
@@ -250,54 +241,33 @@ namespace Beep.SimEngine.Hosting
             try
             {
                 Initialized = true;
-                PublishSnapshot(0);
-                Time = new GameUpdate(World.Tick, World.Tick, -1, Clock.Alpha, Clock.Time);
-            }
-            finally { _lifecycleActive = false; }
-        }
-
-        // ------------------------------------------------------------------ the frame
-
-        /// <summary>Runs the scenario's engine-time fixed ticks, publishes simulation facts, and raises Updated.</summary>
-        public int Update() => UpdatePhase(-1, null);
-
-        /// <summary>Runs fixed ticks due for the platform's elapsed time, publishes facts, and raises Updated.</summary>
-        public int Update(long platformElapsedMicroseconds)
-        {
-            if (platformElapsedMicroseconds < 0) throw new ArgumentOutOfRangeException(nameof(platformElapsedMicroseconds));
-            return UpdatePhase(platformElapsedMicroseconds, null);
-        }
-
-        private int UpdatePhase(long elapsedMicroseconds, int? batchTicks)
-        {
-            RequireInitialized();
-            RequireIdle();
-            // A stopped fault still publishes retained diagnostics, never live advancement.
-            if (World.Fault == null) World.RequireCompletedOperations();
-            _lifecycleActive = true;
-            long startTick = World.Tick;
-            try
-            {
-                int ran = 0;
-                if (batchTicks.HasValue)
-                {
-                    while (ran < batchTicks.Value && TickOnce()) ran++;
-                }
-                else if (World.Fault == null && World.Outcome.IsNone)
-                    ran = elapsedMicroseconds < 0 ? Clock.PumpFrame(_tick) : Clock.PumpElapsed(elapsedMicroseconds, _tick);
-                PublishSnapshot(ran);
-                Time = new GameUpdate(startTick, World.Tick, elapsedMicroseconds, Clock.Alpha, Clock.Time);
-                Updated?.Invoke(Time);
-                return ran;
+                PublishSnapshot();
             }
             finally { _lifecycleActive = false; }
         }
 
         /// <summary>
-        /// Runs <paramref name="ticks"/> ticks now, ignoring pace and pause (tools, tests, fast-forward),
-        /// then publishes a snapshot. Stops early on a fault or outcome. Returns the ticks run.
+        /// Runs exactly one tick, the one the host's clock names, then publishes a snapshot. There is no pacing here: the
+        /// host owns the session clock. A tick other than the next one is refused without changing anything; a faulted or
+        /// ended game returns false after republishing its retained facts.
         /// </summary>
-        public int RunTicks(int ticks) => UpdatePhase(-1, System.Math.Max(0, ticks));
+        public bool Update(long tick)
+        {
+            RequireInitialized();
+            RequireIdle();
+            if (tick != World.Tick + 1)
+                throw new ArgumentOutOfRangeException(nameof(tick), "the simulation is at tick " + World.Tick + "; the host asked for " + tick);
+            // A stopped fault still publishes retained diagnostics, never live advancement.
+            if (World.Fault == null) World.RequireCompletedOperations();
+            _lifecycleActive = true;
+            try
+            {
+                bool ran = TickOnce();
+                PublishSnapshot();
+                return ran;
+            }
+            finally { _lifecycleActive = false; }
+        }
 
         private bool TickOnce()
         {
@@ -341,10 +311,8 @@ namespace Beep.SimEngine.Hosting
         /// <summary>
         /// Publishes detached facts as part of the engine's existing lifecycle, without rendering.
         /// </summary>
-        private void PublishSnapshot(int completedSteps)
+        private void PublishSnapshot()
         {
-            bool stopped = World.Fault != null || !World.Outcome.IsNone;
-            Clock.FinishUpdate(completedSteps, stopped);
             long revision = checked(_revision + 1);
             GameSnapshot observer = null;
             var seats = new GameSnapshot[_seats.Length];
@@ -353,8 +321,8 @@ namespace Beep.SimEngine.Hosting
                 try
                 {
                     var facts = EntityObservation.Capture(World);
-                    observer = GameSnapshot.Capture(World, revision, Clock.Alpha, State, null, Snapshot, PlayerId.None);
-                    for (int i = 0; i < _seats.Length; i++) seats[i] = _seats[i].PrepareScoped(World, revision, Clock.Alpha, State);
+                    observer = GameSnapshot.Capture(World, revision, Fix.Zero, State, null, Snapshot, PlayerId.None);
+                    for (int i = 0; i < _seats.Length; i++) seats[i] = _seats[i].PrepareScoped(World, revision, Fix.Zero, State);
                     facts.Verify();
                     World.RequireHealthyUpdate();
                 }
@@ -362,7 +330,6 @@ namespace Beep.SimEngine.Hosting
             }
             if (World.Fault != null)
             {
-                if (!stopped) Clock.FinishUpdate(completedSteps, true);
                 observer = GameSnapshot.Retain(revision, Snapshot, PlayerId.None);
                 for (int i = 0; i < _seats.Length; i++) seats[i] = _seats[i].RetainScoped(revision);
             }

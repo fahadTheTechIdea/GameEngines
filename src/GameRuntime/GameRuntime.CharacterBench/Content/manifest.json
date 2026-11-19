@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "modules": [
+    { "id": "gf.director", "version": "1.0.0", "documents": [] },
+    { "id": "sim.access", "version": "1.0.0", "documents": ["bench/access.json"] },
+    { "id": "sim.world-setup", "version": "1.0.0", "documents": ["bench/startup.json"] },
+    { "id": "sim.inventory", "version": "1.0.0", "documents": ["bench/resources.json"] },
+    { "id": "sim.characters", "version": "1.0.0", "documents": ["bench/characters.json"] },
+    { "id": "sim.motion", "version": "1.0.0", "documents": [] },
+    { "id": "sim.tile-navigation", "version": "1.0.0", "requires": [{"id":"sim.motion","version":"1.0.0"}], "documents": ["bench/navigation.json"] },
+    { "id": "sim.work", "version": "1.0.0", "requires": [{"id":"sim.access","version":"1.0.0"},{"id":"sim.inventory","version":"1.0.0"},{"id":"sim.motion","version":"1.0.0"}], "documents": ["bench/work.json"] },
+    {
+      "id": "bench",
+      "version": "1.0.0",
+      "requires": [
+        { "id": "sim.access", "version": "1.0.0" },
+        { "id": "sim.world-setup", "version": "1.0.0" }
+      ],
+      "documents": ["bench/world.json"]
+    }
+  ]
+}

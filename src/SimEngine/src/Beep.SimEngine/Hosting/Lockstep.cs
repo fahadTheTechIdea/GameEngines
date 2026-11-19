@@ -39,8 +39,7 @@ namespace Beep.SimEngine.Hosting
     /// </summary>
     public sealed class NetSession
     {
-        private const byte MsgFrame = 1, MsgChecksum = 2, MsgHello = 3, MsgResume = 4;
-        private const byte ControlNone = 0, ControlPause = 1, ControlSpeed = 3;
+        private const byte MsgFrame = 1, MsgChecksum = 2, MsgHello = 3;
 
         private readonly SimGame _game;
         private readonly int _inputDelay;
@@ -53,8 +52,6 @@ namespace Beep.SimEngine.Hosting
         private readonly List<byte[]> _outbox = new List<byte[]>();
         private readonly Dictionary<long, ulong> _localHashes = new Dictionary<long, ulong>();
         private readonly Dictionary<long, ulong> _remoteHashes = new Dictionary<long, ulong>();
-        private byte _control;
-        private int _controlSpeed;
         private long _sealedThrough;
         private readonly LockstepPolicySettings _policy;
         public long? MaximumAhead => _policy.MaximumAhead;
@@ -63,8 +60,6 @@ namespace Beep.SimEngine.Hosting
         private sealed class Frame
         {
             public readonly List<Command> Commands = new List<Command>();
-            public byte Control;
-            public int Speed;
         }
 
         internal NetSession(SimGame game, LockstepOptions options)
@@ -200,25 +195,6 @@ namespace Beep.SimEngine.Hosting
             }
         }
 
-        /// <summary>Asks every peer to pause, resume or change speed at the same tick (sent with the next frame).</summary>
-        public void RequestPause() => _control = ControlPause;
-
-        /// <summary>
-        /// Resumes every machine. A paused game runs no ticks, so the resume cannot ride in a tick's frame:
-        /// it is sent at once, and every machine (all paused at the same tick) resumes when it hears it.
-        /// </summary>
-        public void RequestResume()
-        {
-            _game.Clock.ApplyResume();
-            _outbox.Add(new[] { MsgResume });
-        }
-        public void RequestSpeed(int speed)
-        {
-            if (speed < 1 || speed > 64) throw new ArgumentOutOfRangeException(nameof(speed));
-            _control = ControlSpeed; _controlSpeed = speed;
-        }
-
-        /// <summary>Messages to send to every peer since the last call.</summary>
         public int DrainOutgoing(IList<byte[]> dst)
         {
             for (int i = 0; i < _outbox.Count; i++) dst.Add(_outbox[i]);
@@ -238,7 +214,6 @@ namespace Beep.SimEngine.Hosting
             {
                 var r = new StateReader(message, 1, message.Length - 1);
                 if (message[0] == MsgFrame) ReadFrame(r);
-                else if (message[0] == MsgResume) _game.Clock.ApplyResume();
                 else if (message[0] == MsgChecksum)
                 {
                     long tick = 0; r.Long(ref tick);
@@ -262,11 +237,6 @@ namespace Beep.SimEngine.Hosting
             { State = NetState.Broken; return; }
             if (Has(tick, seat)) { State = NetState.Broken; return; }
             var f = new Frame();
-            byte control = 0; r.Byte(ref control); f.Control = control;
-            int speed = 0; r.Int(ref speed); f.Speed = speed;
-            if ((control != ControlNone && control != ControlPause && control != ControlSpeed)
-                || (control == ControlSpeed ? speed < 1 || speed > 64 : speed != 0))
-            { State = NetState.Broken; return; }
             // Same signed-integer wire count, not an unrelated save collection ceiling.
             int n = 0; r.Int(ref n);
             if (n < 0 || _policy.MaximumCommandsPerFrame.HasValue && n > _policy.MaximumCommandsPerFrame.Value)
@@ -326,9 +296,6 @@ namespace Beep.SimEngine.Hosting
                             for (int i = 0; i < count; i++) f.Commands.Add(_pending[s][i]);
                             _pending[s].RemoveRange(0, count);
                         }
-                        f.Control = _control;
-                        f.Speed = _control == ControlSpeed ? _controlSpeed : 0;
-                        _control = ControlNone;
                     }
                     _outbox.Add(Encode(t, s, f));
                 }
@@ -343,8 +310,6 @@ namespace Beep.SimEngine.Hosting
                 var w = new StateWriter(ms);
                 w.Long(ref tick);
                 w.Int(ref seat);
-                byte control = f.Control; w.Byte(ref control);
-                int speed = f.Speed; w.Int(ref speed);
                 w.Count(f.Commands.Count);
                 for (int i = 0; i < f.Commands.Count; i++)
                 {
@@ -390,8 +355,6 @@ namespace Beep.SimEngine.Hosting
                     c.IssuedTick = tick;
                     _game.World.SubmitStamped(c);
                 }
-                if (f.Control == ControlPause) _game.Clock.ApplyPause();
-                else if (f.Control == ControlSpeed && f.Speed >= 1 && f.Speed <= 64) _game.Clock.ApplySpeed(f.Speed);
                 _frames.Remove(key);
             }
             return true;

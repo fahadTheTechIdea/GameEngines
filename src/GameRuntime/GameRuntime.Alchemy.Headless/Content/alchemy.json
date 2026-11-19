@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "elements": [
+    { "id": "fire",      "name": "Fire",      "properties": ["hot"],            "starting": true },
+    { "id": "water",     "name": "Water",     "properties": ["wet"],            "starting": true },
+    { "id": "earth",     "name": "Earth",     "properties": ["solid"],          "starting": true },
+    { "id": "air",       "name": "Air",       "properties": ["light"],          "starting": true },
+    { "id": "steam",     "name": "Steam",     "properties": ["hot", "wet"],     "starting": false },
+    { "id": "mud",       "name": "Mud",       "properties": ["wet", "solid"],   "starting": false },
+    { "id": "lava",      "name": "Lava",      "properties": ["hot", "solid"],   "starting": false },
+    { "id": "dust",      "name": "Dust",      "properties": ["light", "solid"], "starting": false },
+    { "id": "cloud",     "name": "Cloud",     "properties": ["light", "wet"],   "starting": false },
+    { "id": "rain",      "name": "Rain",      "properties": ["wet"],            "starting": false },
+    { "id": "stone",     "name": "Stone",     "properties": ["solid"],          "starting": false },
+    { "id": "metal",     "name": "Metal",     "properties": ["solid", "hard"],  "starting": false },
+    { "id": "brick",     "name": "Brick",     "properties": ["solid", "hard"],  "starting": false },
+    { "id": "plant",     "name": "Plant",     "properties": ["living"],         "starting": false },
+    { "id": "lightning", "name": "Lightning", "properties": ["hot", "light"],   "starting": false },
+    { "id": "ash",       "name": "Ash",       "properties": ["light"],          "starting": false },
+    { "id": "glass",     "name": "Glass",     "properties": ["solid", "clear"], "starting": false }
+  ],
+  "recipes": [
+    { "id": "make-steam", "inputs": ["fire", "water"], "catalysts": [], "environment": [], "outputs": ["steam"], "ordered": false, "chance": { "numerator": 1, "denominator": 1 } },
+    { "id": "make-mud", "inputs": ["water", "earth"], "catalysts": [], "environment": [], "outputs": ["mud"], "ordered": false, "chance": { "numerator": 1, "denominator": 1 } },
+    { "id": "make-lava", "inputs": ["fire", "earth"], "catalysts": [], "environment": [], "outputs": ["lava"], "ordered": false, "chance": { "numerator": 1, "denominator": 1 } },
+    { "id": "make-dust", "inputs": ["earth", "air"], "catalysts": [], "environment": [], "outputs": ["dust"], "ordered": false, "chance": { "numerator": 1, "denominator": 1 } },
+    { "id": "make-cloud", "inputs": ["air", "steam"], "catalysts": [], "environment": [], "outputs": ["cloud"], "ordered": false, "chance": { "numerator": 1, "denominator": 1 } },
+    { "id": "make-rain", "inputs": ["cloud", "water"], "catalysts": [], "environment": [], "outputs": ["rain"], "ordered": false, "chance": { "numerator": 1, "denominator": 1 } },
+    { "id": "cool-lava", "inputs": ["lava", "water"], "catalysts": [], "environment": [], "outputs": ["stone"], "ordered": false, "chance": { "numerator": 1, "denominator": 2 } },
+    { "id": "smelt-metal", "inputs": ["stone", "fire"], "catalysts": [], "environment": ["heat"], "outputs": ["metal"], "ordered": false, "chance": { "numerator": 1, "denominator": 1 } },
+    { "id": "fire-brick", "inputs": ["mud", "fire"], "catalysts": [], "environment": [], "outputs": ["brick"], "ordered": true, "chance": { "numerator": 1, "denominator": 1 } },
+    { "id": "grow-plant", "inputs": ["water", "mud"], "catalysts": ["air"], "environment": [], "outputs": ["plant"], "ordered": false, "chance": { "numerator": 1, "denominator": 1 } },
+    { "id": "storm", "inputs": ["cloud", "fire"], "catalysts": [], "environment": [], "outputs": ["lightning", "ash"], "ordered": false, "chance": { "numerator": 1, "denominator": 1 } },
+    { "id": "melt-glass", "inputs": ["dust", "fire"], "catalysts": [], "environment": ["heat"], "outputs": ["glass"], "ordered": false, "chance": { "numerator": 1, "denominator": 1 } }
+  ]
+}

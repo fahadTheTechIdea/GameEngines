@@ -14,7 +14,7 @@ public sealed class ReplayBudgetTests
         var recorder = service.Record(simulation, Harness.Frame(0));
         recorder.Enqueue(Harness.Increment());
         recorder.CancelQueued("player", "one");
-        Assert.Throws<ScenarioContractException>(() => recorder.Step(Harness.Input(1)));
+        Assert.Throws<ScenarioContractException>(() => recorder.Update(Harness.Input(1)));
         recorder.Dispose();
         Assert.Equal(SessionPhase.Disposed, simulation.Snapshot.Phase);
         Assert.Equal(3, recorder.CaptureReplay().Entries.Length);

@@ -62,8 +62,7 @@ public sealed class WorldArtAssembler(IApprovedArtRegistry registry)
                 continue;
             }
             var manifest = await registry.ResolveAsync(binding.AssetId, token);
-            if (manifest is null || manifest.ApprovalState != ArtApprovalState.Approved ||
-                manifest.AssetId != binding.AssetId)
+            if (!WorldAssetDependencyManifestBuilder.IsComplete(manifest, binding.AssetId))
             {
                 issues.Add(new("ART_NOT_APPROVED", binding.ObjectId, "Matching approved GameArts asset required."));
                 continue;

@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Core/GameRuntime.Core.csproj" />
+    <ProjectReference Include="../../AIEngine/AIEngine.Core/AIEngine.Core.csproj" />
+  </ItemGroup>
+</Project>

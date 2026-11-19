@@ -99,7 +99,7 @@ public sealed class ContentTests
     [Fact]
     public void CoreAssembliesDoNotDependOnDomainOrGodot()
     {
-        foreach (var assembly in new[] { typeof(IGame).Assembly, typeof(GameBase).Assembly })
+        foreach (var assembly in new[] { typeof(IScenarioSimulation).Assembly, typeof(ScenarioSessionFactory).Assembly })
         {
             Assert.DoesNotContain(assembly.GetReferencedAssemblies(),
                 name => name.Name!.Contains("Godot", StringComparison.OrdinalIgnoreCase) ||

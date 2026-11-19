@@ -1,0 +1,117 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Terrain-constrained route generation and physical destination footprints remain to implement"
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    10,
+    10
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "hill",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 120,
+          "Y": 0
+        },
+        {
+          "X": 120,
+          "Y": 40
+        },
+        {
+          "X": 70,
+          "Y": 40
+        },
+        {
+          "X": 70,
+          "Y": 100
+        },
+        {
+          "X": 0,
+          "Y": 100
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "ground",
+        "Kind": "meadow",
+        "Purpose": "Exploration ground",
+        "SourceRuleId": "authored-ground",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 120,
+              "Y": 0
+            },
+            {
+              "X": 120,
+              "Y": 40
+            },
+            {
+              "X": 70,
+              "Y": 40
+            },
+            {
+              "X": 70,
+              "Y": 100
+            },
+            {
+              "X": 0,
+              "Y": 100
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 10,
+        "GradientX": 0.1,
+        "GradientY": 0.2
+      }
+    ]
+  }
+}

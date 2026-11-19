@@ -1,5 +1,0 @@
-{
-  "direct_flow_journals": [
-    { "id": "journal.actual", "retained_records_per_company": 2 }
-  ]
-}

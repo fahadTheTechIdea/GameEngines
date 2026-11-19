@@ -24,7 +24,7 @@ internal static class CatalogContractTests
             Vocabulary=modern.Descriptor.Vocabulary with { Resources=new HashSet<string>() } })]),"CATALOG_VOCABULARY_UNREGISTERED");
         Reject(()=>new SettlementCatalogRegistry([new Decorated(modern,modern.Descriptor with {
             Capabilities=new HashSet<string>() })]),"CATALOG_POLICY_CONTRACT_INVALID");
-        var request=SitingAlgorithmTests.Create(); var engine=new DesertWorldGenerator(registry);
+        var request=SitingAlgorithmTests.Create(); var engine=new MockupWorldGenerator(registry);
         await Rejected(engine,request with { Design=request.Design! with { Catalog=null } },"CATALOG_SELECTION_REQUIRED");
         await Rejected(engine,request with { Design=request.Design! with { Catalog=new("modern",ModernCapabilities.All.Where(c=>c!=ModernCapabilities.Electricity).ToHashSet()) } },"CATALOG_CAPABILITY_REQUIRED");
         await Rejected(engine,request with { Design=request.Design! with { SchemaVersion=2 } },"MOCKUP_DESIGN_INVALID");
@@ -32,7 +32,7 @@ internal static class CatalogContractTests
         var world=await engine.GenerateAsync(request);
         Check(world.Catalog!.Id=="modern" && world.Catalog.EnabledCapabilities.SetEquals(ModernCapabilities.All) && world.Catalog.ContentSha256.Length==64,"exported catalog provenance");
 
-        string pluginPath=Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,"../../../../WorldCreator.TestCatalog/bin/Release/net10.0/WorldCreator.TestCatalog.dll"));
+        string pluginPath=TestCatalogs.PluginPath;
         using var plugin=new SettlementCatalogPlugin(pluginPath);
         Reject(()=>new SettlementCatalogPlugin(pluginPath+".missing"),"CATALOG_PLUGIN_PATH_INVALID");
         Reject(()=>new SettlementCatalogPlugin(typeof(ISettlementCatalogProvider).Assembly.Location),"CATALOG_PLUGIN_PROVIDER_MISSING");
@@ -45,7 +45,7 @@ internal static class CatalogContractTests
         var registered=plugins.Resolve(selection);
         Check(new BuildingProgramPlanner(registered.Structures,registered.Demand).Plan(new(SettlementClass.Town,SettlementRole.Mixed,1)).Needs.Single().DefinitionId=="test.arcane-hall","fixed external demand policy");
         var arcane=Arcane(request,external,selection);
-        var arcaneEngine=new DesertWorldGenerator(plugins);
+        var arcaneEngine=new MockupWorldGenerator(plugins);
         var arcaneWorld=await arcaneEngine.GenerateAsync(arcane);
         Check(arcaneWorld.Siting!.Status==SitingEvaluationStatus.Passed && arcaneWorld.Siting.Allocations.Single().RequirementId=="mana" &&
             arcaneWorld.Catalog!.Id=="test.arcane" && !arcaneWorld.Catalog.EnabledCapabilities.Any(c=>c.StartsWith("modern.",StringComparison.Ordinal)),"custom vocabulary and fixed code without Modern services");
@@ -99,7 +99,7 @@ internal static class CatalogContractTests
         }
         finally { Directory.Delete(root,true); }
     }
-    private static async Task Rejected(DesertWorldGenerator engine,WorldRequest request,string code)
+    private static async Task Rejected(MockupWorldGenerator engine,WorldRequest request,string code)
     {
         try { await engine.GenerateAsync(request); } catch (WorldGenerationException ex) when (ex.Issues.Any(i=>i.StartsWith(code,StringComparison.Ordinal))) { return; }
         throw new Exception("Expected catalog rejection: "+code);

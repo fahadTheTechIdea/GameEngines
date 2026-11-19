@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "modules": [
+    { "id": "sim.access", "version": "1.0.0", "documents": ["open-access.json"] },
+    { "id": "sim.inventory", "version": "1.0.0", "documents": ["planet-x-resources.json"] },
+    { "id": "sim.operations", "version": "1.0.0", "documents": [] },
+    { "id": "sim.motion", "version": "1.0.0", "documents": [] },
+    { "id": "sim.work", "version": "1.0.0",
+      "requires": [ { "id": "sim.access", "version": "1.0.0" }, { "id": "sim.inventory", "version": "1.0.0" }, { "id": "sim.motion", "version": "1.0.0" } ],
+      "documents": ["planet-x-work.json", "work-retry.json"] },
+    { "id": "sim.logistics", "version": "1.0.0",
+      "requires": [ { "id": "sim.work", "version": "1.0.0" }, { "id": "sim.inventory", "version": "1.0.0" } ],
+      "documents": ["planet-x-logistics.json"] },
+    { "id": "sim.transformations", "version": "1.0.0",
+      "requires": [ { "id": "sim.access", "version": "1.0.0" }, { "id": "sim.inventory", "version": "1.0.0" }, { "id": "sim.operations", "version": "1.0.0" } ],
+      "documents": ["planet-x-recipes.json"] },
+    { "id": "sim.knowledge", "version": "1.0.0", "documents": [] },
+    { "id": "sim.technology", "version": "1.0.0",
+      "requires": [ { "id": "sim.work", "version": "1.0.0" }, { "id": "sim.knowledge", "version": "1.0.0" } ],
+      "documents": ["workshop-gates.json"] },
+    { "id": "sim.world-setup", "version": "1.0.0", "documents": [] },
+    { "id": "sim.tile-navigation", "version": "1.0.0", "requires": [ { "id": "sim.motion", "version": "1.0.0" } ], "documents": ["workshop-navigation.json"] },
+    { "id": "workshop", "version": "1.0.0",
+      "requires": [ { "id": "sim.access", "version": "1.0.0" }, { "id": "sim.world-setup", "version": "1.0.0" }, { "id": "sim.transformations", "version": "1.0.0" }, { "id": "sim.logistics", "version": "1.0.0" } ],
+      "documents": ["workshop-world.json"] },
+    { "id": "gf.director", "version": "1.0.0", "documents": [] },
+    { "id": "gf.alchemy-sim", "version": "1.0.0",
+      "requires": [ { "id": "sim.transformations", "version": "1.0.0" }, { "id": "sim.technology", "version": "1.0.0" } ],
+      "documents": [] }
+  ]
+}

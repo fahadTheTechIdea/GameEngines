@@ -3,6 +3,9 @@ name: gameframework-project-setup
 description: Conversational, resumable GameFrameWork settings wizard coordinated with GameArts project setup in either order.
 ---
 # GameFrameWork setup wizard
+Apply this wizard to configuring a consuming game. Work on the GameFrameWork
+framework, its reusable generation pipeline or example fixtures is not game setup;
+do not ask for a game name/settings merely because a framework example exists.
 Users may start with any natural-language game-building request, such as "Let's start building a game", "Build a Godot game", "Set up GameFrameWork", or "Continue my game"; no special command phrase is required. This is an agent-led conversation: no user-executed commands, JSON edits or cloning. When GameFrameWork setup is requested initially, ensure **both** the canonical GameArts project wizard and this wizard run (either order); reuse existing answers and resume state. See `.agents/skills/world-generator/SKILL.md`.
 
 ## World wizard questions

@@ -1,0 +1,44 @@
+{ "format": 2, "id": "mini", "seed": 7, "time": { "stepsPerDay": 1 }, "limits": { "maxHazards": 8, "maxEffects": 8, "maxAgenda": 8 },
+  "hydrology": { "freezing": 0, "soilCapacity": 1000, "initialSoil": 500, "evapPerDegree": 2, "meltPerDegree": 30, "drainPermille": 150, "wetDecay": 140, "heavyPermille": 0, "heavyFactor": 1000 },
+  "seasons": [ { "id": "warm", "key": "s.warm", "steps": 10 }, { "id": "cold", "key": "s.cold", "steps": 10 } ],
+  "modifiers": [ { "id": "vis", "key": "m.vis", "base": 1000, "min": 0, "max": 1000 }, { "id": "labor", "key": "m.labor", "base": 1000, "min": 0, "max": 1500 } ],
+  "weathers": [
+    { "id": "dry", "key": "w.dry", "tempOffset": 0, "precip": 0, "wind": 0, "wet": false, "modifiers": [] },
+    { "id": "wet", "key": "w.wet", "tempOffset": 0, "precip": 100, "wind": 50, "wet": true, "modifiers": [ { "modifier": "vis", "delta": -300 } ] } ],
+  "zones": [ { "id": "z", "key": "z.z", "koppen": "Cfb", "spill": 0, "seasons": [
+    { "temp": 1500, "sigma": 300, "phi": 500, "wind": 30, "persistence": 500, "frequency": [ 1, 1 ] },
+    { "temp": -500, "sigma": 300, "phi": 500, "wind": 30, "persistence": 500, "frequency": [ 1, 1 ] } ] } ],
+  "regimes": [ { "id": "r1", "key": "r.r1", "persistence": 1000, "frequency": [ 1, 1 ], "bias": [ 1000, 1000 ] } ],
+  "regions": [
+    { "id": "a", "key": "g.a", "zone": "z", "market": "ma", "population": 10000, "exposure": [ { "hazard": "h", "permille": 1000 } ], "immune": [] },
+    { "id": "b", "key": "g.b", "zone": "z", "market": "", "population": 5000, "exposure": [ { "hazard": "h", "permille": 1000 } ], "immune": [ { "disease": "d", "permille": 200 } ] } ],
+  "links": [ { "a": "a", "b": "b", "flowPpm": 100000 } ],
+  "hazards": [ { "id": "h", "key": "h.h", "kind": "flood", "paced": false, "ratePpm": 0, "excite": { "jumpPpm": 0, "decayPermille": 1000, "capPpm": 0 }, "seasonal": [ 1000, 1000 ], "excludes": [], "cooldown": 3, "reach": { "hops": 1, "falloff": 500 },
+    "ladder": [
+      { "id": "low", "key": "r.low", "tailPpm": 1000000, "minDuration": 3, "maxDuration": 3, "onsetSteps": 2, "recoverySteps": 2, "stress": 100, "escalatePpm": 0,
+        "effects": [ { "signal": "sig.low" }, { "modifier": "vis", "delta": -500 } ] },
+      { "id": "high", "key": "r.high", "tailPpm": 300000, "minDuration": 2, "maxDuration": 2, "onsetSteps": 0, "recoverySteps": 1, "stress": 300, "escalatePpm": 0,
+        "effects": [ { "signal": "sig.high" }, { "shock": "sh1", "scale": 700 } ] } ] } ],
+  "diseases": [ { "id": "d", "key": "d.d", "model": "seir", "betaPpm": 400000, "incubation": 2, "infectious": 4, "waning": 0, "fatality": 100, "seasonal": [ 1000, 1000 ], "seedPpm": 0, "seedCases": 0, "outbreakAt": 50,
+    "paced": false, "stress": 200, "burdenAt": 100, "burden": [ { "modifier": "labor", "delta": -300 } ], "onOutbreak": [ { "signal": "sig.outbreak" } ] } ],
+  "interventions": [
+    { "id": "quar", "key": "i.quar", "disease": "d", "betaPermille": 300, "flowPermille": 100, "vaccinate": 0, "treat": 1000, "fatalityPermille": 1000, "autoAt": 0 },
+    { "id": "vacc", "key": "i.vacc", "disease": "d", "betaPermille": 1000, "flowPermille": 1000, "vaccinate": 100, "treat": 1000, "fatalityPermille": 1000, "autoAt": 0 },
+    { "id": "auto", "key": "i.auto", "disease": "d", "betaPermille": 500, "flowPermille": 1000, "vaccinate": 0, "treat": 1000, "fatalityPermille": 1000, "autoAt": 100 } ],
+  "storytellers": [
+    { "id": "t", "key": "t.t", "decay": 100, "peakAt": 500, "relaxBelow": 200, "peakHold": 2, "restMin": 3, "gapMin": 1, "gapMax": 5, "share": [ 1000, 1000, 1000 ] },
+    { "id": "calm", "key": "t.calm", "decay": 500, "peakAt": 1001, "relaxBelow": 0, "peakHold": 0, "restMin": 0, "gapMin": 100000, "gapMax": 100000, "share": [ 1000, 1000, 1000 ] } ],
+  "difficulties": [
+    { "id": "normal", "key": "x.normal", "hazard": 1000, "bad": 1000, "disease": 1000, "stressGain": 1000 },
+    { "id": "hard", "key": "x.hard", "hazard": 2000, "bad": 2000, "disease": 2000, "stressGain": 2000 } ],
+  "cards": [
+    { "id": "c-bad", "key": "c.bad", "tier": "bad", "scope": "region", "weight": 100, "cooldown": 5, "group": "g", "duration": 3, "intensity": 300,
+      "effects": [ { "signal": "sig.bad" }, { "modifier": "vis", "delta": -200, "duration": 4 } ], "chain": [ { "card": "c-after", "delay": 2, "probability": 1000 } ] },
+    { "id": "c-after", "key": "c.after", "tier": "neutral", "scope": "region", "weight": 0, "cooldown": 0, "group": "", "duration": 0, "intensity": 0, "effects": [ { "signal": "sig.after" } ], "chain": [] },
+    { "id": "c-good", "key": "c.good", "tier": "good", "scope": "region", "weight": 100, "cooldown": 5, "group": "", "duration": 0, "intensity": -200,
+      "when": { "fact": "season", "op": "eq", "value": "warm" }, "effects": [ { "signal": "sig.good" } ], "chain": [] },
+    { "id": "c-global", "key": "c.global", "tier": "neutral", "scope": "global", "weight": 50, "cooldown": 5, "group": "", "duration": 0, "intensity": 0,
+      "effects": [ { "signal": "sig.global" }, { "shock": "sh1", "scale": 500 }, { "modifier": "labor", "delta": 100, "duration": 2 } ], "chain": [] } ],
+  "facts": [ { "id": "ext.alert", "type": "int", "min": 0, "max": 10 } ],
+  "start": { "storyteller": "t", "difficulty": "normal" } }
+

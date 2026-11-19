@@ -16,7 +16,8 @@ public sealed record WorldQualityReport(
 public sealed record WorldQualityRules(
     double MinimumTerrainCoverageRatio,
     double MaximumBuildingPathDistanceMeters,
-    int MinimumVegetationCount);
+    int MinimumVegetationCount,
+    string BaseGroundRegionId);
 
 /// <summary>
 /// Checks a known base-ground rectangle against styled fill geometry, path graph
@@ -26,18 +27,19 @@ public sealed record WorldQualityRules(
 /// </summary>
 public sealed class WorldQualityAnalyzer
 {
-    public WorldQualityReport Analyze(DummyVillageWorldDocument document, WorldQualityRules rules)
+    public WorldQualityReport Analyze(WorldSceneDocument document, WorldQualityRules rules)
     {
         ArgumentNullException.ThrowIfNull(document);
         ArgumentNullException.ThrowIfNull(rules);
-        if (!double.IsFinite(rules.MinimumTerrainCoverageRatio) ||
+        if (string.IsNullOrWhiteSpace(rules.BaseGroundRegionId) ||
+            !double.IsFinite(rules.MinimumTerrainCoverageRatio) ||
             rules.MinimumTerrainCoverageRatio is < 0 or > 1 ||
             !double.IsFinite(rules.MaximumBuildingPathDistanceMeters) ||
             rules.MaximumBuildingPathDistanceMeters < 0 || rules.MinimumVegetationCount < 0)
             throw new ArgumentException("Invalid world quality thresholds.");
 
         var issues = new List<string>();
-        var ground = document.SemanticWorld.Terrain.SingleOrDefault(t => t.Id == "village-ground");
+        var ground = document.SemanticWorld.Terrain.SingleOrDefault(t => t.Id == rules.BaseGroundRegionId);
         if (ground is null) issues.Add("BASE_GROUND_MISSING");
         double groundArea = ground is null ? 0 : Math.Abs(ground.Boundary.SignedArea());
         double styledArea = document.TerrainMaterials

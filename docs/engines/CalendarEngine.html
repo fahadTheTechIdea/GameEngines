@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CalendarEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="CalendarEngine.html" aria-current="page">CalendarEngine</a>
+      <a href="../CALENDAR_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>CalendarEngine</h1>
+  <p class="lede">A game clock and date system: invented or real calendars with whole-number date arithmetic, seasons and daylight, moons, holidays and recurrence rules, actor schedules with interrupts, and the <code>cal.*</code> facts other engines read.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">pure date arithmetic</span>
+    <span class="tag">no wall clock</span>
+    <span class="tag">save / replay</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#document">Document format</a></li>
+    <li><a href="#dates">Date arithmetic</a></li>
+    <li><a href="#recurrence">Recurrence and holidays</a></li>
+    <li><a href="#schedules">Schedules and selectors</a></li>
+    <li><a href="#runtime">Runtime clock</a></li>
+    <li><a href="#facts">The cal.* facts</a></li>
+    <li><a href="#cli">Command line</a></li>
+    <li><a href="#component">GameRuntime integration</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>CalendarEngine is the single owner of in-game time. It converts a tick count into a date, time of day, weekday, season, daylight level, moon phase and holiday state — and back — using whole numbers only. It also says where each actor should be and what it should be doing at an instant, from day-part routines with interrupts.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Calendar declarations, date arithmetic, leap rules, recurrence, seasons and daylight, moons, holidays, schedules and interrupts, time advancement and its save image.</p></div>
+  <div class="card"><h3>It does not own</h3><p>Gameplay speed decisions, rendering, localised strings (it emits keys), NPC movement, or real-world clock time.</p></div>
+  <div class="card"><h3>Deterministic by construction</h3><p>No <code>DateTime</code>, no floating point, no wall clock, no random. The same instant always yields the same reading.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/CalendarEngine/CalendarEngine.Core</code></td><td>Reader and validator, date system, recurrence, holidays, schedules, runtime clock, facts, save.</td><td>net8.0</td></tr>
+    <tr><td><code>src/CalendarEngine/CalendarEngine.Cli</code></td><td><code>check</code>, <code>explain</code>, <code>convert</code>, <code>month-view</code>, <code>coverage</code>.</td><td>net8.0</td></tr>
+    <tr><td><code>src/CalendarEngine/CalendarEngine.Sim</code></td><td><code>CalendarSimCalendar</code> exposes the calendar as SimEngine's <code>ICalendar</code>.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Calendar</code></td><td><code>CalendarComponent</code>, channels, journal, checkpoint and replay.</td><td>net10.0</td></tr>
+  </tbody>
+</table>
+<p>Samples: <code>samples/gregorian.calendar.json</code>, <code>valley.calendar.json</code>, <code>realms.calendar.json</code> with English locale tables.</p>
+
+<h2 id="document" class="anchor">Document format</h2>
+<p>Strict format-1 JSON. Every declaration carries a stable <code>id</code> and a localisation <code>key</code>; strings the player sees are never stored in the calendar.</p>
+<table>
+  <thead><tr><th>Section</th><th>Contents</th></tr></thead>
+  <tbody>
+    <tr><td><code>time</code></td><td><code>hoursPerDay</code>, <code>minutesPerHour</code>, <code>ticksPerMinute</code>. Defines <code>TicksPerDay</code>.</td></tr>
+    <tr><td><code>epoch</code></td><td>Epoch year and the weekday of its first day (only when weeks run continuously).</td></tr>
+    <tr><td><code>weekMode</code></td><td><code>continuous</code> or <code>restart</code> (weeks restart each month).</td></tr>
+    <tr><td><code>weekdays</code>, <code>months</code></td><td>Ordered ids/keys. A month has <code>days</code>, <code>leapDays</code> and optional <code>intercalary</code>.</td></tr>
+    <tr><td><code>leap</code></td><td>Rules <code>{ every, offset, leap }</code>; the last matching rule wins.</td></tr>
+    <tr><td><code>eras</code></td><td>Named year counts from a year, up or down (1 BCE is year 0).</td></tr>
+    <tr><td><code>dayParts</code>, <code>seasons</code></td><td>Parts of the day with start minutes; seasons with month/day start and sunrise/sunset minutes; <code>twilightMinutes</code>.</td></tr>
+    <tr><td><code>moons</code></td><td>Exact period and new-moon fractions plus eight phase keys.</td></tr>
+    <tr><td><code>holidays</code></td><td>A recurrence rule, duration in days and tags.</td></tr>
+    <tr><td><code>formats</code></td><td>Date format messages chosen by key.</td></tr>
+    <tr><td><code>locations</code>, <code>activities</code>, <code>interrupts</code></td><td>Declared places and activities; interrupts with priority, location and activity.</td></tr>
+    <tr><td><code>facts</code>, <code>schedules</code></td><td>Host fact declarations the selectors may read; schedules of prioritised routines of minute blocks.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="dates" class="anchor">Date arithmetic</h2>
+<pre><code>long day      = system.DayNumber(new CalendarDate(year, monthIndex, day)); // month is 0-based
+DayInfo info  = system.DayOf(day);
+Moment moment = system.MomentOf(instant);   // refuses instants outside the supported years
+CalendarDate d = moment.Day.Date;</code></pre>
+<ul>
+  <li>Supported years are −100,000 to 100,000; instants outside that range are refused (<code>CALENDAR_INSTANT_RANGE</code>).</li>
+  <li>Gregorian, Julian and invented calendars share one engine; leap rules are declarative.</li>
+  <li><code>DaylightAt(season, minuteOfDay)</code> returns <code>IsDay</code>, a 0–1000 light value ramping through twilight, sunrise and sunset.</li>
+  <li><code>MoonAt(moon, instant)</code> returns one of eight phases and a permille position using exact fractions (<code>Int128</code>), so there is no drift.</li>
+</ul>
+
+<h2 id="recurrence" class="anchor">Recurrence and holidays</h2>
+<p><code>Recurrence</code> implements the day-granular subset of RFC 5545 §3.3.10: <code>FREQ</code> (daily, weekly, monthly, yearly), <code>INTERVAL</code>, <code>UNTIL</code>, <code>BYMONTH</code>, <code>BYMONTHDAY</code> (negative counts from the end), <code>BYDAY</code> with ordinals, plus <code>BYSEASON</code>. <code>COUNT</code> and <code>BYSETPOS</code> are refused because they need enumeration from the start.</p>
+<ul>
+  <li><code>HolidaysStartingOn(day)</code> — holidays whose rule matches this day.</li>
+  <li><code>HolidaysOn(day)</code> — includes multi-day holidays that started earlier.</li>
+  <li><code>NextOccurrence(rule, fromDay, withinDays)</code> / <code>NextHoliday(index, fromDay, withinDays)</code> — bounded search, null when none.</li>
+</ul>
+
+<h2 id="schedules" class="anchor">Schedules and selectors</h2>
+<p>A schedule holds routines ordered by priority. Each routine has a <code>Selector</code> and minute blocks <code>[From, To)</code> with a location and an activity. A selector is an AND of the fields it gives (weekdays, months, seasons, holidays, a date recurrence, a shared condition over host facts); inside a list any entry may match.</p>
+<pre><code>CalendarContext context = runtime.Context(hostFacts);
+ScheduleAnswer answer   = runtime.WhereIs(context, "baker");
+// answer = Location, Activity, Source (Routine|Interrupt), Routine, Block, Priority, From, To</code></pre>
+<p>An interrupt (alarm, invitation) overrides routines while it lasts. A lower-priority interrupt cannot replace a higher-priority one (<code>CALENDAR_OUTRANKED</code>); an equal or higher one can.</p>
+
+<h2 id="runtime" class="anchor">Runtime clock</h2>
+<p><code>CalendarRuntime.Create(set, startInstant, scaleNumerator, scaleDenominator, startTick)</code> binds the calendar to a rational speed: calendar ticks per game tick. The fractional remainder is carried exactly, so a long run does not drift.</p>
+<table>
+  <thead><tr><th>Member</th><th>Contract</th></tr></thead>
+  <tbody>
+    <tr><td><code>Step(gameTick)</code></td><td>Earns elapsed calendar ticks, applies at most 400 days, keeps the rest as <code>Backlog</code>. Returns <code>TimeStep</code> or null when nothing moved.</td></tr>
+    <tr><td><code>SkipTo(instant)</code></td><td>Jumps forward at once (sleep until morning), at most 366 days, independent of scale and pause.</td></tr>
+    <tr><td><code>SetScale(n, d)</code> / <code>SetPaused(bool)</code></td><td>Speed is 1–366 days per game tick with denominator ≤ 10,000; changing scale drops the sub-tick remainder.</td></tr>
+    <tr><td><code>AddActor</code> / <code>RemoveActor</code></td><td>At most 100,000 actors; ids 1–128 chars; the schedule must exist.</td></tr>
+    <tr><td><code>Interrupt</code> / <code>ClearInterrupt</code></td><td>Duration 1 tick to 366 days; priority ordering is enforced.</td></tr>
+    <tr><td><code>Refresh(context, max)</code></td><td>Actors whose answer changed since last announced, at most <code>max</code>, in id order; the rest wait for the next call.</td></tr>
+  </tbody>
+</table>
+<p><code>TimeStep</code> reports days crossed, whether the instant was clamped at the end of supported time, day-part change, every season change crossed, the first 64 holiday starts and how many more were omitted. Tick order is monotonic and a single Step accepts at most 50,000,000 elapsed game ticks (<code>CALENDAR_TICK_ORDER</code>).</p>
+
+<h2 id="facts" class="anchor">The cal.* facts</h2>
+<p><code>CalendarFacts.Read(set, moment)</code> returns a fact dictionary under the reserved <code>cal.</code> prefix, usable by schedule selectors, dialogue conditions and AI percepts:</p>
+<p><code>cal.year</code>, <code>cal.month_number</code>, <code>cal.day_of_month</code>, <code>cal.day_of_year</code>, <code>cal.weekday_number</code>, <code>cal.hour</code>, <code>cal.minute</code>, <code>cal.minute_of_day</code>, <code>cal.light</code>, <code>cal.month</code>, <code>cal.weekday</code>, <code>cal.season</code>, <code>cal.daypart</code>, <code>cal.era</code>, <code>cal.holiday_id</code>, <code>cal.is_day</code>, <code>cal.is_holiday</code>, <code>cal.is_leap_year</code>, and <code>cal.moon.&lt;id&gt;</code> per moon.</p>
+<p><code>CalendarFacts.Definitions(system, moons)</code> gives the type and range of each so a dialogue document can declare them as external facts.</p>
+
+<h2 id="cli" class="anchor">Command line</h2>
+<pre><code>CalendarEngine.Cli check &lt;calendar.json&gt;
+CalendarEngine.Cli explain &lt;calendar.json&gt; &lt;schedule&gt; &lt;year-month-day&gt; &lt;H:MM&gt; [--interrupt &lt;id&gt;] [--fact &lt;id&gt;=&lt;value&gt;]...
+CalendarEngine.Cli convert &lt;calendar.json&gt; instant &lt;ticks&gt;
+CalendarEngine.Cli convert &lt;calendar.json&gt; date &lt;year-month-day&gt; [&lt;H:MM&gt;]
+CalendarEngine.Cli month-view &lt;calendar.json&gt; &lt;year&gt; &lt;month&gt; [--table &lt;locale.json&gt;]
+CalendarEngine.Cli coverage &lt;calendar.json&gt; &lt;locale.json&gt; [&lt;locale.json&gt; ...]</code></pre>
+<p>Exit codes: <code>0</code> done (for <code>coverage</code>, every table complete), <code>1</code> refused or incomplete, <code>2</code> usage or file problem.</p>
+
+<h2 id="component" class="anchor">GameRuntime integration</h2>
+<p><code>CalendarComponent</code> applies scale, pause, skip, actor, interrupt and query requests inside <code>Update</code>, then advances the clock and emits what changed. Install the channels with <code>CalendarChannels.Install(session)</code> before <code>Init</code>.</p>
+<table>
+  <thead><tr><th>Event</th><th>Direction</th></tr></thead>
+  <tbody>
+    <tr><td><code>calendar.scale-requested</code>, <code>pause-requested</code>, <code>skip-requested</code>, <code>actor-add-requested</code>, <code>actor-remove-requested</code>, <code>interrupt-requested</code>, <code>interrupt-clear-requested</code>, <code>where-requested</code></td><td>Request in</td></tr>
+    <tr><td><code>calendar.applied</code>, <code>calendar.refused</code>, <code>calendar.where-answered</code></td><td>Answer out</td></tr>
+    <tr><td><code>calendar.time-advanced</code>, <code>day-changed</code>, <code>day-part-changed</code>, <code>season-changed</code>, <code>holiday-started</code>, <code>schedule-block-changed</code></td><td>Change out</td></tr>
+  </tbody>
+</table>
+<p><code>CalendarJournal</code> records per-tick channel entries; <code>CalendarTranscript</code> and <code>CalendarReplay</code> verify a recorded run and its state digest; <code>CalendarCheckpoint</code> captures and restores the runtime. <code>GameRuntime.Calendar.Ai</code> feeds calendar time to AIEngine agents.</p>
+
+<h2 id="testing" class="anchor">Testing</h2>
+<pre><code>dotnet run --project src/CalendarEngine/CalendarEngine.Tests -c Release</code></pre>
+<p>Suites: <code>DateTests</code>, <code>FictionalCalendarTests</code>, <code>LeapRules</code>/edge tests, <code>RecurrenceTests</code>, <code>ScheduleTests</code>, <code>RuntimeTests</code>, <code>SaveTests</code>, <code>SkyAndFactsTests</code>, <code>NamesTests</code>, <code>CliTests</code>, <code>ScaleTests</code>, <code>ClockEdgeTests</code>, <code>DocumentBoundaryTests</code>, <code>RefusalMatrixTests</code> and <code>SourceGuardTests</code>.</p>
+
+<h2 id="source" class="anchor">Source map</h2>
+<dl class="kv">
+  <dt>Reader</dt><dd><code>CalendarReader.cs</code>, <code>CalendarReader.Time.cs</code>, <code>CalendarReader.Holidays.cs</code>, <code>CalendarReader.Schedules.cs</code></dd>
+  <dt>Date system</dt><dd><code>CalendarSystem.cs</code>, <code>LeapRules.cs</code>, <code>Definitions.cs</code></dd>
+  <dt>Rules</dt><dd><code>Recurrence.cs</code>, <code>CalendarSet.cs</code>, <code>CalendarContext.cs</code></dd>
+  <dt>Runtime</dt><dd><code>CalendarRuntime.cs</code>, <code>CalendarSave.cs</code>, <code>CalendarImage.cs</code>, <code>CalendarStateRules.cs</code></dd>
+  <dt>Facts and text</dt><dd><code>CalendarFacts.cs</code>, <code>CalendarNames.cs</code>, <code>CalendarExplain.cs</code></dd>
+  <dt>Refusals</dt><dd><code>CalendarCodes.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/CalendarEngine</code> and <code>src/GameRuntime/GameRuntime.Calendar*</code>. Research, performance and acceptance evidence: <a href="../CALENDAR_ENGINE.md">docs/CALENDAR_ENGINE.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

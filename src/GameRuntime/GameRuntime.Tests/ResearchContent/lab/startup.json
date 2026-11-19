@@ -1,0 +1,7 @@
+{
+  "world_setup_profiles": [{ "id": "lab.start", "entries": ["lab.bench.start", "lab.annex.start"], "includes": [] }],
+  "entity_setups": [
+    { "id": "lab.bench.start", "after": [], "entity": "lab.bench", "company": 0, "placement": null, "home": null },
+    { "id": "lab.annex.start", "after": ["lab.bench.start"], "entity": "lab.annex", "company": 0, "placement": null, "home": null }
+  ]
+}

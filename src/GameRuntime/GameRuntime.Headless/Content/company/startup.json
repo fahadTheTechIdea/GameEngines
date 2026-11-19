@@ -1,0 +1,6 @@
+{
+  "world_setup_profiles": [{ "id": "company.start", "entries": ["company.marker.start"], "includes": [] }],
+  "entity_setups": [
+    { "id": "company.marker.start", "after": [], "entity": "company.marker", "company": 0, "placement": null, "home": null }
+  ]
+}

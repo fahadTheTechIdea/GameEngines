@@ -1,0 +1,51 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "locations",
+          "ArchetypeId": "location",
+          "Count": 4,
+          "Purpose": "Authored observation points",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                -16,
+                -16
+              ],
+              "Step": [
+                24,
+                16
+              ]
+            }
+          }
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent"
+    },
+    {
+      "Id": "location",
+      "Kind": "destination",
+      "Purpose": "A game-defined destination",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent"
+    }
+  ]
+}

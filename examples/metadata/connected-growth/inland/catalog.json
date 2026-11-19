@@ -1,0 +1,349 @@
+{
+  "SchemaVersion": 1,
+  "Id": "expedition-spaces",
+  "Archetypes": [
+    {
+      "Id": "world",
+      "Kind": "world",
+      "Purpose": "Connected expedition sites",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "bases",
+          "ArchetypeId": "base",
+          "Count": 5,
+          "Purpose": "Required complete base",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "base",
+      "Kind": "compound",
+      "Purpose": "Required base",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "hut",
+          "ArchetypeId": "hut",
+          "Count": 1,
+          "Purpose": "Weather shelter",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "yard",
+          "ArchetypeId": "yard",
+          "Count": 1,
+          "Purpose": "Supply handling",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [
+        {
+          "Id": "supply-access",
+          "Kind": "local-access",
+          "Pattern": "Pairs",
+          "FromPart": "hut",
+          "ToPart": "yard",
+          "Bidirectional": true,
+          "Properties": null,
+          "LayerId": null
+        },
+        {
+          "Id": "arrival-access",
+          "Kind": "arrival-access",
+          "Pattern": "AllPairs",
+          "FromPart": "self",
+          "ToPart": "hut",
+          "Bidirectional": true,
+          "Properties": null,
+          "LayerId": null
+        }
+      ],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized base",
+        "SourceRuleId": "program:base",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -5,
+              "Y": -4
+            },
+            {
+              "X": 5,
+              "Y": -4
+            },
+            {
+              "X": 5,
+              "Y": 3
+            },
+            {
+              "X": 3,
+              "Y": 4
+            },
+            {
+              "X": -5,
+              "Y": 4
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": [
+          {
+            "Id": "north",
+            "Purpose": "Regional entrance",
+            "SourceRuleId": "program:entrance",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -4
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -5
+            },
+            "Width": 1
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "hut",
+      "Kind": "structure",
+      "Purpose": "Required hut",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized hut",
+        "SourceRuleId": "program:hut",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -2,
+              "Y": -1
+            },
+            {
+              "X": 2,
+              "Y": -1
+            },
+            {
+              "X": 2,
+              "Y": 1
+            },
+            {
+              "X": -2,
+              "Y": 1
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -2.25,
+              "Y": -1.25
+            },
+            {
+              "X": 2.25,
+              "Y": -1.25
+            },
+            {
+              "X": 2.25,
+              "Y": 1.25
+            },
+            {
+              "X": -2.25,
+              "Y": 1.25
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": [
+          {
+            "Id": "north",
+            "Purpose": "Hut entrance",
+            "SourceRuleId": "program:hut-door",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -1
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -2
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "yard",
+      "Kind": "ground-area",
+      "Purpose": "Required yard",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "cache",
+          "ArchetypeId": "cache",
+          "Count": 1,
+          "Purpose": "Supply storage",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized yard",
+        "SourceRuleId": "program:yard",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -1.5,
+              "Y": -1.5
+            },
+            {
+              "X": 1.5,
+              "Y": -1.5
+            },
+            {
+              "X": 1.5,
+              "Y": 1.5
+            },
+            {
+              "X": -1.5,
+              "Y": 1.5
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -1.75,
+              "Y": -1.75
+            },
+            {
+              "X": 1.75,
+              "Y": -1.75
+            },
+            {
+              "X": 1.75,
+              "Y": 1.75
+            },
+            {
+              "X": -1.75,
+              "Y": 1.75
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": [
+          {
+            "Id": "north",
+            "Purpose": "Work area access",
+            "SourceRuleId": "program:yard-access",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -1.5
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -2.5
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "cache",
+      "Kind": "equipment",
+      "Purpose": "Required cache",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized cache",
+        "SourceRuleId": "program:cache",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            {
+              "X": -0.5,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

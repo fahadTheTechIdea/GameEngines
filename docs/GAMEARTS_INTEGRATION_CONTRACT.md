@@ -2,7 +2,593 @@
 
 GameFrameWork owns world design and generation. GameArtsSkills owns art settings, mockups, lifecycle approval, production frames, atlases and component bundles. A capture is source evidence and a design handoff; it never grants art approval. Keep one maintained contract per artifact, with no compatibility branch or alternative art standard.
 
+## Sampled component animation
+
+`MetadataProductionBinding.Animation` optionally supplies a
+`GameArtsAnimationRequest` for a physical member. Keep the member's single root
+frame reference and measured ground-anchor names; the animation request declares
+`Version: 1`, stable `AssetId`, `Revision`, `BundlePath`, `Facing`,
+`DurationSeconds`, `Loop`, `MaximumPoseIntervalSeconds`, and complete `Sources`.
+Each source supplies `ComponentId`, `FrameName` and a hash-pinned `Master`.
+Every frame of every component in the selected facing must be accounted for.
+Terrain targets cannot carry member animation.
+
+`GameArtsProductionGate.ResolveAnimationAsync` uses the same registry, file
+validation and exact-artifact approval boundary as static frames. It retains the
+native bundle identity separately, validates parent-first component order, all
+mounts/frames, uniform pixel scale, draw order, affine matrices and exact frame/
+pivot references. Frame durations define the canonical **relative weights** on
+the normalized timeline; the explicit request duration defines playback seconds.
+Every sampled frame index must agree with those weights, every frame boundary
+must have a pose, endpoint poses 0/1 are mandatory, and gaps cannot exceed the
+declared maximum. Missing samples are refused rather than manufactured.
+
+`GameArtsAnimationClip.MovingComponentIds` reports components with frame animation
+or changing sampled world matrices, including inherited movement. All components
+remain in the tree whether they move or stay static. Placed physical members keep
+an identity root transform and every root frame must preserve its ground
+calibration; runtime locomotion and changing collision shapes are separate
+consumer responsibilities. Declared loop transforms must meet at their seam;
+this does not certify the visual quality of a frame loop.
+
+Godot's `AnimationPlayer`/`AnimationLibrary` own playback, autoplay and looping.
+The exporter builds actual parent/child nodes and native discrete tracks for
+local transform, frame texture and pivot offset. Local transforms come from the
+canonical parent/child world matrices, not a second motion evaluator. Per-facing
+draw order and measured PNG/atlas regions survive save/reload. A lossless JSON
+source snapshot persists alongside native resources; source equality and native
+transform precision are checked separately. There is no custom runtime clock or
+interpolator. Source poses are explicit baked/discrete samples: **continuous
+authored curves between them are not reproduced or certified**. Choose an
+adequate sample interval upstream and obtain normal artwork approval.
+
+Current bounds: 64 components, 2,048 frame sources and 8,192 poses per clip;
+262,144 pose nodes and 32,768 animation frame references per production assembly.
+Existing image/copy/pixel budgets still apply. Repeated clip requests share the
+resolution work within one binding operation; approvals remain fresh between
+operations. Old generated assemblies/receipts must be regenerated after contract
+changes; no compatibility or substitute-static-frame path is supplied.
+
+[Technical qualification](evidence/2026-10-27-component-animation-verification.json)
+uses canonical builder output with test approval authorities: both facings, three
+nested components, timed pivot/mount changes, full pose/frame/pixel checks, native
+clock/autoplay/loop, fixed-root and timing refusals, and combined movement. These
+fixtures have pending art/cleanup review and are never real approved production
+assets. The separate real reference-art run remains incomplete.
+
+## Optional native exterior movement
+
+`GodotStaticWorldSpecification.Movement` optionally declares version-1 movement
+requirements. Its `CollisionLayer` is a nonzero 32-bit physics mask. Each of up to
+four profiles supplies `Id`, `Purpose`, `RadiusMeters`, `ClearanceMarginMeters`,
+`CellSizeMeters`, `EndpointToleranceMeters` and 1–64 purposeful `Journeys` with
+`Id`, `Purpose`, `SourceRuleId`, `From` and `To` in world meters. Tolerance must be
+positive and no larger than the declared bake cell size. Resource/vertex/bake
+budgets and duplicate/reserved identities are validated before publication.
+
+The engine derives the domain perimeter, every exclusion and every declared
+`Solid` footprint from the existing world. Physical rendered members require
+explicit occupancy. Reservations remain reservations; source polygons are not
+shrunk or replaced by tile occupancy. This capability explicitly navigates the
+exterior domain: it does not infer terrain-kind restrictions, road-only policy,
+doors, building interiors or dynamic obstacle behavior.
+
+The native compiler uses `StaticBody2D`/`CollisionPolygon2D` for exact collision
+geometry and `NavigationMeshSourceGeometryData2D`, `NavigationPolygon` baking and
+`NavigationRegion2D` for navigation. Every actor profile owns a separate native
+map and uses its radius plus the declared clearance margin during baking.
+The saved `Movement` node recreates transient native map RIDs at load and frees
+them at exit. Consumers obtain a profile map through
+`world.get_node("Movement").navigation_map(profile_id)` and use Godot's native
+navigation APIs/agents. The adapter implements no custom pathfinder.
+
+Verification checks source polygons and active physics (including domain-edge
+ray queries and obstacle-interior queries). Every required journey uses native
+pathfinding, records endpoint rounding, then prepends/appends the **exact**
+requested endpoints within the explicit tolerance. Native circle-overlap and
+continuous swept-circle queries cover every segment, including those connectors.
+Returned paths and measured drift are retained in the native receipt. Source
+metadata survives scene save/reload; native verification repeats after reload and
+in a fresh process. Unreachable or physically blocked journeys fail before scene/
+receipt publication. No alternate path solver or relaxed physical radius is used.
+
+[Focused movement evidence](evidence/2026-10-27-native-movement-verification.json)
+qualifies two radii, two journeys per radius, two solid footprints and one
+protected contour on synthetic artwork/authored geometry. It does not establish
+all possible journeys or whole-game/artwork acceptance. Omitted movement remains
+unrequested/unverified, not an implicit pass. Authoritative native API sources:
+[source geometry](https://docs.godotengine.org/en/latest/classes/class_navigationmeshsourcegeometrydata2d.html),
+[baking](https://docs.godotengine.org/en/latest/classes/class_navigationserver2d.html#class-navigationserver2d-method-bake-from-source-geometry-data).
+
+## Canonical read-only lifecycle authority
+
+`GameArtsLifecycleRegistry` implements `IApprovedArtRegistry` and
+`IGameArtsApprovalAuthority` using configured canonical framework, existing Python
+executable and consumer roots, explicit asset/revision pins and the shared
+`WorldOperationReporter`. It runs only `check-settings`, `select`, `audit` and
+`audit-mockup`. No confirmation, registration, approval, revocation, installation
+or setup is performed. Use `Assets` for production registries and `Mockups` for
+concept authorities. Framework work and example fixtures require no game name;
+unconfigured consumers are refused without opening a wizard.
+
+`InspectAsync` returns a report; `ResolveAsync` returns a manifest only after
+successful selection, audit, source validation and approval-hash checks. A denied
+canonical operation returns issues; malformed evidence, unsafe paths and process
+faults fail explicitly. Each lookup is fresh. Exact artifact authorities require
+`IsApprovedArtifactAsync`; state-only approval cannot authorize different bytes.
+Mockup artifact approval covers the primary image, not companion metadata.
+
+`ApprovedArtManifest` schema **2** requires both `AssetId` (stable canonical
+lifecycle ID) and `BundleAssetId` (native bundle identity). These IDs may differ.
+Measured frames and dependency records retain both; bundle validation uses the
+native ID and lifecycle approval uses the stable ID. Schema 1 is unsupported;
+regenerate manifests, dependent assemblies and receipts through their owning
+pipeline. No alias, latest-revision or schema fallback is provided.
+
+The adapter derives component/facing sheets from one declared native bundle and
+requires every consumed atlas/image to be pinned in canonical approval evidence.
+Current attachment output is empty; moving-component attachment/animation
+integration remains open. Sheet-only assets without a native bundle are refused.
+Paths stay inside the consumer root; reparse points, changed hashes and concurrent
+settings/manifest/entry-script changes are rejected. Process I/O, duration, JSON
+size and artifact count/bytes are bounded. The configured canonical source and
+Python runtime are trusted dependencies; imported modules are not all frozen by
+the entry-script hash. Approval remains a point-in-time check.
+
+Canonical asset selection currently audits by stable ID without a revision
+argument. Multiple records for that ID can therefore be ambiguous even with an
+explicit pin. Preserve that refusal; do not select a latest revision to bypass it.
+This upstream case is a known limitation, not a qualified supported history.
+
+[Focused evidence](evidence/2026-10-27-lifecycle-verification.json) uses real
+canonical tools on synthetic records. Test-only approval/revocation transitions
+are not human artwork acceptance. Fault scripts qualify only process behavior.
+Actual building/district/city artwork and full native gameplay remain unfinished.
+
+### Canonical command handoff
+
+The CLI now exposes the same production APIs through explicit canonical authority:
+
+```text
+structure-pipeline production-bind <scene-compilation.json> <bindings.json> <trusted-image-root> <gamearts-consumer.json> <new-assembly.json>
+structure-pipeline native-static <scene-compilation.json> <assembly.json> <topology.json> <native-spec.json> <trusted-image-root> <gamearts-consumer.json> <new-output-dir>
+```
+
+The agent performs these operations. `gamearts-consumer.json` is framework host
+configuration, separate from the canonical owner-confirmed `.gamearts/project.json`.
+Its version-1 shape is:
+
+```json
+{
+  "Version": 1,
+  "FrameworkRoot": "H:/Source/Repos/fahadTheTechIdea/GameArtsSkills",
+  "PythonExecutable": "C:/path/to/existing/python.exe",
+  "ProjectRoot": "./consumer",
+  "Revisions": { "stable-asset-id": "v001" },
+  "TimeoutSeconds": 30,
+  "MaximumOutputCharacters": 1048576
+}
+```
+
+All three paths resolve relative to the configuration file; absolute paths are
+also accepted. Supply the actual existing runtime and canonical source paths.
+The canonical consumer root owns managed assets and is the trusted asset root.
+The separate image root owns the capture source files. Unknown/duplicate
+properties, unsupported versions, missing paths/pins and configured resource
+limits fail explicitly. No Python installation, settings wizard or approval
+mutation occurs. Catalog plugins/compositions/content use existing CLI routing
+and are loaded only when declared world content requires them.
+
+Production binding replays every source capture and checks exact mockup/asset
+approval through the canonical tool. Native export replays that binding again,
+rechecks approval, validates topology/specification and copies unchanged images
+into a new Godot project. Export does not run Godot or grant runtime acceptance.
+The existing native compiler remains the single owner of TileSet/TileMapLayer
+construction, joins, source ground registration and scene save/reload. An existing
+output cannot be replaced. CLI lifecycle events use the same log/audit/notification
+services as the other commands.
+
+[Command qualification](evidence/2026-10-27-canonical-cli-verification.json) traces
+synthetic canonical source records through capture replay → CLI binding → CLI
+native export → installed Godot → fresh-process scene inspection. Ten targets,
+six members and 42 terrain bindings survive. Repeated test artwork and authored
+fixture geometry qualify this technical route, not actual vision, whole-city
+fidelity, collision/navigation, animation or human acceptance.
+
+## Final-map production inventory and measured bindings
+
+`StructureFirstPipeline.PlanMetadataProductionAsync` replays a
+`MetadataSceneCompilation` against the actual source files, then derives inventory
+from its **final** world/recipe. It retains every metadata member and creates stable
+`member:`, `surface:`, `passage:`, `site:` and `access:` target IDs. Group/logical members do
+not invent sprites. Surface targets preserve contours, passages retain full width
+and exact forward points without duplicating reverse journeys, and member targets
+retain origin, footprint, parent and reference-job lineage. The inventory also
+retains the domain, exclusions, physical source/reservation facts, site features,
+access and corridor plans. Site-feature surface bindings do not generate their
+configured planting/contents. Current technical fixtures do not exercise that branch.
+Entrance strips now have explicit targets: `MetadataPhysicalAccessPlanner` owns
+their exact butt-ended polygons and centerlines, avoiding the gap between a routed
+approach and the structure boundary. All rendered channel geometry comes from
+the shared `WorldTileTopologyPlanner` source descriptors. The current fixture has
+ten production targets, including two access strips; earlier eight-target evidence
+is retained as the pre-strip snapshot.
+
+The CLI shares normal registry selection and log/audit/notification reporting:
+
+```text
+structure-pipeline production-inventory <scene-compilation.json> <trusted-image-root> <new-inventory.json>
+```
+
+`BindMetadataProductionAsync` requires the inventory digest and exactly one binding
+per target. Each frame declares the canonical production reference and its master
+image. The shared `GameArtsProductionGate.ResolveFrameAsync` verifies manifest
+revision/approval, actual file hashes, safe bounded source paths, native bundle
+identity, exact bundle/sheet/image association, strict atlas metadata, measured
+rectangles/pivots/anchors, master hash lineage and external lifecycle authority.
+It records bundle/image/atlas/master hashes; it does not create any approval event.
+Both the existing structure assembler and this metadata caller use that owner.
+
+Static members require one frame and a named measured ground anchor per exact
+footprint vertex. Projected anchors must match world geometry at the atlas's saved
+pixels-per-meter; no fitting, resizing or rotation is invented. Surface/passage/site
+tile libraries require explicit physical tile dimensions matching every selected
+frame. Multiple measured frames may share an atlas. Missing, duplicate, stale,
+revoked, mismatched or uncalibrated bindings reject without partial output.
+
+`ExportMetadataProductionAsync` saves a new assembly atomically; existing output
+is preserved. `ValidateMetadataProductionAssemblyAsync` replays the entire binding
+operation with current source files and external authorities. A saved status is
+not an approval token. Consumers must revalidate before using a saved assembly.
+Image paths retain the declared trusted-asset-root context.
+
+Status `StaticBindingsVerified` means the static-frame/tile-library checks passed.
+It does **not** certify full transition coverage, moving-component discovery,
+native tile rasterization, visual fidelity or an entire approved production city.
+The remaining gates stay attached. Explicit meter surfaces are currently required;
+generated heightfield surfaces are refused rather than omitted. No image-generation
+or packing implementation was added: canonical GameArts remains the owner.
+[Current evidence](evidence/2026-10-27-metadata-production-verification.json) uses
+synthetic assets and test authorities only.
+
+## Presentation masks and native terrain-combination inventory
+
+`WorldTileTopologyPlanner.Plan` consumes a validated meter-based, two-coordinate
+metadata world and a digest-pinned `WorldTileTopologyRequest`. Explicit cell
+dimensions, origin, maximum classification band, cell limit and work limit are
+required. The common surface query determines visible patch ownership and clips
+the masks to the domain/exclusions. Exact source corridors, site boundaries and
+entrance strips supply their other masks. No street layout, world placement,
+resizing, empty-space fill or alternate route is generated.
+
+Each mask selects cells by their centers. The declared band is half the cell
+diagonal (subject to the common numerical geometry tolerance); it describes the
+sampling classification boundary, **not** a Hausdorff bound, physical minimum
+width, collision clearance or visual-fidelity certificate. Empty targets,
+ambiguous surface ownership, disconnected individual passage/approach masks and
+unrepresented path vertices reject. Tiny holes or cross-channel topology can still
+need a finer resolution and separate validation. Explicit patch surfaces are
+currently supported; generated heightfields reject. All original geometry stays
+unchanged and remains the source of truth.
+
+`GodotStructureLayerExporter.ExportTopologyProbeAsync` replays that plan and
+requires explicit material groups with complete, disjoint channel ownership.
+Several purposefully connected passages may share one material group so their
+terrain joins are measured together. Grouping never deletes per-channel source
+ownership. Signed serialized tile coordinates outside -32768..32767 reject;
+chunk-local native compilation is not implemented by this probe.
+
+```text
+structure-pipeline tile-topology <world-metadata.json> <tile-request.json> <terrain-groups.json> <new-output-dir>
+```
+
+The CLI exports a new measurement project and reports
+`NativeTerrainMeasurementPending` through existing log/audit/notification owners.
+The host runs the installed Godot with `--headless --path <project> --script
+res://compile.gd`. This is an internal orchestration step, not a setup command the
+user must execute. Godot's native `TileSet`, `TileSetAtlasSource` and
+`TileMapLayer.set_cells_terrain_connect` select the terrain patterns. Temporary
+transparent sources expose all 256 square corner-and-side patterns; they are
+algorithm data, never production images or approved assets. The script only
+asserts selected side/corner semantics after native matching; it supplies no
+custom terrain solver or gameplay pathfinder.
+
+The native probe verifies the input file hash, exact occupied cells, every side
+join and shared four-cell corner, meter transforms within 0.00001m, and native
+PackedScene save/reload. It records per-cell assignments and required masks per
+material group in `native-result.json`, status `NativeTerrainDemandMeasured`.
+Mask bits run E, SE, S, SW, W, NW, N, NE. Missing combinations must reject rather
+than accepting Godot's closest substitute. This rectangle-cell probe qualifies
+neither other tile shapes nor complete production scenes. Actual tile artwork,
+seams, structures, collision/navigation and moving parts remain required.
+
+Checked against installed Godot **4.7.2.stable.mono.official.ed1daf0bf** and the
+[official TileMapLayer](https://docs.godotengine.org/en/stable/classes/class_tilemaplayer.html)
+and [TileSetAtlasSource](https://docs.godotengine.org/en/stable/classes/class_tilesetatlassource.html)
+references on 2026-10-27. Other engine versions/platforms are unverified.
+[Current evidence](evidence/2026-10-27-tile-topology-verification.json) includes
+three native groups requiring 20, 13 and 9 patterns, native refusals, independent
+cell/geometry checks and API/CLI equality. Complete approved terrain-module
+binding and actual native artwork acceptance remain separate; the static compiler
+below is now technically qualified, without claiming an S13/S14 exit.
+
+## Verified-frame native static scene compilation
+
+`GodotStructureLayerExporter.ExportMetadataAsync` consumes the qualified scene,
+`MetadataProductionAssembly`, `WorldTileTopologyPlan` and a
+`GodotStaticWorldSpecification`, plus the original trusted image/asset roots,
+registry and separate trusted asset/concept approval authorities. It replays the
+source assembly and tile plan. The API currently requires the qualified captured
+scene route; a direct procedural-world art consumer is not implemented by this
+entry point. Metadata-only generation remains independent of all visual gates.
+
+The specification pins assembly/topology digests, pixels-per-meter, explicit
+terrain layer groups/Z order, structure Z order and a mask→frame-reference mapping.
+Frame keys are `WorldTileTopologyPlanner.Digest(frame.Reference)`. Every mapped
+frame must be bound to every source channel in its material group. Tile dimensions
+must match the sampled cell dimensions; each layer uses consistent native pixel
+dimensions. No fitting, invented rotation or closest-art fallback is allowed.
+Every static member is retained at its verified origin/pivot/scale with explicit
+source/parent identity. Nonvisual identities remain in the complete source ledger.
+
+Copied PNG bytes retain their original hashes; image references deduplicate by
+normalized hash. Maximum source dimension is 16384, total unique decoded pixels
+are bounded to 100 million, and copied image bytes to 256 MiB. Native decoding is
+additional to the header/hash gate. Approval is a point-in-time external gate;
+revalidate lifecycle/dependencies before final use or publication. This API does
+not create canonical settings, approvals or audit records. The host owns operation
+reporting; a production CLI authority adapter is not supplied by this slice.
+
+The output is `NativeProductionCompilationPending`: exact images, `input.json`,
+`compile.gd`, source metadata/assembly, project and remaining-gate status. The host
+runs installed Godot headlessly with `--path <project> --script res://compile.gd`.
+The single `Native/WorldSceneCompiler.gd` owner replaces the earlier probe script.
+It handles both `TerrainProbe` and `StaticWorld` packets; no old-script fallback or
+alternate serializer remains. Historical probe outputs are evidence only.
+
+The native compiler uses TileMapLayer/TileSetAtlasSource for terrains and
+Sprite2D/AtlasTexture for static members, with declared layers and native Y sorting.
+It verifies original PNG hashes/decoding, every native terrain side/corner,
+measured atlas rectangles, meter transforms and structure ground anchors. It
+packs/reloads through native PackedScene/ResourceSaver/ResourceLoader, rechecks the
+result, then publishes `World.tscn` and `native-result.json`, status
+`StaticNativeSceneCompiled`. Serialized source images remain unchanged; an exact
+key-color shader supplies the existing runtime transparency policy. The render
+frame maps metadata coordinates 0/1 to native X/Y; other projections are unqualified.
+
+A native directory lock prevents concurrent compilation. Pending scene/receipt
+files are cleaned on refusal; existing completed output is preserved. C# project
+publication retries only Windows access/sharing errors 5/32, at most four attempts
+with 50/150/350ms waits. Earlier failures are retained in `publication.json` at
+successful commit; exhaustion surfaces the complete attempt list. The record is
+updated before the wait, leaving a quiet interval before the next rename.
+
+`FullWorldAccepted` stays false. Collision/navigation are disabled in this static
+slice; moving components, configured site contents, actual tile seams/style,
+source-image fidelity and full-city acceptance remain required. The technical
+fixture deliberately maps repeated test pixels to 42 pattern slots; that is not
+real transition artwork or user approval. Fresh native inspection verifies source
+pixels, identities, declared ordering and atlas regions; it is not visual QA.
+[Current verification](evidence/2026-10-27-native-static-verification.json) retains
+all failed qualification attempts and the real Windows lock/recovery evidence.
+
+## Framework metadata → art inventory
+
+Framework implementation and example fixtures do not start a new-game setup
+wizard. Consumer art configuration is needed when executing managed artwork,
+not when developing the reusable pipeline or planning its inventory.
+
+`StructureFirstPipeline.PlanMetadata` takes the current metadata world, its exact
+recipe/catalog and a `MetadataArtSpecification`. It regenerates the source through
+`WorldMetadataGenerator` and compares the complete digest before planning. The
+existing mockup-derived input remains a separate supported source contract;
+metadata never converts through the retired city engine.
+
+The specification explicitly assigns every used archetype a role: Group,
+Structure, Ground, Object or Logical. Groups must contain real children. Logical
+graph nodes remain in scope metadata without artwork/reference jobs; registered
+structure references, declared footprints and physical allocations cannot be
+classified as Logical. Visual leaf scopes
+select metadata subtree roots; scopes with children contain no direct member roots.
+Every visual instance has exactly one leaf owner. Missing members, overlaps,
+cycles, missing parents and unused/missing role bindings reject. Group context
+outside leaf subtrees stays in the overview rather than becoming an image asset.
+
+The returned `MetadataArtHandoff` retains the entire source world, recipe and
+catalog, including nested identities, registered variants, footprints/reservations,
+terrain, routes, provenance and unresolved requirements. Reference jobs deduplicate
+by archetype and registered variant; differing demand-authored geometry remains
+distinct. Detail mockups depend on all their reference jobs; overviews depend on
+their child mockups. No fixed district count or city class is required. The same
+contract supports pre-layout catalogs and non-city worlds without invented positions.
+
+`ExportMetadataAsync` publishes one new JSON file atomically. Existing files remain
+untouched. `ValidateMetadataHandoff` replays source and derived jobs, rejecting
+altered members, dependencies or claimed approval status. CLI exposure uses the
+existing operation log/audit/notification boundary:
+
+```text
+structure-pipeline metadata <world-metadata.json> <recipe.json> <catalog.json> <scopes.json> <new-handoff.json>
+```
+
+Hosts schedule each detail from its own `DependsOn` reference set; unapproved
+references used only by other details do not block an eligible leaf. Resolve
+current exact canonical revisions before each image call. Keep draft eligibility
+snapshots separate from actual execution and review records. Visually mismatched
+instance counts remain failed candidates; never drop expected members or invent
+unseen instances to satisfy metadata. Exact-artifact owner approval and later
+calibrated map/native acceptance remain separate gates.
+
+The packet is always `DraftInventoryOnly`. Its jobs describe inventory and order;
+they are not prompts, generated images, production assets or an approved art plan.
+The host resolves actual canonical GameArts settings, storyboard requirements,
+reference pixels and review gates when executing the downstream workflow. The
+handoff does not yet derive a complete terrain/transition/animation asset kit or
+compile native Godot TileMapLayers. Keep those S12–S14 obligations explicit.
+
 ## Source capture → design → art → runtime
+
+### Metadata instance reconciliation
+
+`MockupCapturePipeline.ReconcileMetadataAsync` compares a complete `DetailMockup`
+or `OverviewMockup` job with a source capture. `MetadataCaptureSpecification`
+pins the complete handoff and annotation digests and explicitly pairs each
+metadata NodeId with one FeatureId. The owner replays the handoff, verifies the
+PNG hash/header and trusted path, and preserves the full capture and every
+required visual member in its report. The nearest visual ancestor must agree
+between metadata hierarchy and captured parentage. Reference concepts cannot
+stand in for observations of all repeated instances.
+
+Missing/duplicate instances, reused observations, foreign targets, extra unassigned
+features, wrong parents, pending/rejected/inferred/authored/occluded identities
+and partial inspection produce `Incomplete` diagnostics. No missing structure or
+part is discarded. Extra content must be reconciled with the catalog and scoped
+handoff before it can count as accounted for. `DeclaredInventoryMatched` only
+means these declared identity checks passed: the engine does not infer identity
+from pixels, verify the author's completeness claim or grant art approval.
+Roof annotations can establish provisional identities; they remain roofs and
+never become ground footprints. Calibration, dimensions, terrain/routes and
+faithful map compilation remain separate work.
+
+`StructureFirstPipeline.ExportMetadataCaptureAsync` publishes a new report
+atomically, retaining an existing destination. The CLI uses the existing shared
+operation reporters and distinguishes a successfully written incomplete report
+from a source-validation failure (which publishes nothing):
+
+```text
+structure-pipeline reconcile <handoff.json> <capture.json> <bindings.json> <trusted-image-root> <new-report.json>
+```
+
+The handoff/specification/report use engine JSON property casing; standalone
+capture files keep the strict camelCase `MockupCaptureJson` contract. The shared
+`ReadCaptureAsync` reader is also used by review, compile and generation callers.
+[Focused verification](evidence/2026-10-27-metadata-capture-verification.json)
+uses synthetic annotations; actual image-reading accuracy, approved artwork and
+native Godot behavior are not established by those tests.
+
+### Ground design and production
+
+`MockupCapturePipeline.CompileMetadataGroundAsync` now connects reconciled
+identities to the ordinary metadata generator. The current version-2
+`MetadataGroundRequest` contains explicit `Views`, `Owners`, a meter tolerance and
+an aggregate boundary-work budget. Each `MetadataGroundView` names its handoff
+detail/overview job through the identity specification and carries a separate
+ground-footprint capture of that exact image revision, digest, per-instance ground
+origin and rotation. Each image has its own verified file and affine calibration.
+This boundary requires a complete physical metadata program with an
+existing placement plan; it does not invent dimensions or spatial rules for an
+unpositioned inventory. Every handoff detail job must have a complete reconciled
+view; an overview cannot substitute for a missing detail scope. Combined views must
+cover every physical allocation, including containing compounds. Each view must
+account for its whole job and every ground annotation. Ground parents must match
+the physical ancestors represented within that view. An overview is optional for
+this geometric assembly; if included, its whole job must reconcile. This does not
+remove the requested whole-world artwork/review obligation from the full workflow.
+
+Every physical instance has an explicitly selected owning view. Its exact origin
+and rotation become the generated pose; observations from other views are retained
+and checked against that pose and source-sized polygon. Missing/duplicate owners,
+an owner without an observation, differing orientations and incompatible origins
+or contours reject. Small discrepancies within each observation's remaining meter
+tolerance are recorded; they are never averaged or used to move the owning pose.
+Each instance appears once in the generated world. View/owner/binding declaration
+order is canonicalized. View IDs use 1..80 lowercase ASCII letters/digits, hyphens
+or underscores so per-view filenames cannot contain alternate streams or case
+collisions. No version-1 execution fallback is retained; historical
+single-image receipts remain evidence of their tested earlier implementation.
+
+Only accepted, unoccluded observed or explicitly authored `.footprint` polygons
+qualify. Roofs, inferred geometry, partial coverage and missing calibration reject.
+The compiler rigidly rotates/translates the existing source polygon. It cannot
+resize it. Its conservative boundary certificate compares both windings and cyclic
+starts through normalized perimeter correspondence, including all segment breaks;
+this bounds the continuous correspondence, not merely vertex distances. Exact
+collinear subdivisions are supported. This is not a minimum-Hausdorff-distance
+algorithm; a contour without a supported correspondence can reject. The declared
+meter tolerance includes the largest affine singular scale times pixel uncertainty
+plus calibration tolerance. Boundary work and all existing placement budgets remain
+bounded; cancellation propagates. The assembly allows 1..128 views and at most
+32,000 ground observations, with the one shared boundary-work limit. Sources are
+processed sequentially with a 256 MiB aggregate source-byte limit.
+
+Zero-distance pins supplement the existing placement anchors and relations. Source
+profiles, spacing, boundaries, reservations, site rules, hierarchy, catalog variants,
+terrain and connection declarations remain intact. Nested captured positions become
+parent-local pins. Conflicting source rules or source geometry reject instead of
+relocating, omitting or shrinking content. The shared generator recalculates its
+normal checks and routes; those routes/terrain are not thereby image-traced.
+
+`StructureFirstPipeline.ExportMetadataGroundAsync` uses the existing atomic metadata
+publisher to save the ordinary recipe/catalog/world/schematic and a self-contained
+`capture-compilation.json` plus `capture-overlay-<view-id>.svg` for each image. Cyan dashed source-sized
+outlines overlay verified original PNG pixels. Existing destinations are preserved.
+`ValidateMetadataGroundCompilationAsync` replays source/identity/geometry/generation
+against verified image bytes before trusting a saved compilation. The CLI is:
+
+```text
+structure-pipeline ground <handoff.json> <ground-request.json> <trusted-image-root> <new-output-dir>
+```
+
+The packaged request/receipt use engine JSON casing, including their embedded
+capture records; standalone capture files retain the existing camelCase contract.
+Status is `GroundLayoutDraft`. The [current multiple-view verification](evidence/2026-10-27-metadata-views-verification.json)
+owns version-2 qualification; [earlier single-image evidence](evidence/2026-10-27-metadata-ground-verification.json)
+remains historical. Full terrain/route/detail trace reconciliation, actual image
+interpretation, approval and native production acceptance remain unfinished.
+
+### Calibrated terrain and explicit route traces
+
+`MetadataSceneRequest` pins a qualified ground receipt and names scene annotation
+layers belonging to its verified views. Image revision and affine calibration must
+match. `CompileMetadataSceneAsync` requires every declared domain boundary, explicit
+terrain patch/exclusion and configured route connection. Missing, duplicate,
+unassigned, occluded or unreviewed content rejects. Different scene views can own
+different targets. Captured polygons replace only source boundaries; terrain kinds,
+heights, priorities and policies remain authored facts. No height is inferred from
+pixels. Normal generation must retain every member, pose and source dimension.
+
+`MetadataRouteRule.Alignments` binds prescribed polylines to connection IDs and
+provenance. `WorldSurfaceRoutePlanner.Compile` preserves every point, checks full
+width, terrain/access and bends through shared traversal, and reverses the point
+sequence for reverse travel. Endpoint comparisons allow 1e-7 world-unit numerical
+tolerance. A blocked trace returns `TraceRejected`; metadata reports an unsatisfied
+spatial constraint. No route-search fallback occurs. Search `Waypoints` remain
+candidate hints and do not substitute for prescribed geometry.
+
+Scene widths must match full configured passage width (`2 * Profile.Radius`).
+Roads require reviewed level-zero `FullCorridor` metadata; other passage bindings
+explicitly supply width. Optional `SegmentWidthsPixels` has one positive width per
+consecutive point pair; road `WidthPixels` equals its first segment width. A binding
+cannot override a road descriptor with a second width source. Affine normal
+projection converts each segment width to world units, including curved paths under
+unequal image scales. Pixel uncertainty and calibration tolerance remain explicit.
+Review overlays draw each width band separately. The [capture schema](schemas/mockup-capture.schema.json)
+is regenerated from C# records; runtime checks cross-field array counts.
+
+Crossings within and across views must agree with shared declared endpoint nodes
+or ports. Collinear overlap, self-crossing, unreviewed road junctions and implicit
+connections reject. Logical junctions require no invented footprint or sprite.
+Network-generated, interface, reuse, already-aligned and population-preservation
+trace modes currently reject explicitly. This qualifies a bounded explicit-graph
+compiler; broader generation modes and full-city visual acceptance remain open.
+
+`ExportMetadataSceneAsync` uses the existing atomic publisher. The root recipe,
+world and schematic are the final scene. `scene-compilation.json` is its replayable
+receipt; `scene-overlay-<view-id>.svg` embeds verified source pixels and target links.
+`capture-compilation.json` retains the preceding ground-stage receipt and ground
+overlays; its world is the intermediate ground result. `ValidateMetadataSceneCompilationAsync`
+replays both stages. The CLI operation is:
+
+```text
+structure-pipeline scene <ground-compilation.json> <scene-request.json> <trusted-image-root> <new-output-dir>
+```
+
+Status remains `SceneLayoutDraft`. [Focused evidence](evidence/2026-10-27-scene-trace-verification.json)
+covers synthetic topology, changed terrain, exact curves, affine widths, split
+views, engine replay, CLI rejection/publication and exact browser geometry. Actual
+image understanding, approved artwork and native Godot acceptance remain unfinished.
+
+### Full source capture workflow
 
 1. Resolve the exact mockup PNG, lifecycle record, saved profile and requested scope. A rejected schematic is not a source mockup. Unapproved concepts may be analyzed provisionally; production remains blocked.
 2. Annotate in **original source pixels**, top-left origin. Keep road centerlines as open polylines; road surfaces/sidewalks, water, green regions, districts and footprints as polygons; entrances and mounts as distinct semantic points. Preserve curves and diagonal geometry. Split variable road profiles into named features rather than pretending one width fits the route.

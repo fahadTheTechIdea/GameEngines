@@ -10,10 +10,10 @@ public sealed class MockupDesignValidator(ISettlementCatalogRegistry catalogs)
         ArgumentNullException.ThrowIfNull(request);
         token.ThrowIfCancellationRequested();
         request.Validate();
-        if (request.Design is not null)
+        if(request.Design is not null)
         {
-            try { request=request with { Design=new FacilityCompositionPlanner(catalogs).Expand(request.Design,token) }; }
-            catch (ArgumentException ex) { return [new(ex.Message,"facility","Revise the facility grammar or placement.")]; }
+            try { request=request with { Design=CatalogContentAuthoring.BindReferences(request.Design,catalogs,token) }; }
+            catch(ArgumentException ex) { return [new(ex.Message,"catalog","Revise the registered definition references.")]; }
         }
         var design = request.Design;
         if (design is null) return [new("MOCKUP_DESIGN_REQUIRED", "", "Provide a structured mockup design; no placement fallback exists.")];

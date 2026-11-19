@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "pack": "rpg",
+  "resources": [
+    { "id": "rpg.rough-ruby", "name": "Rough ruby", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["gem"], "properties": {} },
+    { "id": "rpg.rough-sapphire", "name": "Rough sapphire", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["gem"], "properties": {} },
+    { "id": "rpg.healroot", "name": "Healroot", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["herb"], "properties": {} },
+    { "id": "rpg.nightbloom", "name": "Nightbloom", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["herb"], "properties": {} },
+    { "id": "rpg.beast-hide", "name": "Beast hide", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["animal"], "properties": {} },
+    { "id": "rpg.gem-shard", "name": "Gem shard", "class": "raw", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["gem"], "properties": {} },
+    { "id": "rpg.ruby", "name": "Cut ruby", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": { "scheme": "quality", "levels": ["flawed", "clean", "flawless"] }, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["gem"], "properties": {} },
+    { "id": "rpg.sapphire", "name": "Cut sapphire", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": { "scheme": "quality", "levels": ["flawed", "clean", "flawless"] }, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["gem"], "properties": {} },
+    { "id": "rpg.enchant-dust", "name": "Enchanting dust", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["magic"], "properties": {} },
+    { "id": "rpg.upgrade-orb", "name": "Upgrade orb", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 40 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["magic", "currency-item"], "properties": {} },
+    { "id": "rpg.tanned-leather", "name": "Tanned leather", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["animal"], "properties": {} },
+    { "id": "rpg.iron-sword", "name": "Iron sword", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": { "scheme": "rarity", "levels": ["common", "uncommon", "rare", "epic"] }, "perishable": null, "durability": { "uses": 400 }, "currency": null, "cpc": "4", "tags": ["weapon", "sword"], "properties": { "damage": 12 } },
+    { "id": "rpg.steel-sword", "name": "Steel sword", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": { "scheme": "rarity", "levels": ["common", "uncommon", "rare", "epic"] }, "perishable": null, "durability": { "uses": 800 }, "currency": null, "cpc": "4", "tags": ["weapon", "sword"], "properties": { "damage": 20 } },
+    { "id": "rpg.fire-sword", "name": "Fire-enchanted sword", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": { "scheme": "rarity", "levels": ["common", "uncommon", "rare", "epic"] }, "perishable": null, "durability": { "uses": 800 }, "currency": null, "cpc": "4", "tags": ["weapon", "sword", "magic"], "properties": { "damage": 20, "fire": 8 } },
+    { "id": "rpg.iron-armor", "name": "Iron armor", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": { "scheme": "rarity", "levels": ["common", "uncommon", "rare", "epic"] }, "perishable": null, "durability": { "uses": 600 }, "currency": null, "cpc": "4", "tags": ["armor"], "properties": { "defense": 18 } },
+    { "id": "rpg.leather-armor", "name": "Leather armor", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": { "scheme": "rarity", "levels": ["common", "uncommon", "rare", "epic"] }, "perishable": null, "durability": { "uses": 500 }, "currency": null, "cpc": "2", "tags": ["armor"], "properties": { "defense": 9 } },
+    { "id": "rpg.ruby-ring", "name": "Ruby ring", "class": "unique", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": { "scheme": "rarity", "levels": ["common", "rare", "epic"] }, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["jewelry"], "properties": { "fire-resist": 10 } },
+    { "id": "rpg.health-draught", "name": "Health draught", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": { "scheme": "quality", "levels": ["weak", "standard", "strong"] }, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["potion"], "properties": { "heals": 60 } },
+    { "id": "rpg.stamina-draught", "name": "Stamina draught", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["potion"], "properties": {} },
+    { "id": "rpg.whetstone", "name": "Whetstone", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 50 }, "currency": null, "cpc": "4", "tags": ["tool", "repair"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "rpg.forge", "name": "Forge", "levels": 4 },
+    { "id": "rpg.alchemy-lab", "name": "Alchemy lab", "levels": 3 },
+    { "id": "rpg.enchanting-table", "name": "Enchanting table", "levels": 3 },
+    { "id": "rpg.tannery", "name": "Tannery", "levels": 1 },
+    { "id": "rpg.jeweler-bench", "name": "Jeweler bench", "levels": 2 }
+  ],
+  "skills": [
+    { "id": "rpg.smithing", "name": "Smithing", "max": 100 },
+    { "id": "rpg.alchemy", "name": "Alchemy", "max": 100 },
+    { "id": "rpg.enchanting", "name": "Enchanting", "max": 100 },
+    { "id": "rpg.leatherworking", "name": "Leatherworking", "max": 100 },
+    { "id": "rpg.jewelcrafting", "name": "Jewelcrafting", "max": 100 }
+  ]
+}

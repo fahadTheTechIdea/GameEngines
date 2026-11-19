@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WorldEventsEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="WorldEventsEngine.html" aria-current="page">WorldEventsEngine</a>
+      <a href="../WORLD_EVENTS_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>WorldEventsEngine</h1>
+  <p class="lede">A living world over time: regional climate and weather, hydrology, phased hazards with severity ladders, outbreaks with SIR/SEIR models and interventions, a drawn-card director, difficulty and storyteller pacing, and facts that other engines read.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">format 2</span>
+    <span class="tag">seeded</span>
+    <span class="tag">save / branch</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#document">Document format 2</a></li>
+    <li><a href="#climate">Climate, weather and hydrology</a></li>
+    <li><a href="#hazards">Hazards and rungs</a></li>
+    <li><a href="#disease">Outbreaks</a></li>
+    <li><a href="#cards">Cards and the director</a></li>
+    <li><a href="#difficulty">Difficulty and storyteller</a></li>
+    <li><a href="#effects">Effects and modifiers</a></li>
+    <li><a href="#facts">Facts</a></li>
+    <li><a href="#api">Runtime API</a></li>
+    <li><a href="#determinism">Determinism, save and branch</a></li>
+    <li><a href="#cli">Command line and balance tools</a></li>
+    <li><a href="#component">GameRuntime integration</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>WorldEventsEngine is the world's own pressure: what the weather is doing, how wet the soil is, whether a hazard starts and escalates, whether a disease takes hold, and what event the director draws next. It never touches settlement stock or units — it reports changes and emits effect requests (signals, shocks, modifiers) for the game layer.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Seasons, climate regimes, weather, hydrology, hazard lifecycles, outbreaks, card draws/chains, director pacing, difficulty and storyteller profiles, effects, facts.</p></div>
+  <div class="card"><h3>It does not own</h3><p>Production, stock, combat damage, population agents or presentation. A game maps its effects to its own systems.</p></div>
+  <div class="card"><h3>Deterministic</h3><p>All per-mille integer maths, seeded rolls and an explicit step counter. A save is a complete state copy; branching reseeds a copy.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/WorldEventsEngine/WorldEventsEngine.Core</code></td><td>Reader, runtime (weather, hazards, disease, cards, director, controls, facts), save image.</td><td>net8.0</td></tr>
+    <tr><td><code>WorldEventsEngine.Cli</code></td><td><code>check</code>, <code>simulate</code> (multi-seed and rare-event modes), <code>explain</code>, <code>coverage</code>.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.WorldEvents</code></td><td><code>WorldEventsComponent</code>, requests/answers, bridges, checkpoint.</td><td>net8.0</td></tr>
+  </tbody>
+</table>
+<p>Samples: <code>samples/valley.world.json</code> (large), <code>tiny.world.json</code>, <code>valley.world.scenario.json</code>, <code>valley.world.en.json</code>.</p>
+
+<h2 id="document" class="anchor">Document format 2</h2>
+<p>Format 2 adds self-exciting hazards (<code>excite</code>) and neighbour-tilted weather (<code>spill</code>). Format 1 is refused as superseded and is never migrated.</p>
+<table>
+  <thead><tr><th>Section</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>seed</code>, <code>time</code>, <code>limits</code></td><td>Seeded randomness; step/season timing; caps on active hazards, effects and agenda items.</td></tr>
+    <tr><td><code>seasons</code>, <code>zones</code>, <code>regions</code></td><td>Season lengths; Koppen zone with per-season climate and a <code>spill</code> factor; regions with zone, market, population, exposure and immunity.</td></tr>
+    <tr><td><code>regimes</code>, <code>weathers</code></td><td>Named climate regimes with persistence, frequencies and bias; named weather with temperature offset, precipitation, wind, wetness and modifier effects.</td></tr>
+    <tr><td><code>hydrology</code></td><td>Freezing, soil capacity/initial, evaporation and melt per degree, drainage, wet decay, heavy-rain thresholds and factor.</td></tr>
+    <tr><td><code>hazards</code>, <code>rungs</code></td><td>Hazard kind, pacing, base chance, the <code>excite</code> block (self-excitation jump/decay/cap), seasonal weights, conditions, cooldown and exclusions; severity rungs with onset/recovery time, stress, escalation chance and effects.</td></tr>
+    <tr><td><code>diseases</code>, <code>interventions</code>, <code>links</code></td><td>SIR or SEIR parameters, seasonal weights, seeding and fatality; interventions (beta, flow, vaccinate, treat, fatality, auto threshold); regional flow links.</td></tr>
+    <tr><td><code>cards</code></td><td>Weighted, tiered cards with conditions, cooldown, group, duration/intensity, effects and chained follow-ups.</td></tr>
+    <tr><td><code>difficulties</code>, <code>storytellers</code></td><td>Difficulty multipliers; director pacing profiles.</td></tr>
+    <tr><td><code>modifiers</code>, <code>start</code>, <code>facts</code></td><td>Named bounded counters; the initial world state; declared host facts the engine may read.</td></tr>
+  </tbody>
+</table>
+<p>Strict JSON: unknown/missing fields, out-of-range values, duplicate ids, dangling references and impossible combinations are refused with <code>WORLD_*</code> codes.</p>
+
+<h2 id="climate">Climate, weather and hydrology</h2>
+<ul>
+  <li>Each region has a zone; a zone chooses a climate regime per season from declared frequencies. Temperature follows persistence and noise; neighbours tilt weather through <code>spill</code>, so a region is not independent of its neighbours.</li>
+  <li>Weather gives temperature offset, precipitation, wind and wetness, and applies its modifier effects.</li>
+  <li>Hydrology tracks soil moisture from rain, evaporation, melt, drainage and heavy-rain saturation; <code>SoilPermille(region)</code> answers. Flood hazards read this state.</li>
+  <li>Season changes are reported; the runtime never reads a wall clock.</li>
+</ul>
+
+<h2 id="hazards">Hazards and rungs</h2>
+<ul>
+  <li>A hazard starts from its base chance, seasonal weight and conditions, with a cooldown and exclusions. <code>excite</code> adds self-excitation: recent activity raises the next chance, then decays — storms cluster and quiet periods recover.</li>
+  <li>A hazard climbs severity <strong>rungs</strong>: each rung has duration, onset/recovery steps, stress, an escalation chance and effects. Phases are <code>Onset</code>, <code>Peak</code>, <code>Recovery</code>; changes are <code>Started</code>, <code>Escalated</code>, <code>Receding</code>, <code>Ended</code>.</li>
+  <li><code>BeginHazard(region, hazard, severity)</code> forces a start for scripting/tests; normal play uses the chance.</li>
+  <li><code>Intensity(instance)</code> and <code>ExcitationAt(hazard, region)</code> answer current state; <code>IHazardWatcher</code> observes onsets.</li>
+</ul>
+
+<h2 id="disease">Outbreaks</h2>
+<ul>
+  <li>SIR or SEIR per disease with beta, incubation, infectious period, waning, fatality, seasonal weights, seeding and regional flow.</li>
+  <li>States per region: <code>None</code>, <code>Introduced</code>, <code>Outbreak</code>; changes: <code>Introduced</code>, <code>Outbreak</code>, <code>Contained</code>, <code>Ended</code>.</li>
+  <li>Interventions change beta, flow, vaccination, treatment or fatality, optionally automatically at a threshold; <code>Intervene(region, intervention, on)</code>.</li>
+  <li><code>SeedOutbreak(region, disease, cases)</code> starts one deliberately. <code>Living(disease)</code> reports the modelled population.</li>
+</ul>
+
+<h2 id="cards">Cards and the director</h2>
+<ul>
+  <li>A card has a tier (<code>Bad</code>, <code>Neutral</code>, <code>Good</code>), weight, optional condition, cooldown, group, duration, intensity, effects and chained follow-ups (<code>ChainDef</code> with delay and probability).</li>
+  <li><code>PlayCard(card, region)</code> draws one deliberately; the director draws on its own cadence and explains why (<code>CardReason</code>: <code>Drawn</code>, <code>Chained</code>, <code>Forced</code>).</li>
+  <li>The <strong>director</strong> moves through <code>Build</code>, <code>Peak</code>, <code>Relax</code> phases from a storyteller profile and current stress, keeping minimum gaps between events and sharing attention across bad/neutral/good tiers.</li>
+</ul>
+
+<h2 id="difficulty">Difficulty and storyteller</h2>
+<p><code>UseDifficulty(id)</code> selects a difficulty profile (hazard, bad-card, disease and stress multipliers). <code>UseStoryteller(id)</code> selects pacing: decay, peak threshold, relax threshold, peak hold, rest minimum, gap range and tier shares. Both are explicit controls, not hidden defaults.</p>
+
+<h2 id="effects">Effects and modifiers</h2>
+<p>Effects are <code>Signal</code> (notify), <code>Shock</code> (an immediate change), <code>Modifier</code> (a bounded counter delta) or nested <code>Hazard</code>/<code>Outbreak</code> starts. Modifiers have base/min/max and are read with <code>Modifier(region, index)</code>. A game maps these to its own systems; the engine does not mutate another engine's state.</p>
+
+<h2 id="facts">Facts</h2>
+<p><code>WorldFacts</code> offers <code>world.*</code> facts — season, weather, temperature, wetness, soil, hazard phase/rung/intensity, disease state/cases, director phase, stress and modifier values — for dialogue conditions, AI percepts, economy shocks and events. <code>Facts(prefix, region)</code> returns a region's dictionary.</p>
+
+<h2 id="api">Runtime API</h2>
+<pre><code>var set     = WorldLoader.Load(json);          // format 2
+var world   = WorldRuntime.Create(set);
+WorldChanges c = world.Advance(toStep, seasonAt, hostFacts);  // weather, hazards, disease, cards
+world.BeginHazard("valley", "flood", "major");
+world.SeedOutbreak("valley", "flu", cases: 3);
+world.Intervene("valley", "vaccinate", on: true);
+world.PlayCard("harvest-fair", "valley");
+world.UseDifficulty("hard");
+world.UseStoryteller("calm");
+var digest  = world.StateDigest();</code></pre>
+<p><code>WorldChanges</code> is a typed stream (season, regime, weather, hazard, outbreak, card, director, effect, intervention). <code>Branch(reseededSet)</code> creates an independent copy for what-if runs; <code>BranchForcingOnset</code> forces one onset in the branch.</p>
+
+<h2 id="determinism">Determinism, save and branch</h2>
+<ul>
+  <li>Per-mille integer maths and seeded rolls; a step is a function of the document, state, step and host facts.</li>
+  <li><code>WorldImage</code>/<code>WorldSave</code> carry the complete state; the document digest and state digest are checked (<code>WORLD_SAVE_DOCUMENT</code>, <code>WORLD_SAVE_STATE</code>). A loaded state continues identically.</li>
+  <li><code>Branch</code> exists for balance and scenario work: it never mutates the original runtime.</li>
+</ul>
+
+<h2 id="cli">Command line and balance tools</h2>
+<pre><code>WorldEventsEngine.Cli check &lt;world.json&gt;
+WorldEventsEngine.Cli simulate &lt;world.json&gt; &lt;scenario.json&gt; &lt;steps&gt; [--save state.json] [--verbose]
+WorldEventsEngine.Cli simulate ... --seeds &lt;n&gt; [--from-seed s] [--days d] [--metrics a,b] [--rows] [--onsets]
+WorldEventsEngine.Cli simulate ... --rare &lt;hazard&gt;:&lt;rung&gt; [--predraw | --conditional] [--effort n] [--efforts a,b,c|auto] [--replications r]
+WorldEventsEngine.Cli explain &lt;world.json&gt; &lt;state.json&gt; hazard|card|disease|weather ...
+WorldEventsEngine.Cli coverage &lt;world.json&gt; &lt;locale.json&gt; [...]</code></pre>
+<p>The multi-seed sweep studies distributions; <code>--rare</code> with fixed-effort splitting, severity predraw and the conditional estimator measures rare hazard onsets with an interval, using <code>EngineCommon.Balance</code>. Exit codes: <code>0</code> done, <code>1</code> refused or incomplete, <code>2</code> usage/scenario/file problem.</p>
+
+<h2 id="component">GameRuntime integration</h2>
+<p><code>WorldEventsComponent</code> advances the world on the session clock and publishes weather/hazard/outbreak/card changes; <code>WorldEvents.Bridges</code> translates effects into economy, diplomacy, calendar and AI requests.</p>
+<table>
+  <thead><tr><th>Direction</th><th>Examples</th></tr></thead>
+  <tbody>
+    <tr><td>Requests in</td><td>advance, begin hazard, intervene, seed outbreak, play card, use difficulty/storyteller, query</td></tr>
+    <tr><td>Results out</td><td>season/regime/weather changed, hazard started/escalated/receding/ended, outbreak changed, card drawn/chained, director phase, effect issued, refused</td></tr>
+  </tbody>
+</table>
+<p><code>WorldCheckpoint</code> captures state; a checkpoint is consistent when no request waits.</p>
+
+<h2 id="testing">Testing</h2>
+<pre><code>dotnet run --project src/WorldEventsEngine/WorldEventsEngine.Tests -c Release</code></pre>
+<p>Suites: climate, hazard, excitation, forced onset, disease, director, cards/branch, spill, watch, facts/names, boundary and bounds, refusal matrix, save/tamper, format equivalence, scale, CLI (including rare/conditional/predraw/onset/balance) and source guards.</p>
+
+<h2 id="source">Source map</h2>
+<dl class="kv">
+  <dt>Reader</dt><dd><code>WorldReader.cs</code>, <code>WorldReader.Hazards.cs</code>, <code>WorldReader.Director.cs</code></dd>
+  <dt>Runtime</dt><dd><code>WorldRuntime.cs</code>, <code>.Advance.cs</code>, <code>.Weather.cs</code>, <code>.Hazards.cs</code>, <code>.Disease.cs</code>, <code>.Cards.cs</code>, <code>.Director.cs</code>, <code>.Controls.cs</code>, <code>.Facts.cs</code>, <code>.Branch.cs</code>, <code>.Forced.cs</code></dd>
+  <dt>Model</dt><dd><code>Definitions.cs</code>, <code>WorldSet.cs</code>, <code>WorldMath.cs</code>, <code>WorldStateRules.cs</code></dd>
+  <dt>Save and text</dt><dd><code>WorldImage.cs</code>, <code>WorldSave.cs</code>, <code>WorldFacts.cs</code>, <code>WorldExplain.cs</code>, <code>WorldNames.cs</code>, <code>WorldChangeText.cs</code></dd>
+  <dt>Refusals</dt><dd><code>WorldCodes.cs</code></dd>
+  <dt>Balance tools</dt><dd><code>WorldCli.Balance.cs</code>, <code>.Rare.cs</code>, <code>OnsetTracker.cs</code>, <code>RareHazardModel.cs</code>, <code>PredrawHazardModel.cs</code>, <code>ConditionalHazardModel.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/WorldEventsEngine</code> and <code>src/GameRuntime/GameRuntime.WorldEvents*</code>. Research, format history and balance measurements: <a href="../WORLD_EVENTS_ENGINE.md">docs/WORLD_EVENTS_ENGINE.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

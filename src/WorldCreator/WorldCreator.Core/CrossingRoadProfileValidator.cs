@@ -11,7 +11,7 @@ public sealed class CrossingRoadProfileValidator
 {
     private const double Tolerance = 1e-5;
 
-    public IReadOnlyList<string> Validate(DummyVillageWorldDocument world)
+    public IReadOnlyList<string> Validate(WorldSceneDocument world)
     {
         ArgumentNullException.ThrowIfNull(world);
         var issues = new List<string>();

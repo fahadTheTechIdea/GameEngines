@@ -1,0 +1,179 @@
+[
+  {
+    "Id": "inland",
+    "Recipe": "examples/metadata/diverse-programs/inland/recipe.json",
+    "RecipeBytesSha256": "1a768e3fdb576fe5bc3aff872540ee47e49084ab5be60bbae2dac9b7c8264ff2",
+    "Catalog": "examples/metadata/diverse-programs/inland/catalog.json",
+    "CatalogBytesSha256": "72bb32fef8b58c47166108a7917dd6e141f4bf0737ea8e086e5491d57a930c0d"
+  },
+  {
+    "Id": "coastal",
+    "Recipe": "examples/metadata/diverse-programs/coastal/recipe.json",
+    "RecipeBytesSha256": "0402eaadbafd5357faf3080f128b2ae016521276ac33905281ed20e116e203c9",
+    "Catalog": "examples/metadata/diverse-programs/coastal/catalog.json",
+    "CatalogBytesSha256": "72bb32fef8b58c47166108a7917dd6e141f4bf0737ea8e086e5491d57a930c0d"
+  },
+  {
+    "Id": "branching",
+    "Recipe": "examples/metadata/generated-interiors/branching/recipe.json",
+    "RecipeBytesSha256": "cc8cbd7e1f3462c868594cf4d23dc95cec22410c5197bc01b25c4237294f73c0",
+    "Catalog": "examples/metadata/generated-interiors/branching/catalog.json",
+    "CatalogBytesSha256": "97e9bf649df62bc9d32d73972c7d7801aa916276d2568a78907a7c9c569e46d0"
+  },
+  {
+    "Id": "rotated",
+    "Recipe": "examples/metadata/generated-interiors/rotated/recipe.json",
+    "RecipeBytesSha256": "2bff102c9413ed873265bb5caf5cca1b6fcea930fc5fe79d753e04d488c01b54",
+    "Catalog": "examples/metadata/generated-interiors/rotated/catalog.json",
+    "CatalogBytesSha256": "97e9bf649df62bc9d32d73972c7d7801aa916276d2568a78907a7c9c569e46d0"
+  },
+  {
+    "Id": "expanded",
+    "Recipe": "examples/metadata/generated-interiors/expanded/recipe.json",
+    "RecipeBytesSha256": "b3cb03811258a5ab7a01c6ddcdb48a4a0bd1d57efc4f6be134b66f140c8129de",
+    "Catalog": "examples/metadata/generated-interiors/expanded/catalog.json",
+    "CatalogBytesSha256": "dda54dd2f717343cccdd9246edf632a52aeb4a9443896e8067b205d224c56c2d"
+  },
+  {
+    "Id": "hexagonal",
+    "Recipe": "examples/metadata/generated-interiors/hexagonal/recipe.json",
+    "RecipeBytesSha256": "2d5570902a1f7ac5236b8fc3f3f4623c20b2c1a7e50d88ed8ebc9aa775ac6798",
+    "Catalog": "examples/metadata/generated-interiors/hexagonal/catalog.json",
+    "CatalogBytesSha256": "8b9652818959e5357644ea166094e76b9e0a664a34de13591ae02245b7938959"
+  },
+  {
+    "Id": "north-pass",
+    "Recipe": "examples/metadata/landform-routes/north-pass/recipe.json",
+    "RecipeBytesSha256": "f52fe041070cc339cb634409506f67383c888c6dc671d80f55f65ea6089df0da",
+    "Catalog": "examples/metadata/landform-routes/north-pass/catalog.json",
+    "CatalogBytesSha256": "d74cc77377c504a7a36042a4a07c112b490a8c256e8f23cad1570b22b9d06291"
+  },
+  {
+    "Id": "south-pass",
+    "Recipe": "examples/metadata/landform-routes/south-pass/recipe.json",
+    "RecipeBytesSha256": "843ebd63111e8f286f86d71ecd5d89f8dc04772bacb5fb4caf32efcc58c40b8a",
+    "Catalog": "examples/metadata/landform-routes/south-pass/catalog.json",
+    "CatalogBytesSha256": "d74cc77377c504a7a36042a4a07c112b490a8c256e8f23cad1570b22b9d06291"
+  },
+  {
+    "Id": "field-flat",
+    "Recipe": "examples/metadata/layered-landforms/flat/recipe.json",
+    "RecipeBytesSha256": "9d3aef4817aa39a65b3e2c13af472c88eed3f7b949a4aebf029890f6527d1648",
+    "Catalog": "examples/metadata/layered-landforms/flat/catalog.json",
+    "CatalogBytesSha256": "b2ecc2c4e09fb331425c90ed8c4e34a75ba29e5858bb659642c6c60681737908"
+  },
+  {
+    "Id": "field-valley",
+    "Recipe": "examples/metadata/layered-landforms/valley/recipe.json",
+    "RecipeBytesSha256": "9e759502b4b8a9057c79501cba0634ec5dc4dd161f19c9019ce0201f9ea1484a",
+    "Catalog": "examples/metadata/layered-landforms/valley/catalog.json",
+    "CatalogBytesSha256": "b2ecc2c4e09fb331425c90ed8c4e34a75ba29e5858bb659642c6c60681737908"
+  },
+  {
+    "Id": "field-ridge",
+    "Recipe": "examples/metadata/layered-landforms/ridge/recipe.json",
+    "RecipeBytesSha256": "4d4e56aabed5560af565b25179f23c4206f02e374c24d83ec95e7e008a6714a6",
+    "Catalog": "examples/metadata/layered-landforms/ridge/catalog.json",
+    "CatalogBytesSha256": "b2ecc2c4e09fb331425c90ed8c4e34a75ba29e5858bb659642c6c60681737908"
+  },
+  {
+    "Id": "field-blocked",
+    "Recipe": "examples/metadata/layered-landforms/blocked/recipe.json",
+    "RecipeBytesSha256": "1310d51919731deeb1a4537d139d6ce11e288bea1a690c0db5c92605bf871080",
+    "Catalog": "examples/metadata/layered-landforms/blocked/catalog.json",
+    "CatalogBytesSha256": "b2ecc2c4e09fb331425c90ed8c4e34a75ba29e5858bb659642c6c60681737908"
+  },
+  {
+    "Id": "encounter",
+    "Recipe": "examples/metadata/procedural-topology/encounter/recipe.json",
+    "RecipeBytesSha256": "5f1f4d853210c9b15f466b53c833339bdd61aa6134e8e052bd12ed96bf2acb50",
+    "Catalog": "examples/metadata/procedural-topology/encounter/catalog.json",
+    "CatalogBytesSha256": "229e6e9d5581d27c26682eba2f9b854a33baa48b446ac5355a3b788cdba666ef"
+  },
+  {
+    "Id": "loop-capacity",
+    "Recipe": "examples/metadata/procedural-topology/loop-capacity/recipe.json",
+    "RecipeBytesSha256": "3fc07cb538799fa110c9cd6d30c9966bd10b06610ba66bf4dce6fcf230403140",
+    "Catalog": "examples/metadata/procedural-topology/loop-capacity/catalog.json",
+    "CatalogBytesSha256": "9d4cba68231ea71eb7bfa403df4877a1ed105034b499d5d8d970ff3236bc4a49"
+  },
+  {
+    "Id": "capability",
+    "Recipe": "examples/metadata/capability-journey/recipe.json",
+    "RecipeBytesSha256": "9b588b6d55747d6974cf0544e494e47aa9922e8754438f5c60f1e4d7868db522",
+    "Catalog": "examples/metadata/capability-journey/catalog.json",
+    "CatalogBytesSha256": "b09872ed71caa8c5506d4214dc5f83d6293741d2fc5e81b3929f3628b5b104dc"
+  },
+  {
+    "Id": "range-a-degree2-extra0",
+    "Recipe": "examples/metadata/generated-interiors/range/range-a-degree2-extra0/recipe.json",
+    "RecipeBytesSha256": "2414733ff4b6dba889f3cb9fcf6e6017cdd3117baf1a67574422514f8573e4f5",
+    "Catalog": "examples/metadata/generated-interiors/branching/catalog.json",
+    "CatalogBytesSha256": "97e9bf649df62bc9d32d73972c7d7801aa916276d2568a78907a7c9c569e46d0",
+    "Derivation": "Original branching recipe; only TopologyRules[0].Seed,MaximumDegree,ExtraConnections changed"
+  },
+  {
+    "Id": "range-a-degree2-extra1",
+    "Recipe": "examples/metadata/generated-interiors/range/range-a-degree2-extra1/recipe.json",
+    "RecipeBytesSha256": "8786e4e01c48e93ae2b40391a84c291aac3ea058f786eaf95733b9b0ecbddbb2",
+    "Catalog": "examples/metadata/generated-interiors/branching/catalog.json",
+    "CatalogBytesSha256": "97e9bf649df62bc9d32d73972c7d7801aa916276d2568a78907a7c9c569e46d0",
+    "Derivation": "Original branching recipe; only TopologyRules[0].Seed,MaximumDegree,ExtraConnections changed"
+  },
+  {
+    "Id": "range-a-degree3-extra0",
+    "Recipe": "examples/metadata/generated-interiors/range/range-a-degree3-extra0/recipe.json",
+    "RecipeBytesSha256": "263bbfe5b0a03b6b96c440e78f6547dbdacaa99882deba034ef47045e920dff9",
+    "Catalog": "examples/metadata/generated-interiors/branching/catalog.json",
+    "CatalogBytesSha256": "97e9bf649df62bc9d32d73972c7d7801aa916276d2568a78907a7c9c569e46d0",
+    "Derivation": "Original branching recipe; only TopologyRules[0].Seed,MaximumDegree,ExtraConnections changed"
+  },
+  {
+    "Id": "range-a-degree3-extra1",
+    "Recipe": "examples/metadata/generated-interiors/range/range-a-degree3-extra1/recipe.json",
+    "RecipeBytesSha256": "08319901743b42020b77a59533bfb243465568e7f080c0391d40ada3632639fe",
+    "Catalog": "examples/metadata/generated-interiors/branching/catalog.json",
+    "CatalogBytesSha256": "97e9bf649df62bc9d32d73972c7d7801aa916276d2568a78907a7c9c569e46d0",
+    "Derivation": "Original branching recipe; only TopologyRules[0].Seed,MaximumDegree,ExtraConnections changed"
+  },
+  {
+    "Id": "range-b-degree2-extra0",
+    "Recipe": "examples/metadata/generated-interiors/range/range-b-degree2-extra0/recipe.json",
+    "RecipeBytesSha256": "1fba406f663f3152703fa8285e74e63d3356a558bcccdacddc5ca1d2df11020a",
+    "Catalog": "examples/metadata/generated-interiors/branching/catalog.json",
+    "CatalogBytesSha256": "97e9bf649df62bc9d32d73972c7d7801aa916276d2568a78907a7c9c569e46d0",
+    "Derivation": "Original branching recipe; only TopologyRules[0].Seed,MaximumDegree,ExtraConnections changed"
+  },
+  {
+    "Id": "range-b-degree2-extra1",
+    "Recipe": "examples/metadata/generated-interiors/range/range-b-degree2-extra1/recipe.json",
+    "RecipeBytesSha256": "b3676e039daadf186eda3bf4043e5a8cfdaaaae5dafd0e4f0441d0769a2c742d",
+    "Catalog": "examples/metadata/generated-interiors/branching/catalog.json",
+    "CatalogBytesSha256": "97e9bf649df62bc9d32d73972c7d7801aa916276d2568a78907a7c9c569e46d0",
+    "Derivation": "Original branching recipe; only TopologyRules[0].Seed,MaximumDegree,ExtraConnections changed"
+  },
+  {
+    "Id": "range-b-degree3-extra0",
+    "Recipe": "examples/metadata/generated-interiors/range/range-b-degree3-extra0/recipe.json",
+    "RecipeBytesSha256": "93f35194e40446972ef9ed00b999349eb85939965d1eee4929f95f60ed7333dd",
+    "Catalog": "examples/metadata/generated-interiors/branching/catalog.json",
+    "CatalogBytesSha256": "97e9bf649df62bc9d32d73972c7d7801aa916276d2568a78907a7c9c569e46d0",
+    "Derivation": "Original branching recipe; only TopologyRules[0].Seed,MaximumDegree,ExtraConnections changed"
+  },
+  {
+    "Id": "range-b-degree3-extra1",
+    "Recipe": "examples/metadata/generated-interiors/range/range-b-degree3-extra1/recipe.json",
+    "RecipeBytesSha256": "9a79152b63cb64b31503d7cf36c815c9f18c28ff662f6937cf21667349d7b1c5",
+    "Catalog": "examples/metadata/generated-interiors/branching/catalog.json",
+    "CatalogBytesSha256": "97e9bf649df62bc9d32d73972c7d7801aa916276d2568a78907a7c9c569e46d0",
+    "Derivation": "Original branching recipe; only TopologyRules[0].Seed,MaximumDegree,ExtraConnections changed"
+  },
+  {
+    "Id": "north-repeat",
+    "Recipe": "examples/metadata/landform-routes/north-pass/recipe.json",
+    "RecipeBytesSha256": "f52fe041070cc339cb634409506f67383c888c6dc671d80f55f65ea6089df0da",
+    "Catalog": "examples/metadata/landform-routes/north-pass/catalog.json",
+    "CatalogBytesSha256": "d74cc77377c504a7a36042a4a07c112b490a8c256e8f23cad1570b22b9d06291",
+    "Derivation": "Exact repeat of north-pass; same source files and complete typed recipe/catalog"
+  }
+]

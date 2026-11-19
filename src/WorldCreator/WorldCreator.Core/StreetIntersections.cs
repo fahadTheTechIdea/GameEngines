@@ -5,13 +5,15 @@ public sealed record SegmentIntersection(IntersectionKind Kind, WorldPoint? Poin
 public static class PlanarIntersections
 {
     private const double Epsilon = 1e-9;
+    private static readonly SegmentIntersection NoIntersection = new(IntersectionKind.None);
+    private static readonly SegmentIntersection Overlap = new(IntersectionKind.CollinearOverlap);
+    private static bool Finite(WorldPoint point) => double.IsFinite(point.X) && double.IsFinite(point.Y);
     private static double Cross(WorldPoint a, WorldPoint b) => a.X * b.Y - a.Y * b.X;
     private static WorldPoint Minus(WorldPoint a, WorldPoint b) => new(a.X - b.X, a.Y - b.Y);
     public static SegmentIntersection Intersect(WorldPoint a, WorldPoint b, WorldPoint c, WorldPoint d)
     {
-        foreach (var p in new[] { a, b, c, d })
-            if (!double.IsFinite(p.X) || !double.IsFinite(p.Y))
-                throw new ArgumentException("Segment endpoints must be finite.");
+        if (!Finite(a) || !Finite(b) || !Finite(c) || !Finite(d))
+            throw new ArgumentException("Segment endpoints must be finite.");
         var r = Minus(b, a);
         var s = Minus(d, c);
         double rr = r.X * r.X + r.Y * r.Y;
@@ -24,20 +26,20 @@ public static class PlanarIntersections
         if (Math.Abs(cross) <= Epsilon * scale)
         {
             if (Math.Abs(Cross(q, r)) > Epsilon * Math.Sqrt(rr) * Math.Max(1, Math.Sqrt(q.X * q.X + q.Y * q.Y)))
-                return new(IntersectionKind.None);
+                return NoIntersection;
             double t0 = (q.X * r.X + q.Y * r.Y) / rr;
             double t1 = t0 + (s.X * r.X + s.Y * r.Y) / rr;
             double lo = Math.Max(0, Math.Min(t0, t1));
             double hi = Math.Min(1, Math.Max(t0, t1));
-            if (hi < lo - Epsilon) return new(IntersectionKind.None);
+            if (hi < lo - Epsilon) return NoIntersection;
             if (Math.Abs(hi - lo) <= Epsilon)
                 return new(IntersectionKind.Point, new(a.X + lo * r.X, a.Y + lo * r.Y));
-            return new(IntersectionKind.CollinearOverlap);
+            return Overlap;
         }
         double t = Cross(q, s) / cross;
         double u = Cross(q, r) / cross;
         if (t < -Epsilon || t > 1 + Epsilon || u < -Epsilon || u > 1 + Epsilon)
-            return new(IntersectionKind.None);
+            return NoIntersection;
         t = Math.Clamp(t, 0, 1);
         return new(IntersectionKind.Point, new(a.X + t * r.X, a.Y + t * r.Y));
     }

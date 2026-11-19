@@ -1,0 +1,11 @@
+{
+  "Status": "OwnerSelectedObliqueProjection",
+  "Scope": "Framework art reference test",
+  "UserStatement": "\u00be overhead orthographic \u2014 roofs and walls visible",
+  "PreviousChoicesVersion": "b5db73aa73c2",
+  "ChoicesVersion": "99de9f248453",
+  "CanonicalMaterialSettingsSha256": "3afb48a6222be7e270d89acfa3ac4906abe2ac8c27e9f6e92f12fce7e5c698b7",
+  "PriorAcceptanceFile": "art-profile-acceptance.json",
+  "RecordedAtUtc": "2026-10-27T14:16:18.994158+00:00",
+  "ArtworkApprovalGranted": false
+}

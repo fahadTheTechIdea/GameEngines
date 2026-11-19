@@ -1,0 +1,1721 @@
+{
+  "Version": 1,
+  "Id": "multi-level-world-reference",
+  "Purpose": "Complete independent-level program with measured local paths and explicit transitions",
+  "SourceRuleId": "world:multi-level",
+  "Domains": [
+    {
+      "Id": "level-a",
+      "Purpose": "Complete16-room level with all fixtures and doors",
+      "SourceRuleId": "world:level",
+      "Recipe": {
+        "SchemaVersion": 1,
+        "Id": "generated-interior",
+        "GameProfile": "modular-exploration",
+        "CatalogId": "room-modules",
+        "RootArchetypeId": "floor",
+        "Scale": "single-floor",
+        "Coverage": "PartialScope",
+        "RemainingScopes": [
+          "Generated convex-room contacts and physical passages; exterior transitions, multiple storeys, doors as assets and broad world composition remain open."
+        ],
+        "Parameters": {},
+        "Space": {
+          "Axes": [
+            "x",
+            "y"
+          ],
+          "Unit": "meters"
+        },
+        "Origin": [
+          0,
+          0
+        ],
+        "RequireAllPositions": true,
+        "MaximumNodes": 10000,
+        "MaximumConnections": 50000,
+        "AdditionalConnections": null,
+        "Layers": null,
+        "Surface": {
+          "SchemaVersion": 1,
+          "Id": "interior-domain",
+          "Unit": "meters",
+          "Boundary": {
+            "Vertices": [
+              {
+                "X": -40,
+                "Y": -40
+              },
+              {
+                "X": 40,
+                "Y": -40
+              },
+              {
+                "X": 40,
+                "Y": 40
+              },
+              {
+                "X": -40,
+                "Y": 40
+              }
+            ]
+          },
+          "Exclusions": [],
+          "Patches": [
+            {
+              "Id": "deck",
+              "Kind": "deck",
+              "Purpose": "Available floor domain",
+              "SourceRuleId": "interior:deck",
+              "Boundary": {
+                "Vertices": [
+                  {
+                    "X": -40,
+                    "Y": -40
+                  },
+                  {
+                    "X": 40,
+                    "Y": -40
+                  },
+                  {
+                    "X": 40,
+                    "Y": 40
+                  },
+                  {
+                    "X": -40,
+                    "Y": 40
+                  }
+                ]
+              },
+              "Priority": 0,
+              "Origin": {
+                "X": 0,
+                "Y": 0
+              },
+              "Elevation": 0,
+              "GradientX": 0,
+              "GradientY": 0
+            }
+          ],
+          "Terrain": null,
+          "HeightField": null
+        },
+        "RouteRules": null,
+        "NetworkRules": null,
+        "Environment": {
+          "SchemaVersion": 1,
+          "Id": "interior-fields",
+          "Fields": [
+            {
+              "Id": "level",
+              "Purpose": "Floor elevation",
+              "SourceRuleId": "interior:level",
+              "Unit": "meters",
+              "Offset": 0,
+              "Terms": [
+                {
+                  "Input": "Elevation",
+                  "Coefficient": 1,
+                  "FieldId": null
+                }
+              ],
+              "Minimum": null,
+              "Maximum": null
+            }
+          ]
+        },
+        "SuitabilityRules": null,
+        "Placement": {
+          "Request": {
+            "Id": "rooms",
+            "Purpose": "Grow connected source-sized rooms",
+            "SourceRuleId": "interior:rooms",
+            "Boundary": null,
+            "Demands": [
+              {
+                "Id": "room",
+                "Purpose": "Required module",
+                "SourceRuleId": "interior:module",
+                "Footprint": null,
+                "Profile": {
+                  "Id": "floor",
+                  "Purpose": "Place room modules",
+                  "SourceRuleId": "interior:floor",
+                  "AllowedKinds": [
+                    "deck"
+                  ],
+                  "Requirements": [],
+                  "Preferences": []
+                },
+                "Reservation": null,
+                "RegionId": null,
+                "AllocationId": null
+              }
+            ],
+            "Anchors": [
+              {
+                "Id": "entry",
+                "Position": {
+                  "X": 0,
+                  "Y": 0
+                }
+              }
+            ],
+            "Relations": [],
+            "MinimumSeparation": 0,
+            "MaximumCandidates": 2048,
+            "MaximumSearchStates": 100000,
+            "MaximumWork": 100000000,
+            "AllowBoundaryContact": true,
+            "Growth": null
+          },
+          "Bindings": [
+            {
+              "DemandId": "room",
+              "NodeId": "generated-interior",
+              "UseCatalogFootprint": true,
+              "RotationDegrees": 0,
+              "PartId": "rooms",
+              "SiteLayout": null,
+              "Population": null
+            }
+          ],
+          "NestedStages": null,
+          "MaximumWork": 200000000,
+          "MaximumStageAttempts": 128,
+          "MaximumFeasibilityAttempts": 32,
+          "SourceWorld": null,
+          "ConnectedLayouts": [
+            {
+              "Id": "room-contacts",
+              "Purpose": "Grow from one entry module",
+              "SourceRuleId": "interior:growth",
+              "StageId": "rooms",
+              "RootNodeId": "generated-interior/rooms-0",
+              "AnchorId": "entry",
+              "ConnectionKinds": [
+                "door"
+              ],
+              "DirectionAnglesDegrees": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "Gap": 0,
+              "MaximumConnectionDistance": 20
+            }
+          ],
+          "Programs": [
+            {
+              "Id": "fixtures",
+              "Purpose": "Populate every generated room",
+              "SourceRuleId": "interior:fixtures",
+              "ScopeNodeId": "generated-interior",
+              "ParentArchetypeId": "room",
+              "MinimumParents": 16,
+              "MaximumParents": 16,
+              "Request": {
+                "Id": "room-content",
+                "Purpose": "Keep required fixture in each room",
+                "SourceRuleId": "interior:fixture",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "fixture",
+                    "Purpose": "Required fixture",
+                    "SourceRuleId": "interior:fixture",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "floor",
+                      "Purpose": "Place room modules",
+                      "SourceRuleId": "interior:floor",
+                      "AllowedKinds": [
+                        "deck"
+                      ],
+                      "Requirements": [],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [
+                  {
+                    "Id": "fixture-anchor",
+                    "Position": {
+                      "X": 0,
+                      "Y": -1.2
+                    }
+                  }
+                ],
+                "Relations": [
+                  {
+                    "Id": "fixture-pin",
+                    "FromId": "fixture",
+                    "ToId": "fixture-anchor",
+                    "Purpose": "Preserve local fixture relationship",
+                    "SourceRuleId": "interior:fixture",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "fixture",
+                  "PartId": "fixture",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "Growth": null
+            }
+          ]
+        },
+        "Services": null,
+        "Context": null,
+        "Corridors": null,
+        "Regions": null,
+        "LocalLayouts": null,
+        "LayoutAdaptation": null,
+        "ProgressionRules": null,
+        "PopulationSource": null,
+        "Chunks": null,
+        "TopologyRules": [
+          {
+            "Id": "room-journey",
+            "Purpose": "Generate connected branching room intent",
+            "SourceRuleId": "interior:topology",
+            "ScopeNodeId": "generated-interior",
+            "StartNodeId": "generated-interior/rooms-0",
+            "ConnectionKind": "door",
+            "Stages": [
+              {
+                "Id": "explore",
+                "Purpose": "Reach the exit",
+                "ExitNodeId": "generated-interior/rooms-15",
+                "MemberKinds": [
+                  "room"
+                ],
+                "MinimumMembers": 14,
+                "MaximumMembers": 14
+              }
+            ],
+            "Seed": "interior-a",
+            "MaximumDegree": 3,
+            "ExtraConnections": 1,
+            "MaximumWork": 1000000,
+            "LayerId": null
+          }
+        ],
+        "RouteBudget": null,
+        "Interiors": {
+          "Rules": [
+            {
+              "Id": "rooms",
+              "Purpose": "Realize every required doorway",
+              "SourceRuleId": "interior:openings",
+              "ScopeNodeId": "generated-interior",
+              "RoomKinds": [
+                "room"
+              ],
+              "ConnectionKinds": [
+                "door"
+              ],
+              "OpeningWidth": 1.2,
+              "WallThickness": 0.12,
+              "ApproachDepth": 0.6,
+              "Profile": {
+                "Id": "walk",
+                "Purpose": "Width-qualified room movement",
+                "SourceRuleId": "interior:walk",
+                "Radius": 0.2,
+                "MaximumSlope": 0.01,
+                "KindCosts": {
+                  "deck": 1
+                },
+                "AscentCost": 0,
+                "DescentCost": 0,
+                "MaximumHeightStep": 0.001
+              },
+              "Search": {
+                "Clearance": 0.05,
+                "Waypoints": [],
+                "MaximumCandidates": 512,
+                "MaximumEdgeChecks": 32768,
+                "MaximumWork": 20000000,
+                "Objective": "FirstFeasible"
+              }
+            }
+          ],
+          "MaximumWork": 150000000
+        }
+      },
+      "Catalog": {
+        "SchemaVersion": 1,
+        "Id": "room-modules",
+        "Archetypes": [
+          {
+            "Id": "floor",
+            "Kind": "floor",
+            "Purpose": "Connected interior exploration program",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "rooms",
+                "ArchetypeId": "room",
+                "Count": 16,
+                "Purpose": "Required room",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": null,
+            "Access": null,
+            "Capacities": null,
+            "Services": null
+          },
+          {
+            "Id": "room",
+            "Kind": "room",
+            "Purpose": "Reusable room and its fixture",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "fixture",
+                "ArchetypeId": "fixture",
+                "Count": 1,
+                "Purpose": "Required interior equipment",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Exact room module",
+              "SourceRuleId": "interior:module",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -3,
+                    "Y": -2.5
+                  },
+                  {
+                    "X": 3,
+                    "Y": -2.5
+                  },
+                  {
+                    "X": 3,
+                    "Y": 2.5
+                  },
+                  {
+                    "X": -3,
+                    "Y": 2.5
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": null,
+            "Services": null
+          },
+          {
+            "Id": "fixture",
+            "Kind": "equipment",
+            "Purpose": "Purposeful internal obstacle",
+            "Properties": {},
+            "Parts": [],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Exact fixture",
+              "SourceRuleId": "interior:fixture",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -0.4,
+                    "Y": -0.25
+                  },
+                  {
+                    "X": 0.4,
+                    "Y": -0.25
+                  },
+                  {
+                    "X": 0.4,
+                    "Y": 0.25
+                  },
+                  {
+                    "X": -0.4,
+                    "Y": 0.25
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Solid",
+              "Ports": []
+            },
+            "Capacities": null,
+            "Services": null
+          }
+        ]
+      }
+    },
+    {
+      "Id": "level-b",
+      "Purpose": "Complete16-room level with all fixtures and doors",
+      "SourceRuleId": "world:level",
+      "Recipe": {
+        "SchemaVersion": 1,
+        "Id": "generated-interior",
+        "GameProfile": "modular-exploration",
+        "CatalogId": "room-modules",
+        "RootArchetypeId": "floor",
+        "Scale": "single-floor",
+        "Coverage": "PartialScope",
+        "RemainingScopes": [
+          "Generated convex-room contacts and physical passages; exterior transitions, multiple storeys, doors as assets and broad world composition remain open."
+        ],
+        "Parameters": {},
+        "Space": {
+          "Axes": [
+            "x",
+            "y"
+          ],
+          "Unit": "meters"
+        },
+        "Origin": [
+          0,
+          0
+        ],
+        "RequireAllPositions": true,
+        "MaximumNodes": 10000,
+        "MaximumConnections": 50000,
+        "AdditionalConnections": null,
+        "Layers": null,
+        "Surface": {
+          "SchemaVersion": 1,
+          "Id": "interior-domain",
+          "Unit": "meters",
+          "Boundary": {
+            "Vertices": [
+              {
+                "X": -40,
+                "Y": -40
+              },
+              {
+                "X": 40,
+                "Y": -40
+              },
+              {
+                "X": 40,
+                "Y": 40
+              },
+              {
+                "X": -40,
+                "Y": 40
+              }
+            ]
+          },
+          "Exclusions": [],
+          "Patches": [
+            {
+              "Id": "deck",
+              "Kind": "deck",
+              "Purpose": "Available floor domain",
+              "SourceRuleId": "interior:deck",
+              "Boundary": {
+                "Vertices": [
+                  {
+                    "X": -40,
+                    "Y": -40
+                  },
+                  {
+                    "X": 40,
+                    "Y": -40
+                  },
+                  {
+                    "X": 40,
+                    "Y": 40
+                  },
+                  {
+                    "X": -40,
+                    "Y": 40
+                  }
+                ]
+              },
+              "Priority": 0,
+              "Origin": {
+                "X": 0,
+                "Y": 0
+              },
+              "Elevation": 0,
+              "GradientX": 0,
+              "GradientY": 0
+            }
+          ],
+          "Terrain": null,
+          "HeightField": null
+        },
+        "RouteRules": null,
+        "NetworkRules": null,
+        "Environment": {
+          "SchemaVersion": 1,
+          "Id": "interior-fields",
+          "Fields": [
+            {
+              "Id": "level",
+              "Purpose": "Floor elevation",
+              "SourceRuleId": "interior:level",
+              "Unit": "meters",
+              "Offset": 0,
+              "Terms": [
+                {
+                  "Input": "Elevation",
+                  "Coefficient": 1,
+                  "FieldId": null
+                }
+              ],
+              "Minimum": null,
+              "Maximum": null
+            }
+          ]
+        },
+        "SuitabilityRules": null,
+        "Placement": {
+          "Request": {
+            "Id": "rooms",
+            "Purpose": "Grow connected source-sized rooms",
+            "SourceRuleId": "interior:rooms",
+            "Boundary": null,
+            "Demands": [
+              {
+                "Id": "room",
+                "Purpose": "Required module",
+                "SourceRuleId": "interior:module",
+                "Footprint": null,
+                "Profile": {
+                  "Id": "floor",
+                  "Purpose": "Place room modules",
+                  "SourceRuleId": "interior:floor",
+                  "AllowedKinds": [
+                    "deck"
+                  ],
+                  "Requirements": [],
+                  "Preferences": []
+                },
+                "Reservation": null,
+                "RegionId": null,
+                "AllocationId": null
+              }
+            ],
+            "Anchors": [
+              {
+                "Id": "entry",
+                "Position": {
+                  "X": 0,
+                  "Y": 0
+                }
+              }
+            ],
+            "Relations": [],
+            "MinimumSeparation": 0,
+            "MaximumCandidates": 2048,
+            "MaximumSearchStates": 100000,
+            "MaximumWork": 100000000,
+            "AllowBoundaryContact": true,
+            "Growth": null
+          },
+          "Bindings": [
+            {
+              "DemandId": "room",
+              "NodeId": "generated-interior",
+              "UseCatalogFootprint": true,
+              "RotationDegrees": 0,
+              "PartId": "rooms",
+              "SiteLayout": null,
+              "Population": null
+            }
+          ],
+          "NestedStages": null,
+          "MaximumWork": 200000000,
+          "MaximumStageAttempts": 128,
+          "MaximumFeasibilityAttempts": 32,
+          "SourceWorld": null,
+          "ConnectedLayouts": [
+            {
+              "Id": "room-contacts",
+              "Purpose": "Grow from one entry module",
+              "SourceRuleId": "interior:growth",
+              "StageId": "rooms",
+              "RootNodeId": "generated-interior/rooms-0",
+              "AnchorId": "entry",
+              "ConnectionKinds": [
+                "door"
+              ],
+              "DirectionAnglesDegrees": [
+                30,
+                90,
+                150,
+                210,
+                270,
+                330
+              ],
+              "Gap": 0,
+              "MaximumConnectionDistance": 20
+            }
+          ],
+          "Programs": [
+            {
+              "Id": "fixtures",
+              "Purpose": "Populate every generated room",
+              "SourceRuleId": "interior:fixtures",
+              "ScopeNodeId": "generated-interior",
+              "ParentArchetypeId": "room",
+              "MinimumParents": 16,
+              "MaximumParents": 16,
+              "Request": {
+                "Id": "room-content",
+                "Purpose": "Keep required fixture in each room",
+                "SourceRuleId": "interior:fixture",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "fixture",
+                    "Purpose": "Required fixture",
+                    "SourceRuleId": "interior:fixture",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "floor",
+                      "Purpose": "Place room modules",
+                      "SourceRuleId": "interior:floor",
+                      "AllowedKinds": [
+                        "deck"
+                      ],
+                      "Requirements": [],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [
+                  {
+                    "Id": "fixture-anchor",
+                    "Position": {
+                      "X": 0,
+                      "Y": -1.2
+                    }
+                  }
+                ],
+                "Relations": [
+                  {
+                    "Id": "fixture-pin",
+                    "FromId": "fixture",
+                    "ToId": "fixture-anchor",
+                    "Purpose": "Preserve local fixture relationship",
+                    "SourceRuleId": "interior:fixture",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "fixture",
+                  "PartId": "fixture",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "Growth": null
+            }
+          ]
+        },
+        "Services": null,
+        "Context": null,
+        "Corridors": null,
+        "Regions": null,
+        "LocalLayouts": null,
+        "LayoutAdaptation": null,
+        "ProgressionRules": null,
+        "PopulationSource": null,
+        "Chunks": null,
+        "TopologyRules": [
+          {
+            "Id": "room-journey",
+            "Purpose": "Generate connected branching room intent",
+            "SourceRuleId": "interior:topology",
+            "ScopeNodeId": "generated-interior",
+            "StartNodeId": "generated-interior/rooms-0",
+            "ConnectionKind": "door",
+            "Stages": [
+              {
+                "Id": "explore",
+                "Purpose": "Reach the exit",
+                "ExitNodeId": "generated-interior/rooms-15",
+                "MemberKinds": [
+                  "room"
+                ],
+                "MinimumMembers": 14,
+                "MaximumMembers": 14
+              }
+            ],
+            "Seed": "interior-a",
+            "MaximumDegree": 3,
+            "ExtraConnections": 1,
+            "MaximumWork": 1000000,
+            "LayerId": null
+          }
+        ],
+        "RouteBudget": null,
+        "Interiors": {
+          "Rules": [
+            {
+              "Id": "rooms",
+              "Purpose": "Realize every required doorway",
+              "SourceRuleId": "interior:openings",
+              "ScopeNodeId": "generated-interior",
+              "RoomKinds": [
+                "room"
+              ],
+              "ConnectionKinds": [
+                "door"
+              ],
+              "OpeningWidth": 1.2,
+              "WallThickness": 0.12,
+              "ApproachDepth": 0.6,
+              "Profile": {
+                "Id": "walk",
+                "Purpose": "Width-qualified room movement",
+                "SourceRuleId": "interior:walk",
+                "Radius": 0.2,
+                "MaximumSlope": 0.01,
+                "KindCosts": {
+                  "deck": 1
+                },
+                "AscentCost": 0,
+                "DescentCost": 0,
+                "MaximumHeightStep": 0.001
+              },
+              "Search": {
+                "Clearance": 0.05,
+                "Waypoints": [],
+                "MaximumCandidates": 512,
+                "MaximumEdgeChecks": 32768,
+                "MaximumWork": 20000000,
+                "Objective": "FirstFeasible"
+              }
+            }
+          ],
+          "MaximumWork": 150000000
+        }
+      },
+      "Catalog": {
+        "SchemaVersion": 1,
+        "Id": "room-modules",
+        "Archetypes": [
+          {
+            "Id": "floor",
+            "Kind": "floor",
+            "Purpose": "Connected interior exploration program",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "rooms",
+                "ArchetypeId": "room",
+                "Count": 16,
+                "Purpose": "Required room",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": null,
+            "Access": null,
+            "Capacities": null,
+            "Services": null
+          },
+          {
+            "Id": "room",
+            "Kind": "room",
+            "Purpose": "Reusable room and its fixture",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "fixture",
+                "ArchetypeId": "fixture",
+                "Count": 1,
+                "Purpose": "Required interior equipment",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Exact room module",
+              "SourceRuleId": "interior:module",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": 3,
+                    "Y": 0
+                  },
+                  {
+                    "X": 1.5000000000000004,
+                    "Y": 2.598076211353316
+                  },
+                  {
+                    "X": -1.4999999999999993,
+                    "Y": 2.598076211353316
+                  },
+                  {
+                    "X": -3,
+                    "Y": 3.6739403974420594e-16
+                  },
+                  {
+                    "X": -1.5000000000000013,
+                    "Y": -2.5980762113533156
+                  },
+                  {
+                    "X": 1.5000000000000004,
+                    "Y": -2.598076211353316
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": null,
+            "Services": null
+          },
+          {
+            "Id": "fixture",
+            "Kind": "equipment",
+            "Purpose": "Purposeful internal obstacle",
+            "Properties": {},
+            "Parts": [],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Exact fixture",
+              "SourceRuleId": "interior:fixture",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -0.4,
+                    "Y": -0.25
+                  },
+                  {
+                    "X": 0.4,
+                    "Y": -0.25
+                  },
+                  {
+                    "X": 0.4,
+                    "Y": 0.25
+                  },
+                  {
+                    "X": -0.4,
+                    "Y": 0.25
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Solid",
+              "Ports": []
+            },
+            "Capacities": null,
+            "Services": null
+          }
+        ]
+      }
+    },
+    {
+      "Id": "level-c",
+      "Purpose": "Complete16-room level with all fixtures and doors",
+      "SourceRuleId": "world:level",
+      "Recipe": {
+        "SchemaVersion": 1,
+        "Id": "generated-interior",
+        "GameProfile": "modular-exploration",
+        "CatalogId": "room-modules",
+        "RootArchetypeId": "floor",
+        "Scale": "single-floor",
+        "Coverage": "PartialScope",
+        "RemainingScopes": [
+          "Generated convex-room contacts and physical passages; exterior transitions, multiple storeys, doors as assets and broad world composition remain open."
+        ],
+        "Parameters": {},
+        "Space": {
+          "Axes": [
+            "x",
+            "y"
+          ],
+          "Unit": "meters"
+        },
+        "Origin": [
+          0,
+          0
+        ],
+        "RequireAllPositions": true,
+        "MaximumNodes": 10000,
+        "MaximumConnections": 50000,
+        "AdditionalConnections": null,
+        "Layers": null,
+        "Surface": {
+          "SchemaVersion": 1,
+          "Id": "interior-domain",
+          "Unit": "meters",
+          "Boundary": {
+            "Vertices": [
+              {
+                "X": -40,
+                "Y": -40
+              },
+              {
+                "X": 40,
+                "Y": -40
+              },
+              {
+                "X": 40,
+                "Y": 40
+              },
+              {
+                "X": -40,
+                "Y": 40
+              }
+            ]
+          },
+          "Exclusions": [],
+          "Patches": [
+            {
+              "Id": "deck",
+              "Kind": "deck",
+              "Purpose": "Available floor domain",
+              "SourceRuleId": "interior:deck",
+              "Boundary": {
+                "Vertices": [
+                  {
+                    "X": -40,
+                    "Y": -40
+                  },
+                  {
+                    "X": 40,
+                    "Y": -40
+                  },
+                  {
+                    "X": 40,
+                    "Y": 40
+                  },
+                  {
+                    "X": -40,
+                    "Y": 40
+                  }
+                ]
+              },
+              "Priority": 0,
+              "Origin": {
+                "X": 0,
+                "Y": 0
+              },
+              "Elevation": 0,
+              "GradientX": 0,
+              "GradientY": 0
+            }
+          ],
+          "Terrain": null,
+          "HeightField": null
+        },
+        "RouteRules": null,
+        "NetworkRules": null,
+        "Environment": {
+          "SchemaVersion": 1,
+          "Id": "interior-fields",
+          "Fields": [
+            {
+              "Id": "level",
+              "Purpose": "Floor elevation",
+              "SourceRuleId": "interior:level",
+              "Unit": "meters",
+              "Offset": 0,
+              "Terms": [
+                {
+                  "Input": "Elevation",
+                  "Coefficient": 1,
+                  "FieldId": null
+                }
+              ],
+              "Minimum": null,
+              "Maximum": null
+            }
+          ]
+        },
+        "SuitabilityRules": null,
+        "Placement": {
+          "Request": {
+            "Id": "rooms",
+            "Purpose": "Grow connected source-sized rooms",
+            "SourceRuleId": "interior:rooms",
+            "Boundary": null,
+            "Demands": [
+              {
+                "Id": "room",
+                "Purpose": "Required module",
+                "SourceRuleId": "interior:module",
+                "Footprint": null,
+                "Profile": {
+                  "Id": "floor",
+                  "Purpose": "Place room modules",
+                  "SourceRuleId": "interior:floor",
+                  "AllowedKinds": [
+                    "deck"
+                  ],
+                  "Requirements": [],
+                  "Preferences": []
+                },
+                "Reservation": null,
+                "RegionId": null,
+                "AllocationId": null
+              }
+            ],
+            "Anchors": [
+              {
+                "Id": "entry",
+                "Position": {
+                  "X": 0,
+                  "Y": 0
+                }
+              }
+            ],
+            "Relations": [],
+            "MinimumSeparation": 0,
+            "MaximumCandidates": 2048,
+            "MaximumSearchStates": 100000,
+            "MaximumWork": 100000000,
+            "AllowBoundaryContact": true,
+            "Growth": null
+          },
+          "Bindings": [
+            {
+              "DemandId": "room",
+              "NodeId": "generated-interior",
+              "UseCatalogFootprint": true,
+              "RotationDegrees": 0,
+              "PartId": "rooms",
+              "SiteLayout": null,
+              "Population": null
+            }
+          ],
+          "NestedStages": null,
+          "MaximumWork": 200000000,
+          "MaximumStageAttempts": 128,
+          "MaximumFeasibilityAttempts": 32,
+          "SourceWorld": null,
+          "ConnectedLayouts": [
+            {
+              "Id": "room-contacts",
+              "Purpose": "Grow from one entry module",
+              "SourceRuleId": "interior:growth",
+              "StageId": "rooms",
+              "RootNodeId": "generated-interior/rooms-0",
+              "AnchorId": "entry",
+              "ConnectionKinds": [
+                "door"
+              ],
+              "DirectionAnglesDegrees": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "Gap": 0,
+              "MaximumConnectionDistance": 20
+            }
+          ],
+          "Programs": [
+            {
+              "Id": "fixtures",
+              "Purpose": "Populate every generated room",
+              "SourceRuleId": "interior:fixtures",
+              "ScopeNodeId": "generated-interior",
+              "ParentArchetypeId": "room",
+              "MinimumParents": 16,
+              "MaximumParents": 16,
+              "Request": {
+                "Id": "room-content",
+                "Purpose": "Keep required fixture in each room",
+                "SourceRuleId": "interior:fixture",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "fixture",
+                    "Purpose": "Required fixture",
+                    "SourceRuleId": "interior:fixture",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "floor",
+                      "Purpose": "Place room modules",
+                      "SourceRuleId": "interior:floor",
+                      "AllowedKinds": [
+                        "deck"
+                      ],
+                      "Requirements": [],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [
+                  {
+                    "Id": "fixture-anchor",
+                    "Position": {
+                      "X": 0,
+                      "Y": -1.2
+                    }
+                  }
+                ],
+                "Relations": [
+                  {
+                    "Id": "fixture-pin",
+                    "FromId": "fixture",
+                    "ToId": "fixture-anchor",
+                    "Purpose": "Preserve local fixture relationship",
+                    "SourceRuleId": "interior:fixture",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "fixture",
+                  "PartId": "fixture",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "Growth": null
+            }
+          ]
+        },
+        "Services": null,
+        "Context": null,
+        "Corridors": null,
+        "Regions": null,
+        "LocalLayouts": null,
+        "LayoutAdaptation": null,
+        "ProgressionRules": null,
+        "PopulationSource": null,
+        "Chunks": null,
+        "TopologyRules": [
+          {
+            "Id": "room-journey",
+            "Purpose": "Generate connected branching room intent",
+            "SourceRuleId": "interior:topology",
+            "ScopeNodeId": "generated-interior",
+            "StartNodeId": "generated-interior/rooms-0",
+            "ConnectionKind": "door",
+            "Stages": [
+              {
+                "Id": "explore",
+                "Purpose": "Reach the exit",
+                "ExitNodeId": "generated-interior/rooms-15",
+                "MemberKinds": [
+                  "room"
+                ],
+                "MinimumMembers": 14,
+                "MaximumMembers": 14
+              }
+            ],
+            "Seed": "interior-a",
+            "MaximumDegree": 3,
+            "ExtraConnections": 1,
+            "MaximumWork": 1000000,
+            "LayerId": null
+          }
+        ],
+        "RouteBudget": null,
+        "Interiors": {
+          "Rules": [
+            {
+              "Id": "rooms",
+              "Purpose": "Realize every required doorway",
+              "SourceRuleId": "interior:openings",
+              "ScopeNodeId": "generated-interior",
+              "RoomKinds": [
+                "room"
+              ],
+              "ConnectionKinds": [
+                "door"
+              ],
+              "OpeningWidth": 1.2,
+              "WallThickness": 0.12,
+              "ApproachDepth": 0.6,
+              "Profile": {
+                "Id": "walk",
+                "Purpose": "Width-qualified room movement",
+                "SourceRuleId": "interior:walk",
+                "Radius": 0.2,
+                "MaximumSlope": 0.01,
+                "KindCosts": {
+                  "deck": 1
+                },
+                "AscentCost": 0,
+                "DescentCost": 0,
+                "MaximumHeightStep": 0.001
+              },
+              "Search": {
+                "Clearance": 0.05,
+                "Waypoints": [],
+                "MaximumCandidates": 512,
+                "MaximumEdgeChecks": 32768,
+                "MaximumWork": 20000000,
+                "Objective": "FirstFeasible"
+              }
+            }
+          ],
+          "MaximumWork": 150000000
+        }
+      },
+      "Catalog": {
+        "SchemaVersion": 1,
+        "Id": "room-modules",
+        "Archetypes": [
+          {
+            "Id": "floor",
+            "Kind": "floor",
+            "Purpose": "Connected interior exploration program",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "rooms",
+                "ArchetypeId": "room",
+                "Count": 16,
+                "Purpose": "Required room",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": null,
+            "Access": null,
+            "Capacities": null,
+            "Services": null
+          },
+          {
+            "Id": "room",
+            "Kind": "room",
+            "Purpose": "Reusable room and its fixture",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "fixture",
+                "ArchetypeId": "fixture",
+                "Count": 1,
+                "Purpose": "Required interior equipment",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Exact room module",
+              "SourceRuleId": "interior:module",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -3,
+                    "Y": -2.5
+                  },
+                  {
+                    "X": 3,
+                    "Y": -2.5
+                  },
+                  {
+                    "X": 3,
+                    "Y": 2.5
+                  },
+                  {
+                    "X": -3,
+                    "Y": 2.5
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": null,
+            "Services": null
+          },
+          {
+            "Id": "fixture",
+            "Kind": "equipment",
+            "Purpose": "Purposeful internal obstacle",
+            "Properties": {},
+            "Parts": [],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Exact fixture",
+              "SourceRuleId": "interior:fixture",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -0.4,
+                    "Y": -0.25
+                  },
+                  {
+                    "X": 0.4,
+                    "Y": -0.25
+                  },
+                  {
+                    "X": 0.4,
+                    "Y": 0.25
+                  },
+                  {
+                    "X": -0.4,
+                    "Y": 0.25
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Solid",
+              "Ports": []
+            },
+            "Capacities": null,
+            "Services": null
+          }
+        ]
+      }
+    }
+  ],
+  "Transitions": [
+    {
+      "Id": "level-a-to-level-b",
+      "Kind": "level-transition",
+      "Purpose": "Explicit authored transition between independent coordinate domains; no implied3D connector",
+      "SourceRuleId": "world:level-transition",
+      "From": {
+        "DomainId": "level-a",
+        "NodeId": "generated-interior/rooms-15",
+        "AccessPortId": null,
+        "InteriorConnectionId": null,
+        "Profile": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null,
+        "InteriorOpening": {
+          "ConnectionKind": "door",
+          "ConnectionIndex": 0
+        }
+      },
+      "To": {
+        "DomainId": "level-b",
+        "NodeId": "generated-interior/rooms-0",
+        "AccessPortId": null,
+        "InteriorConnectionId": null,
+        "Profile": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null,
+        "InteriorOpening": {
+          "ConnectionKind": "door",
+          "ConnectionIndex": 0
+        }
+      },
+      "Bidirectional": true
+    },
+    {
+      "Id": "level-b-to-level-c",
+      "Kind": "level-transition",
+      "Purpose": "Explicit authored transition between independent coordinate domains; no implied3D connector",
+      "SourceRuleId": "world:level-transition",
+      "From": {
+        "DomainId": "level-b",
+        "NodeId": "generated-interior/rooms-15",
+        "AccessPortId": null,
+        "InteriorConnectionId": null,
+        "Profile": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null,
+        "InteriorOpening": {
+          "ConnectionKind": "missing",
+          "ConnectionIndex": 0
+        }
+      },
+      "To": {
+        "DomainId": "level-c",
+        "NodeId": "generated-interior/rooms-0",
+        "AccessPortId": null,
+        "InteriorConnectionId": null,
+        "Profile": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null,
+        "InteriorOpening": {
+          "ConnectionKind": "door",
+          "ConnectionIndex": 0
+        }
+      },
+      "Bidirectional": true
+    }
+  ],
+  "Reachability": [
+    {
+      "Id": "complete-return",
+      "Purpose": "Every level participates in the required return path",
+      "SourceRuleId": "world:return",
+      "FromDomainId": "level-a",
+      "ToDomainId": "level-c",
+      "RequireReturn": true
+    }
+  ],
+  "MaximumTotalNodes": 50000,
+  "MaximumTotalConnections": 100000,
+  "MaximumTransitionWork": 20000000,
+  "MaximumGraphWork": 1000000,
+  "Journeys": [
+    {
+      "Id": "complete-level-journey",
+      "Purpose": "Travel through the complete level collection and return",
+      "SourceRuleId": "world:journey",
+      "From": {
+        "DomainId": "level-a",
+        "NodeId": "generated-interior/rooms-0",
+        "AccessPortId": null,
+        "InteriorConnectionId": null,
+        "Profile": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null,
+        "InteriorOpening": {
+          "ConnectionKind": "door",
+          "ConnectionIndex": 0
+        }
+      },
+      "To": {
+        "DomainId": "level-c",
+        "NodeId": "generated-interior/rooms-15",
+        "AccessPortId": null,
+        "InteriorConnectionId": null,
+        "Profile": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null,
+        "InteriorOpening": {
+          "ConnectionKind": "door",
+          "ConnectionIndex": 0
+        }
+      },
+      "ConnectionKinds": [
+        "door",
+        "level-transition"
+      ],
+      "Profiles": {
+        "level-a": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "level-b": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "level-c": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        }
+      },
+      "RequireReturn": true
+    }
+  ]
+}

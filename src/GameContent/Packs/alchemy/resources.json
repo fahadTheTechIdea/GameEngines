@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "pack": "alchemy",
+  "resources": [
+    { "id": "alchemy.ember", "name": "Ember", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "hot"], "properties": {} },
+    { "id": "alchemy.dew", "name": "Dew", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "wet"], "properties": {} },
+    { "id": "alchemy.soil", "name": "Soil", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "solid"], "properties": {} },
+    { "id": "alchemy.breeze", "name": "Breeze", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "light"], "properties": {} },
+    { "id": "alchemy.mist", "name": "Mist", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element"], "properties": {} },
+    { "id": "alchemy.silt", "name": "Silt", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element"], "properties": {} },
+    { "id": "alchemy.magma", "name": "Magma", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "hot"], "properties": {} },
+    { "id": "alchemy.dust", "name": "Dust", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element"], "properties": {} },
+    { "id": "alchemy.cloud", "name": "Cloud", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element"], "properties": {} },
+    { "id": "alchemy.rain", "name": "Rain", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "wet"], "properties": {} },
+    { "id": "alchemy.slate", "name": "Slate", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "solid"], "properties": {} },
+    { "id": "alchemy.alloy", "name": "Alloy", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "metal"], "properties": {} },
+    { "id": "alchemy.fired-clay", "name": "Fired clay", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "solid"], "properties": {} },
+    { "id": "alchemy.sprout", "name": "Sprout", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "living"], "properties": {} },
+    { "id": "alchemy.spark", "name": "Spark", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "hot"], "properties": {} },
+    { "id": "alchemy.cinder", "name": "Cinder", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element"], "properties": {} },
+    { "id": "alchemy.crystal", "name": "Crystal", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["element", "clear"], "properties": {} },
+    { "id": "alchemy.red-herb", "name": "Red herb", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["herb"], "properties": {} },
+    { "id": "alchemy.blue-herb", "name": "Blue herb", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["herb"], "properties": {} },
+    { "id": "alchemy.moss", "name": "Moss", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["herb"], "properties": {} },
+    { "id": "alchemy.glow-mushroom", "name": "Glow mushroom", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["herb", "rare"], "properties": {} },
+    { "id": "alchemy.flask", "name": "Glass flask", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 99 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["container"], "properties": {} },
+    { "id": "alchemy.mortar", "name": "Mortar and pestle", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 500 }, "currency": null, "cpc": "4", "tags": ["tool"], "properties": {} },
+    { "id": "alchemy.alembic", "name": "Alembic", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 400 }, "currency": null, "cpc": "4", "tags": ["tool"], "properties": {} },
+    { "id": "alchemy.essence", "name": "Distilled essence", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["liquid", "magic"], "properties": {} },
+    { "id": "alchemy.healing-potion", "name": "Healing potion", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": { "scheme": "quality", "levels": ["weak", "standard", "strong"] }, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["potion"], "properties": { "heals": 50 } },
+    { "id": "alchemy.mana-potion", "name": "Mana potion", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": { "scheme": "quality", "levels": ["weak", "standard", "strong"] }, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["potion"], "properties": { "restores": 40 } },
+    { "id": "alchemy.antidote", "name": "Antidote", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["potion"], "properties": {} },
+    { "id": "alchemy.elixir", "name": "Grand elixir", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 10 }, "grade": { "scheme": "rarity", "levels": ["common", "rare", "legendary"] }, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["potion"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "alchemy.cauldron", "name": "Cauldron", "levels": 3 },
+    { "id": "alchemy.glass-kiln", "name": "Glass kiln", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "alchemy.brewing", "name": "Brewing", "max": 10 }
+  ]
+}

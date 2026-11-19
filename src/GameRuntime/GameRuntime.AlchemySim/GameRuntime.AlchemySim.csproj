@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Core/GameRuntime.Core.csproj" />
+    <ProjectReference Include="../GameRuntime.Sim/GameRuntime.Sim.csproj" />
+    <ProjectReference Include="../GameRuntime.Alchemy/GameRuntime.Alchemy.csproj" />
+    <ProjectReference Include="../../AlchemyEngine/AlchemyEngine.Core/AlchemyEngine.Core.csproj" />
+    <ProjectReference Include="../../SimEngine/src/Beep.SimEngine/Beep.SimEngine.csproj" />
+  </ItemGroup>
+</Project>

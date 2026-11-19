@@ -1,0 +1,167 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "sites",
+          "ArchetypeId": "site",
+          "Count": 1,
+          "Purpose": "Required destination",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "fixed",
+          "ArchetypeId": "fixed",
+          "Count": 1,
+          "Purpose": "Authored destination",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "site",
+          "Minimum": 2,
+          "Maximum": 2
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "site",
+      "Kind": "site",
+      "Purpose": "Required source-sized location",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "markers",
+          "ArchetypeId": "marker",
+          "Count": 1,
+          "Purpose": "Deferred constituent",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                0
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Site footprint",
+        "SourceRuleId": "catalog:site",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -2,
+              "Y": -2
+            },
+            {
+              "X": 2,
+              "Y": -2
+            },
+            {
+              "X": 2,
+              "Y": 2
+            },
+            {
+              "X": -2,
+              "Y": 2
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "fixed",
+      "Kind": "site",
+      "Purpose": "Fixed reachable destination",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Hazard marker footprint",
+        "SourceRuleId": "test:hazard",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -2,
+              "Y": -2
+            },
+            {
+              "X": 2,
+              "Y": -2
+            },
+            {
+              "X": 2,
+              "Y": 2
+            },
+            {
+              "X": -2,
+              "Y": 2
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "marker",
+      "Kind": "object",
+      "Purpose": "Required point constituent",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

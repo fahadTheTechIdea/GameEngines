@@ -10,11 +10,12 @@ public sealed record GameArtsReadinessResult(bool TechnicallyValid, bool Approve
 public interface IGameArtsApprovalAuthority
 {
     Task<bool> IsApprovedAsync(string assetId, string revision, CancellationToken token = default);
+    Task<bool> IsApprovedArtifactAsync(string assetId,string revision,string artifactSha256,CancellationToken token=default);
 }
-public sealed class GameArtsProductionGate(IGameArtsApprovalAuthority approvals)
+public sealed partial class GameArtsProductionGate(IGameArtsApprovalAuthority approvals)
 {
     public async Task<GameArtsReadinessResult> CheckAsync(
-        string bundleFile, string approvedRevision, CancellationToken token = default)
+        string bundleFile, string approvedRevision, string assetId, string bundleAssetId, CancellationToken token = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(bundleFile);
         var issues = new List<string>();
@@ -30,12 +31,17 @@ public sealed class GameArtsProductionGate(IGameArtsApprovalAuthority approvals)
         }
         if (!bundle.IsValid)
             return new(false, false, bundle.Errors);
-        var asset = bundle.Bundle!.AssetId;
+        if(string.IsNullOrWhiteSpace(assetId)||string.IsNullOrWhiteSpace(bundleAssetId)||bundle.Bundle!.AssetId!=bundleAssetId)
+            return new(false,false,["NATIVE_BUNDLE_IDENTITY_MISMATCH"]);
         var approved = false;
         if (string.IsNullOrWhiteSpace(approvedRevision))
             issues.Add("APPROVED_REVISION_REQUIRED");
         else
-            approved = await approvals.IsApprovedAsync(asset, approvedRevision, token);
+        {
+            await using var file=File.OpenRead(bundleFile);
+            string hash=Convert.ToHexStringLower(await System.Security.Cryptography.SHA256.HashDataAsync(file,token));
+            approved = await approvals.IsApprovedArtifactAsync(assetId, approvedRevision, hash, token);
+        }
         if (!approved) issues.Add("LIFECYCLE_APPROVAL_NOT_VERIFIED");
         try
         {

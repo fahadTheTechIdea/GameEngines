@@ -25,8 +25,8 @@ public sealed class ArcaneTestCatalog : ISettlementCatalogProvider
         public BuildingDefinition Resolve(BuildingDefinition definition,string technology) => definition;
         public IReadOnlySet<string> RequiredCapabilities(BuildingDefinition definition,string technology) => Set("test.mana");
         public IReadOnlySet<string> RequiredCapabilities(MockupWorldDesign design) => Set();
-        public IReadOnlyList<string> ValidateSupply(MockupWorldDesign design,BuildingDefinition definition,StructureResourceRequirement requirement,
-            SitingResourceSource source,StructureSitingContext context,CancellationToken token=default) => source.Qualities.Contains("attuned")?[]:["test.ward-requires-attuned-mana"];
+        public IReadOnlyList<CatalogSupplyIssue> ValidateSupply(BuildingDefinition definition,StructureResourceRequirement requirement,
+            CatalogSupplySource source,CatalogSupplyContext context,CancellationToken token=default) => source.Qualities.Contains("attuned")?[]:[new("test.ward-requires-attuned-mana","test.ward-requires-attuned-mana")];
         public bool RequiresNeighborPolicy(IReadOnlySet<string> first,IReadOnlySet<string> second) => false;
     }
     private sealed class ArcaneDemand : ISettlementDemandPolicy

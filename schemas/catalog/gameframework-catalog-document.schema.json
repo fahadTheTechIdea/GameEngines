@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GameFrameWork catalog document, format 1",
+  "description": "A document of a pack: resources, stations, skills and recipes. Every field of every entry is required; an explicit null states 'none'. Unknown fields are refused. Ids are '<pack>.<name>'.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "pack"],
+  "minProperties": 3,
+  "properties": {
+    "format": { "const": 1 },
+    "pack": { "$ref": "#/$defs/slug" },
+    "resources": { "type": "array", "items": { "$ref": "#/$defs/resource" } },
+    "stations": { "type": "array", "items": { "$ref": "#/$defs/station" } },
+    "skills": { "type": "array", "items": { "$ref": "#/$defs/skill" } },
+    "recipes": { "type": "array", "items": { "$ref": "#/$defs/recipe" } },
+    "eras": { "type": "array", "items": { "$ref": "#/$defs/era" } },
+    "availability": { "type": "array", "items": { "$ref": "#/$defs/availability" } },
+    "stats": { "type": "array", "items": { "$ref": "#/$defs/stat" } },
+    "items": { "type": "array", "items": { "$ref": "#/$defs/item" } },
+    "units": { "type": "array", "items": { "$ref": "#/$defs/unit" } }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$" },
+    "tag": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$" },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}\\.[a-z][a-z0-9-]{0,47}$" },
+    "positive": { "type": "number", "exclusiveMinimum": 0, "maximum": 1000000000 },
+    "chance": { "type": "string", "pattern": "^[1-9][0-9]{0,8}/[1-9][0-9]{0,8}$" },
+    "tags": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/tag" } },
+    "amount": {
+      "oneOf": [
+        { "$ref": "#/$defs/positive" },
+        {
+          "type": "object", "additionalProperties": false, "required": ["min", "max"],
+          "properties": { "min": { "$ref": "#/$defs/positive" }, "max": { "$ref": "#/$defs/positive" } }
+        }
+      ]
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "class", "unit", "origin", "stack", "grade", "perishable", "durability", "currency", "cpc", "tags", "properties"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "class": { "enum": ["raw", "intermediate", "product", "consumable", "currency", "energy", "fluid", "gas", "information", "labor", "population", "tool", "equipment", "unique"] },
+        "unit": { "type": "string", "minLength": 1, "maxLength": 12 },
+        "origin": { "enum": ["natural", "crafted"] },
+        "stack": { "type": "object", "additionalProperties": false, "required": ["max"], "properties": { "max": { "type": "integer", "minimum": 1, "maximum": 1000000 } } },
+        "grade": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object", "additionalProperties": false, "required": ["scheme", "levels"],
+              "properties": {
+                "scheme": { "enum": ["quality", "rarity"] },
+                "levels": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/tag" } }
+              }
+            }
+          ]
+        },
+        "perishable": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object", "additionalProperties": false, "required": ["ticks", "result"],
+              "properties": { "ticks": { "type": "integer", "minimum": 1, "maximum": 2000000000 }, "result": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/id" }] } }
+            }
+          ]
+        },
+        "durability": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "object", "additionalProperties": false, "required": ["uses"], "properties": { "uses": { "type": "integer", "minimum": 1, "maximum": 2000000000 } } }
+          ]
+        },
+        "currency": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object", "additionalProperties": false, "required": ["kind", "code"],
+              "properties": { "kind": { "enum": ["iso4217", "fictional"] }, "code": { "type": "string", "pattern": "^[A-Z]{3}$" } }
+            }
+          ]
+        },
+        "cpc": { "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^[0-9]$" }] },
+        "tags": { "$ref": "#/$defs/tags" },
+        "properties": {
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/tag" },
+          "additionalProperties": { "type": ["string", "number", "boolean"] }
+        }
+      }
+    },
+    "station": {
+      "type": "object", "additionalProperties": false, "required": ["id", "name", "levels"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "levels": { "type": "integer", "minimum": 1, "maximum": 20 }
+      }
+    },
+    "skill": {
+      "type": "object", "additionalProperties": false, "required": ["id", "name", "max"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "max": { "type": "integer", "minimum": 1, "maximum": 1000 }
+      }
+    },
+    "line": {
+      "type": "object", "additionalProperties": false, "required": ["resource", "amount"],
+      "properties": { "resource": { "$ref": "#/$defs/id" }, "amount": { "$ref": "#/$defs/positive" } }
+    },
+    "outputLine": {
+      "type": "object", "additionalProperties": false, "required": ["resource", "amount"],
+      "properties": { "resource": { "$ref": "#/$defs/id" }, "amount": { "$ref": "#/$defs/amount" } }
+    },
+    "dropLine": {
+      "type": "object", "additionalProperties": false, "required": ["resource", "amount", "chance"],
+      "properties": { "resource": { "$ref": "#/$defs/id" }, "amount": { "$ref": "#/$defs/amount" }, "chance": { "$ref": "#/$defs/chance" } }
+    },
+    "toolLine": {
+      "type": "object", "additionalProperties": false, "required": ["resource", "uses"],
+      "properties": { "resource": { "$ref": "#/$defs/id" }, "uses": { "type": "integer", "minimum": 1, "maximum": 2000000000 } }
+    },
+    "recipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "kind", "inputs", "catalysts", "tools", "outputs", "byproducts", "drops", "station", "skill", "environment", "duration", "quality", "reverse"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "kind": { "enum": ["extract", "harvest", "grow", "transform", "smelt", "refine", "craft", "assemble", "disassemble", "cook", "brew", "combine", "upgrade", "repair", "construct", "research", "trade", "upkeep", "consume", "decay", "loot"] },
+        "inputs": { "type": "array", "items": { "$ref": "#/$defs/line" } },
+        "catalysts": { "type": "array", "items": { "$ref": "#/$defs/line" } },
+        "tools": { "type": "array", "items": { "$ref": "#/$defs/toolLine" } },
+        "outputs": { "type": "array", "items": { "$ref": "#/$defs/outputLine" } },
+        "byproducts": { "type": "array", "items": { "$ref": "#/$defs/outputLine" } },
+        "drops": { "type": "array", "items": { "$ref": "#/$defs/dropLine" } },
+        "station": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "object", "additionalProperties": false, "required": ["id", "level"], "properties": { "id": { "$ref": "#/$defs/id" }, "level": { "type": "integer", "minimum": 1, "maximum": 1000 } } }
+          ]
+        },
+        "skill": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "object", "additionalProperties": false, "required": ["id", "level"], "properties": { "id": { "$ref": "#/$defs/id" }, "level": { "type": "integer", "minimum": 1, "maximum": 1000 } } }
+          ]
+        },
+        "environment": { "$ref": "#/$defs/tags" },
+        "duration": {
+          "type": "object", "additionalProperties": false, "required": ["value", "unit"],
+          "properties": { "value": { "type": "number", "minimum": 0, "maximum": 1000000000 }, "unit": { "enum": ["s", "min", "h", "d"] } }
+        },
+        "quality": { "enum": [null, "inherit-input", "skill"] },
+        "reverse": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/id" }] }
+      }
+    },
+    "periodLabel": { "enum": ["stone-age", "copper-age", "bronze-age", "iron-age", "classical", "medieval", "renaissance", "gunpowder", "industrial", "modern", "atomic", "information", "space-age", "near-future", "far-future"] },
+    "itemClass": { "enum": ["weapon", "armor", "tool", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "mount", "structure-unit", "ammunition"] },
+    "era": {
+      "type": "object", "additionalProperties": false, "required": ["id", "name", "order", "tier", "label", "span"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "order": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "tier": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "label": { "$ref": "#/$defs/periodLabel" },
+        "span": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "object", "additionalProperties": false, "required": ["from", "to"], "properties": { "from": { "type": "integer", "minimum": -10000000, "maximum": 3000 }, "to": { "type": "integer", "minimum": -10000000, "maximum": 3000 } } }
+          ]
+        }
+      }
+    },
+    "availability": {
+      "type": "object", "additionalProperties": false, "required": ["id", "from", "until"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "from": { "$ref": "#/$defs/id" },
+        "until": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/id" }] }
+      }
+    },
+    "stat": {
+      "type": "object", "additionalProperties": false, "required": ["id", "name", "dimension", "unit", "kind", "min", "max", "values", "classes"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "dimension": { "enum": ["length", "speed", "mass", "energy", "power", "time", "count", "rate", "ratio", "volume", "angle", "none"] },
+        "unit": { "type": "string", "minLength": 1, "maxLength": 12 },
+        "kind": { "enum": ["number", "integer", "enum"] },
+        "min": { "oneOf": [{ "type": "null" }, { "type": "number", "minimum": -1000000000, "maximum": 1000000000 }] },
+        "max": { "oneOf": [{ "type": "null" }, { "type": "number", "minimum": -1000000000, "maximum": 1000000000 }] },
+        "values": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/tag" } },
+        "classes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/itemClass" } }
+      }
+    },
+    "unit": {
+      "type": "object", "additionalProperties": false, "required": ["resource", "strength", "role", "training", "equipment", "crew", "upkeep", "replaces"],
+      "properties": {
+        "resource": { "$ref": "#/$defs/id" },
+        "strength": { "type": "integer", "minimum": 1, "maximum": 100000 },
+        "role": { "$ref": "#/$defs/tag" },
+        "training": { "enum": ["raw", "regular", "veteran", "elite"] },
+        "equipment": {
+          "type": "array", "uniqueItems": true,
+          "items": { "type": "object", "additionalProperties": false, "required": ["item", "count"], "properties": { "item": { "$ref": "#/$defs/id" }, "count": { "type": "integer", "minimum": 1, "maximum": 100000 } } }
+        },
+        "crew": {
+          "type": "array", "uniqueItems": true,
+          "items": { "type": "object", "additionalProperties": false, "required": ["skill", "level", "count"], "properties": { "skill": { "$ref": "#/$defs/id" }, "level": { "type": "integer", "minimum": 1, "maximum": 1000 }, "count": { "type": "integer", "minimum": 1, "maximum": 100000 } } }
+        },
+        "upkeep": {
+          "type": "array", "uniqueItems": true,
+          "items": { "type": "object", "additionalProperties": false, "required": ["resource", "per-day"], "properties": { "resource": { "$ref": "#/$defs/id" }, "per-day": { "$ref": "#/$defs/positive" } } }
+        },
+        "replaces": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/id" }] }
+      }
+    },
+    "item": {
+      "type": "object", "additionalProperties": false, "required": ["resource", "class", "stats", "slots", "cargo", "crew", "fuel", "ammo", "upkeep", "replaces"],
+      "properties": {
+        "resource": { "$ref": "#/$defs/id" },
+        "class": { "$ref": "#/$defs/itemClass" },
+        "stats": {
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/id" },
+          "additionalProperties": { "type": ["string", "number"] }
+        },
+        "slots": {
+          "type": "array", "uniqueItems": true,
+          "items": { "type": "object", "additionalProperties": false, "required": ["slot", "count"], "properties": { "slot": { "$ref": "#/$defs/tag" }, "count": { "type": "integer", "minimum": 1, "maximum": 1000 } } }
+        },
+        "cargo": {
+          "type": "array", "uniqueItems": true,
+          "items": { "type": "object", "additionalProperties": false, "required": ["dimension", "amount"], "properties": { "dimension": { "enum": ["mass", "volume", "count", "population"] }, "amount": { "$ref": "#/$defs/positive" } } }
+        },
+        "crew": {
+          "type": "array", "uniqueItems": true,
+          "items": { "type": "object", "additionalProperties": false, "required": ["skill", "level", "count"], "properties": { "skill": { "$ref": "#/$defs/id" }, "level": { "type": "integer", "minimum": 1, "maximum": 1000 }, "count": { "type": "integer", "minimum": 1, "maximum": 100000 } } }
+        },
+        "fuel": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "object", "additionalProperties": false, "required": ["resource", "capacity", "burn-per-hour"], "properties": { "resource": { "$ref": "#/$defs/id" }, "capacity": { "$ref": "#/$defs/positive" }, "burn-per-hour": { "$ref": "#/$defs/positive" } } }
+          ]
+        },
+        "ammo": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "object", "additionalProperties": false, "required": ["resource", "capacity"], "properties": { "resource": { "$ref": "#/$defs/id" }, "capacity": { "$ref": "#/$defs/positive" } } }
+          ]
+        },
+        "upkeep": {
+          "type": "array", "uniqueItems": true,
+          "items": { "type": "object", "additionalProperties": false, "required": ["resource", "per-day"], "properties": { "resource": { "$ref": "#/$defs/id" }, "per-day": { "$ref": "#/$defs/positive" } } }
+        },
+        "replaces": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/id" }] }
+      }
+    }
+  }
+}

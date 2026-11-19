@@ -1,0 +1,3846 @@
+{
+  "Version": 1,
+  "Id": "regional-physical-domains",
+  "Purpose": "Connect regional locations to independent physical floors",
+  "SourceRuleId": "test:physical-world",
+  "RegionalWorld": null,
+  "AdditionalDomains": [
+    {
+      "Id": "lower",
+      "Purpose": "First independent floor",
+      "SourceRuleId": "domains:lower",
+      "Recipe": {
+        "SchemaVersion": 1,
+        "Id": "generated-interior",
+        "GameProfile": "modular-exploration",
+        "CatalogId": "room-modules",
+        "RootArchetypeId": "floor",
+        "Scale": "single-floor",
+        "Coverage": "PartialScope",
+        "RemainingScopes": [
+          "Generated convex-room contacts and physical passages; exterior transitions, multiple storeys, doors as assets and broad world composition remain open."
+        ],
+        "Parameters": {},
+        "Space": {
+          "Axes": [
+            "x",
+            "y"
+          ],
+          "Unit": "meters"
+        },
+        "Origin": [
+          0,
+          0
+        ],
+        "RequireAllPositions": true,
+        "MaximumNodes": 10000,
+        "MaximumConnections": 50000,
+        "AdditionalConnections": null,
+        "Layers": null,
+        "Surface": {
+          "SchemaVersion": 1,
+          "Id": "interior-domain",
+          "Unit": "meters",
+          "Boundary": {
+            "Vertices": [
+              {
+                "X": -40,
+                "Y": -40
+              },
+              {
+                "X": 40,
+                "Y": -40
+              },
+              {
+                "X": 40,
+                "Y": 40
+              },
+              {
+                "X": -40,
+                "Y": 40
+              }
+            ]
+          },
+          "Exclusions": [],
+          "Patches": [
+            {
+              "Id": "deck",
+              "Kind": "deck",
+              "Purpose": "Available floor domain",
+              "SourceRuleId": "interior:deck",
+              "Boundary": {
+                "Vertices": [
+                  {
+                    "X": -40,
+                    "Y": -40
+                  },
+                  {
+                    "X": 40,
+                    "Y": -40
+                  },
+                  {
+                    "X": 40,
+                    "Y": 40
+                  },
+                  {
+                    "X": -40,
+                    "Y": 40
+                  }
+                ]
+              },
+              "Priority": 0,
+              "Origin": {
+                "X": 0,
+                "Y": 0
+              },
+              "Elevation": 0,
+              "GradientX": 0,
+              "GradientY": 0
+            }
+          ],
+          "Terrain": null,
+          "HeightField": null
+        },
+        "RouteRules": null,
+        "NetworkRules": null,
+        "Environment": {
+          "SchemaVersion": 1,
+          "Id": "interior-fields",
+          "Fields": [
+            {
+              "Id": "level",
+              "Purpose": "Floor elevation",
+              "SourceRuleId": "interior:level",
+              "Unit": "meters",
+              "Offset": 0,
+              "Terms": [
+                {
+                  "Input": "Elevation",
+                  "Coefficient": 1,
+                  "FieldId": null
+                }
+              ],
+              "Minimum": null,
+              "Maximum": null
+            }
+          ],
+          "SampledFields": null
+        },
+        "SuitabilityRules": null,
+        "Placement": {
+          "Request": {
+            "Id": "rooms",
+            "Purpose": "Grow connected source-sized rooms",
+            "SourceRuleId": "interior:rooms",
+            "Boundary": null,
+            "Demands": [
+              {
+                "Id": "room",
+                "Purpose": "Required module",
+                "SourceRuleId": "interior:module",
+                "Footprint": null,
+                "Profile": {
+                  "Id": "floor",
+                  "Purpose": "Place room modules",
+                  "SourceRuleId": "interior:floor",
+                  "AllowedKinds": [
+                    "deck"
+                  ],
+                  "Requirements": [],
+                  "Preferences": []
+                },
+                "Reservation": null,
+                "RegionId": null,
+                "AllocationId": null
+              }
+            ],
+            "Anchors": [
+              {
+                "Id": "entry",
+                "Position": {
+                  "X": 0,
+                  "Y": 0
+                }
+              }
+            ],
+            "Relations": [],
+            "MinimumSeparation": 0,
+            "MaximumCandidates": 2048,
+            "MaximumSearchStates": 100000,
+            "MaximumWork": 100000000,
+            "AllowBoundaryContact": true,
+            "Growth": null,
+            "Execution": "Search",
+            "Nogoods": null
+          },
+          "Bindings": [
+            {
+              "DemandId": "room",
+              "NodeId": "generated-interior",
+              "UseCatalogFootprint": true,
+              "RotationDegrees": 0,
+              "PartId": "rooms",
+              "SiteLayout": null,
+              "Population": null
+            }
+          ],
+          "NestedStages": null,
+          "MaximumWork": 200000000,
+          "MaximumStageAttempts": 128,
+          "MaximumFeasibilityAttempts": 32,
+          "SourceWorld": null,
+          "ConnectedLayouts": [
+            {
+              "Id": "room-contacts",
+              "Purpose": "Grow from one entry module",
+              "SourceRuleId": "interior:growth",
+              "StageId": "rooms",
+              "RootNodeId": "generated-interior/rooms-0",
+              "AnchorId": "entry",
+              "ConnectionKinds": [
+                "door"
+              ],
+              "DirectionAnglesDegrees": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "Gap": 0,
+              "MaximumConnectionDistance": 20
+            }
+          ],
+          "Programs": [
+            {
+              "Id": "fixtures",
+              "Purpose": "Populate every generated room",
+              "SourceRuleId": "interior:fixtures",
+              "ScopeNodeId": "generated-interior",
+              "ParentArchetypeId": "room",
+              "MinimumParents": 3,
+              "MaximumParents": 3,
+              "Request": {
+                "Id": "room-content",
+                "Purpose": "Keep required fixture in each room",
+                "SourceRuleId": "interior:fixture",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "fixture",
+                    "Purpose": "Required fixture",
+                    "SourceRuleId": "interior:fixture",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "floor",
+                      "Purpose": "Place room modules",
+                      "SourceRuleId": "interior:floor",
+                      "AllowedKinds": [
+                        "deck"
+                      ],
+                      "Requirements": [],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [
+                  {
+                    "Id": "fixture-anchor",
+                    "Position": {
+                      "X": 0,
+                      "Y": -1.2
+                    }
+                  }
+                ],
+                "Relations": [
+                  {
+                    "Id": "fixture-pin",
+                    "FromId": "fixture",
+                    "ToId": "fixture-anchor",
+                    "Purpose": "Preserve local fixture relationship",
+                    "SourceRuleId": "interior:fixture",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null,
+                "Execution": "Search",
+                "Nogoods": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "fixture",
+                  "PartId": "fixture",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "Growth": null
+            }
+          ],
+          "RegionAnchors": null,
+          "AllocationAnchors": null,
+          "Nogoods": null
+        },
+        "Services": null,
+        "Context": null,
+        "Corridors": null,
+        "Regions": null,
+        "LocalLayouts": null,
+        "LayoutAdaptation": null,
+        "ProgressionRules": null,
+        "PopulationSource": null,
+        "Chunks": null,
+        "TopologyRules": [
+          {
+            "Id": "room-journey",
+            "Purpose": "Generate connected branching room intent",
+            "SourceRuleId": "interior:topology",
+            "ScopeNodeId": "generated-interior",
+            "StartNodeId": "generated-interior/rooms-0",
+            "ConnectionKind": "door",
+            "Stages": [
+              {
+                "Id": "explore",
+                "Purpose": "Reach the exit",
+                "ExitNodeId": "generated-interior/rooms-2",
+                "MemberKinds": [
+                  "room"
+                ],
+                "MinimumMembers": 1,
+                "MaximumMembers": 1
+              }
+            ],
+            "Seed": "interior-a",
+            "MaximumDegree": 3,
+            "ExtraConnections": 0,
+            "MaximumWork": 1000000,
+            "LayerId": null
+          }
+        ],
+        "RouteBudget": null,
+        "Interiors": {
+          "Rules": [
+            {
+              "Id": "rooms",
+              "Purpose": "Realize every required doorway",
+              "SourceRuleId": "interior:openings",
+              "ScopeNodeId": "generated-interior",
+              "RoomKinds": [
+                "room"
+              ],
+              "ConnectionKinds": [
+                "door"
+              ],
+              "OpeningWidth": 1.2,
+              "WallThickness": 0.12,
+              "ApproachDepth": 0.6,
+              "Profile": {
+                "Id": "walk",
+                "Purpose": "Width-qualified room movement",
+                "SourceRuleId": "interior:walk",
+                "Radius": 0.2,
+                "MaximumSlope": 0.01,
+                "KindCosts": {
+                  "deck": 1
+                },
+                "AscentCost": 0,
+                "DescentCost": 0,
+                "MaximumHeightStep": 0.001
+              },
+              "Search": {
+                "Clearance": 0.05,
+                "Waypoints": [],
+                "MaximumCandidates": 512,
+                "MaximumEdgeChecks": 32768,
+                "MaximumWork": 20000000,
+                "Objective": "FirstFeasible"
+              },
+              "Entrances": null
+            }
+          ],
+          "MaximumWork": 150000000
+        },
+        "TerrainDemands": null,
+        "ProgramComposition": null,
+        "Drainage": null,
+        "Water": null,
+        "WindMoisture": null
+      },
+      "Catalog": {
+        "SchemaVersion": 1,
+        "Id": "room-modules",
+        "Archetypes": [
+          {
+            "Id": "floor",
+            "Kind": "floor",
+            "Purpose": "Connected interior exploration program",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "rooms",
+                "ArchetypeId": "room",
+                "Count": 3,
+                "Purpose": "Required room",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null,
+                "ProgramMix": null
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": null,
+            "Access": null,
+            "Capacities": null,
+            "Services": null,
+            "ProgramInputs": null
+          },
+          {
+            "Id": "room",
+            "Kind": "room",
+            "Purpose": "Reusable room and its fixture",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "fixture",
+                "ArchetypeId": "fixture",
+                "Count": 1,
+                "Purpose": "Required interior equipment",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null,
+                "ProgramMix": null
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Exact room module",
+              "SourceRuleId": "interior:module",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -3,
+                    "Y": -2.5
+                  },
+                  {
+                    "X": 3,
+                    "Y": -2.5
+                  },
+                  {
+                    "X": 3,
+                    "Y": 2.5
+                  },
+                  {
+                    "X": -3,
+                    "Y": 2.5
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": null,
+            "Services": null,
+            "ProgramInputs": null
+          },
+          {
+            "Id": "fixture",
+            "Kind": "equipment",
+            "Purpose": "Purposeful internal obstacle",
+            "Properties": {},
+            "Parts": [],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Exact fixture",
+              "SourceRuleId": "interior:fixture",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -0.4,
+                    "Y": -0.25
+                  },
+                  {
+                    "X": 0.4,
+                    "Y": -0.25
+                  },
+                  {
+                    "X": 0.4,
+                    "Y": 0.25
+                  },
+                  {
+                    "X": -0.4,
+                    "Y": 0.25
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Solid",
+              "Ports": []
+            },
+            "Capacities": null,
+            "Services": null,
+            "ProgramInputs": null
+          }
+        ]
+      }
+    },
+    {
+      "Id": "upper",
+      "Purpose": "Second floor with the same local coordinates and node IDs",
+      "SourceRuleId": "domains:upper",
+      "Recipe": {
+        "SchemaVersion": 1,
+        "Id": "generated-interior",
+        "GameProfile": "modular-exploration",
+        "CatalogId": "room-modules",
+        "RootArchetypeId": "floor",
+        "Scale": "single-floor",
+        "Coverage": "PartialScope",
+        "RemainingScopes": [
+          "Generated convex-room contacts and physical passages; exterior transitions, multiple storeys, doors as assets and broad world composition remain open."
+        ],
+        "Parameters": {},
+        "Space": {
+          "Axes": [
+            "x",
+            "y"
+          ],
+          "Unit": "meters"
+        },
+        "Origin": [
+          0,
+          0
+        ],
+        "RequireAllPositions": true,
+        "MaximumNodes": 10000,
+        "MaximumConnections": 50000,
+        "AdditionalConnections": null,
+        "Layers": null,
+        "Surface": {
+          "SchemaVersion": 1,
+          "Id": "interior-domain",
+          "Unit": "meters",
+          "Boundary": {
+            "Vertices": [
+              {
+                "X": -40,
+                "Y": -40
+              },
+              {
+                "X": 40,
+                "Y": -40
+              },
+              {
+                "X": 40,
+                "Y": 40
+              },
+              {
+                "X": -40,
+                "Y": 40
+              }
+            ]
+          },
+          "Exclusions": [],
+          "Patches": [
+            {
+              "Id": "deck",
+              "Kind": "deck",
+              "Purpose": "Available floor domain",
+              "SourceRuleId": "interior:deck",
+              "Boundary": {
+                "Vertices": [
+                  {
+                    "X": -40,
+                    "Y": -40
+                  },
+                  {
+                    "X": 40,
+                    "Y": -40
+                  },
+                  {
+                    "X": 40,
+                    "Y": 40
+                  },
+                  {
+                    "X": -40,
+                    "Y": 40
+                  }
+                ]
+              },
+              "Priority": 0,
+              "Origin": {
+                "X": 0,
+                "Y": 0
+              },
+              "Elevation": 0,
+              "GradientX": 0,
+              "GradientY": 0
+            }
+          ],
+          "Terrain": null,
+          "HeightField": null
+        },
+        "RouteRules": null,
+        "NetworkRules": null,
+        "Environment": {
+          "SchemaVersion": 1,
+          "Id": "interior-fields",
+          "Fields": [
+            {
+              "Id": "level",
+              "Purpose": "Floor elevation",
+              "SourceRuleId": "interior:level",
+              "Unit": "meters",
+              "Offset": 0,
+              "Terms": [
+                {
+                  "Input": "Elevation",
+                  "Coefficient": 1,
+                  "FieldId": null
+                }
+              ],
+              "Minimum": null,
+              "Maximum": null
+            }
+          ],
+          "SampledFields": null
+        },
+        "SuitabilityRules": null,
+        "Placement": {
+          "Request": {
+            "Id": "rooms",
+            "Purpose": "Grow connected source-sized rooms",
+            "SourceRuleId": "interior:rooms",
+            "Boundary": null,
+            "Demands": [
+              {
+                "Id": "room",
+                "Purpose": "Required module",
+                "SourceRuleId": "interior:module",
+                "Footprint": null,
+                "Profile": {
+                  "Id": "floor",
+                  "Purpose": "Place room modules",
+                  "SourceRuleId": "interior:floor",
+                  "AllowedKinds": [
+                    "deck"
+                  ],
+                  "Requirements": [],
+                  "Preferences": []
+                },
+                "Reservation": null,
+                "RegionId": null,
+                "AllocationId": null
+              }
+            ],
+            "Anchors": [
+              {
+                "Id": "entry",
+                "Position": {
+                  "X": 0,
+                  "Y": 0
+                }
+              }
+            ],
+            "Relations": [],
+            "MinimumSeparation": 0,
+            "MaximumCandidates": 2048,
+            "MaximumSearchStates": 100000,
+            "MaximumWork": 100000000,
+            "AllowBoundaryContact": true,
+            "Growth": null,
+            "Execution": "Search",
+            "Nogoods": null
+          },
+          "Bindings": [
+            {
+              "DemandId": "room",
+              "NodeId": "generated-interior",
+              "UseCatalogFootprint": true,
+              "RotationDegrees": 0,
+              "PartId": "rooms",
+              "SiteLayout": null,
+              "Population": null
+            }
+          ],
+          "NestedStages": null,
+          "MaximumWork": 200000000,
+          "MaximumStageAttempts": 128,
+          "MaximumFeasibilityAttempts": 32,
+          "SourceWorld": null,
+          "ConnectedLayouts": [
+            {
+              "Id": "room-contacts",
+              "Purpose": "Grow from one entry module",
+              "SourceRuleId": "interior:growth",
+              "StageId": "rooms",
+              "RootNodeId": "generated-interior/rooms-0",
+              "AnchorId": "entry",
+              "ConnectionKinds": [
+                "door"
+              ],
+              "DirectionAnglesDegrees": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "Gap": 0,
+              "MaximumConnectionDistance": 20
+            }
+          ],
+          "Programs": [
+            {
+              "Id": "fixtures",
+              "Purpose": "Populate every generated room",
+              "SourceRuleId": "interior:fixtures",
+              "ScopeNodeId": "generated-interior",
+              "ParentArchetypeId": "room",
+              "MinimumParents": 3,
+              "MaximumParents": 3,
+              "Request": {
+                "Id": "room-content",
+                "Purpose": "Keep required fixture in each room",
+                "SourceRuleId": "interior:fixture",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "fixture",
+                    "Purpose": "Required fixture",
+                    "SourceRuleId": "interior:fixture",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "floor",
+                      "Purpose": "Place room modules",
+                      "SourceRuleId": "interior:floor",
+                      "AllowedKinds": [
+                        "deck"
+                      ],
+                      "Requirements": [],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [
+                  {
+                    "Id": "fixture-anchor",
+                    "Position": {
+                      "X": 0,
+                      "Y": -1.2
+                    }
+                  }
+                ],
+                "Relations": [
+                  {
+                    "Id": "fixture-pin",
+                    "FromId": "fixture",
+                    "ToId": "fixture-anchor",
+                    "Purpose": "Preserve local fixture relationship",
+                    "SourceRuleId": "interior:fixture",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null,
+                "Execution": "Search",
+                "Nogoods": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "fixture",
+                  "PartId": "fixture",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "Growth": null
+            }
+          ],
+          "RegionAnchors": null,
+          "AllocationAnchors": null,
+          "Nogoods": null
+        },
+        "Services": null,
+        "Context": null,
+        "Corridors": null,
+        "Regions": null,
+        "LocalLayouts": null,
+        "LayoutAdaptation": null,
+        "ProgressionRules": null,
+        "PopulationSource": null,
+        "Chunks": null,
+        "TopologyRules": [
+          {
+            "Id": "room-journey",
+            "Purpose": "Generate connected branching room intent",
+            "SourceRuleId": "interior:topology",
+            "ScopeNodeId": "generated-interior",
+            "StartNodeId": "generated-interior/rooms-0",
+            "ConnectionKind": "door",
+            "Stages": [
+              {
+                "Id": "explore",
+                "Purpose": "Reach the exit",
+                "ExitNodeId": "generated-interior/rooms-2",
+                "MemberKinds": [
+                  "room"
+                ],
+                "MinimumMembers": 1,
+                "MaximumMembers": 1
+              }
+            ],
+            "Seed": "interior-a",
+            "MaximumDegree": 3,
+            "ExtraConnections": 0,
+            "MaximumWork": 1000000,
+            "LayerId": null
+          }
+        ],
+        "RouteBudget": null,
+        "Interiors": {
+          "Rules": [
+            {
+              "Id": "rooms",
+              "Purpose": "Realize every required doorway",
+              "SourceRuleId": "interior:openings",
+              "ScopeNodeId": "generated-interior",
+              "RoomKinds": [
+                "room"
+              ],
+              "ConnectionKinds": [
+                "door"
+              ],
+              "OpeningWidth": 1.2,
+              "WallThickness": 0.12,
+              "ApproachDepth": 0.6,
+              "Profile": {
+                "Id": "walk",
+                "Purpose": "Width-qualified room movement",
+                "SourceRuleId": "interior:walk",
+                "Radius": 0.2,
+                "MaximumSlope": 0.01,
+                "KindCosts": {
+                  "deck": 1
+                },
+                "AscentCost": 0,
+                "DescentCost": 0,
+                "MaximumHeightStep": 0.001
+              },
+              "Search": {
+                "Clearance": 0.05,
+                "Waypoints": [],
+                "MaximumCandidates": 512,
+                "MaximumEdgeChecks": 32768,
+                "MaximumWork": 20000000,
+                "Objective": "FirstFeasible"
+              },
+              "Entrances": null
+            }
+          ],
+          "MaximumWork": 150000000
+        },
+        "TerrainDemands": null,
+        "ProgramComposition": null,
+        "Drainage": null,
+        "Water": null,
+        "WindMoisture": null
+      },
+      "Catalog": {
+        "SchemaVersion": 1,
+        "Id": "room-modules",
+        "Archetypes": [
+          {
+            "Id": "floor",
+            "Kind": "floor",
+            "Purpose": "Connected interior exploration program",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "rooms",
+                "ArchetypeId": "room",
+                "Count": 3,
+                "Purpose": "Required room",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null,
+                "ProgramMix": null
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": null,
+            "Access": null,
+            "Capacities": null,
+            "Services": null,
+            "ProgramInputs": null
+          },
+          {
+            "Id": "room",
+            "Kind": "room",
+            "Purpose": "Reusable room and its fixture",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "fixture",
+                "ArchetypeId": "fixture",
+                "Count": 1,
+                "Purpose": "Required interior equipment",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null,
+                "ProgramMix": null
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Exact room module",
+              "SourceRuleId": "interior:module",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -3,
+                    "Y": -2.5
+                  },
+                  {
+                    "X": 3,
+                    "Y": -2.5
+                  },
+                  {
+                    "X": 3,
+                    "Y": 2.5
+                  },
+                  {
+                    "X": -3,
+                    "Y": 2.5
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": null,
+            "Services": null,
+            "ProgramInputs": null
+          },
+          {
+            "Id": "fixture",
+            "Kind": "equipment",
+            "Purpose": "Purposeful internal obstacle",
+            "Properties": {},
+            "Parts": [],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Exact fixture",
+              "SourceRuleId": "interior:fixture",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -0.4,
+                    "Y": -0.25
+                  },
+                  {
+                    "X": 0.4,
+                    "Y": -0.25
+                  },
+                  {
+                    "X": 0.4,
+                    "Y": 0.25
+                  },
+                  {
+                    "X": -0.4,
+                    "Y": 0.25
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Solid",
+              "Ports": []
+            },
+            "Capacities": null,
+            "Services": null,
+            "ProgramInputs": null
+          }
+        ]
+      }
+    }
+  ],
+  "Transitions": [
+    {
+      "Id": "entry",
+      "Kind": "doorway",
+      "Purpose": "Transition between world domains",
+      "SourceRuleId": "domains:entry",
+      "From": {
+        "DomainId": "arrival",
+        "NodeId": "region-west/compounds-0",
+        "AccessPortId": "east",
+        "InteriorConnectionId": null,
+        "Profile": {
+          "Id": "regional-walk",
+          "Purpose": "Terrain-aware travel between complete locations",
+          "SourceRuleId": "network:travel",
+          "Radius": 0.3,
+          "MaximumSlope": 0.1,
+          "KindCosts": {
+            "ground": 1,
+            "bog": 1
+          },
+          "AscentCost": 1,
+          "DescentCost": 0.5,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null
+      },
+      "To": {
+        "DomainId": "lower",
+        "NodeId": "generated-interior/rooms-0",
+        "AccessPortId": null,
+        "InteriorConnectionId": "generated-interior/topology/room-journey/edge-00000",
+        "Profile": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null
+      },
+      "Bidirectional": true
+    },
+    {
+      "Id": "stairs",
+      "Kind": "stairs",
+      "Purpose": "Explicit floor transition; no implied 3D stair mesh",
+      "SourceRuleId": "domains:stairs",
+      "From": {
+        "DomainId": "lower",
+        "NodeId": "generated-interior/rooms-2",
+        "AccessPortId": null,
+        "InteriorConnectionId": "generated-interior/topology/room-journey/edge-00001",
+        "Profile": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null
+      },
+      "To": {
+        "DomainId": "upper",
+        "NodeId": "generated-interior/rooms-0",
+        "AccessPortId": null,
+        "InteriorConnectionId": "generated-interior/topology/room-journey/edge-00000",
+        "Profile": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null
+      },
+      "Bidirectional": true
+    }
+  ],
+  "Reachability": null,
+  "Journeys": [
+    {
+      "Id": "journey",
+      "Purpose": "Travel from the region into both floors and return",
+      "SourceRuleId": "test:journey",
+      "From": {
+        "DomainId": "outpost",
+        "NodeId": "region-west/compounds-0",
+        "AccessPortId": "east",
+        "InteriorConnectionId": null,
+        "Profile": {
+          "Id": "regional-walk",
+          "Purpose": "Terrain-aware travel between complete locations",
+          "SourceRuleId": "network:travel",
+          "Radius": 0.3,
+          "MaximumSlope": 0.1,
+          "KindCosts": {
+            "ground": 1,
+            "bog": 1
+          },
+          "AscentCost": 1,
+          "DescentCost": 0.5,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null
+      },
+      "To": {
+        "DomainId": "upper",
+        "NodeId": "generated-interior/rooms-2",
+        "AccessPortId": null,
+        "InteriorConnectionId": "generated-interior/topology/room-journey/edge-00001",
+        "Profile": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "NetworkRuleId": null
+      },
+      "ConnectionKinds": [
+        "regional-travel",
+        "door",
+        "doorway",
+        "stairs"
+      ],
+      "Profiles": {
+        "arrival": {
+          "Id": "regional-walk",
+          "Purpose": "Terrain-aware travel between complete locations",
+          "SourceRuleId": "network:travel",
+          "Radius": 0.3,
+          "MaximumSlope": 0.1,
+          "KindCosts": {
+            "ground": 1,
+            "bog": 1
+          },
+          "AscentCost": 1,
+          "DescentCost": 0.5,
+          "MaximumHeightStep": 0.001
+        },
+        "grove": {
+          "Id": "regional-walk",
+          "Purpose": "Terrain-aware travel between complete locations",
+          "SourceRuleId": "network:travel",
+          "Radius": 0.3,
+          "MaximumSlope": 0.1,
+          "KindCosts": {
+            "ground": 1,
+            "bog": 1
+          },
+          "AscentCost": 1,
+          "DescentCost": 0.5,
+          "MaximumHeightStep": 0.001
+        },
+        "outpost": {
+          "Id": "regional-walk",
+          "Purpose": "Terrain-aware travel between complete locations",
+          "SourceRuleId": "network:travel",
+          "Radius": 0.3,
+          "MaximumSlope": 0.1,
+          "KindCosts": {
+            "ground": 1,
+            "bog": 1
+          },
+          "AscentCost": 1,
+          "DescentCost": 0.5,
+          "MaximumHeightStep": 0.001
+        },
+        "pass": {
+          "Id": "regional-walk",
+          "Purpose": "Terrain-aware travel between complete locations",
+          "SourceRuleId": "network:travel",
+          "Radius": 0.3,
+          "MaximumSlope": 0.1,
+          "KindCosts": {
+            "ground": 1,
+            "bog": 1
+          },
+          "AscentCost": 1,
+          "DescentCost": 0.5,
+          "MaximumHeightStep": 0.001
+        },
+        "lower": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "upper": {
+          "Id": "walk",
+          "Purpose": "Width-qualified room movement",
+          "SourceRuleId": "interior:walk",
+          "Radius": 0.2,
+          "MaximumSlope": 0.01,
+          "KindCosts": {
+            "deck": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        }
+      },
+      "RequireReturn": true
+    }
+  ],
+  "MaximumTotalNodes": 50000,
+  "MaximumTotalConnections": 100000,
+  "MaximumTransitionWork": 20000000,
+  "MaximumGraphWork": 1000000,
+  "RegionalDesign": {
+    "Version": 1,
+    "Id": "derived-world",
+    "Purpose": "Complete region programs without authored ownership or root coordinates",
+    "SourceRuleId": "ownership:world",
+    "Template": {
+      "Version": 1,
+      "Id": "derived-world",
+      "Purpose": "Complete region programs without authored ownership or root coordinates",
+      "SourceRuleId": "ownership:world",
+      "Surface": {
+        "SchemaVersion": 1,
+        "Id": "shared-land",
+        "Unit": "meters",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 100,
+              "Y": 0
+            },
+            {
+              "X": 100,
+              "Y": 80
+            },
+            {
+              "X": 0,
+              "Y": 80
+            }
+          ]
+        },
+        "Exclusions": [
+          {
+            "Id": "protected-void",
+            "Purpose": "Keep source void excluded from play",
+            "SourceRuleId": "ownership:void",
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": 44,
+                  "Y": 28
+                },
+                {
+                  "X": 56,
+                  "Y": 28
+                },
+                {
+                  "X": 56,
+                  "Y": 52
+                },
+                {
+                  "X": 44,
+                  "Y": 52
+                }
+              ]
+            }
+          }
+        ],
+        "Patches": [
+          {
+            "Id": "bog-band",
+            "Kind": "bog",
+            "Purpose": "Explicit travel-cost terrain band",
+            "SourceRuleId": "network:bog",
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": 0,
+                  "Y": 35
+                },
+                {
+                  "X": 100,
+                  "Y": 35
+                },
+                {
+                  "X": 100,
+                  "Y": 45
+                },
+                {
+                  "X": 0,
+                  "Y": 45
+                }
+              ]
+            },
+            "Priority": 10,
+            "Origin": {
+              "X": -3.1,
+              "Y": -7.3
+            },
+            "Elevation": 2,
+            "GradientX": 0.01,
+            "GradientY": 0.005
+          }
+        ],
+        "Terrain": {
+          "SchemaVersion": 1,
+          "Id": "source",
+          "Kind": "ground",
+          "Purpose": "Shared global source",
+          "SourceRuleId": "regional:source",
+          "Unit": "meters",
+          "Origin": {
+            "X": -3.1,
+            "Y": -7.3
+          },
+          "StepX": 2.5,
+          "StepY": 2.5,
+          "Columns": 513,
+          "Rows": 513,
+          "BaseElevation": 2,
+          "GradientX": 0.01,
+          "GradientY": 0.005,
+          "Operations": [],
+          "Detail": null,
+          "MaximumWork": 20000000
+        },
+        "HeightField": null
+      },
+      "Regions": [
+        {
+          "Id": "arrival",
+          "Purpose": "Complete required arrival program",
+          "SourceRuleId": "world-grammar:arrival",
+          "Weight": 1,
+          "MinimumArea": 100,
+          "MinimumClearance": 8,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Required usable ground",
+            "SourceRuleId": "regional:usable",
+            "AllowedKinds": [
+              "ground",
+              "bog"
+            ],
+            "Requirements": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Allowed height",
+                "SourceRuleId": "regional:height",
+                "Minimum": 0,
+                "Maximum": 20
+              }
+            ],
+            "Preferences": []
+          },
+          "PlacementAnchorId": "fixed",
+          "Recipe": {
+            "SchemaVersion": 1,
+            "Id": "region-west",
+            "GameProfile": "framework-reference",
+            "CatalogId": "regional-catalog",
+            "RootArchetypeId": "root",
+            "Scale": "generation-region",
+            "Coverage": "PartialScope",
+            "RemainingScopes": [
+              "Shared-coordinate content generation control; complete game design, artwork and Godot remain separate."
+            ],
+            "Parameters": {},
+            "Space": {
+              "Axes": [
+                "x",
+                "y"
+              ],
+              "Unit": "meters"
+            },
+            "Origin": null,
+            "RequireAllPositions": true,
+            "MaximumNodes": 10000,
+            "MaximumConnections": 50000,
+            "AdditionalConnections": [
+              {
+                "Id": "local",
+                "Kind": "local-walk",
+                "FromId": "region-west/compounds-0/modules-0",
+                "ToId": "region-west/compounds-0/modules-1",
+                "Bidirectional": true,
+                "Properties": null,
+                "LayerId": null
+              }
+            ],
+            "Layers": [
+              {
+                "Id": "intent",
+                "Kind": "program",
+                "Purpose": "All required content",
+                "SourceRuleId": "regional:content",
+                "DependsOn": [],
+                "Coverage": "CompleteDeclaredScope",
+                "RemainingScopes": []
+              }
+            ],
+            "Surface": null,
+            "RouteRules": [
+              {
+                "Id": "local",
+                "ConnectionKind": "local-walk",
+                "Profile": {
+                  "Id": "walk",
+                  "Purpose": "Required full-width regional travel",
+                  "SourceRuleId": "regional:walk",
+                  "Radius": 0.2,
+                  "MaximumSlope": 0.1,
+                  "KindCosts": {
+                    "ground": 1
+                  },
+                  "AscentCost": 1,
+                  "DescentCost": 0.5,
+                  "MaximumHeightStep": 0.001
+                },
+                "Search": {
+                  "Clearance": 0.1,
+                  "Waypoints": [],
+                  "MaximumCandidates": 256,
+                  "MaximumEdgeChecks": 32768,
+                  "MaximumWork": 20000000,
+                  "Objective": "LowestCost"
+                },
+                "FromPortId": "east",
+                "ToPortId": "west",
+                "Reuse": null,
+                "Interfaces": null,
+                "Alignments": null
+              }
+            ],
+            "NetworkRules": null,
+            "Environment": {
+              "SchemaVersion": 1,
+              "Id": "height",
+              "Fields": [
+                {
+                  "Id": "height",
+                  "Purpose": "Altitude",
+                  "SourceRuleId": "regional:height",
+                  "Unit": "meters",
+                  "Offset": 0,
+                  "Terms": [
+                    {
+                      "Input": "Elevation",
+                      "Coefficient": 1,
+                      "FieldId": null
+                    }
+                  ],
+                  "Minimum": null,
+                  "Maximum": null
+                }
+              ],
+              "SampledFields": null
+            },
+            "SuitabilityRules": null,
+            "Placement": {
+              "Request": {
+                "Id": "compound",
+                "Purpose": "Retain the exact seam control",
+                "SourceRuleId": "regional:placement",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "compound",
+                    "Purpose": "Required compound",
+                    "SourceRuleId": "regional:compound",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "usable",
+                      "Purpose": "Required usable ground",
+                      "SourceRuleId": "regional:usable",
+                      "AllowedKinds": [
+                        "ground",
+                        "bog"
+                      ],
+                      "Requirements": [
+                        {
+                          "Id": "altitude",
+                          "FieldId": "height",
+                          "Purpose": "Allowed height",
+                          "SourceRuleId": "regional:height",
+                          "Minimum": 0,
+                          "Maximum": 20
+                        }
+                      ],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [],
+                "Relations": [
+                  {
+                    "Id": "pin",
+                    "FromId": "compound",
+                    "ToId": "fixed",
+                    "Purpose": "Required source position",
+                    "SourceRuleId": "regional:pin",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null,
+                "Execution": "Prescribed",
+                "Nogoods": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "compound",
+                  "NodeId": "region-west/compounds-0",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "PartId": null,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "NestedStages": null,
+              "MaximumWork": 200000000,
+              "MaximumStageAttempts": 128,
+              "MaximumFeasibilityAttempts": 32,
+              "SourceWorld": null,
+              "ConnectedLayouts": null,
+              "Programs": [
+                {
+                  "Id": "modules",
+                  "Purpose": "Generate every required nested member",
+                  "SourceRuleId": "regional:modules",
+                  "ScopeNodeId": "region-west",
+                  "ParentArchetypeId": "compound",
+                  "MinimumParents": 1,
+                  "MaximumParents": 1,
+                  "Request": {
+                    "Id": "modules",
+                    "Purpose": "Source-sized modules inside the compound",
+                    "SourceRuleId": "regional:modules",
+                    "Boundary": null,
+                    "Demands": [
+                      {
+                        "Id": "module",
+                        "Purpose": "All required modules",
+                        "SourceRuleId": "regional:module",
+                        "Footprint": null,
+                        "Profile": {
+                          "Id": "usable",
+                          "Purpose": "Required usable ground",
+                          "SourceRuleId": "regional:usable",
+                          "AllowedKinds": [
+                            "ground",
+                            "bog"
+                          ],
+                          "Requirements": [
+                            {
+                              "Id": "altitude",
+                              "FieldId": "height",
+                              "Purpose": "Allowed height",
+                              "SourceRuleId": "regional:height",
+                              "Minimum": 0,
+                              "Maximum": 20
+                            }
+                          ],
+                          "Preferences": []
+                        },
+                        "Reservation": null,
+                        "RegionId": null,
+                        "AllocationId": null
+                      }
+                    ],
+                    "Anchors": [],
+                    "Relations": [],
+                    "MinimumSeparation": 0,
+                    "MaximumCandidates": 2048,
+                    "MaximumSearchStates": 100000,
+                    "MaximumWork": 1000000,
+                    "AllowBoundaryContact": false,
+                    "Growth": null,
+                    "Execution": "Search",
+                    "Nogoods": null
+                  },
+                  "Bindings": [
+                    {
+                      "DemandId": "module",
+                      "PartId": "modules",
+                      "UseCatalogFootprint": true,
+                      "RotationDegrees": 0,
+                      "SiteLayout": null,
+                      "Population": {
+                        "Purpose": "Purposeful source path",
+                        "SourceRuleId": "regional:module-path",
+                        "Path": {
+                          "Path": {
+                            "Points": [
+                              {
+                                "X": -2,
+                                "Y": 0
+                              },
+                              {
+                                "X": 2,
+                                "Y": 0
+                              }
+                            ]
+                          },
+                          "Spacing": 4,
+                          "StartDistance": 0,
+                          "EndInset": 0,
+                          "NormalOffset": 0
+                        },
+                        "Boundary": null,
+                        "Sockets": null,
+                        "Route": null,
+                        "Region": null,
+                        "GeneratedBoundary": null,
+                        "Facing": null
+                      }
+                    }
+                  ],
+                  "Growth": null
+                }
+              ],
+              "RegionAnchors": null,
+              "AllocationAnchors": null,
+              "Nogoods": null
+            },
+            "Services": null,
+            "Context": null,
+            "Corridors": null,
+            "Regions": null,
+            "LocalLayouts": null,
+            "LayoutAdaptation": null,
+            "ProgressionRules": null,
+            "PopulationSource": null,
+            "Chunks": null,
+            "TopologyRules": null,
+            "RouteBudget": null,
+            "Interiors": null,
+            "TerrainDemands": null,
+            "ProgramComposition": null,
+            "Drainage": null,
+            "Water": null,
+            "WindMoisture": null
+          },
+          "Catalog": {
+            "SchemaVersion": 1,
+            "Id": "regional-catalog",
+            "Archetypes": [
+              {
+                "Id": "root",
+                "Kind": "program-region",
+                "Purpose": "Required program-region",
+                "Properties": {},
+                "Parts": [
+                  {
+                    "Id": "compounds",
+                    "ArchetypeId": "compound",
+                    "Count": 1,
+                    "Purpose": "Complete compound",
+                    "CountParameter": null,
+                    "Layout": null,
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  },
+                  {
+                    "Id": "markers",
+                    "ArchetypeId": "marker",
+                    "Count": 1,
+                    "Purpose": "Request observation",
+                    "CountParameter": null,
+                    "Layout": {
+                      "StrategyId": "line",
+                      "Parameters": {
+                        "Origin": [
+                          0,
+                          0
+                        ],
+                        "Step": [
+                          1,
+                          0
+                        ]
+                      }
+                    },
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  }
+                ],
+                "Connections": [],
+                "ChildRequirements": [
+                  {
+                    "Kind": "compound",
+                    "Minimum": 1,
+                    "Maximum": 1
+                  },
+                  {
+                    "Kind": "marker",
+                    "Minimum": 1,
+                    "Maximum": 1
+                  }
+                ],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": null,
+                "Access": null,
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "compound",
+                "Kind": "compound",
+                "Purpose": "Required compound",
+                "Properties": {},
+                "Parts": [
+                  {
+                    "Id": "modules",
+                    "ArchetypeId": "module",
+                    "Count": 2,
+                    "Purpose": "All required modules",
+                    "CountParameter": null,
+                    "Layout": null,
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  }
+                ],
+                "Connections": [],
+                "ChildRequirements": [
+                  {
+                    "Kind": "module",
+                    "Minimum": 2,
+                    "Maximum": 2
+                  }
+                ],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": {
+                  "Unit": "meters",
+                  "Purpose": "Full source compound",
+                  "SourceRuleId": "regional:compound",
+                  "Polygon": {
+                    "Vertices": [
+                      {
+                        "X": -6,
+                        "Y": -5
+                      },
+                      {
+                        "X": 6,
+                        "Y": -5
+                      },
+                      {
+                        "X": 6,
+                        "Y": 5
+                      },
+                      {
+                        "X": -6,
+                        "Y": 5
+                      }
+                    ]
+                  },
+                  "Reservation": null
+                },
+                "Access": {
+                  "Occupancy": "Reservation",
+                  "Ports": [
+                    {
+                      "Id": "east",
+                      "Purpose": "Eastern opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": 6,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": 7,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    },
+                    {
+                      "Id": "west",
+                      "Purpose": "Western opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": -6,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": -7,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    }
+                  ]
+                },
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "module",
+                "Kind": "module",
+                "Purpose": "Required module",
+                "Properties": {},
+                "Parts": [],
+                "Connections": [],
+                "ChildRequirements": [],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": {
+                  "Unit": "meters",
+                  "Purpose": "Unchanged module source",
+                  "SourceRuleId": "regional:module",
+                  "Polygon": {
+                    "Vertices": [
+                      {
+                        "X": -0.5,
+                        "Y": -0.75
+                      },
+                      {
+                        "X": 0.5,
+                        "Y": -0.75
+                      },
+                      {
+                        "X": 0.5,
+                        "Y": 0.75
+                      },
+                      {
+                        "X": -0.5,
+                        "Y": 0.75
+                      }
+                    ]
+                  },
+                  "Reservation": null
+                },
+                "Access": {
+                  "Occupancy": "Solid",
+                  "Ports": [
+                    {
+                      "Id": "east",
+                      "Purpose": "Eastern opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": 0.5,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": 1.5,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    },
+                    {
+                      "Id": "west",
+                      "Purpose": "Western opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": -0.5,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": -1.5,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    }
+                  ]
+                },
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "marker",
+                "Kind": "marker",
+                "Purpose": "Required marker",
+                "Properties": {},
+                "Parts": [],
+                "Connections": [],
+                "ChildRequirements": [],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": null,
+                "Access": null,
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              }
+            ]
+          }
+        },
+        {
+          "Id": "grove",
+          "Purpose": "Complete required grove program",
+          "SourceRuleId": "world-grammar:grove",
+          "Weight": 1,
+          "MinimumArea": 100,
+          "MinimumClearance": 8,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Required usable ground",
+            "SourceRuleId": "regional:usable",
+            "AllowedKinds": [
+              "ground",
+              "bog"
+            ],
+            "Requirements": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Allowed height",
+                "SourceRuleId": "regional:height",
+                "Minimum": 0,
+                "Maximum": 20
+              }
+            ],
+            "Preferences": []
+          },
+          "PlacementAnchorId": "fixed",
+          "Recipe": {
+            "SchemaVersion": 1,
+            "Id": "region-west",
+            "GameProfile": "framework-reference",
+            "CatalogId": "regional-catalog",
+            "RootArchetypeId": "root",
+            "Scale": "generation-region",
+            "Coverage": "PartialScope",
+            "RemainingScopes": [
+              "Shared-coordinate content generation control; complete game design, artwork and Godot remain separate."
+            ],
+            "Parameters": {},
+            "Space": {
+              "Axes": [
+                "x",
+                "y"
+              ],
+              "Unit": "meters"
+            },
+            "Origin": null,
+            "RequireAllPositions": true,
+            "MaximumNodes": 10000,
+            "MaximumConnections": 50000,
+            "AdditionalConnections": [
+              {
+                "Id": "local",
+                "Kind": "local-walk",
+                "FromId": "region-west/compounds-0/modules-0",
+                "ToId": "region-west/compounds-0/modules-1",
+                "Bidirectional": true,
+                "Properties": null,
+                "LayerId": null
+              }
+            ],
+            "Layers": [
+              {
+                "Id": "intent",
+                "Kind": "program",
+                "Purpose": "All required content",
+                "SourceRuleId": "regional:content",
+                "DependsOn": [],
+                "Coverage": "CompleteDeclaredScope",
+                "RemainingScopes": []
+              }
+            ],
+            "Surface": null,
+            "RouteRules": [
+              {
+                "Id": "local",
+                "ConnectionKind": "local-walk",
+                "Profile": {
+                  "Id": "walk",
+                  "Purpose": "Required full-width regional travel",
+                  "SourceRuleId": "regional:walk",
+                  "Radius": 0.2,
+                  "MaximumSlope": 0.1,
+                  "KindCosts": {
+                    "ground": 1
+                  },
+                  "AscentCost": 1,
+                  "DescentCost": 0.5,
+                  "MaximumHeightStep": 0.001
+                },
+                "Search": {
+                  "Clearance": 0.1,
+                  "Waypoints": [],
+                  "MaximumCandidates": 256,
+                  "MaximumEdgeChecks": 32768,
+                  "MaximumWork": 20000000,
+                  "Objective": "LowestCost"
+                },
+                "FromPortId": "east",
+                "ToPortId": "west",
+                "Reuse": null,
+                "Interfaces": null,
+                "Alignments": null
+              }
+            ],
+            "NetworkRules": null,
+            "Environment": {
+              "SchemaVersion": 1,
+              "Id": "height",
+              "Fields": [
+                {
+                  "Id": "height",
+                  "Purpose": "Altitude",
+                  "SourceRuleId": "regional:height",
+                  "Unit": "meters",
+                  "Offset": 0,
+                  "Terms": [
+                    {
+                      "Input": "Elevation",
+                      "Coefficient": 1,
+                      "FieldId": null
+                    }
+                  ],
+                  "Minimum": null,
+                  "Maximum": null
+                }
+              ],
+              "SampledFields": null
+            },
+            "SuitabilityRules": null,
+            "Placement": {
+              "Request": {
+                "Id": "compound",
+                "Purpose": "Retain the exact seam control",
+                "SourceRuleId": "regional:placement",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "compound",
+                    "Purpose": "Required compound",
+                    "SourceRuleId": "regional:compound",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "usable",
+                      "Purpose": "Required usable ground",
+                      "SourceRuleId": "regional:usable",
+                      "AllowedKinds": [
+                        "ground",
+                        "bog"
+                      ],
+                      "Requirements": [
+                        {
+                          "Id": "altitude",
+                          "FieldId": "height",
+                          "Purpose": "Allowed height",
+                          "SourceRuleId": "regional:height",
+                          "Minimum": 0,
+                          "Maximum": 20
+                        }
+                      ],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [],
+                "Relations": [
+                  {
+                    "Id": "pin",
+                    "FromId": "compound",
+                    "ToId": "fixed",
+                    "Purpose": "Required source position",
+                    "SourceRuleId": "regional:pin",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null,
+                "Execution": "Prescribed",
+                "Nogoods": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "compound",
+                  "NodeId": "region-west/compounds-0",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "PartId": null,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "NestedStages": null,
+              "MaximumWork": 200000000,
+              "MaximumStageAttempts": 128,
+              "MaximumFeasibilityAttempts": 32,
+              "SourceWorld": null,
+              "ConnectedLayouts": null,
+              "Programs": [
+                {
+                  "Id": "modules",
+                  "Purpose": "Generate every required nested member",
+                  "SourceRuleId": "regional:modules",
+                  "ScopeNodeId": "region-west",
+                  "ParentArchetypeId": "compound",
+                  "MinimumParents": 1,
+                  "MaximumParents": 1,
+                  "Request": {
+                    "Id": "modules",
+                    "Purpose": "Source-sized modules inside the compound",
+                    "SourceRuleId": "regional:modules",
+                    "Boundary": null,
+                    "Demands": [
+                      {
+                        "Id": "module",
+                        "Purpose": "All required modules",
+                        "SourceRuleId": "regional:module",
+                        "Footprint": null,
+                        "Profile": {
+                          "Id": "usable",
+                          "Purpose": "Required usable ground",
+                          "SourceRuleId": "regional:usable",
+                          "AllowedKinds": [
+                            "ground",
+                            "bog"
+                          ],
+                          "Requirements": [
+                            {
+                              "Id": "altitude",
+                              "FieldId": "height",
+                              "Purpose": "Allowed height",
+                              "SourceRuleId": "regional:height",
+                              "Minimum": 0,
+                              "Maximum": 20
+                            }
+                          ],
+                          "Preferences": []
+                        },
+                        "Reservation": null,
+                        "RegionId": null,
+                        "AllocationId": null
+                      }
+                    ],
+                    "Anchors": [],
+                    "Relations": [],
+                    "MinimumSeparation": 0,
+                    "MaximumCandidates": 2048,
+                    "MaximumSearchStates": 100000,
+                    "MaximumWork": 1000000,
+                    "AllowBoundaryContact": false,
+                    "Growth": null,
+                    "Execution": "Search",
+                    "Nogoods": null
+                  },
+                  "Bindings": [
+                    {
+                      "DemandId": "module",
+                      "PartId": "modules",
+                      "UseCatalogFootprint": true,
+                      "RotationDegrees": 0,
+                      "SiteLayout": null,
+                      "Population": {
+                        "Purpose": "Purposeful source path",
+                        "SourceRuleId": "regional:module-path",
+                        "Path": {
+                          "Path": {
+                            "Points": [
+                              {
+                                "X": -2,
+                                "Y": 0
+                              },
+                              {
+                                "X": 2,
+                                "Y": 0
+                              }
+                            ]
+                          },
+                          "Spacing": 4,
+                          "StartDistance": 0,
+                          "EndInset": 0,
+                          "NormalOffset": 0
+                        },
+                        "Boundary": null,
+                        "Sockets": null,
+                        "Route": null,
+                        "Region": null,
+                        "GeneratedBoundary": null,
+                        "Facing": null
+                      }
+                    }
+                  ],
+                  "Growth": null
+                }
+              ],
+              "RegionAnchors": null,
+              "AllocationAnchors": null,
+              "Nogoods": null
+            },
+            "Services": null,
+            "Context": null,
+            "Corridors": null,
+            "Regions": null,
+            "LocalLayouts": null,
+            "LayoutAdaptation": null,
+            "ProgressionRules": null,
+            "PopulationSource": null,
+            "Chunks": null,
+            "TopologyRules": null,
+            "RouteBudget": null,
+            "Interiors": null,
+            "TerrainDemands": null,
+            "ProgramComposition": null,
+            "Drainage": null,
+            "Water": null,
+            "WindMoisture": null
+          },
+          "Catalog": {
+            "SchemaVersion": 1,
+            "Id": "regional-catalog",
+            "Archetypes": [
+              {
+                "Id": "root",
+                "Kind": "program-region",
+                "Purpose": "Required program-region",
+                "Properties": {},
+                "Parts": [
+                  {
+                    "Id": "compounds",
+                    "ArchetypeId": "compound",
+                    "Count": 1,
+                    "Purpose": "Complete compound",
+                    "CountParameter": null,
+                    "Layout": null,
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  },
+                  {
+                    "Id": "markers",
+                    "ArchetypeId": "marker",
+                    "Count": 1,
+                    "Purpose": "Request observation",
+                    "CountParameter": null,
+                    "Layout": {
+                      "StrategyId": "line",
+                      "Parameters": {
+                        "Origin": [
+                          0,
+                          0
+                        ],
+                        "Step": [
+                          1,
+                          0
+                        ]
+                      }
+                    },
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  }
+                ],
+                "Connections": [],
+                "ChildRequirements": [
+                  {
+                    "Kind": "compound",
+                    "Minimum": 1,
+                    "Maximum": 1
+                  },
+                  {
+                    "Kind": "marker",
+                    "Minimum": 1,
+                    "Maximum": 1
+                  }
+                ],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": null,
+                "Access": null,
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "compound",
+                "Kind": "compound",
+                "Purpose": "Required compound",
+                "Properties": {},
+                "Parts": [
+                  {
+                    "Id": "modules",
+                    "ArchetypeId": "module",
+                    "Count": 2,
+                    "Purpose": "All required modules",
+                    "CountParameter": null,
+                    "Layout": null,
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  }
+                ],
+                "Connections": [],
+                "ChildRequirements": [
+                  {
+                    "Kind": "module",
+                    "Minimum": 2,
+                    "Maximum": 2
+                  }
+                ],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": {
+                  "Unit": "meters",
+                  "Purpose": "Full source compound",
+                  "SourceRuleId": "regional:compound",
+                  "Polygon": {
+                    "Vertices": [
+                      {
+                        "X": -6,
+                        "Y": -5
+                      },
+                      {
+                        "X": 6,
+                        "Y": -5
+                      },
+                      {
+                        "X": 6,
+                        "Y": 5
+                      },
+                      {
+                        "X": -6,
+                        "Y": 5
+                      }
+                    ]
+                  },
+                  "Reservation": null
+                },
+                "Access": {
+                  "Occupancy": "Reservation",
+                  "Ports": [
+                    {
+                      "Id": "east",
+                      "Purpose": "Eastern opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": 6,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": 7,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    },
+                    {
+                      "Id": "west",
+                      "Purpose": "Western opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": -6,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": -7,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    }
+                  ]
+                },
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "module",
+                "Kind": "module",
+                "Purpose": "Required module",
+                "Properties": {},
+                "Parts": [],
+                "Connections": [],
+                "ChildRequirements": [],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": {
+                  "Unit": "meters",
+                  "Purpose": "Unchanged module source",
+                  "SourceRuleId": "regional:module",
+                  "Polygon": {
+                    "Vertices": [
+                      {
+                        "X": -0.5,
+                        "Y": -0.75
+                      },
+                      {
+                        "X": 0.5,
+                        "Y": -0.75
+                      },
+                      {
+                        "X": 0.5,
+                        "Y": 0.75
+                      },
+                      {
+                        "X": -0.5,
+                        "Y": 0.75
+                      }
+                    ]
+                  },
+                  "Reservation": null
+                },
+                "Access": {
+                  "Occupancy": "Solid",
+                  "Ports": [
+                    {
+                      "Id": "east",
+                      "Purpose": "Eastern opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": 0.5,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": 1.5,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    },
+                    {
+                      "Id": "west",
+                      "Purpose": "Western opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": -0.5,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": -1.5,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    }
+                  ]
+                },
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "marker",
+                "Kind": "marker",
+                "Purpose": "Required marker",
+                "Properties": {},
+                "Parts": [],
+                "Connections": [],
+                "ChildRequirements": [],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": null,
+                "Access": null,
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              }
+            ]
+          }
+        },
+        {
+          "Id": "outpost",
+          "Purpose": "Complete required outpost program",
+          "SourceRuleId": "world-grammar:outpost",
+          "Weight": 1,
+          "MinimumArea": 100,
+          "MinimumClearance": 8,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Required usable ground",
+            "SourceRuleId": "regional:usable",
+            "AllowedKinds": [
+              "ground",
+              "bog"
+            ],
+            "Requirements": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Allowed height",
+                "SourceRuleId": "regional:height",
+                "Minimum": 0,
+                "Maximum": 20
+              }
+            ],
+            "Preferences": []
+          },
+          "PlacementAnchorId": "fixed",
+          "Recipe": {
+            "SchemaVersion": 1,
+            "Id": "region-west",
+            "GameProfile": "framework-reference",
+            "CatalogId": "regional-catalog",
+            "RootArchetypeId": "root",
+            "Scale": "generation-region",
+            "Coverage": "PartialScope",
+            "RemainingScopes": [
+              "Shared-coordinate content generation control; complete game design, artwork and Godot remain separate."
+            ],
+            "Parameters": {},
+            "Space": {
+              "Axes": [
+                "x",
+                "y"
+              ],
+              "Unit": "meters"
+            },
+            "Origin": null,
+            "RequireAllPositions": true,
+            "MaximumNodes": 10000,
+            "MaximumConnections": 50000,
+            "AdditionalConnections": [
+              {
+                "Id": "local",
+                "Kind": "local-walk",
+                "FromId": "region-west/compounds-0/modules-0",
+                "ToId": "region-west/compounds-0/modules-1",
+                "Bidirectional": true,
+                "Properties": null,
+                "LayerId": null
+              }
+            ],
+            "Layers": [
+              {
+                "Id": "intent",
+                "Kind": "program",
+                "Purpose": "All required content",
+                "SourceRuleId": "regional:content",
+                "DependsOn": [],
+                "Coverage": "CompleteDeclaredScope",
+                "RemainingScopes": []
+              }
+            ],
+            "Surface": null,
+            "RouteRules": [
+              {
+                "Id": "local",
+                "ConnectionKind": "local-walk",
+                "Profile": {
+                  "Id": "walk",
+                  "Purpose": "Required full-width regional travel",
+                  "SourceRuleId": "regional:walk",
+                  "Radius": 0.2,
+                  "MaximumSlope": 0.1,
+                  "KindCosts": {
+                    "ground": 1
+                  },
+                  "AscentCost": 1,
+                  "DescentCost": 0.5,
+                  "MaximumHeightStep": 0.001
+                },
+                "Search": {
+                  "Clearance": 0.1,
+                  "Waypoints": [],
+                  "MaximumCandidates": 256,
+                  "MaximumEdgeChecks": 32768,
+                  "MaximumWork": 20000000,
+                  "Objective": "LowestCost"
+                },
+                "FromPortId": "east",
+                "ToPortId": "west",
+                "Reuse": null,
+                "Interfaces": null,
+                "Alignments": null
+              }
+            ],
+            "NetworkRules": null,
+            "Environment": {
+              "SchemaVersion": 1,
+              "Id": "height",
+              "Fields": [
+                {
+                  "Id": "height",
+                  "Purpose": "Altitude",
+                  "SourceRuleId": "regional:height",
+                  "Unit": "meters",
+                  "Offset": 0,
+                  "Terms": [
+                    {
+                      "Input": "Elevation",
+                      "Coefficient": 1,
+                      "FieldId": null
+                    }
+                  ],
+                  "Minimum": null,
+                  "Maximum": null
+                }
+              ],
+              "SampledFields": null
+            },
+            "SuitabilityRules": null,
+            "Placement": {
+              "Request": {
+                "Id": "compound",
+                "Purpose": "Retain the exact seam control",
+                "SourceRuleId": "regional:placement",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "compound",
+                    "Purpose": "Required compound",
+                    "SourceRuleId": "regional:compound",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "usable",
+                      "Purpose": "Required usable ground",
+                      "SourceRuleId": "regional:usable",
+                      "AllowedKinds": [
+                        "ground",
+                        "bog"
+                      ],
+                      "Requirements": [
+                        {
+                          "Id": "altitude",
+                          "FieldId": "height",
+                          "Purpose": "Allowed height",
+                          "SourceRuleId": "regional:height",
+                          "Minimum": 0,
+                          "Maximum": 20
+                        }
+                      ],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [],
+                "Relations": [
+                  {
+                    "Id": "pin",
+                    "FromId": "compound",
+                    "ToId": "fixed",
+                    "Purpose": "Required source position",
+                    "SourceRuleId": "regional:pin",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null,
+                "Execution": "Prescribed",
+                "Nogoods": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "compound",
+                  "NodeId": "region-west/compounds-0",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "PartId": null,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "NestedStages": null,
+              "MaximumWork": 200000000,
+              "MaximumStageAttempts": 128,
+              "MaximumFeasibilityAttempts": 32,
+              "SourceWorld": null,
+              "ConnectedLayouts": null,
+              "Programs": [
+                {
+                  "Id": "modules",
+                  "Purpose": "Generate every required nested member",
+                  "SourceRuleId": "regional:modules",
+                  "ScopeNodeId": "region-west",
+                  "ParentArchetypeId": "compound",
+                  "MinimumParents": 1,
+                  "MaximumParents": 1,
+                  "Request": {
+                    "Id": "modules",
+                    "Purpose": "Source-sized modules inside the compound",
+                    "SourceRuleId": "regional:modules",
+                    "Boundary": null,
+                    "Demands": [
+                      {
+                        "Id": "module",
+                        "Purpose": "All required modules",
+                        "SourceRuleId": "regional:module",
+                        "Footprint": null,
+                        "Profile": {
+                          "Id": "usable",
+                          "Purpose": "Required usable ground",
+                          "SourceRuleId": "regional:usable",
+                          "AllowedKinds": [
+                            "ground",
+                            "bog"
+                          ],
+                          "Requirements": [
+                            {
+                              "Id": "altitude",
+                              "FieldId": "height",
+                              "Purpose": "Allowed height",
+                              "SourceRuleId": "regional:height",
+                              "Minimum": 0,
+                              "Maximum": 20
+                            }
+                          ],
+                          "Preferences": []
+                        },
+                        "Reservation": null,
+                        "RegionId": null,
+                        "AllocationId": null
+                      }
+                    ],
+                    "Anchors": [],
+                    "Relations": [],
+                    "MinimumSeparation": 0,
+                    "MaximumCandidates": 2048,
+                    "MaximumSearchStates": 100000,
+                    "MaximumWork": 1000000,
+                    "AllowBoundaryContact": false,
+                    "Growth": null,
+                    "Execution": "Search",
+                    "Nogoods": null
+                  },
+                  "Bindings": [
+                    {
+                      "DemandId": "module",
+                      "PartId": "modules",
+                      "UseCatalogFootprint": true,
+                      "RotationDegrees": 0,
+                      "SiteLayout": null,
+                      "Population": {
+                        "Purpose": "Purposeful source path",
+                        "SourceRuleId": "regional:module-path",
+                        "Path": {
+                          "Path": {
+                            "Points": [
+                              {
+                                "X": -2,
+                                "Y": 0
+                              },
+                              {
+                                "X": 2,
+                                "Y": 0
+                              }
+                            ]
+                          },
+                          "Spacing": 4,
+                          "StartDistance": 0,
+                          "EndInset": 0,
+                          "NormalOffset": 0
+                        },
+                        "Boundary": null,
+                        "Sockets": null,
+                        "Route": null,
+                        "Region": null,
+                        "GeneratedBoundary": null,
+                        "Facing": null
+                      }
+                    }
+                  ],
+                  "Growth": null
+                }
+              ],
+              "RegionAnchors": null,
+              "AllocationAnchors": null,
+              "Nogoods": null
+            },
+            "Services": null,
+            "Context": null,
+            "Corridors": null,
+            "Regions": null,
+            "LocalLayouts": null,
+            "LayoutAdaptation": null,
+            "ProgressionRules": null,
+            "PopulationSource": null,
+            "Chunks": null,
+            "TopologyRules": null,
+            "RouteBudget": null,
+            "Interiors": null,
+            "TerrainDemands": null,
+            "ProgramComposition": null,
+            "Drainage": null,
+            "Water": null,
+            "WindMoisture": null
+          },
+          "Catalog": {
+            "SchemaVersion": 1,
+            "Id": "regional-catalog",
+            "Archetypes": [
+              {
+                "Id": "root",
+                "Kind": "program-region",
+                "Purpose": "Required program-region",
+                "Properties": {},
+                "Parts": [
+                  {
+                    "Id": "compounds",
+                    "ArchetypeId": "compound",
+                    "Count": 1,
+                    "Purpose": "Complete compound",
+                    "CountParameter": null,
+                    "Layout": null,
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  },
+                  {
+                    "Id": "markers",
+                    "ArchetypeId": "marker",
+                    "Count": 1,
+                    "Purpose": "Request observation",
+                    "CountParameter": null,
+                    "Layout": {
+                      "StrategyId": "line",
+                      "Parameters": {
+                        "Origin": [
+                          0,
+                          0
+                        ],
+                        "Step": [
+                          1,
+                          0
+                        ]
+                      }
+                    },
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  }
+                ],
+                "Connections": [],
+                "ChildRequirements": [
+                  {
+                    "Kind": "compound",
+                    "Minimum": 1,
+                    "Maximum": 1
+                  },
+                  {
+                    "Kind": "marker",
+                    "Minimum": 1,
+                    "Maximum": 1
+                  }
+                ],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": null,
+                "Access": null,
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "compound",
+                "Kind": "compound",
+                "Purpose": "Required compound",
+                "Properties": {},
+                "Parts": [
+                  {
+                    "Id": "modules",
+                    "ArchetypeId": "module",
+                    "Count": 2,
+                    "Purpose": "All required modules",
+                    "CountParameter": null,
+                    "Layout": null,
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  }
+                ],
+                "Connections": [],
+                "ChildRequirements": [
+                  {
+                    "Kind": "module",
+                    "Minimum": 2,
+                    "Maximum": 2
+                  }
+                ],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": {
+                  "Unit": "meters",
+                  "Purpose": "Full source compound",
+                  "SourceRuleId": "regional:compound",
+                  "Polygon": {
+                    "Vertices": [
+                      {
+                        "X": -6,
+                        "Y": -5
+                      },
+                      {
+                        "X": 6,
+                        "Y": -5
+                      },
+                      {
+                        "X": 6,
+                        "Y": 5
+                      },
+                      {
+                        "X": -6,
+                        "Y": 5
+                      }
+                    ]
+                  },
+                  "Reservation": null
+                },
+                "Access": {
+                  "Occupancy": "Reservation",
+                  "Ports": [
+                    {
+                      "Id": "east",
+                      "Purpose": "Eastern opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": 6,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": 7,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    },
+                    {
+                      "Id": "west",
+                      "Purpose": "Western opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": -6,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": -7,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    }
+                  ]
+                },
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "module",
+                "Kind": "module",
+                "Purpose": "Required module",
+                "Properties": {},
+                "Parts": [],
+                "Connections": [],
+                "ChildRequirements": [],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": {
+                  "Unit": "meters",
+                  "Purpose": "Unchanged module source",
+                  "SourceRuleId": "regional:module",
+                  "Polygon": {
+                    "Vertices": [
+                      {
+                        "X": -0.5,
+                        "Y": -0.75
+                      },
+                      {
+                        "X": 0.5,
+                        "Y": -0.75
+                      },
+                      {
+                        "X": 0.5,
+                        "Y": 0.75
+                      },
+                      {
+                        "X": -0.5,
+                        "Y": 0.75
+                      }
+                    ]
+                  },
+                  "Reservation": null
+                },
+                "Access": {
+                  "Occupancy": "Solid",
+                  "Ports": [
+                    {
+                      "Id": "east",
+                      "Purpose": "Eastern opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": 0.5,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": 1.5,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    },
+                    {
+                      "Id": "west",
+                      "Purpose": "Western opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": -0.5,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": -1.5,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    }
+                  ]
+                },
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "marker",
+                "Kind": "marker",
+                "Purpose": "Required marker",
+                "Properties": {},
+                "Parts": [],
+                "Connections": [],
+                "ChildRequirements": [],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": null,
+                "Access": null,
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              }
+            ]
+          }
+        },
+        {
+          "Id": "pass",
+          "Purpose": "Complete required pass program",
+          "SourceRuleId": "world-grammar:pass",
+          "Weight": 1,
+          "MinimumArea": 100,
+          "MinimumClearance": 8,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Required usable ground",
+            "SourceRuleId": "regional:usable",
+            "AllowedKinds": [
+              "ground",
+              "bog"
+            ],
+            "Requirements": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Allowed height",
+                "SourceRuleId": "regional:height",
+                "Minimum": 0,
+                "Maximum": 20
+              }
+            ],
+            "Preferences": []
+          },
+          "PlacementAnchorId": "fixed",
+          "Recipe": {
+            "SchemaVersion": 1,
+            "Id": "region-west",
+            "GameProfile": "framework-reference",
+            "CatalogId": "regional-catalog",
+            "RootArchetypeId": "root",
+            "Scale": "generation-region",
+            "Coverage": "PartialScope",
+            "RemainingScopes": [
+              "Shared-coordinate content generation control; complete game design, artwork and Godot remain separate."
+            ],
+            "Parameters": {},
+            "Space": {
+              "Axes": [
+                "x",
+                "y"
+              ],
+              "Unit": "meters"
+            },
+            "Origin": null,
+            "RequireAllPositions": true,
+            "MaximumNodes": 10000,
+            "MaximumConnections": 50000,
+            "AdditionalConnections": [
+              {
+                "Id": "local",
+                "Kind": "local-walk",
+                "FromId": "region-west/compounds-0/modules-0",
+                "ToId": "region-west/compounds-0/modules-1",
+                "Bidirectional": true,
+                "Properties": null,
+                "LayerId": null
+              }
+            ],
+            "Layers": [
+              {
+                "Id": "intent",
+                "Kind": "program",
+                "Purpose": "All required content",
+                "SourceRuleId": "regional:content",
+                "DependsOn": [],
+                "Coverage": "CompleteDeclaredScope",
+                "RemainingScopes": []
+              }
+            ],
+            "Surface": null,
+            "RouteRules": [
+              {
+                "Id": "local",
+                "ConnectionKind": "local-walk",
+                "Profile": {
+                  "Id": "walk",
+                  "Purpose": "Required full-width regional travel",
+                  "SourceRuleId": "regional:walk",
+                  "Radius": 0.2,
+                  "MaximumSlope": 0.1,
+                  "KindCosts": {
+                    "ground": 1
+                  },
+                  "AscentCost": 1,
+                  "DescentCost": 0.5,
+                  "MaximumHeightStep": 0.001
+                },
+                "Search": {
+                  "Clearance": 0.1,
+                  "Waypoints": [],
+                  "MaximumCandidates": 256,
+                  "MaximumEdgeChecks": 32768,
+                  "MaximumWork": 20000000,
+                  "Objective": "LowestCost"
+                },
+                "FromPortId": "east",
+                "ToPortId": "west",
+                "Reuse": null,
+                "Interfaces": null,
+                "Alignments": null
+              }
+            ],
+            "NetworkRules": null,
+            "Environment": {
+              "SchemaVersion": 1,
+              "Id": "height",
+              "Fields": [
+                {
+                  "Id": "height",
+                  "Purpose": "Altitude",
+                  "SourceRuleId": "regional:height",
+                  "Unit": "meters",
+                  "Offset": 0,
+                  "Terms": [
+                    {
+                      "Input": "Elevation",
+                      "Coefficient": 1,
+                      "FieldId": null
+                    }
+                  ],
+                  "Minimum": null,
+                  "Maximum": null
+                }
+              ],
+              "SampledFields": null
+            },
+            "SuitabilityRules": null,
+            "Placement": {
+              "Request": {
+                "Id": "compound",
+                "Purpose": "Retain the exact seam control",
+                "SourceRuleId": "regional:placement",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "compound",
+                    "Purpose": "Required compound",
+                    "SourceRuleId": "regional:compound",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "usable",
+                      "Purpose": "Required usable ground",
+                      "SourceRuleId": "regional:usable",
+                      "AllowedKinds": [
+                        "ground",
+                        "bog"
+                      ],
+                      "Requirements": [
+                        {
+                          "Id": "altitude",
+                          "FieldId": "height",
+                          "Purpose": "Allowed height",
+                          "SourceRuleId": "regional:height",
+                          "Minimum": 0,
+                          "Maximum": 20
+                        }
+                      ],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [],
+                "Relations": [
+                  {
+                    "Id": "pin",
+                    "FromId": "compound",
+                    "ToId": "fixed",
+                    "Purpose": "Required source position",
+                    "SourceRuleId": "regional:pin",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null,
+                "Execution": "Prescribed",
+                "Nogoods": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "compound",
+                  "NodeId": "region-west/compounds-0",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "PartId": null,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "NestedStages": null,
+              "MaximumWork": 200000000,
+              "MaximumStageAttempts": 128,
+              "MaximumFeasibilityAttempts": 32,
+              "SourceWorld": null,
+              "ConnectedLayouts": null,
+              "Programs": [
+                {
+                  "Id": "modules",
+                  "Purpose": "Generate every required nested member",
+                  "SourceRuleId": "regional:modules",
+                  "ScopeNodeId": "region-west",
+                  "ParentArchetypeId": "compound",
+                  "MinimumParents": 1,
+                  "MaximumParents": 1,
+                  "Request": {
+                    "Id": "modules",
+                    "Purpose": "Source-sized modules inside the compound",
+                    "SourceRuleId": "regional:modules",
+                    "Boundary": null,
+                    "Demands": [
+                      {
+                        "Id": "module",
+                        "Purpose": "All required modules",
+                        "SourceRuleId": "regional:module",
+                        "Footprint": null,
+                        "Profile": {
+                          "Id": "usable",
+                          "Purpose": "Required usable ground",
+                          "SourceRuleId": "regional:usable",
+                          "AllowedKinds": [
+                            "ground",
+                            "bog"
+                          ],
+                          "Requirements": [
+                            {
+                              "Id": "altitude",
+                              "FieldId": "height",
+                              "Purpose": "Allowed height",
+                              "SourceRuleId": "regional:height",
+                              "Minimum": 0,
+                              "Maximum": 20
+                            }
+                          ],
+                          "Preferences": []
+                        },
+                        "Reservation": null,
+                        "RegionId": null,
+                        "AllocationId": null
+                      }
+                    ],
+                    "Anchors": [],
+                    "Relations": [],
+                    "MinimumSeparation": 0,
+                    "MaximumCandidates": 2048,
+                    "MaximumSearchStates": 100000,
+                    "MaximumWork": 1000000,
+                    "AllowBoundaryContact": false,
+                    "Growth": null,
+                    "Execution": "Search",
+                    "Nogoods": null
+                  },
+                  "Bindings": [
+                    {
+                      "DemandId": "module",
+                      "PartId": "modules",
+                      "UseCatalogFootprint": true,
+                      "RotationDegrees": 0,
+                      "SiteLayout": null,
+                      "Population": {
+                        "Purpose": "Purposeful source path",
+                        "SourceRuleId": "regional:module-path",
+                        "Path": {
+                          "Path": {
+                            "Points": [
+                              {
+                                "X": -2,
+                                "Y": 0
+                              },
+                              {
+                                "X": 2,
+                                "Y": 0
+                              }
+                            ]
+                          },
+                          "Spacing": 4,
+                          "StartDistance": 0,
+                          "EndInset": 0,
+                          "NormalOffset": 0
+                        },
+                        "Boundary": null,
+                        "Sockets": null,
+                        "Route": null,
+                        "Region": null,
+                        "GeneratedBoundary": null,
+                        "Facing": null
+                      }
+                    }
+                  ],
+                  "Growth": null
+                }
+              ],
+              "RegionAnchors": null,
+              "AllocationAnchors": null,
+              "Nogoods": null
+            },
+            "Services": null,
+            "Context": null,
+            "Corridors": null,
+            "Regions": null,
+            "LocalLayouts": null,
+            "LayoutAdaptation": null,
+            "ProgressionRules": null,
+            "PopulationSource": null,
+            "Chunks": null,
+            "TopologyRules": null,
+            "RouteBudget": null,
+            "Interiors": null,
+            "TerrainDemands": null,
+            "ProgramComposition": null,
+            "Drainage": null,
+            "Water": null,
+            "WindMoisture": null
+          },
+          "Catalog": {
+            "SchemaVersion": 1,
+            "Id": "regional-catalog",
+            "Archetypes": [
+              {
+                "Id": "root",
+                "Kind": "program-region",
+                "Purpose": "Required program-region",
+                "Properties": {},
+                "Parts": [
+                  {
+                    "Id": "compounds",
+                    "ArchetypeId": "compound",
+                    "Count": 1,
+                    "Purpose": "Complete compound",
+                    "CountParameter": null,
+                    "Layout": null,
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  },
+                  {
+                    "Id": "markers",
+                    "ArchetypeId": "marker",
+                    "Count": 1,
+                    "Purpose": "Request observation",
+                    "CountParameter": null,
+                    "Layout": {
+                      "StrategyId": "line",
+                      "Parameters": {
+                        "Origin": [
+                          0,
+                          0
+                        ],
+                        "Step": [
+                          1,
+                          0
+                        ]
+                      }
+                    },
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  }
+                ],
+                "Connections": [],
+                "ChildRequirements": [
+                  {
+                    "Kind": "compound",
+                    "Minimum": 1,
+                    "Maximum": 1
+                  },
+                  {
+                    "Kind": "marker",
+                    "Minimum": 1,
+                    "Maximum": 1
+                  }
+                ],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": null,
+                "Access": null,
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "compound",
+                "Kind": "compound",
+                "Purpose": "Required compound",
+                "Properties": {},
+                "Parts": [
+                  {
+                    "Id": "modules",
+                    "ArchetypeId": "module",
+                    "Count": 2,
+                    "Purpose": "All required modules",
+                    "CountParameter": null,
+                    "Layout": null,
+                    "Capacity": null,
+                    "Variation": null,
+                    "ProgramMix": null
+                  }
+                ],
+                "Connections": [],
+                "ChildRequirements": [
+                  {
+                    "Kind": "module",
+                    "Minimum": 2,
+                    "Maximum": 2
+                  }
+                ],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": {
+                  "Unit": "meters",
+                  "Purpose": "Full source compound",
+                  "SourceRuleId": "regional:compound",
+                  "Polygon": {
+                    "Vertices": [
+                      {
+                        "X": -6,
+                        "Y": -5
+                      },
+                      {
+                        "X": 6,
+                        "Y": -5
+                      },
+                      {
+                        "X": 6,
+                        "Y": 5
+                      },
+                      {
+                        "X": -6,
+                        "Y": 5
+                      }
+                    ]
+                  },
+                  "Reservation": null
+                },
+                "Access": {
+                  "Occupancy": "Reservation",
+                  "Ports": [
+                    {
+                      "Id": "east",
+                      "Purpose": "Eastern opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": 6,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": 7,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    },
+                    {
+                      "Id": "west",
+                      "Purpose": "Western opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": -6,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": -7,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    }
+                  ]
+                },
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "module",
+                "Kind": "module",
+                "Purpose": "Required module",
+                "Properties": {},
+                "Parts": [],
+                "Connections": [],
+                "ChildRequirements": [],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": {
+                  "Unit": "meters",
+                  "Purpose": "Unchanged module source",
+                  "SourceRuleId": "regional:module",
+                  "Polygon": {
+                    "Vertices": [
+                      {
+                        "X": -0.5,
+                        "Y": -0.75
+                      },
+                      {
+                        "X": 0.5,
+                        "Y": -0.75
+                      },
+                      {
+                        "X": 0.5,
+                        "Y": 0.75
+                      },
+                      {
+                        "X": -0.5,
+                        "Y": 0.75
+                      }
+                    ]
+                  },
+                  "Reservation": null
+                },
+                "Access": {
+                  "Occupancy": "Solid",
+                  "Ports": [
+                    {
+                      "Id": "east",
+                      "Purpose": "Eastern opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": 0.5,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": 1.5,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    },
+                    {
+                      "Id": "west",
+                      "Purpose": "Western opening",
+                      "SourceRuleId": "regional:port",
+                      "BoundaryPosition": {
+                        "X": -0.5,
+                        "Y": 0
+                      },
+                      "ApproachPosition": {
+                        "X": -1.5,
+                        "Y": 0
+                      },
+                      "Width": 1.2
+                    }
+                  ]
+                },
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              },
+              {
+                "Id": "marker",
+                "Kind": "marker",
+                "Purpose": "Required marker",
+                "Properties": {},
+                "Parts": [],
+                "Connections": [],
+                "ChildRequirements": [],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": "intent",
+                "PhysicalFootprint": null,
+                "Access": null,
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              }
+            ]
+          }
+        }
+      ],
+      "Connections": [],
+      "Pattern": {
+        "DensityFieldId": null,
+        "AxisRotationDegrees": 0,
+        "MaximumCells": 4096,
+        "MaximumDepth": 32,
+        "Interior": {
+          "Precision": 0.1,
+          "MaximumCells": 65536,
+          "MinimumClearance": 0
+        },
+        "PartitionSearch": {
+          "AxisOffsetsDegrees": [
+            0,
+            90,
+            45
+          ],
+          "MaximumAttempts": 256
+        }
+      },
+      "AnchorPrecision": 0.1,
+      "MaximumAnchorCells": 65536,
+      "MaximumTotalNodes": 50000,
+      "MaximumTotalConnections": 100000,
+      "MaximumReferences": 200000,
+      "MaximumWork": 200000000,
+      "NetworkRules": [
+        {
+          "Id": "regional-journeys",
+          "ConnectionKind": "regional-travel",
+          "Destinations": [
+            {
+              "Id": "arrival",
+              "Purpose": "Reach complete arrival program",
+              "SourceRuleId": "network:destination:arrival",
+              "Endpoint": {
+                "RegionId": "arrival",
+                "NodeId": "region-west/compounds-0",
+                "PortId": "east"
+              }
+            },
+            {
+              "Id": "grove",
+              "Purpose": "Reach complete grove program",
+              "SourceRuleId": "network:destination:grove",
+              "Endpoint": {
+                "RegionId": "grove",
+                "NodeId": "region-west/compounds-0",
+                "PortId": "east"
+              }
+            },
+            {
+              "Id": "outpost",
+              "Purpose": "Reach complete outpost program",
+              "SourceRuleId": "network:destination:outpost",
+              "Endpoint": {
+                "RegionId": "outpost",
+                "NodeId": "region-west/compounds-0",
+                "PortId": "east"
+              }
+            },
+            {
+              "Id": "pass",
+              "Purpose": "Reach complete pass program",
+              "SourceRuleId": "network:destination:pass",
+              "Endpoint": {
+                "RegionId": "pass",
+                "NodeId": "region-west/compounds-0",
+                "PortId": "east"
+              }
+            }
+          ],
+          "Options": {
+            "Purpose": "Required connected regional journeys",
+            "SourceRuleId": "network:journeys",
+            "Scale": "overland",
+            "Profile": {
+              "Id": "regional-walk",
+              "Purpose": "Terrain-aware travel between complete locations",
+              "SourceRuleId": "network:travel",
+              "Radius": 0.3,
+              "MaximumSlope": 0.1,
+              "KindCosts": {
+                "bog": 1,
+                "ground": 1
+              },
+              "AscentCost": 1,
+              "DescentCost": 0.5,
+              "MaximumHeightStep": 0.001
+            },
+            "Search": {
+              "Clearance": 0.1,
+              "Waypoints": [],
+              "MaximumCandidates": 256,
+              "MaximumEdgeChecks": 32768,
+              "MaximumWork": 20000000,
+              "Objective": "LowestCost"
+            },
+            "Connectivity": "Connected",
+            "NearestNeighbors": 2,
+            "MaximumPairChecks": 6,
+            "MaximumWork": 50000000,
+            "RequiredConnections": [],
+            "Reuse": null
+          },
+          "RoutingDomain": null
+        }
+      ]
+    },
+    "Slots": [],
+    "Requirements": [],
+    "MaximumAttempts": 1,
+    "WorldRequirements": [
+      {
+        "Id": "complete-modules",
+        "Physical": true,
+        "NodeKind": "module",
+        "Minimum": 8,
+        "Maximum": 8
+      },
+      {
+        "Physical": true,
+        "Id": "complete-parents",
+        "Minimum": 2,
+        "NodeKind": "module",
+        "Scope": {
+          "DirectChildrenOnly": true,
+          "MinimumParents": 4,
+          "ParentKind": "compound",
+          "MaximumParents": 4
+        },
+        "Maximum": 2
+      }
+    ]
+  }
+}

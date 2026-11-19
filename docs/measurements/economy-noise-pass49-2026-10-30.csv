@@ -1,0 +1,11 @@
+document,price_noise,seeds,horizon_periods,metrics,metrics_that_vary_over_seeds,sum_over_pairs_of_mean_periods_in_fair_band,mean_spread_of_final_ratio_permille,max_spread_of_final_ratio_permille,note
+town.economy.json (with the pass-49 throttles),0,50,120,196,0,423.0,0.0,0.0,
+town.economy.json (with the pass-49 throttles),20,50,120,196,80,431.3,241.1,2577.0,shipped value is 20
+town.economy.json (with the pass-49 throttles),40,50,120,196,79,435.5,224.1,2343.0,
+town.economy.json (with the pass-49 throttles),60,50,120,196,81,439.6,264.1,2495.0,
+town.economy.json (with the pass-49 throttles),100,50,120,196,86,439.2,304.5,2607.0,
+isles.economy.json (no recipes),0,50,365,184,0,412.0,0.0,0.0,
+isles.economy.json (no recipes),20,50,365,184,41,711.0,7.5,20.0,shipped value is 20
+isles.economy.json (no recipes),40,50,365,184,41,1728.5,15.8,37.0,
+isles.economy.json (no recipes),60,50,365,184,44,1734.4,25.1,59.0,
+isles.economy.json (no recipes),100,50,365,184,49,1460.6,45.0,113.0,

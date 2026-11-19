@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The multi-seed balance reducer the engine command-line tools share: option parsing, the sequential sweep, exact integer statistics (nearest-rank percentiles, a fixed-point mean, a distribution-free median interval) and the strict report. Integers only; no clock, no random source, no floating point, no files. Offline authoring support: no runtime project references it. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><CheckForOverflowUnderflow>true</CheckForOverflowUnderflow></PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="EngineCommon.Balance.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EngineCommon.Core/EngineCommon.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,84 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "camps",
+          "ArchetypeId": "camp",
+          "Count": 2,
+          "Purpose": "Required exploration camps",
+          "CountParameter": null,
+          "Layout": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "camp",
+          "Minimum": 2,
+          "Maximum": 2
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent"
+    },
+    {
+      "Id": "camp",
+      "Kind": "camp",
+      "Purpose": "Camp with constituent stations",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "stations",
+          "ArchetypeId": "station",
+          "Count": 2,
+          "Purpose": "Camp constituents",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                -1,
+                0
+              ],
+              "Step": [
+                2,
+                0
+              ]
+            }
+          }
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "station",
+          "Minimum": 2,
+          "Maximum": 2
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent"
+    },
+    {
+      "Id": "station",
+      "Kind": "station",
+      "Purpose": "Required camp station",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent"
+    }
+  ]
+}

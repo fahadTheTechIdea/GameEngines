@@ -9,204 +9,26 @@ public sealed record FacilityStructureSlot(string Id, string Purpose, WorldPolyg
 public sealed record FacilityChild(string Id, string DefinitionId, WorldPoint OffsetMeters, string Purpose);
 public sealed record FacilityDefinition(string Id, string Name, double WidthMeters, double DepthMeters,
     IReadOnlyList<FacilityRoad> Roads, IReadOnlyList<FacilityStructureSlot> Structures,
-    IReadOnlyList<FacilityChild> Children);
-public sealed record FacilityPlacement(string Id, string DefinitionId, string RegionId, string AnchorId,
-    string SettlementId, string Purpose, SettlementDemand Settlement,
-    IReadOnlyDictionary<string, StructureSitingContext> MemberContexts);
-public sealed record FacilityMembership(string FacilityId, string TemplateId, string MemberId);
-public sealed record PlannedFacility(string Id, string TemplateId, string? ParentFacilityId,
-    string Purpose, WorldPolygon Boundary, string SourceRegionId, string SourceAnchorId,
-    string MockupId, string MockupRevision, string ArtStyleId, IReadOnlyList<string> MemberRuleIds);
-
-/// <summary>Expands bounded pack-owned composition grammars at mockup anchors. A group is
-/// ownership, not a blocking building or a render attachment. Existing planners own every child.</summary>
-public sealed class FacilityCompositionPlanner(ISettlementCatalogRegistry catalogs)
+    IReadOnlyList<FacilityChild> Children,SiteBoundaryRule? BoundaryRule=null,IReadOnlyList<FacilityObjectSlot>? Objects=null,IReadOnlyList<FacilityAreaSlot>? Areas=null);
+/// <summary>Validates reusable facility catalogs and compiles their exact geometry.</summary>
+public sealed partial class FacilityCompositionPlanner(ISettlementCatalogRegistry catalogs)
 {
-    public MockupWorldDesign Expand(MockupWorldDesign design, CancellationToken token = default)
-    {
-        ArgumentNullException.ThrowIfNull(design);
-        token.ThrowIfCancellationRequested();
-        design = CatalogContentAuthoring.BindReferences(design, catalogs, token);
-        if (design.FacilityPlacements is not { Count: > 0 })
-        {
-            ValidateCompiled(design, token);
-            return design;
-        }
-        if (design.SchemaVersion!=1 || design.Blueprint?.Regions is null || design.Blueprint.Anchors is null || design.Paths is null || design.RoadRules is null || design.SettlementRules is null || design.BuildingCatalog is null) throw new ArgumentException("FACILITY_DESIGN_INVALID");
-        if (design.PlannedFacilities is { Count: > 0 }) throw new ArgumentException("FACILITY_ALREADY_COMPILED");
-        if (design.FacilityPlacements.Count > 256) throw new ArgumentException("FACILITY_PLACEMENT_BUDGET");
-        var pack = catalogs.Resolve(design.Catalog!);
-        var templates = pack.Facilities.ToDictionary(f => f.Id, StringComparer.Ordinal);
-        var regions = design.Blueprint.Regions.ToList();
-        var paths = design.Paths.ToList(); var roads = design.RoadRules.ToList();
-        var rules = design.SettlementRules.ToList(); var plans = new List<PlannedFacility>();
-        var definitions = design.BuildingCatalog.ToDictionary(d => d.Id, StringComparer.Ordinal);
-        var ids = rules.Select(r => r.Id).Concat(regions.Select(r => r.Id)).Concat(paths.Select(p => p.Id)).ToHashSet(StringComparer.Ordinal);
-        foreach (var placement in design.FacilityPlacements.OrderBy(p => p?.Id, StringComparer.Ordinal))
-        {
-            token.ThrowIfCancellationRequested();
-            if (placement is null || !SettlementCatalogRegistry.ValidId(placement.Id) ||
-                string.IsNullOrWhiteSpace(placement.Purpose) || string.IsNullOrWhiteSpace(placement.SettlementId) ||
-                placement.Settlement is null || placement.MemberContexts is null || placement.MemberContexts.Count>10000)
-                throw new ArgumentException("FACILITY_PLACEMENT_INVALID");
-            placement.Settlement.Validate();
-            var anchor = design.Blueprint.Anchors.SingleOrDefault(a => a.Id == placement.AnchorId);
-            var parentRegion = design.Blueprint.Regions.SingleOrDefault(r => r.Id == placement.RegionId);
-            if (anchor is null || parentRegion is null || anchor.RegionId != parentRegion.Id ||
-                !ConvexParcelGeometry.IsConvex(parentRegion.Outline)) throw new ArgumentException("FACILITY_ANCHOR_INVALID:" + placement.Id);
-            var used = new HashSet<string>(StringComparer.Ordinal);
-            Visit(placement.DefinitionId, placement.Id, null, "", anchor.PositionMeters, parentRegion.Outline, placement.Purpose, 0);
-            if (!used.SetEquals(placement.MemberContexts.Keys)) throw new ArgumentException("FACILITY_MEMBER_CONTEXT_MISMATCH:" + placement.Id);
-
-            void Visit(string templateId, string instanceId, string? parentId, string relative,
-                WorldPoint origin, WorldPolygon container, string purpose, int depth)
-            {
-                token.ThrowIfCancellationRequested();
-                if (depth > 16 || plans.Count >= 10000 || rules.Count >= 10000 || paths.Count >= 10000)
-                    throw new ArgumentException("FACILITY_EXPANSION_BUDGET");
-                if (!templates.TryGetValue(templateId, out var template)) throw new ArgumentException("FACILITY_TEMPLATE_UNKNOWN:" + templateId);
-                AddId(instanceId);
-                var boundary = Rectangle(origin.X, origin.Y, template.WidthMeters, template.DepthMeters);
-                if (boundary.Vertices.Any(p => !container.ContainsPoint(p))) throw new ArgumentException("FACILITY_OUTSIDE_PARENT:" + instanceId);
-                regions.Add(new(instanceId, boundary, "facility:" + templateId));
-                var memberRules = new List<string>();
-                var planned = new PlannedFacility(instanceId, templateId, parentId, purpose, boundary,
-                    placement.RegionId, placement.AnchorId, design.Blueprint.MockupId, design.Blueprint.ApprovedRevision,
-                    design.Blueprint.ArtStyleId, memberRules);
-                plans.Add(planned);
-                foreach (var road in template.Roads.OrderBy(r => r.Id, StringComparer.Ordinal))
-                {
-                    string id = instanceId + ":" + road.Id; AddId(id);
-                    paths.Add(new(id, instanceId, new(road.Centerline.Points.Select(Shift).ToArray()), "road"));
-                    roads.Add(new(id, road.Class, road.Profile));
-                }
-                foreach (var slot in template.Structures.OrderBy(s => s.Id, StringComparer.Ordinal))
-                {
-                    token.ThrowIfCancellationRequested();
-                    string id = instanceId + ":" + slot.Id, key = relative + slot.Id; AddId(id);
-                    if (!placement.MemberContexts.TryGetValue(key, out var context) || context is null || !used.Add(key))
-                        throw new ArgumentException("FACILITY_MEMBER_CONTEXT_REQUIRED:" + key);
-                    var definition = pack.Structures.Single(d => d.Id == slot.Envelope.BuildingType);
-                    if (definitions.TryGetValue(definition.Id, out var authored)) definition = authored;
-                    else definitions.Add(definition.Id, definition);
-                    var site = new WorldPolygon(slot.Site.Vertices.Select(Shift).ToArray());
-                    regions.Add(new(id, site, "facility-member:" + slot.Id));
-                    double frontage = site.Vertices.Max(p => p.X) - site.Vertices.Min(p => p.X);
-                    rules.Add(new(id, id, placement.SettlementId, instanceId + ":" + slot.FrontagePathId,
-                        slot.Purpose, frontage, frontage, slot.Envelope, slot.Components, slot.SizeVariantId,
-                        Settlement: placement.Settlement, Siting: context,
-                        Facility: new(instanceId, templateId, slot.Id)));
-                    memberRules.Add(id);
-                }
-                foreach (var child in template.Children.OrderBy(c => c.Id, StringComparer.Ordinal))
-                    Visit(child.DefinitionId, instanceId + ":" + child.Id, instanceId, relative + child.Id + ":",
-                        Shift(child.OffsetMeters), boundary, child.Purpose, depth + 1);
-                plans[plans.IndexOf(planned)] = planned with { MemberRuleIds = Array.AsReadOnly(memberRules.ToArray()) };
-                WorldPoint Shift(WorldPoint p) => new(p.X + origin.X, p.Y + origin.Y);
-            }
-        }
-        var roots=plans.Where(p=>p.ParentFacilityId is null).ToArray();
-        for (int i=0;i<roots.Length;i++) for (int j=0;j<i;j++)
-            if (TerrainCoverageTopology.IntersectionArea(roots[i].Boundary,roots[j].Boundary)>1e-8) throw new ArgumentException("FACILITY_PLACEMENT_CONFLICT:"+roots[i].Id);
-        if (regions.Count>10000 || rules.Count>10000 || paths.Count>10000) throw new ArgumentException("FACILITY_EXPANSION_BUDGET");
-        var result = design with { Blueprint = design.Blueprint with { Regions = regions }, Paths = paths, RoadRules = roads,
-            SettlementRules = rules, BuildingCatalog = definitions.Values.OrderBy(d => d.Id, StringComparer.Ordinal).ToArray(),
-            FacilityPlacements = null, PlannedFacilities = plans };
-        ValidateCompiled(result, token);
-        return result;
-        void AddId(string id) { if (!ids.Add(id)) throw new ArgumentException("FACILITY_ID_CONFLICT:" + id); }
-    }
-
-    private void ValidateCompiled(MockupWorldDesign design, CancellationToken token)
-    {
-        if (design.PlannedFacilities is not { Count: > 0 })
-        {
-            if (design.SettlementRules?.Any(r => r?.Facility is not null) == true)
-                throw new ArgumentException("FACILITY_OWNER_MISSING");
-            return;
-        }
-        if (design.PlannedFacilities.Count > 10000 || design.Blueprint?.Regions is null || design.Blueprint.Anchors is null ||
-            design.SettlementRules is null || design.Paths is null || design.RoadRules is null)
-            throw new ArgumentException("FACILITY_COMPILED_PLAN_INVALID");
-        var templates = catalogs.Resolve(design.Catalog!).Facilities.ToDictionary(f => f.Id, StringComparer.Ordinal);
-        var groups = new Dictionary<string, PlannedFacility>(StringComparer.Ordinal);
-        foreach (var group in design.PlannedFacilities)
-            if (group is null || !SettlementCatalogRegistry.ValidId(group.Id) || !groups.TryAdd(group.Id, group))
-                throw new ArgumentException("FACILITY_COMPILED_PLAN_INVALID");
-        foreach (var group in groups.Values)
-        {
-            token.ThrowIfCancellationRequested();
-            if (!templates.TryGetValue(group.TemplateId, out var template) || group.Boundary is null || group.MemberRuleIds is null ||
-                string.IsNullOrWhiteSpace(group.Purpose) || group.MockupId != design.Blueprint.MockupId ||
-                group.MockupRevision != design.Blueprint.ApprovedRevision || group.ArtStyleId != design.Blueprint.ArtStyleId)
-                throw new ArgumentException("FACILITY_COMPILED_PROVENANCE_INVALID:" + group.Id);
-            group.Boundary.Validate();
-            var anchor = design.Blueprint.Anchors.SingleOrDefault(a => a.Id == group.SourceAnchorId);
-            var sourceRegion = design.Blueprint.Regions.SingleOrDefault(r => r.Id == group.SourceRegionId);
-            var origin = group.Boundary.Vertices[0];
-            if (anchor is null || sourceRegion is null || anchor.RegionId != sourceRegion.Id ||
-                group.Boundary.Vertices.Any(p => !sourceRegion.Outline.ContainsPoint(p)) ||
-                !group.Boundary.Vertices.SequenceEqual(Rectangle(origin.X, origin.Y, template.WidthMeters, template.DepthMeters).Vertices))
-                throw new ArgumentException("FACILITY_COMPILED_BOUNDS_INVALID:" + group.Id);
-            var ownRegion = design.Blueprint.Regions.SingleOrDefault(r => r.Id == group.Id);
-            if (ownRegion is null || !ownRegion.Outline.Vertices.SequenceEqual(group.Boundary.Vertices))
-                throw new ArgumentException("FACILITY_COMPILED_REGION_CHANGED:" + group.Id);
-            foreach (var road in template.Roads)
-            {
-                var path = design.Paths.SingleOrDefault(p => p.Id == group.Id + ":" + road.Id);
-                var rule = design.RoadRules.SingleOrDefault(r => r.PathId == path?.Id);
-                if (path is null || rule is null || path.RegionId != group.Id || rule.Class != road.Class || rule.Profile != road.Profile ||
-                    !path.Centerline.Points.SequenceEqual(road.Centerline.Points.Select(p => new WorldPoint(origin.X + p.X, origin.Y + p.Y))))
-                    throw new ArgumentException("FACILITY_COMPILED_ROAD_CHANGED:" + group.Id);
-            }
-            if (group.ParentFacilityId is null)
-            {
-                if (origin != anchor.PositionMeters) throw new ArgumentException("FACILITY_COMPILED_ANCHOR_CHANGED:" + group.Id);
-            }
-            else
-            {
-                if (!groups.TryGetValue(group.ParentFacilityId, out var parent) || !templates.TryGetValue(parent.TemplateId, out var parentTemplate))
-                    throw new ArgumentException("FACILITY_PARENT_MISSING:" + group.Id);
-                var child = parentTemplate.Children.SingleOrDefault(c => parent.Id + ":" + c.Id == group.Id);
-                if (child is null || child.DefinitionId != group.TemplateId ||
-                    origin != new WorldPoint(parent.Boundary.Vertices[0].X + child.OffsetMeters.X, parent.Boundary.Vertices[0].Y + child.OffsetMeters.Y))
-                    throw new ArgumentException("FACILITY_COMPILED_PARENT_INVALID:" + group.Id);
-            }
-            var members = design.SettlementRules.Where(r => r.Facility?.FacilityId == group.Id).ToArray();
-            if (!members.Select(r => r.Id).ToHashSet(StringComparer.Ordinal).SetEquals(group.MemberRuleIds) || members.Length != template.Structures.Count)
-                throw new ArgumentException("FACILITY_COMPILED_MEMBERS_INVALID:" + group.Id);
-            foreach (var slot in template.Structures)
-            {
-                var member = members.SingleOrDefault(m => m.Id == group.Id + ":" + slot.Id);
-                var region = design.Blueprint.Regions.SingleOrDefault(r => r.Id == member?.RegionId);
-                if (member is null || member.Facility != new FacilityMembership(group.Id, template.Id, slot.Id) ||
-                    member.Envelope != slot.Envelope || member.SizeVariantId != slot.SizeVariantId ||
-                    member.Purpose != slot.Purpose || !member.Components.SequenceEqual(slot.Components) ||
-                    member.FrontagePathId != group.Id + ":" + slot.FrontagePathId || region is null ||
-                    !region.Outline.Vertices.SequenceEqual(slot.Site.Vertices.Select(p => new WorldPoint(origin.X + p.X, origin.Y + p.Y))))
-                    throw new ArgumentException("FACILITY_COMPILED_MEMBER_CHANGED:" + group.Id);
-            }
-            foreach (var child in template.Children)
-                if (!groups.TryGetValue(group.Id + ":" + child.Id, out var nested) || nested.ParentFacilityId != group.Id)
-                    throw new ArgumentException("FACILITY_COMPILED_CHILD_MISSING:" + group.Id);
-        }
-        if (design.SettlementRules.Any(r => r.Facility is { } m && !groups.ContainsKey(m.FacilityId)))
-            throw new ArgumentException("FACILITY_OWNER_MISSING");
-    }
-
     internal static IReadOnlyList<FacilityDefinition> Snapshot(IReadOnlyList<FacilityDefinition> facilities,
-        IReadOnlyList<BuildingDefinition> structures, CancellationToken token)
+        IReadOnlyList<BuildingDefinition> structures, CancellationToken token,IReadOnlyList<SiteObjectDefinition>? objects=null,IReadOnlyList<SiteAreaDefinition>? areaCatalog=null)
     {
         if (facilities is null || facilities.Count > 1000) throw new ArgumentException("FACILITY_CATALOG_INVALID");
+        var objectDefinitions=SiteObjectPlanner.Snapshot(objects??[],token).ToDictionary(d=>d.Id,StringComparer.Ordinal);
+        var areaDefinitions=SiteAreaPlanner.Snapshot(areaCatalog??[],token).ToDictionary(a=>a.Id,StringComparer.Ordinal);
         var byId = new Dictionary<string, FacilityDefinition>(StringComparer.Ordinal);
         foreach (var f in facilities)
         {
             token.ThrowIfCancellationRequested();
             if (f is null || !SettlementCatalogRegistry.ValidId(f.Id) || string.IsNullOrWhiteSpace(f.Name) ||
                 !double.IsFinite(f.WidthMeters) || !double.IsFinite(f.DepthMeters) || f.WidthMeters <= 0 || f.DepthMeters <= 0 ||
-                f.Roads is null || f.Structures is null || f.Children is null || f.Structures.Count + f.Children.Count is 0 or > 1000 ||
+                f.Roads is null || f.Structures is null || f.Children is null || f.Structures.Count + f.Children.Count+(f.Objects?.Count??0)+(f.Areas?.Count??0) is 0 or > 1000 ||
                 f.Roads.Count > 1000 || byId.ContainsKey(f.Id)) throw new ArgumentException("FACILITY_CATALOG_INVALID");
             var boundary = Rectangle(0, 0, f.WidthMeters, f.DepthMeters);
+            BuildingSitePlanner.ValidateBoundaryRule(f.BoundaryRule);
             var local = new HashSet<string>(StringComparer.Ordinal);
             void Name(string id) { if (!SettlementCatalogRegistry.ValidId(id) || id.Contains(':') || !local.Add(id)) throw new ArgumentException("FACILITY_MEMBER_ID_INVALID"); }
             foreach (var r in f.Roads)
@@ -240,9 +62,36 @@ public sealed class FacilityCompositionPlanner(ISettlementCatalogRegistry catalo
                     !double.IsFinite(c.OffsetMeters.X) || !double.IsFinite(c.OffsetMeters.Y)) throw new ArgumentException("FACILITY_CHILD_INVALID");
                 Name(c.Id);
             }
+            foreach(var slot in f.Objects??[])
+            {
+                if(slot is null)throw new ArgumentException("FACILITY_OBJECT_INVALID");
+                ValidateSurfaceSlot(slot.Id,slot.Purpose,slot.Site,slot.FrontagePathId,slot.FrontSetbackMeters,slot.RearSetbackMeters,slot.SideSetbackMeters,slot.Components,
+                    SettlementCatalogRegistry.ValidId(slot.DefinitionId)&&objectDefinitions.TryGetValue(slot.DefinitionId,out var definition)&&definition.Variants.Any(v=>v.Id==slot.VariantId),"OBJECT");
+            }
+            foreach(var slot in f.Areas??[])
+            {
+                if(slot is null)throw new ArgumentException("FACILITY_AREA_INVALID");
+                ValidateSurfaceSlot(slot.Id,slot.Purpose,slot.Site,slot.FrontagePathId,slot.FrontSetbackMeters,slot.RearSetbackMeters,slot.SideSetbackMeters,slot.Components,
+                    SettlementCatalogRegistry.ValidId(slot.DefinitionId)&&areaDefinitions.TryGetValue(slot.DefinitionId,out var definition)&&definition.Variants.Any(v=>v.Id==slot.VariantId),"AREA");
+            }
+            void ValidateSurfaceSlot(string id,string purpose,WorldPolygon site,string frontage,double front,double rear,double side,IReadOnlyList<BuildingComponentRule> components,bool known,string kind)
+            {
+                token.ThrowIfCancellationRequested();
+                if(site is null||components is null||string.IsNullOrWhiteSpace(purpose)||!new[]{front,rear,side}.All(v=>double.IsFinite(v)&&v>=0)||
+                    components.Count>256||components.Any(c=>c is null||string.IsNullOrWhiteSpace(c.Id)||string.IsNullOrWhiteSpace(c.Kind)||string.IsNullOrWhiteSpace(c.Purpose))||
+                    components.Select(c=>c.Id).Distinct(StringComparer.Ordinal).Count()!=components.Count)throw new ArgumentException("FACILITY_"+kind+"_INVALID");
+                Name(id);site.Validate();if(!known)throw new ArgumentException("FACILITY_"+kind+"_UNKNOWN:"+id);
+                var road=f.Roads.SingleOrDefault(r=>r.Id==frontage);
+                if(site.Vertices.Count!=4||site.Vertices.Select(p=>p.X).Distinct().Count()!=2||site.Vertices.Select(p=>p.Y).Distinct().Count()!=2||
+                    site.Vertices.Any(p=>!boundary.ContainsPoint(p))||road is null||road.Centerline.Points.Count!=2||road.Centerline.Points[0].Y!=road.Centerline.Points[1].Y||
+                    !new[]{site.Vertices.Min(p=>p.Y),site.Vertices.Max(p=>p.Y)}.Contains(road.Centerline.Points[0].Y)||
+                    road.Centerline.Points.Min(p=>p.X)>site.Vertices.Min(p=>p.X)||road.Centerline.Points.Max(p=>p.X)<site.Vertices.Max(p=>p.X))
+                    throw new ArgumentException("FACILITY_"+kind+"_FRONTAGE_INVALID:"+id);
+            }
             byId.Add(f.Id, f with { Roads = Array.AsReadOnly(f.Roads.Select(r => r with { Centerline = new(Array.AsReadOnly(r.Centerline.Points.ToArray())) }).ToArray()),
                 Structures = Array.AsReadOnly(f.Structures.Select(s => s with { Site = new(Array.AsReadOnly(s.Site.Vertices.ToArray())), Components = Array.AsReadOnly(s.Components.ToArray()) }).ToArray()),
-                Children = Array.AsReadOnly(f.Children.ToArray()) });
+                Children = Array.AsReadOnly(f.Children.ToArray()),Objects=Array.AsReadOnly((f.Objects??[]).Select(o=>o with{Site=new(Array.AsReadOnly(o.Site.Vertices.ToArray())),Components=Array.AsReadOnly(o.Components.ToArray())}).ToArray()),
+                Areas=Array.AsReadOnly((f.Areas??[]).Select(a=>a with{Site=new(Array.AsReadOnly(a.Site.Vertices.ToArray())),Components=Array.AsReadOnly(a.Components.ToArray())}).ToArray()) });
         }
         var active = new HashSet<string>(StringComparer.Ordinal); var done = new HashSet<string>(StringComparer.Ordinal);
         foreach (var f in byId.Values.OrderBy(f => f.Id, StringComparer.Ordinal)) Visit(f.Id);
@@ -253,7 +102,7 @@ public sealed class FacilityCompositionPlanner(ISettlementCatalogRegistry catalo
             if (!byId.TryGetValue(id, out var f)) throw new ArgumentException("FACILITY_CHILD_UNKNOWN:" + id);
             if (!active.Add(id)) throw new ArgumentException("FACILITY_CYCLE:" + id);
             if (active.Count > 16) throw new ArgumentException("FACILITY_DEPTH_EXCEEDED");
-            var areas = f.Structures.Select(s => s.Site).ToList();
+            var areas = f.Structures.Select(s => s.Site).Concat((f.Objects??[]).Select(o=>o.Site)).Concat((f.Areas??[]).Select(a=>a.Site)).ToList();
             foreach (var child in f.Children)
             {
                 Visit(child.DefinitionId); var nested = byId[child.DefinitionId];

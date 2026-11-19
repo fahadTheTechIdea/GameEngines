@@ -1,0 +1,74 @@
+{
+  "SchemaVersion": 1,
+  "Id": "dungeon",
+  "GameProfile": "dungeon-game",
+  "CatalogId": "dungeon-catalog",
+  "RootArchetypeId": "root",
+  "Scale": "dungeon",
+  "Coverage": "CompleteDeclaredScope",
+  "RemainingScopes": [],
+  "Parameters": {
+    "floors": 2,
+    "rooms": 6
+  },
+  "Space": {
+    "Axes": [
+      "x",
+      "y",
+      "z"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    0,
+    0,
+    0
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "stairs-room-link",
+      "Kind": "stairs",
+      "FromId": "dungeon/floors-0/rooms-5",
+      "ToId": "dungeon/floors-1/rooms-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": "traversal"
+    }
+  ],
+  "Layers": [
+    {
+      "Id": "encounters",
+      "Kind": "game-defined",
+      "Purpose": "Game-authored encounter locations",
+      "SourceRuleId": "catalog:encounters",
+      "DependsOn": [
+        "regions"
+      ],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    },
+    {
+      "Id": "regions",
+      "Kind": "game-defined",
+      "Purpose": "Nested exploration floors",
+      "SourceRuleId": "catalog:regions",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    },
+    {
+      "Id": "traversal",
+      "Kind": "game-defined",
+      "Purpose": "Logical corridors and level transitions",
+      "SourceRuleId": "catalog:traversal",
+      "DependsOn": [
+        "encounters"
+      ],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ]
+}

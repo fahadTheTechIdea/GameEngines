@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "arms-modern",
+  "version": "1.0.0",
+  "title": "Industrial and modern arms: rifles, locomotives, tanks, ships and aircraft",
+  "language": "en",
+  "world": "historical",
+  "genres": ["modern-arms"],
+  "dependencies": [{ "id": "ages", "version": "1.0.0" }, { "id": "arms-medieval", "version": "1.0.0" }, { "id": "core", "version": "1.0.0" }, { "id": "electronics", "version": "1.0.0" }, { "id": "gear", "version": "1.0.0" }, { "id": "matter", "version": "1.0.0" }, { "id": "military", "version": "1.0.0" }, { "id": "mining", "version": "1.0.0" }, { "id": "naval", "version": "1.0.0" }],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

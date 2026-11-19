@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GameRuntime — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="GameRuntime.html" aria-current="page">GameRuntime</a>
+      <a href="../RUNTIME_PIPELINE_INTEGRATION_PLAN.md">Runtime plan</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation · orchestration</p>
+  <h1>GameRuntime</h1>
+  <p class="lede">The session host: one clock, one ordered component list, a queued event bus, deterministic ticks, request channels, checkpoints, journals and replay — and one component per engine, so a game is assembled rather than wired by hand.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">deterministic ticks</span>
+    <span class="tag">fail-stop</span>
+    <span class="tag">journal · replay</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#component">The component contract</a></li>
+    <li><a href="#session">Session and tick order</a></li>
+    <li><a href="#clock">Clock and pacing</a></li>
+    <li><a href="#events">Events and input</a></li>
+    <li><a href="#channels">Request channels</a></li>
+    <li><a href="#components">Engine components</a></li>
+    <li><a href="#journal">Journal, checkpoint and replay</a></li>
+    <li><a href="#hosts">Hosts: console, headless, Godot</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>GameRuntime is the orchestration layer between the pure engines and a host. Each engine gets a component that translates events into engine calls and engine changes into events. The session runs ticks, calls every component in a fixed order, drains the events each one emitted before the next runs, and settles the tick.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Tick order, the clock, the event bus, request channels, component lifecycle, fault reporting, checkpoints, journals and replay.</p></div>
+  <div class="card"><h3>It does not own</h3><p>Game rules. Every rule lives in an engine core; a component must not add thresholds or target rules.</p></div>
+  <div class="card"><h3>Fail-stop</h3><p>An exception stops the session, is reported once through <code>IRuntimeReporter</code>, and raises <code>SessionFaulted</code>. Nothing continues on inconsistent state.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Area</th><th>Projects</th></tr></thead>
+  <tbody>
+    <tr><td>Core</td><td><code>GameRuntime.Abstractions</code> (component, event, update context), <code>GameRuntime.Core</code> (session, clock, event bus, main loop, input), <code>GameRuntime.Channels</code> (registry, protocol, journal text).</td></tr>
+    <tr><td>Engine components</td><td><code>GameRuntime.Calendar</code>, <code>.Calendar.Ai</code>, <code>.Economy</code> (+ <code>.Bridges</code>), <code>.Combat</code>, <code>.CombatStock</code>, <code>.Dialogue</code>, <code>.Diplomacy</code> (+ <code>.Bridges</code>), <code>.AI</code>, <code>.Relationship</code> (+ <code>.Bridges</code>), <code>.Tutorial</code> (+ <code>.Bridges</code>), <code>.WorldEvents</code> (+ <code>.Bridges</code>), <code>.Alchemy</code>, <code>.AlchemySim</code>, <code>.Sim</code>, <code>.Scenario</code>, <code>.Characters</code>.</td></tr>
+    <tr><td>Services</td><td><code>GameRuntime.Services</code> — journal, journaling runtime, composite checkpoint, reporter adapter.</td></tr>
+    <tr><td>Hosts</td><td><code>GameRuntime.Headless</code>, <code>GameRuntime.Godot</code>, and the per-game headless proofs (<code>.Economy.Headless</code>, <code>.AlchemySim.Headless</code>, <code>.Field.Headless</code>, <code>.Briefing.Headless</code>, <code>.CharacterBench</code>, …).</td></tr>
+  </tbody>
+</table>
+
+<h2 id="component" class="anchor">The component contract</h2>
+<pre><code>public interface IGameComponent
+{
+    string Id { get; }
+    void Init(in ComponentContext context);   // like Godot _ready: connect, declare, no work
+    void Update(in UpdateContext context);    // like _physics_process: one tick
+}</code></pre>
+<ul>
+  <li><code>UpdateContext</code> gives the tick (first tick is 1), the real tick duration, an interpolation <code>Alpha</code> and total game microseconds. Components never own a counter.</li>
+  <li><code>Init</code> connects events; <code>Update</code> does the work. Connecting after init is refused.</li>
+  <li>A component reads only its own state and the events it was given. It does not reach into another component.</li>
+</ul>
+
+<h2 id="session" class="anchor">Session and tick order</h2>
+<pre><code>var clock   = new RuntimeClock(ticksPerSecond: 60, catchUpCap: 8);
+var session = new RuntimeSession(clock, reporter);
+CalendarChannels.Install(session);        // declares events and adds the registry last
+session.AddComponent(calendar, order: 10);
+session.AddComponent(economy,  order: 20);
+session.Init();
+int ran = session.Update(elapsedMicroseconds);</code></pre>
+<ol>
+  <li>Deliver queued input events.</li>
+  <li>For each component in ascending <code>order</code>: run <code>Update</code>, then drain the events it emitted (handlers run in connection order).</li>
+  <li>Emit <code>TickSettled</code> and drain once more.</li>
+  <li>If an ending was requested, enter <code>Ended</code> and discard pending time.</li>
+</ol>
+<p>Orders and component ids are unique; the session is <code>Created</code> → <code>Running</code> → <code>Ended</code> / <code>Faulted</code> / <code>Disposed</code>. <code>Update</code> returns how many ticks ran, bounded by the catch-up cap.</p>
+
+<h2 id="clock" class="anchor">Clock and pacing</h2>
+<table>
+  <thead><tr><th>Member</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>RuntimeClock(ticksPerSecond, catchUpCap, startTick)</code></td><td>Exact integer accumulator; the division remainder is carried, so there is no drift.</td></tr>
+    <tr><td><code>SetSpeed(n, d)</code></td><td>Rational speed, each 1..64 (half, double, …).</td></tr>
+    <tr><td><code>Pause</code> / <code>Resume</code></td><td>While paused no tick is earned.</td></tr>
+    <tr><td><code>Earn(elapsedMicroseconds)</code></td><td>Earns whole ticks, bounded by <code>CatchUpCap</code>; <code>IsRunningSlowly</code> says the host fell behind.</td></tr>
+    <tr><td><code>Alpha</code>, <code>PendingTicks</code>, <code>Tick</code></td><td>Interpolation and backlog for the host.</td></tr>
+  </tbody>
+</table>
+<p><code>EngineMainLoop.Run(host, totalMicroseconds, fixedFrameMicroseconds, writeInputs)</code> is the engine-style loop for a console, test or server. A fixed frame feeds virtual time, which makes a run reproducible; a null frame reads the real clock.</p>
+
+<h2 id="events" class="anchor">Events and input</h2>
+<ul>
+  <li><code>IEventPort.Emit&lt;T&gt;</code> queues a struct event; it is delivered after the emitting <code>Update</code> returns, in publication order. <code>Connect&lt;T&gt;</code> is allowed during <code>Init</code> only.</li>
+  <li>The bus has a per-drain budget; exceeding it is a fault, not a silent drop.</li>
+  <li>Hosts <code>Subscribe&lt;T&gt;</code> to events; delivery happens after the tick's drain, never during it.</li>
+  <li><code>Submit&lt;T&gt;</code> queues input for the start of the next tick; <code>InputState</code> + <code>InputStateBridge</code> turn pressed/released edges into pollable action state.</li>
+  <li>Standard events: observation posted, mission command requested, mission event, effect requested, command resolved, tick settled, session faulted, session ended, input edge raised.</li>
+</ul>
+
+<h2 id="channels" class="anchor">Request channels</h2>
+<p><code>ChannelRegistry</code> is the single registry every request-serving component uses. An engine's channels are declared by its <code>Install(session)</code>, which also adds the registry as the session's last component.</p>
+<ul>
+  <li>Every request gets an answer in the same tick: from the serving component, or from the registry as the engine's refusal event with the unknown-channel code.</li>
+  <li>Two components on one channel are refused at <code>Init</code> (duplicate-channel code).</li>
+  <li>A component whose registry is not running fails its first <code>Update</code> — its requests could not be answered.</li>
+  <li><code>IsQuiet</code> is false while a refusal waits, so a checkpoint cannot be taken between a request and its answer. The channel set is fixed at assembly, so it is the same on replay.</li>
+</ul>
+
+<h2 id="components" class="anchor">Engine components</h2>
+<table>
+  <thead><tr><th>Component</th><th>Concern</th></tr></thead>
+  <tbody>
+    <tr><td><code>CalendarComponent</code></td><td>Time, schedules, seasons, holidays; <code>CalendarJournal</code>/<code>Replay</code>.</td></tr>
+    <tr><td><code>EconomyComponent</code></td><td>Trade, prices, production, ships, loans, settlement.</td></tr>
+    <tr><td><code>CombatComponent</code></td><td>Engagements, rounds, movement, resupply, reinforcement, fuel.</td></tr>
+    <tr><td><code>DialogueComponent</code></td><td>Conversations, choices, quests, history, reload.</td></tr>
+    <tr><td><code>DiplomacyComponent</code></td><td>Regard, proposals, treaties, wars, coalitions, espionage, politics.</td></tr>
+    <tr><td><code>AiComponent</code></td><td>Percepts and keys in, intents out.</td></tr>
+    <tr><td><code>RelationshipComponent</code></td><td>Needs, moods, social edges, memories, gifts.</td></tr>
+    <tr><td><code>TutorialComponent</code></td><td>First-run steps, hints, tips, skills.</td></tr>
+    <tr><td><code>WorldEventsComponent</code></td><td>Weather, hazards, outbreaks, event director.</td></tr>
+    <tr><td><code>AlchemyComponent</code></td><td>Combinations and discovery book.</td></tr>
+    <tr><td><code>MissionComponent</code></td><td>ScenarioEngine objectives and endings.</td></tr>
+    <tr><td><code>SimComponent</code></td><td>SimEngine world simulation.</td></tr>
+  </tbody>
+</table>
+<p>Bridges (<code>.Economy.Bridges</code>, <code>.Diplomacy.Bridges</code>, <code>.Relationship.Bridges</code>, <code>.Tutorial.Bridges</code>, <code>.WorldEvents.Bridges</code>, <code>.Calendar.Ai</code>) translate one engine's events into another's requests. A bridge holds no rule of its own.</p>
+
+<h2 id="journal" class="anchor">Journal, checkpoint and replay</h2>
+<ul>
+  <li><code>SessionJournal</code> records inputs and per-tick state hashes; <code>Serialize</code>/<code>Deserialize</code> round-trip it. <code>JournalComponent</code> writes the hash each tick.</li>
+  <li><code>JournalingRuntime</code> wraps any <code>IGameRuntime</code> and records inputs transparently.</li>
+  <li><code>JournalReplay</code> re-runs a journal and returns <code>ReplayResult(Matches, DivergedAtTick, Code)</code>; a divergence names the first tick that differs.</li>
+  <li><code>CompositeCheckpointService</code> combines the mission snapshot with each engine's checkpoint parts; a checkpoint is refused (<code>CheckpointRefusedException</code>) when a component is not quiet.</li>
+  <li>Each engine component has its own checkpoint helper and <code>Fingerprint()</code> for diagnostics.</li>
+</ul>
+
+<h2 id="hosts" class="anchor">Hosts: console, headless, Godot</h2>
+<ul>
+  <li><strong>Console/server</strong> — <code>EngineMainLoop</code> with a fixed or real frame and <code>OutputLog</code> for text output.</li>
+  <li><strong>Headless proofs</strong> — <code>GameRuntime.Headless</code> and the per-game projects (<code>Economy.Headless</code>, <code>AlchemySim.Headless</code>, <code>Field.Headless</code>, <code>Briefing.Headless</code>, <code>CharacterBench</code>) are complete sessions with scripted policies, used to verify behaviour without a renderer.</li>
+  <li><strong>Godot</strong> — <code>GameRuntime.Godot/GameFramework.cs</code> drives <code>RuntimeSession</code> from the physics loop; <code>GodotEventPort</code> adapts the bus, <code>ComponentNode</code> wraps components, <code>GameProfile</code> reads a profile resource, <code>GodotLogger</code> reports faults. A Godot project (<code>project.godot</code>, <code>Main.tscn</code>) is included as the reference scene.</li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+<pre><code>dotnet run --project src/GameRuntime/GameRuntime.Tests -c Release</code></pre>
+<p>Alongside the core session tests, each engine component has its own test project (<code>GameRuntime.Calendar.Tests</code>, <code>.Economy.Tests</code>, <code>.Diplomacy.Tests</code>, <code>.Relationship.Tests</code>, <code>.Tutorial.Tests</code>, <code>.WorldEvents.Tests</code>). They cover ordering, quiet/answered requests, checkpoints, replay divergence and source guards.</p>
+
+<h2 id="source" class="anchor">Source map</h2>
+<dl class="kv">
+  <dt>Contract</dt><dd><code>GameRuntime.Abstractions/Component.cs</code>, <code>Events.cs</code></dd>
+  <dt>Session</dt><dd><code>GameRuntime.Core/RuntimeSession.cs</code>, <code>RuntimeClock.cs</code>, <code>RuntimeEventBus.cs</code>, <code>EngineMainLoop.cs</code>, <code>InputState.cs</code>, <code>OutputLog.cs</code></dd>
+  <dt>Channels</dt><dd><code>GameRuntime.Channels/ChannelRegistry.cs</code>, <code>ChannelProtocol.cs</code>, <code>EventTranscript.cs</code>, <code>JournalText.cs</code></dd>
+  <dt>Services</dt><dd><code>GameRuntime.Services/SessionJournal.cs</code>, <code>JournalComponent.cs</code>, <code>JournalingRuntime.cs</code>, <code>JournalReplay.cs</code>, <code>CompositeCheckpointService.cs</code>, <code>EngineReporterAdapter.cs</code></dd>
+  <dt>Hosts</dt><dd><code>GameRuntime.Godot/*</code>, <code>GameRuntime.Headless/*</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/GameRuntime</code>. Pipeline plan and integration evidence: <a href="../RUNTIME_PIPELINE_INTEGRATION_PLAN.md">docs/RUNTIME_PIPELINE_INTEGRATION_PLAN.md</a>; engine dependency map: <a href="../ENGINE_GRAPH.md">docs/ENGINE_GRAPH.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

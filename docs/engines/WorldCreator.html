@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WorldCreator — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="WorldCreator.html" aria-current="page">WorldCreator</a>
+      <a href="../WORLD_METADATA.md">World metadata record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation · world metadata</p>
+  <h1>WorldCreator</h1>
+  <p class="lede">A reusable, engine-independent world metadata creator: expand a game's catalog archetypes and a recipe of scope, space and constraints into a deterministic world document — hierarchy, connections, regions, placement, networks, routes, interiors, services, progression, layers, chunks and ground cover.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">metadata only</span>
+    <span class="tag">deterministic digests</span>
+    <span class="tag">no renderer required</span>
+  </div>
+</header>
+
+<div class="note"><strong>Current scope.</strong> The generated deliverable is <em>metadata</em>: JSON and optional JSON/SVG/plan export. It does not by itself prove collision, navigation, gameplay, presentation or art approval. A later renderer, Godot adapter or GameArts pipeline is an optional downstream consumer.</div>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#inputs">Inputs: catalog and recipe</a></li>
+    <li><a href="#pipeline">Generation pipeline</a></li>
+    <li><a href="#output">The world document</a></li>
+    <li><a href="#constraints">Constraints and validation</a></li>
+    <li><a href="#population">Population, chunks and ground cover</a></li>
+    <li><a href="#capture">Approved mockup capture</a></li>
+    <li><a href="#export">Export and structure pipeline</a></li>
+    <li><a href="#cli">Command line</a></li>
+    <li><a href="#limits">Limits and honest status</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>WorldCreator turns reusable game-defined content into a world. A <strong>catalog</strong> declares archetypes (a house, a road, a tree, a district) with parts, connection rules and physical footprints. A <strong>recipe</strong> selects a root archetype, a scale, a coordinate space and the constraints for one world. The generator expands programs into nodes and connections, then plans placement, access, networks, routes and the rest, producing a reproducible document.</p>
+<div class="grid">
+  <div class="card"><h3>Metadata-first</h3><p>No image, biome raster, asset registry, renderer or game engine is needed. Coordinates are optional; when requested they come from declared layout grammars and constraints.</p></div>
+  <div class="card"><h3>Deterministic</h3><p>Recipe and catalog are hashed (SHA-256), stages carry dependency identities, and the same inputs produce the same document — verified by a complete source replay.</p></div>
+  <div class="card"><h3>Purposeful placement</h3><p>Every node has an archetype, purpose, parent and region; placement is constrained. No arbitrary scattering or vacant-cell fallback.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/WorldCreator/WorldCreator.Core</code></td><td>Contracts, generation pipeline, planners (placement, network, route, interior, capacity, context, corridor, progression, chunks, ground cover, population), validation, JSON storage, capture and GameArts gates, export.</td></tr>
+    <tr><td><code>WorldCreator.Catalogs.Modern</code></td><td>A worked modern settlement catalog: vocabulary, structures, facilities, expanded structures, siting profiles and infrastructure strategy.</td></tr>
+    <tr><td><code>WorldCreator.Cli</code></td><td><code>generate-metadata</code>, <code>metadata-session</code>, <code>domain-session</code>, <code>verify-metadata</code>, <code>study-metadata</code>, population selection, regional generation, capture review/compile, catalog listing and the structure pipeline.</td></tr>
+    <tr><td><code>WorldCreator.Godot</code></td><td>Downstream adapter for a rendered host, not the generator.</td></tr>
+    <tr><td><code>WorldCreator.Worlds</code></td><td>Authored world definitions used by examples and tests.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="inputs" class="anchor">Inputs: catalog and recipe</h2>
+<pre><code>// catalog
+{ "schemaVersion": 1, "id": "modern",
+  "archetypes": [
+    { "id": "house", "kind": "building", "purpose": "A dwelling",
+      "properties": { "floors": 2 },
+      "parts": [ { "id": "roof", "archetypeId": "roof", "count": 1, "purpose": "Cover" } ],
+      "connections": [],
+      "childRequirements": [] } ] }
+
+// recipe
+{ "schemaVersion": 1, "id": "river-town", "gameProfile": "settlement",
+  "catalogId": "modern", "rootArchetypeId": "district", "scale": "town",
+  "coverage": "completeDeclaredScope", "remainingScopes": [],
+  "parameters": { "population": 400 },
+  "space": { "axes": ["x", "y"], "unit": "m" },
+  "origin": [0, 0], "requireAllPositions": true,
+  "maximumNodes": 10000, "maximumConnections": 50000,
+  "surface": { ... }, "placement": { ... }, "regions": { ... },
+  "networkRules": [...], "routeRules": [...], "chunks": { ... } }</code></pre>
+<table>
+  <thead><tr><th>Recipe concept</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>coverage</code>, <code>remainingScopes</code></td><td><code>CompleteDeclaredScope</code>, or <code>PartialScope</code> with a non-empty list of what remains.</td></tr>
+    <tr><td><code>space</code>, <code>origin</code>, <code>requireAllPositions</code></td><td>Named axes (1–8) and a unit; origin and whether every node must end with a position.</td></tr>
+    <tr><td><code>surface</code>, <code>environment</code>, <code>suitabilityRules</code></td><td>Terrain field, environment readings and suitability constraints.</td></tr>
+    <tr><td><code>regions</code>, <code>regionDemands</code>, <code>localLayouts</code></td><td>Domain regions, demand-driven region size and a local layout strategy (<code>orientedGrid</code>, <code>powerDiagram</code>, <code>binaryPartition</code>, <code>anchorBisection</code>, <code>areaBalanced</code>).</td></tr>
+    <tr><td><code>placement</code>, <code>layoutAdaptation</code>, <code>topologyRules</code>/<code>topologyIntents</code></td><td>Physical placement/search, adaptation to the site, and required/forbidden connections.</td></tr>
+    <tr><td><code>networkRules</code>, <code>routeRules</code>, <code>routeBudget</code></td><td>Utility/road/rail/pedestrian/water networks, path routing, cost and search budgets.</td></tr>
+    <tr><td><code>interiors</code>, <code>services</code>, <code>context</code>, <code>corridors</code></td><td>Interior walls/space, service coverage, context/habitat and corridor plans.</td></tr>
+    <tr><td><code>progressionRules</code>, <code>layers</code></td><td>Technology/progression gates and named map layers.</td></tr>
+    <tr><td><code>terrainDemands</code>, <code>programComposition</code>, <code>drainage</code>, <code>water</code>, <code>windMoisture</code></td><td>Terrain shaping, mixed programs, drainage terminals and environmental fields.</td></tr>
+    <tr><td><code>chunks</code>, <code>groundCover</code>, <code>populationSource</code></td><td>Spatial chunk publication, ground-cover rules, and coordinated population from a source world.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="pipeline" class="anchor">Generation pipeline</h2>
+<ol>
+  <li><strong>Validate</strong> recipe and catalog: schema version, ids, bounds, archetype graph (depth ≤ 32, no cycles), parts, rules and layer memberships.</li>
+  <li><strong>Content expansion</strong> — expand archetype parts into nodes, connection rules into connections, apply variations and capacity definitions.</li>
+  <li><strong>Terrain</strong> — evaluate the declared surface, drainage, water and wind/moisture fields.</li>
+  <li><strong>Regions</strong> — choose region geometry from the request or region demand; inherit a source habitat when the recipe is population-derived.</li>
+  <li><strong>Allocation</strong> — local layout and/or physical placement; feasibility search with no-goods; optional adaptation; final positions.</li>
+  <li><strong>Access</strong> — approaches, entrances, pedestrian reachability and site interfaces.</li>
+  <li><strong>Environment and interiors</strong> — suitability, interior space/walls and travel surface.</li>
+  <li><strong>Networks and routes</strong> — plan utility/road/rail/pedestrian/water graphs, then routes with costs and budgets.</li>
+  <li><strong>Corridors and services</strong> — corridor geometry and service coverage/relations.</li>
+  <li><strong>Context, progression, layers</strong> — habitat context, technology gates, named layers.</li>
+  <li><strong>Chunks, ground cover, population coordination</strong> — chunk packages, ground-cover materials and validated population inheritance.</li>
+  <li><strong>Accounting and validation</strong> — physical ground-use coverage, dependency identities, result validation.</li>
+</ol>
+<p>Each stage is a named execution with input and dependency fingerprints. <code>MetadataExecutionCache</code> memoises expensive network/route/placement work within one run; a changed dependency refuses reuse (<code>METADATA_GENERATION_DEPENDENCY_CHANGED_DURING_RUN</code>).</p>
+
+<h2 id="output">The world document</h2>
+<p><code>WorldMetadataDocument</code> (schema 2) carries:</p>
+<ul>
+  <li>Identity: id, game profile, scale, coverage, remaining scopes, space and the recipe/catalog SHA-256 digests.</li>
+  <li><code>Nodes</code> (id, archetype, kind, parent, purpose, properties, optional position, structure/variation keys) and <code>Connections</code> (kind, from/to, bidirectionality, source rule, layer).</li>
+  <li>Plans: layers, structures, map geometry, facilities, objects, areas, surface, routes, networks, environment, placement, footprints, access, capacity, services, context, corridors, regions, local layout, adaptation, progression, variation, chunks, topology, interiors, terrain demand, program mix/composition, drainage, water, wind/moisture, population coordination, region demand and ground cover.</li>
+</ul>
+<p>No node is placed without a defined archetype and purpose. Optional map geometry (boxes, roads, polygons) is derived from the plans, not invented by a renderer.</p>
+
+<h2 id="constraints" class="anchor">Constraints and validation</h2>
+<ul>
+  <li>Root archetype must exist; every part references a known archetype; archetype cycles and depth beyond 32 are refused.</li>
+  <li>Budgets: ≤ 100,000 nodes, ≤ 500,000 connections, ≤ 50,000 additional connections, ≤ 256 parameters, ≤ 8 axes, ≤ 1,000 archetypes, ≤ 10,000 parts.</li>
+  <li>Connection rules must be complete: a <code>Chain</code> has no target; every other pattern names a valid part.</li>
+  <li>Layers must not conflict with member layers; route/network kinds cannot collide; a route budget needs route rules.</li>
+  <li>Placement requires a surface and environment; footprints require a physical allocation definition; a fragmentary recipe is refused rather than silently degraded.</li>
+  <li>Determinism: the same recipe and catalog produce the same document; <code>verify-metadata</code> replays the complete source and compares.</li>
+</ul>
+
+<h2 id="population" class="anchor">Population, chunks and ground cover</h2>
+<ul>
+  <li><code>populationSource</code> derives a world from a source world's program mix and adapted layouts. The consumer may inherit the source's qualified habitat but cannot choose another region after counts were derived from it.</li>
+  <li><code>chunks</code> publishes spatial chunks for streaming/selection, with a geometry index and package reader.</li>
+  <li><code>groundCover</code> assigns surfaces from domains/patches/exclusions; unresolved ground is reported, not silently covered.</li>
+  <li><code>MetadataPhysicalAccounting</code> checks required ground use and capacity; measurements distinguish measured, not applicable and unmeasured.</li>
+</ul>
+
+<h2 id="capture" class="anchor">Approved mockup capture</h2>
+<p>When a world is derived from an approved GameArts mockup, the capture path records what was observed, inferred, authored or unknown, with shape (point/polyline/polygon), junction kind, review state and coverage (partial or complete).</p>
+<ul>
+  <li><code>capture-schema</code> prints the capture document schema.</li>
+  <li><code>review-capture</code> validates a capture against its schema and the trusted asset root.</li>
+  <li><code>compile-capture</code> compiles a reviewed capture into a geometry draft.</li>
+  <li>GameArts gates (<code>GameArtsProductionGate</code>, <code>GameArtsAtlasValidator</code>, <code>GameArtsSemanticWorldPipeline</code>) require approved assets/atlases and motion metadata before production use. A scene skeleton is not a visually complete world.</li>
+</ul>
+
+<h2 id="export">Export and structure pipeline</h2>
+<p><code>WorldDocumentExporter</code> writes world JSON and, with a plan renderer, an SVG/plan view. <code>IWorldExporter</code> is the boundary. <code>CoordinatedSettlementWorldBuilder</code> composes settlement-scale content with the same planners.</p>
+<p><code>structure-pipeline</code> runs the structure-first stages: <code>metadata</code>, <code>reconcile</code>, <code>ground</code>, <code>scene</code>, <code>production-inventory</code>, <code>production-bind</code>, <code>native-static</code>, <code>tile-topology</code>.</p>
+
+<h2 id="cli">Command line</h2>
+<pre><code>WorldCreator.Cli generate-metadata &lt;recipe.json&gt; &lt;catalog.json&gt; &lt;new-output-dir&gt;
+WorldCreator.Cli metadata-session ...
+WorldCreator.Cli verify-metadata ...
+WorldCreator.Cli study-metadata ...
+WorldCreator.Cli domain-session ...
+WorldCreator.Cli generate-world-domains ...
+WorldCreator.Cli generate-regional-domain-world ...
+WorldCreator.Cli region-session ...
+WorldCreator.Cli select-population ... / verify-population ...
+WorldCreator.Cli capture-schema
+WorldCreator.Cli review-capture ...
+WorldCreator.Cli compile-capture ...
+WorldCreator.Cli structure-pipeline &lt;stage&gt; ...
+WorldCreator.Cli list-catalogs | list-buildings | list-objects | list-areas | list-facilities
+WorldCreator.Cli save-catalog-content ...
+WorldCreator.Cli generate-world &lt;request.json&gt; [output-dir]   (legacy document path)
+WorldCreator.Cli verify-world ...</code></pre>
+<p>Operations write JSON-line operation logs, audit and notifications through <code>JsonLineOperationStore</code>. Cancellation is honoured throughout.</p>
+
+<h2 id="limits">Limits and honest status</h2>
+<ul>
+  <li>The procedural city generator and its network/district/parcel orchestration were removed; they are not current capabilities and must not be restored as the foundation.</li>
+  <li>Metadata completeness is not gameplay completeness. A complete declared scope does not prove collision, pathfinding, balance or a playable game.</li>
+  <li>Passing geometry checks is not owner design approval, production art or functional Godot acceptance.</li>
+  <li>Optional realism simulations (traffic engineering, photometric coverage, drainage physics) are opt-in, never default acceptance gates.</li>
+</ul>
+
+<h2 id="source">Source map</h2>
+<dl class="kv">
+  <dt>Contracts</dt><dd><code>WorldMetadataContracts.cs</code>, <code>WorldModel.cs</code>, <code>WorldMetadataDocument.cs</code></dd>
+  <dt>Generator</dt><dd><code>WorldMetadataGenerator*.cs</code> (content, terrain, regions, allocation, networks, routes, interiors, chunks, population)</dd>
+  <dt>Planners</dt><dd><code>MetadataPlacementPlanner*.cs</code>, <code>MetadataNetworkPlanner*.cs</code>, <code>MetadataRoutePlanner*.cs</code>, <code>MetadataProgramMixPlanner*.cs</code>, <code>MetadataChunkPlanner.cs</code>, <code>MetadataGroundCoverPlanner.cs</code></dd>
+  <dt>Validation</dt><dd><code>MetadataPhysicalAccounting*.cs</code>, <code>WorldMetadataGenerator.Validate</code>, <code>MetadataGeneratedBoundary.cs</code></dd>
+  <dt>Capture and art</dt><dd><code>ApprovedArtValidator.cs</code>, <code>GameArts*.cs</code>, capture pipeline in <code>WorldCreator.Cli</code></dd>
+  <dt>Output</dt><dd><code>WorldDocumentExporter.cs</code>, <code>IWorldPlanRenderer</code>, <code>MetadataJsonStorage.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/WorldCreator</code>. The owned records are <a href="../WORLD_METADATA.md">docs/WORLD_METADATA.md</a>, <a href="../ADVANCED_WORLD_GENERATION_MASTER_PLAN.md">the master plan</a> and <a href="../ROADMAP.md">docs/ROADMAP.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

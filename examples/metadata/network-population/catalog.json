@@ -1,0 +1,289 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "level",
+      "Purpose": "Exploration area",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "gates",
+          "ArchetypeId": "gate",
+          "Count": 2,
+          "Purpose": "Required journey entrances",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "markers",
+          "ArchetypeId": "marker",
+          "Count": 4,
+          "Purpose": "Mark the bent approach",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "boundary",
+          "ArchetypeId": "marker",
+          "Count": 4,
+          "Purpose": "Mark the irregular resource reserve",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "resource",
+          "ArchetypeId": "resource",
+          "Count": 1,
+          "Purpose": "Required collectible location",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "gate",
+          "Minimum": 3,
+          "Maximum": 3
+        },
+        {
+          "Kind": "marker",
+          "Minimum": 8,
+          "Maximum": 8
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "gate",
+      "Kind": "gate",
+      "Purpose": "Required gate",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized gate",
+        "SourceRuleId": "catalog:gate",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            {
+              "X": -0.5,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": 0.6
+            },
+            {
+              "X": -0.6,
+              "Y": 0.6
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": [
+          {
+            "Id": "entry",
+            "Purpose": "Interaction access",
+            "SourceRuleId": "catalog:gate",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -0.5
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -1.5
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "marker",
+      "Kind": "marker",
+      "Purpose": "Required marker",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized marker",
+        "SourceRuleId": "catalog:marker",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            {
+              "X": -0.5,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": 0.6
+            },
+            {
+              "X": -0.6,
+              "Y": 0.6
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "resource",
+      "Kind": "gate",
+      "Purpose": "Required resource",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized resource",
+        "SourceRuleId": "catalog:resource",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            {
+              "X": -0.5,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": 0.6
+            },
+            {
+              "X": -0.6,
+              "Y": 0.6
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": [
+          {
+            "Id": "entry",
+            "Purpose": "Interaction access",
+            "SourceRuleId": "catalog:resource",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -0.5
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -1.5
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

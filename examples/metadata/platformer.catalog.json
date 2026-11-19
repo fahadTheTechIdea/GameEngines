@@ -15,14 +15,17 @@
           "Purpose": "Authored level progression",
           "CountParameter": "levels",
           "Layout": {
-            "Origin": [
-              0,
-              0
-            ],
-            "Step": [
-              200,
-              0
-            ]
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                0
+              ],
+              "Step": [
+                200,
+                0
+              ]
+            }
           }
         }
       ],
@@ -54,14 +57,17 @@
           "Purpose": "Side-scrolling sections",
           "CountParameter": null,
           "Layout": {
-            "Origin": [
-              0,
-              0
-            ],
-            "Step": [
-              40,
-              0
-            ]
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                0
+              ],
+              "Step": [
+                40,
+                0
+              ]
+            }
           }
         }
       ],

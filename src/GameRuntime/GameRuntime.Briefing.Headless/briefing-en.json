@@ -1,0 +1,9 @@
+{ "format": 1, "locale": "en", "messages": {
+    "briefing.hello": { "select": "count", "one": "{count} squad is formed up. Orders?", "other": "{count} squads are formed up. Orders?" },
+    "briefing.go": "Fire at will.",
+    "briefing.wait": "Hold your fire.",
+    "briefing.ack": "Understood. Opening fire.",
+    "briefing.stand": "Understood. Standing by.",
+    "quest.hold.title": "Hold the field",
+    "quest.hold.order": "Fight until one side is beaten.",
+    "quest.hold.done": "The field is held." } }

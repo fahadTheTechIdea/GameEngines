@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "kingdom",
+  "version": "1.0.0",
+  "title": "Medieval kingdom: farm, brew, build, muster, tax",
+  "language": "en",
+  "world": "timeless",
+  "genres": ["medieval-kingdom"],
+  "dependencies": [{ "id": "core", "version": "1.0.0" }],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

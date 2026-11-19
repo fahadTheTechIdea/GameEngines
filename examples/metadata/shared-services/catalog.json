@@ -1,0 +1,138 @@
+{
+  "SchemaVersion": 1,
+  "Id": "service-catalog",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Service graph",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "supply",
+          "ArchetypeId": "supply",
+          "Count": 1,
+          "Purpose": "Required provider",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "relay",
+          "ArchetypeId": "relay",
+          "Count": 1,
+          "Purpose": "Connection hub",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "users",
+          "ArchetypeId": "user",
+          "Count": 2,
+          "Purpose": "Required consumers",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "supply",
+      "Kind": "supply",
+      "Purpose": "Required game role",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": {
+        "Supplies": [
+          {
+            "Id": "stock",
+            "Kind": "rest",
+            "Unit": "rest-points",
+            "Quantity": 10,
+            "Qualities": [
+              "reliable"
+            ],
+            "Origin": "station",
+            "Purpose": "Authored rest service",
+            "SourceRuleId": "test:stock"
+          }
+        ],
+        "Requirements": [],
+        "UseStructureProfile": false,
+        "OutputQualities": null
+      }
+    },
+    {
+      "Id": "relay",
+      "Kind": "relay",
+      "Purpose": "Required game role",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "user",
+      "Kind": "user",
+      "Purpose": "Required game role",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": {
+        "Supplies": [],
+        "Requirements": [
+          {
+            "Id": "rest",
+            "Kind": "rest",
+            "Unit": "rest-points",
+            "Quantity": 4,
+            "ConnectionKind": "provision",
+            "Purpose": "Required game service",
+            "SourceRuleId": "test:need",
+            "RequiredQualities": [
+              "reliable"
+            ],
+            "RequiredOrigin": "station",
+            "RequirePhysicalRoute": false,
+            "MinimumWidth": 0,
+            "MaximumDistance": null
+          }
+        ],
+        "UseStructureProfile": false,
+        "OutputQualities": null
+      }
+    }
+  ]
+}

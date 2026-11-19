@@ -1,0 +1,70 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "locations",
+          "ArchetypeId": "location",
+          "Count": 4,
+          "Purpose": "Declared destinations",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "path",
+            "Parameters": {
+              "Points": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  40,
+                  0
+                ],
+                [
+                  40,
+                  60
+                ]
+              ],
+              "Spacing": 20,
+              "StartDistance": 0
+            }
+          }
+        }
+      ],
+      "Connections": [
+        {
+          "Id": "links",
+          "Kind": "travel-intent",
+          "Pattern": "Chain",
+          "FromPart": "locations",
+          "ToPart": null,
+          "Bidirectional": true,
+          "Properties": null,
+          "LayerId": null
+        }
+      ],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent"
+    },
+    {
+      "Id": "location",
+      "Kind": "destination",
+      "Purpose": "A game-defined destination",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent"
+    }
+  ]
+}

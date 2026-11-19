@@ -1,0 +1,345 @@
+{
+  "Version": 1,
+  "Status": "DraftAuthoringBriefOnly",
+  "PathBase": "examples/modern-city-demo",
+  "SourceHandoff": "inventory/art-handoff-v003.json",
+  "SourceHandoffSha256": "621cfaaad79c20eb2c414c080549de49cf01bb42fab6e8458a26dcd42f7a1dc3",
+  "District": "mixed-center",
+  "ContextNodeId": "framework-reference-city/mixed-center-0",
+  "Purpose": "Mixed commercial and residential center",
+  "RequiredMemberNodeIds": [
+    "framework-reference-city/mixed-center-0",
+    "framework-reference-city/mixed-center-0/clinic-0",
+    "framework-reference-city/mixed-center-0/food-0",
+    "framework-reference-city/mixed-center-0/food-1",
+    "framework-reference-city/mixed-center-0/food-2",
+    "framework-reference-city/mixed-center-0/food-3",
+    "framework-reference-city/mixed-center-0/food-4",
+    "framework-reference-city/mixed-center-0/food-5",
+    "framework-reference-city/mixed-center-0/food-6",
+    "framework-reference-city/mixed-center-0/food-7",
+    "framework-reference-city/mixed-center-0/homes-0",
+    "framework-reference-city/mixed-center-0/homes-0/body-0",
+    "framework-reference-city/mixed-center-0/homes-0/court-0",
+    "framework-reference-city/mixed-center-0/homes-0/walk-0",
+    "framework-reference-city/mixed-center-0/homes-1",
+    "framework-reference-city/mixed-center-0/homes-1/body-0",
+    "framework-reference-city/mixed-center-0/homes-1/court-0",
+    "framework-reference-city/mixed-center-0/homes-1/walk-0",
+    "framework-reference-city/mixed-center-0/homes-2",
+    "framework-reference-city/mixed-center-0/homes-2/body-0",
+    "framework-reference-city/mixed-center-0/homes-2/court-0",
+    "framework-reference-city/mixed-center-0/homes-2/walk-0",
+    "framework-reference-city/mixed-center-0/homes-3",
+    "framework-reference-city/mixed-center-0/homes-3/body-0",
+    "framework-reference-city/mixed-center-0/homes-3/court-0",
+    "framework-reference-city/mixed-center-0/homes-3/walk-0",
+    "framework-reference-city/mixed-center-0/homes-4",
+    "framework-reference-city/mixed-center-0/homes-4/body-0",
+    "framework-reference-city/mixed-center-0/homes-4/court-0",
+    "framework-reference-city/mixed-center-0/homes-4/walk-0",
+    "framework-reference-city/mixed-center-0/homes-5",
+    "framework-reference-city/mixed-center-0/homes-5/body-0",
+    "framework-reference-city/mixed-center-0/homes-5/court-0",
+    "framework-reference-city/mixed-center-0/homes-5/walk-0",
+    "framework-reference-city/mixed-center-0/homes-6",
+    "framework-reference-city/mixed-center-0/homes-6/body-0",
+    "framework-reference-city/mixed-center-0/homes-6/court-0",
+    "framework-reference-city/mixed-center-0/homes-6/walk-0",
+    "framework-reference-city/mixed-center-0/homes-7",
+    "framework-reference-city/mixed-center-0/homes-7/body-0",
+    "framework-reference-city/mixed-center-0/homes-7/court-0",
+    "framework-reference-city/mixed-center-0/homes-7/walk-0",
+    "framework-reference-city/mixed-center-0/homes-8",
+    "framework-reference-city/mixed-center-0/homes-8/body-0",
+    "framework-reference-city/mixed-center-0/homes-8/court-0",
+    "framework-reference-city/mixed-center-0/homes-8/walk-0",
+    "framework-reference-city/mixed-center-0/homes-9",
+    "framework-reference-city/mixed-center-0/homes-9/body-0",
+    "framework-reference-city/mixed-center-0/homes-9/court-0",
+    "framework-reference-city/mixed-center-0/homes-9/walk-0",
+    "framework-reference-city/mixed-center-0/homes-10",
+    "framework-reference-city/mixed-center-0/homes-10/body-0",
+    "framework-reference-city/mixed-center-0/homes-10/court-0",
+    "framework-reference-city/mixed-center-0/homes-10/walk-0",
+    "framework-reference-city/mixed-center-0/homes-11",
+    "framework-reference-city/mixed-center-0/homes-11/body-0",
+    "framework-reference-city/mixed-center-0/homes-11/court-0",
+    "framework-reference-city/mixed-center-0/homes-11/walk-0",
+    "framework-reference-city/mixed-center-0/homes-12",
+    "framework-reference-city/mixed-center-0/homes-12/body-0",
+    "framework-reference-city/mixed-center-0/homes-12/court-0",
+    "framework-reference-city/mixed-center-0/homes-12/walk-0",
+    "framework-reference-city/mixed-center-0/homes-13",
+    "framework-reference-city/mixed-center-0/homes-13/body-0",
+    "framework-reference-city/mixed-center-0/homes-13/court-0",
+    "framework-reference-city/mixed-center-0/homes-13/walk-0",
+    "framework-reference-city/mixed-center-0/homes-14",
+    "framework-reference-city/mixed-center-0/homes-14/body-0",
+    "framework-reference-city/mixed-center-0/homes-14/court-0",
+    "framework-reference-city/mixed-center-0/homes-14/walk-0",
+    "framework-reference-city/mixed-center-0/homes-15",
+    "framework-reference-city/mixed-center-0/homes-15/body-0",
+    "framework-reference-city/mixed-center-0/homes-15/court-0",
+    "framework-reference-city/mixed-center-0/homes-15/walk-0",
+    "framework-reference-city/mixed-center-0/homes-16",
+    "framework-reference-city/mixed-center-0/homes-16/body-0",
+    "framework-reference-city/mixed-center-0/homes-16/court-0",
+    "framework-reference-city/mixed-center-0/homes-16/walk-0",
+    "framework-reference-city/mixed-center-0/homes-17",
+    "framework-reference-city/mixed-center-0/homes-17/body-0",
+    "framework-reference-city/mixed-center-0/homes-17/court-0",
+    "framework-reference-city/mixed-center-0/homes-17/walk-0",
+    "framework-reference-city/mixed-center-0/offices-0",
+    "framework-reference-city/mixed-center-0/offices-1",
+    "framework-reference-city/mixed-center-0/offices-2",
+    "framework-reference-city/mixed-center-0/offices-3",
+    "framework-reference-city/mixed-center-0/offices-4",
+    "framework-reference-city/mixed-center-0/offices-5",
+    "framework-reference-city/mixed-center-0/offices-6",
+    "framework-reference-city/mixed-center-0/offices-7",
+    "framework-reference-city/mixed-center-0/offices-8",
+    "framework-reference-city/mixed-center-0/offices-9",
+    "framework-reference-city/mixed-center-0/offices-10",
+    "framework-reference-city/mixed-center-0/offices-11",
+    "framework-reference-city/mixed-center-0/offices-12",
+    "framework-reference-city/mixed-center-0/offices-13",
+    "framework-reference-city/mixed-center-0/offices-14",
+    "framework-reference-city/mixed-center-0/offices-15",
+    "framework-reference-city/mixed-center-0/offices-16",
+    "framework-reference-city/mixed-center-0/offices-17",
+    "framework-reference-city/mixed-center-0/plaza-0",
+    "framework-reference-city/mixed-center-0/shops-0",
+    "framework-reference-city/mixed-center-0/shops-1",
+    "framework-reference-city/mixed-center-0/shops-2",
+    "framework-reference-city/mixed-center-0/shops-3",
+    "framework-reference-city/mixed-center-0/shops-4",
+    "framework-reference-city/mixed-center-0/shops-5",
+    "framework-reference-city/mixed-center-0/shops-6",
+    "framework-reference-city/mixed-center-0/shops-7",
+    "framework-reference-city/mixed-center-0/shops-8",
+    "framework-reference-city/mixed-center-0/shops-9",
+    "framework-reference-city/mixed-center-0/shops-10",
+    "framework-reference-city/mixed-center-0/shops-11",
+    "framework-reference-city/mixed-center-0/shops-12",
+    "framework-reference-city/mixed-center-0/shops-13",
+    "framework-reference-city/mixed-center-0/shops-14",
+    "framework-reference-city/mixed-center-0/shops-15",
+    "framework-reference-city/mixed-center-0/shops-16",
+    "framework-reference-city/mixed-center-0/shops-17",
+    "framework-reference-city/mixed-center-0/shops-18",
+    "framework-reference-city/mixed-center-0/shops-19"
+  ],
+  "BuildingCounts": {
+    "apartment": 18,
+    "clinic": 1,
+    "office": 18,
+    "restaurant": 8,
+    "shop": 20
+  },
+  "GroundAreaCounts": {
+    "courtyard": 18,
+    "entry-walk": 18,
+    "plaza": 1
+  },
+  "WholeSiteCounts": {
+    "apartment-site": 18
+  },
+  "OverviewJobId": "scope:mixed-center",
+  "DetailScopeIds": [
+    "mixed-center-workplaces-01",
+    "mixed-center-mixed-housing-01",
+    "mixed-center-commercial-core-01",
+    "mixed-center-commercial-core-02"
+  ],
+  "RequiredReferenceImages": [
+    {
+      "ReferenceJobId": "reference-4b76fc91bc800ff3a8c519bdc318632f57e2a523aef2f7fcdc223a6c829bf780",
+      "MockupId": "restaurant-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_restaurant-reference_mockup_v001.png",
+        "Sha256": "1f8b4f867e98369994448ed0ff965b745426dccb54c43aba47316fc96f80ec93",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-6fe3aecaef2eafb96dfcfdd9a5d748b562452103fc64182dbafc738cfdc2121a",
+      "MockupId": "plaza-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_plaza-reference_mockup_v001.png",
+        "Sha256": "a2d6848c5631400e63c21aaab3df118c35dc7b035bb687bd88a6f9e40f1800e0",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-84eb3648a1a86751c5680825f5756d8508e057a32c5d0f7d19a35ce55534b204",
+      "MockupId": "apartment-low-rise",
+      "Revision": "v001",
+      "StateSnapshot": "Approved",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/approved/framework-city-reference_asset_apartment-low-rise_mockup_v001.png",
+        "Sha256": "6b49d3f91f5e05e7359ba8d5170676e3c743c53e0130146f3c189f7a031f0399",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-85adeaac7a00ea6fa17e7f786feb4221b79862bfd1ac65a7b5fe2280cb633d16",
+      "MockupId": "shop-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_shop-reference_mockup_v001.png",
+        "Sha256": "9aa66adff4a151ae70313d64df221e1a76cc2ec5163f85d90fb608bcdf3cef93",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-90b796b64f0a583ec3375a2b31dfcf7db01d665356ebc9aa3a4a871153b230d4",
+      "MockupId": "entry-walk-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_entry-walk-reference_mockup_v001.png",
+        "Sha256": "a2875123d3a2bf7199e375aa6092f839981ef5bdc6cbe575d218814afa54db5d",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-df63b73f5595c3a7a9440d4cbd71e615e9df925923547dd47aeb1f48fb9dce72",
+      "MockupId": "courtyard-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_courtyard-reference_mockup_v001.png",
+        "Sha256": "f9a4dada86930628231412bbc4e27bf57180b20e01bbaedace8c905133dac076",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-f2a33cbc53b70e00c8c3c5bab293ae1c67702440cb2fcaf3ed02cb784d8f86d7",
+      "MockupId": "clinic-local",
+      "Revision": "v001",
+      "StateSnapshot": "Approved",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/approved/framework-city-reference_asset_clinic-local_mockup_v001.png",
+        "Sha256": "02704eb5c30e19ad3344ea80b65411b3497d861589b5840d21ce2406b286c5c6",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-f83473439871a39aed527c9ad771532527dc6db83f10ba056374b904b57a7229",
+      "MockupId": "office-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_office-reference_mockup_v001.png",
+        "Sha256": "4b3e59d2e82381f92305b09f3425a11d70776d984cc8177594ff75e4315173aa",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    }
+  ],
+  "UnapprovedReferenceRevisions": [
+    "restaurant-reference:v001",
+    "plaza-reference:v001",
+    "shop-reference:v001",
+    "entry-walk-reference:v001",
+    "courtyard-reference:v001",
+    "office-reference:v001"
+  ],
+  "LogicalInterfaces": [
+    {
+      "Id": "framework-reference-city/link-interface-2-0",
+      "Kind": "district-access",
+      "FromId": "framework-reference-city/old-center-0",
+      "ToId": "framework-reference-city/mixed-center-0",
+      "Bidirectional": true,
+      "SourceRuleId": "city:interface-2",
+      "Properties": {
+        "geometryStatus": "UnrealizedIntentOnly",
+        "modeIntent": "pedestrian-and-local-vehicle",
+        "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback",
+        "purpose": "Connect civic and commercial centers"
+      },
+      "LayerId": null
+    },
+    {
+      "Id": "framework-reference-city/link-interface-5-0",
+      "Kind": "district-access",
+      "FromId": "framework-reference-city/outer-neighborhood-0",
+      "ToId": "framework-reference-city/mixed-center-0",
+      "Bidirectional": true,
+      "SourceRuleId": "city:interface-5",
+      "Properties": {
+        "geometryStatus": "UnrealizedIntentOnly",
+        "modeIntent": "pedestrian-and-local-vehicle",
+        "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback",
+        "purpose": "Provide outer-neighborhood access to workplaces and services"
+      },
+      "LayerId": null
+    },
+    {
+      "Id": "framework-reference-city/link-interface-6-0",
+      "Kind": "district-service-access",
+      "FromId": "framework-reference-city/mixed-center-0",
+      "ToId": "framework-reference-city/work-district-0",
+      "Bidirectional": true,
+      "SourceRuleId": "city:interface-6",
+      "Properties": {
+        "geometryStatus": "UnrealizedIntentOnly",
+        "modeIntent": "pedestrian-and-service-vehicle",
+        "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback",
+        "purpose": "Connect commercial services and productive district"
+      },
+      "LayerId": null
+    },
+    {
+      "Id": "framework-reference-city/link-interface-7-0",
+      "Kind": "district-walk",
+      "FromId": "framework-reference-city/mixed-center-0",
+      "ToId": "framework-reference-city/riverside-0",
+      "Bidirectional": true,
+      "SourceRuleId": "city:interface-7",
+      "Properties": {
+        "geometryStatus": "UnrealizedIntentOnly",
+        "modeIntent": "pedestrian",
+        "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback",
+        "purpose": "Connect mixed-use center to waterfront recreation"
+      },
+      "LayerId": null
+    }
+  ],
+  "GeometryStatus": "UnrealizedIntentOnly",
+  "WorldPositions": null,
+  "DetailExecutionStatus": "AwaitingExactReferenceApprovals",
+  "OverviewExecutionStatus": "AwaitingApprovedDetailImages",
+  "OverviewPrompt": "visual-plan/prompts/district-mixed-center.draft.txt",
+  "GeneratedOverviewImage": null,
+  "Acceptance": [
+    "All declared instances and compound parts retained",
+    "Current approved exact reference revisions only",
+    "Fixed camera, per-object facings and readable ground access",
+    "Cross-view feature identities and calibration reviewed; deviations revised before compilation",
+    "Visible props and moving components added to catalogue and final map demand",
+    "No overview-resolution, vision, map or production acceptance inferred from this brief"
+  ]
+}

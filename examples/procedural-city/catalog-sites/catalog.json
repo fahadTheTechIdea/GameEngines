@@ -1,0 +1,430 @@
+{
+  "SchemaVersion": 1,
+  "Id": "catalog-linked-sites",
+  "Structures": [
+    {
+      "Id": "house",
+      "Kind": "house",
+      "Purpose": "Residential home",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 14,
+        "Height": 12
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "shop",
+      "Kind": "shop",
+      "Purpose": "Neighborhood trade",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 18,
+        "Height": 14
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "civic",
+      "Kind": "civic-building",
+      "Purpose": "Public services",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 24,
+        "Height": 18
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "workshop",
+      "Kind": "workshop",
+      "Purpose": "Registered building and its authored grounds",
+      "Footprint": null,
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "workshop",
+        "VariantId": "small"
+      },
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": true,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "compound",
+      "Kind": "facility",
+      "Purpose": "Reusable compound site",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 52,
+        "Height": 36
+      },
+      "Parts": [
+        {
+          "Id": "workspaces",
+          "StructureId": "workshop",
+          "Count": 2,
+          "Purpose": "Separate production structures"
+        }
+      ],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "office",
+      "Kind": "office",
+      "Purpose": "Reusable constituent structure",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 14,
+        "Height": 12
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "utility-building",
+      "Kind": "utility-building",
+      "Purpose": "Reusable constituent structure",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 12,
+        "Height": 10
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "classroom",
+      "Kind": "classroom",
+      "Purpose": "Reusable constituent structure",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 20,
+        "Height": 16
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "hall",
+      "Kind": "hall",
+      "Purpose": "Reusable constituent structure",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 24,
+        "Height": 18
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "utility-site",
+      "Kind": "utility-site",
+      "Purpose": "Nested utility compound",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 26,
+        "Height": 30
+      },
+      "Parts": [
+        {
+          "Id": "plant",
+          "StructureId": "utility-building",
+          "Count": 1,
+          "Purpose": "Independent utility structure"
+        }
+      ],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": [
+        {
+          "Id": "entry",
+          "Kind": "Forecourt",
+          "Band": "Front",
+          "MinimumDepthMeters": 6,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        },
+        {
+          "Id": "service",
+          "Kind": "UtilityPlant",
+          "Band": "Rear",
+          "MinimumDepthMeters": 4,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        }
+      ],
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "manufacturing-site",
+      "Kind": "industrial-site",
+      "Purpose": "Production site and its constituent structures",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 100,
+        "Height": 100
+      },
+      "Parts": [
+        {
+          "Id": "production",
+          "StructureId": "workshop",
+          "Count": 2,
+          "Purpose": "Production structures"
+        },
+        {
+          "Id": "administration",
+          "StructureId": "studio-site",
+          "Count": 1,
+          "Purpose": "Administration building"
+        },
+        {
+          "Id": "services",
+          "StructureId": "utility-site",
+          "Count": 1,
+          "Purpose": "Nested service site"
+        }
+      ],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": [
+        {
+          "Id": "loading",
+          "Kind": "LoadingYard",
+          "Band": "Front",
+          "MinimumDepthMeters": 10,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        },
+        {
+          "Id": "parking",
+          "Kind": "Parking",
+          "Band": "Right",
+          "MinimumDepthMeters": 12,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        },
+        {
+          "Id": "storage",
+          "Kind": "LoadingYard",
+          "Band": "Rear",
+          "MinimumDepthMeters": 8,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        }
+      ],
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "learning-campus",
+      "Kind": "education-site",
+      "Purpose": "Campus with common grounds",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 90,
+        "Height": 84
+      },
+      "Parts": [
+        {
+          "Id": "teaching",
+          "StructureId": "classroom",
+          "Count": 2,
+          "Purpose": "Teaching buildings"
+        },
+        {
+          "Id": "gathering",
+          "StructureId": "hall",
+          "Count": 1,
+          "Purpose": "Shared gathering building"
+        }
+      ],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": [
+        {
+          "Id": "arrival",
+          "Kind": "Forecourt",
+          "Band": "Front",
+          "MinimumDepthMeters": 8,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        },
+        {
+          "Id": "buffer",
+          "Kind": "GreenBuffer",
+          "Band": "Right",
+          "MinimumDepthMeters": 6,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        },
+        {
+          "Id": "garden",
+          "Kind": "Garden",
+          "Band": "Rear",
+          "MinimumDepthMeters": 10,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        }
+      ],
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "home-site",
+      "Kind": "home-site",
+      "Purpose": "Registered building and its authored grounds",
+      "Footprint": null,
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "village-house",
+        "VariantId": "cottage"
+      },
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": true,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    },
+    {
+      "Id": "studio-site",
+      "Kind": "studio-site",
+      "Purpose": "Registered building and its authored grounds",
+      "Footprint": null,
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "user.courtyard-studio",
+        "VariantId": "compact"
+      },
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": true,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "SchemaVersion": 1,
+  "Id": "generated-landforms",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent"
+    },
+    {
+      "Id": "location",
+      "Kind": "destination",
+      "Purpose": "A game-defined destination",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent"
+    }
+  ]
+}

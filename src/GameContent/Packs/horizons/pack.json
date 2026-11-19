@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "horizons",
+  "version": "1.0.0",
+  "title": "Horizons: the near and far future, and when their materials appear",
+  "language": "en",
+  "world": "fictional",
+  "genres": ["eras"],
+  "dependencies": [{ "id": "matter", "version": "1.0.0" }],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

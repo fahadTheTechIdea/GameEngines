@@ -8,9 +8,19 @@ namespace WorldCreator.Core;
 /// Read-only catalog sets need explicit conversion; enums accept names or numbers.</summary>
 public static class WorldJson
 {
+    // The engine's standard policy is immutable and can retain native type
+    // metadata. Callers needing a different policy keep their own mutable copy.
+    internal static JsonSerializerOptions Shared {get;}=CreateShared();
+    private static JsonSerializerOptions CreateShared()
+    {
+        var options=CreateOptions();
+        options.MakeReadOnly(populateMissingResolver:true);
+        return options;
+    }
+
     public static JsonSerializerOptions CreateOptions(bool writeIndented = false)
     {
-        var options = new JsonSerializerOptions { WriteIndented = writeIndented };
+        var options = new JsonSerializerOptions { WriteIndented = writeIndented, AllowDuplicateProperties = false };
         options.Converters.Add(new JsonStringEnumConverter());
         options.Converters.Add(new ReadOnlySetConverter<SettlementClass>());
         options.Converters.Add(new ReadOnlySetConverter<SettlementRole>());

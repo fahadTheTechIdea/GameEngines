@@ -1,0 +1,106 @@
+{
+  "format": 1,
+  "id": "field.ai",
+  "keys": [
+    { "id": "ready", "type": "bool", "initial": false, "source": "host" },
+    { "id": "distance", "type": "int", "initial": 1, "min": 1, "max": 100000, "source": "host" },
+    { "id": "terrain", "type": "string", "initial": "open", "source": "host" },
+    { "id": "phase", "type": "int", "initial": 0, "min": 0, "max": 29, "source": "agent" },
+    { "id": "due", "type": "bool", "initial": false, "source": "agent" },
+    { "id": "foes", "type": "int", "initial": 0, "min": 0, "max": 2000, "source": "agent" },
+    { "id": "target", "type": "string", "initial": "", "source": "agent" },
+    { "id": "gap", "type": "int", "initial": 0, "min": -1000000000000, "max": 1000000000000, "source": "agent" },
+    { "id": "missing", "type": "int", "initial": 0, "min": -10000000000, "max": 10000000000, "source": "agent" },
+    { "id": "visit", "type": "int", "initial": 0, "min": 0, "max": 10000000000, "source": "agent" },
+    { "id": "want", "type": "int", "initial": 0, "min": -10000000000, "max": 10000000000, "source": "agent" },
+    { "id": "offer", "type": "int", "initial": 0, "min": -10000000000, "max": 10000000000, "source": "agent" }
+  ],
+  "percepts": [
+    { "kind": "group", "capacity": 2000, "memory": 1000000000, "owned": false, "attrs": [
+        { "id": "hostile", "type": "bool", "unknown": false },
+        { "id": "standing", "type": "bool", "unknown": false } ] },
+    { "kind": "unit", "capacity": 2000, "memory": 1000000000, "owned": false, "attrs": [
+        { "id": "supplyable", "type": "bool", "unknown": false },
+        { "id": "members", "type": "int", "min": 0, "max": 10000000000, "unknown": 0 },
+        { "id": "initial", "type": "int", "min": 0, "max": 10000000000, "unknown": 0 },
+        { "id": "people-stock", "type": "string", "unknown": "" },
+        { "id": "fuel", "type": "int", "min": 0, "max": 10000000000, "unknown": 0 },
+        { "id": "fuel-room", "type": "int", "min": 0, "max": 10000000000, "unknown": 0 },
+        { "id": "fuel-stock", "type": "string", "unknown": "" } ] },
+    { "kind": "battery", "capacity": 64000, "ownerCapacity": 32, "memory": 1000000000, "owned": true, "attrs": [
+        { "id": "group", "type": "string", "unknown": "" },
+        { "id": "battery", "type": "string", "unknown": "" },
+        { "id": "ammo", "type": "bool", "unknown": false },
+        { "id": "rounds", "type": "int", "min": 0, "max": 10000000000, "unknown": 0 },
+        { "id": "capacity", "type": "int", "min": 0, "max": 10000000000, "unknown": 0 },
+        { "id": "stock", "type": "string", "unknown": "" } ] },
+    { "kind": "stock", "capacity": 8000, "memory": 1000000000, "owned": false, "attrs": [
+        { "id": "held", "type": "int", "min": 0, "max": 10000000000, "unknown": 0 } ] }
+  ],
+  "intents": [
+    { "id": "fire", "args": [ { "id": "attacker", "type": "string" }, { "id": "defender", "type": "string" }, { "id": "metres", "type": "int", "min": 0, "max": 100000 }, { "id": "cover", "type": "string" }, { "id": "terrain", "type": "string" } ] },
+    { "id": "resupply", "args": [ { "id": "group", "type": "string" }, { "id": "battery", "type": "string" }, { "id": "rounds", "type": "int", "min": 0, "max": 10000000000 } ] },
+    { "id": "refuel", "args": [ { "id": "group", "type": "string" }, { "id": "amount", "type": "int", "min": 0, "max": 10000000000 } ] },
+    { "id": "reinforce", "args": [ { "id": "group", "type": "string" }, { "id": "members", "type": "int", "min": 0, "max": 10000000000 } ] }
+  ],
+  "behaviors": [
+    { "id": "commander", "every": 1, "root": { "id": "command", "kind": "sequence", "resume": false, "children": [
+        { "id": "beat", "kind": "let", "key": "phase", "value": { "op": "mod", "args": [ { "op": "tick" }, 15 ] } },
+        { "id": "arm", "kind": "succeed", "child": { "id": "arm-seq", "kind": "sequence", "resume": false, "children": [
+            { "id": "on-beat", "kind": "condition", "when": { "fact": "key.phase", "op": "eq", "value": 0 } },
+            { "id": "mark-due", "kind": "let", "key": "due", "value": true } ] } },
+        { "id": "is-ready", "kind": "condition", "when": { "fact": "key.ready", "op": "eq", "value": true } },
+        { "id": "is-due", "kind": "condition", "when": { "fact": "key.due", "op": "eq", "value": true } },
+        { "id": "clear-due", "kind": "let", "key": "due", "value": false },
+        { "id": "count-foes", "kind": "count", "from": "group", "into": "foes",
+          "where": { "all": [ { "fact": "item.hostile", "op": "eq", "value": true }, { "fact": "item.standing", "op": "eq", "value": true } ] } },
+        { "id": "has-foes", "kind": "condition", "when": { "fact": "key.foes", "op": "gt", "value": 0 } },
+        { "id": "each-own", "kind": "forEach", "from": "group", "limit": 1000,
+          "where": { "all": [ { "fact": "item.hostile", "op": "eq", "value": false }, { "fact": "item.standing", "op": "eq", "value": true } ] }, "child":
+          { "id": "shoot", "kind": "sequence", "resume": false, "children": [
+            { "id": "pick-foe", "kind": "select", "from": "group", "into": "target",
+              "where": { "all": [ { "fact": "item.hostile", "op": "eq", "value": true }, { "fact": "item.standing", "op": "eq", "value": true } ] },
+              "pick": { "nth": { "op": "mod", "args": [ { "item": "index" }, { "op": "max", "args": [ 1, { "key": "foes" } ] } ] } } },
+            { "id": "fire-at", "kind": "act", "intent": "fire", "args": { "attacker": { "item": "id" }, "defender": { "key": "target" }, "metres": { "key": "distance" }, "cover": "open", "terrain": { "key": "terrain" } } } ] } } ] } },
+
+    { "id": "quartermaster", "every": 1, "root": { "id": "supply", "kind": "sequence", "resume": false, "children": [
+        { "id": "beat", "kind": "let", "key": "phase", "value": { "op": "mod", "args": [ { "op": "tick" }, 30 ] } },
+        { "id": "on-beat", "kind": "condition", "when": { "fact": "key.phase", "op": "eq", "value": 8 } },
+        { "id": "is-ready", "kind": "condition", "when": { "fact": "key.ready", "op": "eq", "value": true } },
+        { "id": "each-unit", "kind": "forEach", "from": "unit", "limit": 2000, "where": { "fact": "item.supplyable", "op": "eq", "value": true }, "child":
+          { "id": "supply-unit", "kind": "sequence", "resume": false, "children": [
+
+            { "id": "each-battery", "kind": "forEach", "from": "battery", "of": { "item": "id" }, "limit": 8, "where": { "fact": "item.ammo", "op": "eq", "value": true }, "child":
+              { "id": "top-up", "kind": "sequence", "resume": false, "children": [
+                { "id": "rounds-gap", "kind": "let", "key": "gap", "value": { "op": "sub", "args": [ { "op": "mul", "args": [ { "item": "capacity" }, 50 ] }, { "op": "mul", "args": [ { "item": "rounds" }, 100 ] } ] } },
+                { "id": "rounds-low", "kind": "condition", "when": { "fact": "key.gap", "op": "gt", "value": 0 } },
+                { "id": "rounds-missing", "kind": "let", "key": "missing", "value": { "op": "sub", "args": [ { "item": "capacity" }, { "item": "rounds" } ] } },
+                { "id": "rounds-offer", "kind": "let", "key": "offer", "value": { "op": "min", "args": [ { "key": "missing" }, { "known": { "from": "stock", "id": { "item": "stock" }, "attr": "held" } } ] } },
+                { "id": "rounds-any", "kind": "condition", "when": { "fact": "key.offer", "op": "gt", "value": 0 } },
+                { "id": "resupply", "kind": "act", "intent": "resupply", "args": { "group": { "item": "group" }, "battery": { "item": "battery" }, "rounds": { "op": "max", "args": [ 0, { "key": "offer" } ] } } },
+                { "id": "rounds-spent", "kind": "adjust", "from": "stock", "target": { "item": "stock" }, "attr": "held", "by": { "op": "sub", "args": [ 0, { "key": "offer" } ] } } ] } },
+
+            { "id": "fuel", "kind": "succeed", "child": { "id": "fuel-seq", "kind": "sequence", "resume": false, "children": [
+                { "id": "has-tank", "kind": "condition", "when": { "all": [ { "fact": "item.fuel-room", "op": "gt", "value": 0 }, { "fact": "item.fuel-stock", "op": "ne", "value": "" } ] } },
+                { "id": "fuel-gap", "kind": "let", "key": "gap", "value": { "op": "sub", "args": [ { "op": "mul", "args": [ { "item": "fuel-room" }, 50 ] }, { "op": "mul", "args": [ { "item": "fuel" }, 100 ] } ] } },
+                { "id": "fuel-low", "kind": "condition", "when": { "fact": "key.gap", "op": "gt", "value": 0 } },
+                { "id": "fuel-missing", "kind": "let", "key": "missing", "value": { "op": "sub", "args": [ { "item": "fuel-room" }, { "item": "fuel" } ] } },
+                { "id": "fuel-offer", "kind": "let", "key": "offer", "value": { "op": "min", "args": [ { "key": "missing" }, { "known": { "from": "stock", "id": { "item": "fuel-stock" }, "attr": "held" } } ] } },
+                { "id": "fuel-any", "kind": "condition", "when": { "fact": "key.offer", "op": "gt", "value": 0 } },
+                { "id": "refuel", "kind": "act", "intent": "refuel", "args": { "group": { "item": "id" }, "amount": { "op": "max", "args": [ 0, { "key": "offer" } ] } } },
+                { "id": "fuel-spent", "kind": "adjust", "from": "stock", "target": { "item": "fuel-stock" }, "attr": "held", "by": { "op": "sub", "args": [ 0, { "key": "offer" } ] } } ] } },
+
+            { "id": "people", "kind": "succeed", "child": { "id": "people-seq", "kind": "sequence", "resume": false, "children": [
+                { "id": "people-gap", "kind": "let", "key": "gap", "value": { "op": "sub", "args": [ { "op": "mul", "args": [ { "item": "initial" }, 75 ] }, { "op": "mul", "args": [ { "item": "members" }, 100 ] } ] } },
+                { "id": "people-low", "kind": "condition", "when": { "fact": "key.gap", "op": "gt", "value": 0 } },
+                { "id": "people-visit", "kind": "let", "key": "visit", "value": { "op": "max", "args": [ 1, { "op": "div", "args": [ { "item": "initial" }, 5 ] } ] } },
+                { "id": "people-missing", "kind": "let", "key": "missing", "value": { "op": "sub", "args": [ { "item": "initial" }, { "item": "members" } ] } },
+                { "id": "people-want", "kind": "let", "key": "want", "value": { "op": "min", "args": [ { "key": "visit" }, { "key": "missing" } ] } },
+                { "id": "people-offer", "kind": "let", "key": "offer", "value": { "op": "min", "args": [ { "key": "want" }, { "known": { "from": "stock", "id": { "item": "people-stock" }, "attr": "held" } } ] } },
+                { "id": "people-any", "kind": "condition", "when": { "fact": "key.offer", "op": "gt", "value": 0 } },
+                { "id": "reinforce", "kind": "act", "intent": "reinforce", "args": { "group": { "item": "id" }, "members": { "op": "max", "args": [ 0, { "key": "offer" } ] } } },
+                { "id": "people-spent", "kind": "adjust", "from": "stock", "target": { "item": "people-stock" }, "attr": "held", "by": { "op": "sub", "args": [ 0, { "key": "offer" } ] } } ] } }
+
+          ] } } ] } }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "character_stats": [
+    { "id": "bench.stat.strength", "min": 1, "max": 20 },
+    { "id": "bench.stat.courage", "min": 0, "max": 100 }
+  ],
+  "character_skills": [{ "id": "bench.skill.shooting", "max_level": 5 }],
+  "character_traits": [
+    { "id": "bench.trait.brave", "label": "trait.brave" },
+    { "id": "bench.trait.careful", "label": "trait.careful" }
+  ],
+  "name_pools": [
+    { "id": "bench.names.given", "names": ["Adam", "Bram", "Carl", "Dario", "Emil", "Farid", "Gus", "Hugo"] },
+    { "id": "bench.names.family", "names": ["Ashby", "Brandt", "Cole", "Dunn", "Ekberg", "Foss", "Gray", "Hale"] }
+  ],
+  "character_archetypes": [
+    { "id": "bench.person", "entity": "bench.person", "max_spawn": 20000, "given_names": "bench.names.given", "family_names": "bench.names.family",
+      "stats": [{ "stat": "bench.stat.strength", "min": 8, "max": 14 }, { "stat": "bench.stat.courage", "min": 30, "max": 80 }],
+      "skills": [{ "skill": "bench.skill.shooting", "min": 1, "max": 4 }],
+      "traits": { "min": 0, "max": 1, "pool": [{ "trait": "bench.trait.brave", "weight": 1 }, { "trait": "bench.trait.careful", "weight": 1 }] },
+      "equipment": [], "roles": ["infantry"] }
+  ],
+  "character_formations": [
+    { "id": "bench.company", "squad_entity": "bench.squad", "max_squads": 1000, "catalog_unit": null,
+      "members": [{ "archetype": "bench.person", "count": 100 }], "equipment": [] }
+  ]
+}

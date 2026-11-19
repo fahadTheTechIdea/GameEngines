@@ -1,0 +1,10 @@
+{ "format": 1, "locale": "en", "messages": {
+  "cal.weekday.mon": "Mon", "cal.weekday.tue": "Tue", "cal.weekday.wed": "Wed", "cal.weekday.thu": "Thu", "cal.weekday.fri": "Fri", "cal.weekday.sat": "Sat", "cal.weekday.sun": "Sun",
+  "cal.month.spring": "Spring", "cal.month.summer": "Summer", "cal.month.fall": "Fall", "cal.month.winter": "Winter",
+  "cal.daypart.night": "night", "cal.daypart.morning": "morning", "cal.daypart.day": "day", "cal.daypart.evening": "evening", "cal.daypart.late": "late",
+  "cal.season.spring": "spring", "cal.season.summer": "summer", "cal.season.fall": "fall", "cal.season.winter": "winter",
+  "cal.holiday.egg-festival": "Egg Festival", "cal.holiday.flower-dance": "Flower Dance", "cal.holiday.luau": "Luau", "cal.holiday.fair": "Fair", "cal.holiday.ice-festival": "Festival of Ice", "cal.holiday.winter-star": "Feast of the Winter Star",
+  "cal.format.long": "{weekday}. {day} of {month}, year {year}",
+  "cal.place.home": "home", "cal.place.library": "the library", "cal.place.saloon": "the saloon", "cal.place.mountain": "the mountain", "cal.place.beach": "the beach", "cal.place.town-square": "the town square", "cal.place.festival-grounds": "the festival grounds", "cal.place.farm": "the farm",
+  "cal.act.sleep": "sleeping", "cal.act.read": "reading", "cal.act.eat": "eating", "cal.act.wander": "wandering", "cal.act.fish": "fishing", "cal.act.rest": "resting", "cal.act.celebrate": "celebrating", "cal.act.farm": "farming"
+} }

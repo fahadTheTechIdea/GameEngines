@@ -1,0 +1,22 @@
+{
+  "time_definitions": [{
+    "id": "lab.time", "quantum": { "numerator": 60, "denominator": 1, "unit": "second" },
+    "frame_ticks": 1, "ticks_per_second": 30, "calendar": null, "horizon": null
+  }],
+  "entity_states": [{ "id": "lab.idle", "state": "state.lab.idle", "priority": 0, "default": true }],
+  "entities": [{
+    "id": "lab.annex", "kind": "entity",
+    "components": { "storage": { "capacity_policy": "lab.shelf" } }
+  }, {
+    "id": "lab.bench", "kind": "entity",
+    "components": { "storage": { "capacity_policy": "lab.shelf", "initial_stock": { "lab.sample": 5 } } }
+  }],
+  "game_modes": [{ "id": "lab.resource-only", "name": "Resource-only simulation", "properties": {} }],
+  "scenarios": [{
+    "id": "lab", "name": "Research lab",
+    "modules": ["lab", "sim.inventory", "sim.motion", "sim.work", "sim.knowledge", "sim.technology", "gf.director"],
+    "space": null, "game_mode": "lab.resource-only", "mode_overrides": {},
+    "settings": { "sim.world-setup": { "profile": "lab.start" }, "sim.work": { "retry": "lab.retry" } },
+    "seats": 1, "default_seats": 1, "time": "lab.time"
+  }]
+}

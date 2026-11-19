@@ -1,0 +1,964 @@
+{
+  "SchemaVersion": 1,
+  "Id": "expedition-outposts",
+  "GameProfile": "expedition-survival",
+  "CatalogId": "expedition-content",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "CompleteDeclaredScope",
+  "RemainingScopes": [],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    0,
+    0
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "local-0",
+      "Kind": "outpost-path",
+      "FromId": "expedition-outposts/outposts-0/shelters-0",
+      "ToId": "expedition-outposts/outposts-0/yards-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "local-1",
+      "Kind": "outpost-path",
+      "FromId": "expedition-outposts/outposts-1/shelters-0",
+      "ToId": "expedition-outposts/outposts-1/yards-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "trail",
+      "Kind": "expedition-trail",
+      "FromId": "expedition-outposts/outposts-0/yards-0",
+      "ToId": "expedition-outposts/outposts-1/yards-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "ridge-world",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 56,
+          "Y": 0
+        },
+        {
+          "X": 56,
+          "Y": 36
+        },
+        {
+          "X": 52,
+          "Y": 40
+        },
+        {
+          "X": 4,
+          "Y": 40
+        },
+        {
+          "X": 0,
+          "Y": 36
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "inlet",
+        "Kind": "water",
+        "Purpose": "Protected coastal inlet",
+        "SourceRuleId": "connection-gate:inlet",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 26,
+              "Y": 0
+            },
+            {
+              "X": 30,
+              "Y": 0
+            },
+            {
+              "X": 30,
+              "Y": 26
+            },
+            {
+              "X": 26,
+              "Y": 26
+            }
+          ]
+        },
+        "Priority": 10,
+        "Origin": {
+          "X": 26,
+          "Y": 0
+        },
+        "Elevation": 0,
+        "GradientX": 0,
+        "GradientY": 0
+      }
+    ],
+    "Terrain": {
+      "SchemaVersion": 1,
+      "Id": "ridge",
+      "Kind": "ground",
+      "Purpose": "Ridge with an open mountain pass",
+      "SourceRuleId": "landform:ridge",
+      "Unit": "meters",
+      "Origin": {
+        "X": 0,
+        "Y": 0
+      },
+      "StepX": 2,
+      "StepY": 2,
+      "Columns": 29,
+      "Rows": 21,
+      "BaseElevation": 0,
+      "GradientX": 0,
+      "GradientY": 0,
+      "Operations": [],
+      "Detail": null,
+      "MaximumWork": 20000000
+    },
+    "HeightField": null
+  },
+  "RouteRules": [
+    {
+      "Id": "trail",
+      "ConnectionKind": "expedition-trail",
+      "Profile": {
+        "Id": "walking",
+        "Purpose": "Connect required local programs",
+        "SourceRuleId": "interface:walking",
+        "Radius": 0.3,
+        "MaximumSlope": 0.2,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 2,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 512,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 30000000,
+        "Objective": "LowestCost"
+      },
+      "FromPortId": "north",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    },
+    {
+      "Id": "outpost-access",
+      "ConnectionKind": "outpost-path",
+      "Profile": {
+        "Id": "walking",
+        "Purpose": "Connect required local programs",
+        "SourceRuleId": "interface:walking",
+        "Radius": 0.3,
+        "MaximumSlope": 0.2,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 2,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 512,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 30000000,
+        "Objective": "LowestCost"
+      },
+      "FromPortId": "north",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "region-fields",
+    "Fields": [
+      {
+        "Id": "height",
+        "Purpose": "Elevation limit",
+        "SourceRuleId": "region:height",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Elevation",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "clamped",
+        "Purpose": "Clamped elevation",
+        "SourceRuleId": "region:clamp",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Field",
+            "Coefficient": 1,
+            "FieldId": "height"
+          }
+        ],
+        "Minimum": 0,
+        "Maximum": 7
+      }
+    ],
+    "SampledFields": null
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "regional-sites",
+      "Purpose": "Place each required site in its terrain region",
+      "SourceRuleId": "region:placement",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 56,
+            "Y": 0
+          },
+          {
+            "X": 56,
+            "Y": 36
+          },
+          {
+            "X": 52,
+            "Y": 40
+          },
+          {
+            "X": 4,
+            "Y": 40
+          },
+          {
+            "X": 0,
+            "Y": 36
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "west-a",
+          "Purpose": "Arrival program",
+          "SourceRuleId": "layout:west-a",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "west-b",
+          "Purpose": "Production program",
+          "SourceRuleId": "layout:west-b",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        }
+      ],
+      "Anchors": [
+        {
+          "Id": "a",
+          "Position": {
+            "X": 10,
+            "Y": 20
+          }
+        },
+        {
+          "Id": "b",
+          "Position": {
+            "X": 46,
+            "Y": 20
+          }
+        }
+      ],
+      "Relations": [
+        {
+          "Id": "a",
+          "FromId": "west-a",
+          "ToId": "a",
+          "Purpose": "Preserve first position",
+          "SourceRuleId": "interface:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "b",
+          "FromId": "west-b",
+          "ToId": "b",
+          "Purpose": "Preserve second position",
+          "SourceRuleId": "interface:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        }
+      ],
+      "MinimumSeparation": 0,
+      "MaximumCandidates": 4096,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 150000000,
+      "AllowBoundaryContact": false,
+      "Growth": null,
+      "Execution": "Search",
+      "Nogoods": null
+    },
+    "Bindings": [
+      {
+        "DemandId": "west-a",
+        "NodeId": "expedition-outposts/outposts-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "west-b",
+        "NodeId": "expedition-outposts/outposts-1",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      }
+    ],
+    "NestedStages": [
+      {
+        "Id": "outpost-0",
+        "ParentNodeId": "expedition-outposts/outposts-0",
+        "Request": {
+          "Id": "contents",
+          "Purpose": "Complete outpost contents",
+          "SourceRuleId": "expedition:contents",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "shelter",
+              "Purpose": "Required shelter",
+              "SourceRuleId": "expedition:shelter",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "yard",
+              "Purpose": "Required yard",
+              "SourceRuleId": "expedition:yard",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "shelter-anchor",
+              "Position": {
+                "X": -3,
+                "Y": 0
+              }
+            },
+            {
+              "Id": "yard-anchor",
+              "Position": {
+                "X": 3,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "shelter-pin",
+              "FromId": "shelter",
+              "ToId": "shelter-anchor",
+              "Purpose": "Shelter beside work area",
+              "SourceRuleId": "expedition:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "yard-pin",
+              "FromId": "yard",
+              "ToId": "yard-anchor",
+              "Purpose": "Work area beside shelter",
+              "SourceRuleId": "expedition:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0.5,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "shelter",
+            "NodeId": "expedition-outposts/outposts-0/shelters-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "yard",
+            "NodeId": "expedition-outposts/outposts-0/yards-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ]
+      },
+      {
+        "Id": "cache-0",
+        "ParentNodeId": "expedition-outposts/outposts-0/yards-0",
+        "Request": {
+          "Id": "cache",
+          "Purpose": "Store supplies inside yard",
+          "SourceRuleId": "expedition:cache",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "store",
+              "Purpose": "Required supply cache",
+              "SourceRuleId": "expedition:cache",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "center",
+              "Position": {
+                "X": 0,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "pin",
+              "FromId": "store",
+              "ToId": "center",
+              "Purpose": "Keep cache in work area",
+              "SourceRuleId": "expedition:cache",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "store",
+            "NodeId": "expedition-outposts/outposts-0/yards-0/stores-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ]
+      },
+      {
+        "Id": "outpost-1",
+        "ParentNodeId": "expedition-outposts/outposts-1",
+        "Request": {
+          "Id": "contents",
+          "Purpose": "Complete outpost contents",
+          "SourceRuleId": "expedition:contents",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "shelter",
+              "Purpose": "Required shelter",
+              "SourceRuleId": "expedition:shelter",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "yard",
+              "Purpose": "Required yard",
+              "SourceRuleId": "expedition:yard",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "shelter-anchor",
+              "Position": {
+                "X": -3,
+                "Y": 0
+              }
+            },
+            {
+              "Id": "yard-anchor",
+              "Position": {
+                "X": 3,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "shelter-pin",
+              "FromId": "shelter",
+              "ToId": "shelter-anchor",
+              "Purpose": "Shelter beside work area",
+              "SourceRuleId": "expedition:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "yard-pin",
+              "FromId": "yard",
+              "ToId": "yard-anchor",
+              "Purpose": "Work area beside shelter",
+              "SourceRuleId": "expedition:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0.5,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "shelter",
+            "NodeId": "expedition-outposts/outposts-1/shelters-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "yard",
+            "NodeId": "expedition-outposts/outposts-1/yards-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ]
+      },
+      {
+        "Id": "cache-1",
+        "ParentNodeId": "expedition-outposts/outposts-1/yards-0",
+        "Request": {
+          "Id": "cache",
+          "Purpose": "Store supplies inside yard",
+          "SourceRuleId": "expedition:cache",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "store",
+              "Purpose": "Required supply cache",
+              "SourceRuleId": "expedition:cache",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "center",
+              "Position": {
+                "X": 0,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "pin",
+              "FromId": "store",
+              "ToId": "center",
+              "Purpose": "Keep cache in work area",
+              "SourceRuleId": "expedition:cache",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "store",
+            "NodeId": "expedition-outposts/outposts-1/yards-0/stores-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ]
+      }
+    ],
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 32,
+    "SourceWorld": null,
+    "ConnectedLayouts": null,
+    "Programs": null,
+    "RegionAnchors": null,
+    "AllocationAnchors": null,
+    "Nogoods": null
+  },
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": null,
+  "RouteBudget": null,
+  "Interiors": null,
+  "TerrainDemands": null,
+  "ProgramComposition": null,
+  "Drainage": null,
+  "Water": null,
+  "WindMoisture": null
+}

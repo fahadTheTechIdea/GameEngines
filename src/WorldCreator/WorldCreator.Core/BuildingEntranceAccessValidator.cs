@@ -16,7 +16,7 @@ public sealed record EntranceAccessReport(IReadOnlyList<string> Issues)
 public sealed class BuildingEntranceAccessValidator
 {
     private const double Tolerance = 1e-6;
-    public EntranceAccessReport Validate(DummyVillageWorldDocument world,
+    public EntranceAccessReport Validate(WorldSceneDocument world,
         IReadOnlyList<BuildingEntranceLink> links)
     {
         ArgumentNullException.ThrowIfNull(world);

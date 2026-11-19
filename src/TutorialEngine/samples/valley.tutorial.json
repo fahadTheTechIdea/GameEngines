@@ -1,0 +1,90 @@
+{
+  "format": 1,
+  "id": "valley.tutorial",
+  "time": { "stepsPerDay": 1440 },
+  "limits": { "maxActiveSteps": 1, "maxVisibleTips": 2, "tipGap": 0 },
+  "facts": [
+    { "id": "input.gamepad", "type": "bool" },
+    { "id": "ui.menu_open", "type": "bool" },
+    { "id": "game.paused", "type": "bool" },
+    { "id": "game.population", "type": "int", "min": 0, "max": 1000000 }
+  ],
+  "events": [
+    { "id": "moved" }, { "id": "camera_moved" }, { "id": "menu_opened" }, { "id": "structure_built" }, { "id": "road_built" },
+    { "id": "worker_hired" }, { "id": "dialogue_finished" }, { "id": "trade_made" }, { "id": "bond_made" }, { "id": "saved_game" }
+  ],
+  "inputs": [
+    { "action": "move", "event": "moved" },
+    { "action": "camera.pan", "event": "camera_moved" },
+    { "action": "menu.open", "event": "menu_opened" },
+    { "action": "build.place", "event": "structure_built" },
+    { "action": "save", "event": "saved_game" }
+  ],
+  "skills": [
+    { "id": "movement", "key": "tut.skill.movement", "mastered": 20, "evidence": [ { "event": "moved", "points": 1 } ] },
+    { "id": "menus", "key": "tut.skill.menus", "mastered": 3, "evidence": [ { "event": "menu_opened", "points": 1 } ] },
+    { "id": "building", "key": "tut.skill.building", "mastered": 4, "evidence": [ { "event": "structure_built", "points": 2 }, { "event": "road_built", "points": 1 } ] },
+    { "id": "trading", "key": "tut.skill.trading", "mastered": 2, "evidence": [ { "event": "trade_made", "points": 1 } ] }
+  ],
+  "journey": {
+    "languages": [ "en", "fr", "ar", "es" ],
+    "defaultLanguage": "en",
+    "pages": [
+      { "id": "welcome", "key": "tut.page.welcome", "body": "tut.page.welcome.body", "art": "tut.art.welcome" },
+      { "id": "valley", "key": "tut.page.valley", "body": "tut.page.valley.body", "art": "tut.art.valley" },
+      { "id": "people", "key": "tut.page.people", "body": "tut.page.people.body", "art": "tut.art.people" },
+      { "id": "ready", "key": "tut.page.ready", "body": "tut.page.ready.body", "art": "tut.art.ready" }
+    ],
+    "entries": [ "sign-in", "register", "host", "join" ]
+  },
+  "steps": [
+    { "id": "move", "key": "tut.step.move", "body": "tut.step.move.body", "target": "player", "motion": "pulse", "skippable": true, "skill": "movement", "requires": [], "requiresAny": [],
+      "complete": { "fact": "event.moved.since_step", "op": "gte", "value": 1 },
+      "hints": [ { "idle": 300, "kind": "nudge", "key": "tut.hint.move.nudge" }, { "idle": 900, "kind": "explain", "key": "tut.hint.move.explain" }, { "idle": 1800, "kind": "show", "key": "tut.hint.move.show" } ] },
+    { "id": "look-mouse", "key": "tut.step.look-mouse", "body": "tut.step.look-mouse.body", "target": "camera", "motion": "slide", "skippable": true, "skill": "", "requires": [ "move" ], "requiresAny": [],
+      "when": { "fact": "input.gamepad", "op": "eq", "value": false },
+      "complete": { "fact": "event.camera_moved.since_step", "op": "gte", "value": 1 },
+      "hints": [ { "idle": 600, "kind": "nudge", "key": "tut.hint.look.nudge" } ] },
+    { "id": "look-pad", "key": "tut.step.look-pad", "body": "tut.step.look-pad.body", "target": "camera", "motion": "slide", "skippable": true, "skill": "", "requires": [ "move" ], "requiresAny": [],
+      "when": { "fact": "input.gamepad", "op": "eq", "value": true },
+      "complete": { "fact": "event.camera_moved.since_step", "op": "gte", "value": 1 },
+      "hints": [ { "idle": 600, "kind": "nudge", "key": "tut.hint.look.nudge" } ] },
+    { "id": "menu", "key": "tut.step.menu", "body": "tut.step.menu.body", "target": "menu-button", "motion": "pulse", "skippable": true, "skill": "menus", "requires": [], "requiresAny": [ "look-mouse", "look-pad" ],
+      "complete": { "fact": "event.menu_opened.since_step", "op": "gte", "value": 1 },
+      "hints": [ { "idle": 600, "kind": "nudge", "key": "tut.hint.menu.nudge" }, { "idle": 1500, "kind": "show", "key": "tut.hint.menu.show" } ] },
+    { "id": "build", "key": "tut.step.build", "body": "tut.step.build.body", "target": "build-menu", "motion": "pulse", "skippable": false, "skill": "building", "requires": [ "menu" ], "requiresAny": [],
+      "complete": { "fact": "event.structure_built.since_step", "op": "gte", "value": 1 },
+      "hints": [ { "idle": 600, "kind": "nudge", "key": "tut.hint.build.nudge" }, { "idle": 1200, "kind": "explain", "key": "tut.hint.build.explain" }, { "idle": 2400, "kind": "show", "key": "tut.hint.build.show" } ] },
+    { "id": "road", "key": "tut.step.road", "body": "tut.step.road.body", "target": "road-tool", "motion": "slide", "skippable": true, "skill": "", "requires": [ "build" ], "requiresAny": [],
+      "complete": { "fact": "event.road_built.since_step", "op": "gte", "value": 2 },
+      "hints": [ { "idle": 900, "kind": "explain", "key": "tut.hint.road.explain" } ] },
+    { "id": "hire", "key": "tut.step.hire", "body": "tut.step.hire.body", "target": "workers", "motion": "pulse", "skippable": true, "skill": "", "requires": [ "road" ], "requiresAny": [],
+      "complete": { "fact": "event.worker_hired.since_step", "op": "gte", "value": 1 },
+      "hints": [ { "idle": 900, "kind": "nudge", "key": "tut.hint.hire.nudge" } ] },
+    { "id": "talk", "key": "tut.step.talk", "body": "tut.step.talk.body", "target": "mayor", "motion": "pulse", "skippable": true, "skill": "", "requires": [ "hire" ], "requiresAny": [],
+      "complete": { "fact": "event.dialogue_finished.since_step", "op": "gte", "value": 1 },
+      "hints": [ { "idle": 900, "kind": "show", "key": "tut.hint.talk.show" } ] },
+    { "id": "trade", "key": "tut.step.trade", "body": "tut.step.trade.body", "target": "market", "motion": "pulse", "skippable": true, "skill": "trading", "requires": [ "talk" ], "requiresAny": [],
+      "complete": { "fact": "event.trade_made.since_step", "op": "gte", "value": 1 },
+      "hints": [ { "idle": 900, "kind": "explain", "key": "tut.hint.trade.explain" } ] },
+    { "id": "friend", "key": "tut.step.friend", "body": "tut.step.friend.body", "target": "neighbour", "motion": "none", "skippable": true, "skill": "", "requires": [ "trade" ], "requiresAny": [],
+      "complete": { "fact": "event.bond_made.since_step", "op": "gte", "value": 1 },
+      "hints": [ { "idle": 1200, "kind": "nudge", "key": "tut.hint.friend.nudge" } ] },
+    { "id": "save", "key": "tut.step.save", "body": "tut.step.save.body", "target": "save-button", "motion": "pulse", "skippable": true, "skill": "", "requires": [ "friend" ], "requiresAny": [],
+      "complete": { "fact": "event.saved_game.since_step", "op": "gte", "value": 1 },
+      "hints": [ { "idle": 600, "kind": "show", "key": "tut.hint.save.show" } ] },
+    { "id": "grow", "key": "tut.step.grow", "body": "tut.step.grow.body", "target": "", "motion": "none", "skippable": true, "skill": "", "requires": [ "save" ], "requiresAny": [],
+      "complete": { "fact": "game.population", "op": "gte", "value": 10 },
+      "hints": [] }
+  ],
+  "tips": [
+    { "id": "paused", "key": "tut.tip.paused", "when": { "fact": "game.paused", "op": "eq", "value": true }, "cooldown": 1200, "maxShows": 3, "duration": 300, "priority": 5, "skill": "", "afterStep": "menu", "motion": "none" },
+    { "id": "menu-hotkey", "key": "tut.tip.menu-hotkey", "when": { "fact": "ui.menu_open", "op": "eq", "value": true }, "cooldown": 0, "maxShows": 1, "duration": 400, "priority": 3, "skill": "menus", "afterStep": "", "motion": "pulse" },
+    { "id": "road-snap", "key": "tut.tip.road-snap", "when": { "all": [ { "fact": "event.structure_built.count", "op": "gte", "value": 1 }, { "fact": "step.road.status", "op": "eq", "value": "pending" } ] }, "cooldown": 0, "maxShows": 1, "duration": 400, "priority": 4, "skill": "building", "afterStep": "", "motion": "slide" },
+    { "id": "save-habit", "key": "tut.tip.save-habit", "when": { "all": [ { "fact": "event.structure_built.count", "op": "gte", "value": 3 }, { "any": [ { "fact": "event.saved_game.ago", "op": "eq", "value": -1 }, { "fact": "event.saved_game.ago", "op": "gt", "value": 6000 } ] } ] }, "cooldown": 3000, "maxShows": 5, "duration": 500, "priority": 6, "skill": "", "afterStep": "build", "motion": "pulse" },
+    { "id": "market-prices", "key": "tut.tip.market-prices", "when": { "fact": "step.trade.status", "op": "eq", "value": "active" }, "cooldown": 0, "maxShows": 1, "duration": 500, "priority": 2, "skill": "trading", "afterStep": "", "motion": "none" },
+    { "id": "friends-gifts", "key": "tut.tip.friends-gifts", "when": { "fact": "event.bond_made.count", "op": "gte", "value": 1 }, "cooldown": 6000, "maxShows": 2, "duration": 400, "priority": 1, "skill": "", "afterStep": "", "motion": "none" },
+    { "id": "gamepad-menu", "key": "tut.tip.gamepad-menu", "when": { "all": [ { "fact": "input.gamepad", "op": "eq", "value": true }, { "fact": "ui.menu_open", "op": "eq", "value": true } ] }, "cooldown": 0, "maxShows": 1, "duration": 400, "priority": 3, "skill": "", "afterStep": "", "motion": "none" },
+    { "id": "growing-valley", "key": "tut.tip.growing-valley", "when": { "fact": "game.population", "op": "gte", "value": 25 }, "cooldown": 0, "maxShows": 1, "duration": 600, "priority": 0, "skill": "", "afterStep": "grow", "motion": "none" }
+  ]
+}

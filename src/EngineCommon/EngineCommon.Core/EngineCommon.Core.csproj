@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- What the dialogue, AI, calendar and relationship engines share: strict JSON reading, the one condition grammar (ScenarioEngine owns it), a digest, a stateless seeded roll, and the locale machinery (tables, chains, CLDR plural rules, message rendering, coverage). Checked arithmetic: an overflow is an exception, never a wrapped number. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><CheckForOverflowUnderflow>true</CheckForOverflowUnderflow></PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Locale/cldr-plurals.json" LogicalName="cldr-plurals.json" />
+    <InternalsVisibleTo Include="DialogueEngine.Tests" />
+    <InternalsVisibleTo Include="CalendarEngine.Tests" />
+    <InternalsVisibleTo Include="EngineCommon.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Contracts/ScenarioEngine.Contracts.csproj" />
+  </ItemGroup>
+</Project>

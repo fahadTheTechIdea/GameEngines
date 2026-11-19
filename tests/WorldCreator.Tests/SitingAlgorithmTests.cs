@@ -19,7 +19,7 @@ internal static class SitingAlgorithmTests
             foreach (var technology in definition.SitingProfile!.AllowedTechnologies)
             { ModernSitingProfiles.Resolve(definition,technology).Validate(); technologies++; }
         }
-        var engine=new DesertWorldGenerator(TestCatalogs.Registry);
+        var engine=new MockupWorldGenerator(TestCatalogs.Registry);
         var cases=new[] { "warehouse","factory","primary-school","hospital","fire-station","football-stadium",
             "hotel","data-center","aquaculture-facility","solar-farm","wind-farm","water-treatment-plant",
             "wastewater-treatment-plant","desalination-plant","observatory","detached-house","supermarket","bank","mosque" };
@@ -189,7 +189,7 @@ internal static class SitingAlgorithmTests
         int pathIndex=paths.FindIndex(p=>p.Id=="secondary-service-power");
         paths[pathIndex]=paths[pathIndex] with { RegionId="combined-world",
             Centerline=new([providerPort,new(providerPort.X,64),paths[pathIndex].Centerline.Points[^1]]) };
-        return new(width,height,42,Biome.Desert,1,new(1,new(1,"synthetic-provider-layout","r1","synthetic-style",regions,[]),1,
+        return new(width,height,1,new(1,new(1,"synthetic-provider-layout","r1","synthetic-style",regions,[]),1,
             paths,roads,rules,terrain,[],primary.Design!.BuildingCatalog.Concat(secondary.Design!.BuildingCatalog).ToArray(),
             Catalog:ModernCatalog.Selection,Siting:new(1,districts,sources,links,[],[])));
     }
@@ -289,7 +289,7 @@ internal static class SitingAlgorithmTests
             bindings.Add(new(requirement.Id,requirement.Id,[linkId]));
         }
         var context=new StructureSitingContext("district",technology,bindings);
-        return new(width,height,42,Biome.Desert,1,new(1,new(1,"synthetic-siting-layout","layout-r1","synthetic-style",regions,[]),1,
+        return new(width,height,1,new(1,new(1,"synthetic-siting-layout","layout-r1","synthetic-style",regions,[]),1,
             paths,[new("approach",RoadClass.Collector,new(3,4,2,2,0,0))],
             [new("facility","site","settlement","approach","serve the explicit contextual "+id+" program",
                 (right-64)/copies,(right-64)/copies,new(id,20,20,20,1,1),[],variant.Id,variant.ServiceCapacity,

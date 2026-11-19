@@ -4,7 +4,7 @@ namespace WorldCreator.Core;
 /// GameArts artifacts, not a claim that this record itself proves lifecycle approval.</summary>
 public sealed record WorldAssetFileEvidence(string SheetId, string ImageSha256,
     string AtlasSha256, string ComponentId);
-public sealed record WorldAssetDependency(string AssetId, string GameArtsRevision,
+public sealed record WorldAssetDependency(string AssetId, string BundleAssetId, string GameArtsRevision,
     string StandardVersion, IReadOnlyList<WorldAssetFileEvidence> Files);
 public sealed record WorldAssetDependencyResult(IReadOnlyList<WorldAssetDependency> Dependencies,
     IReadOnlyList<string> Issues)
@@ -36,7 +36,7 @@ public sealed class WorldAssetDependencyManifestBuilder(IApprovedArtRegistry reg
                 errors.Add("WORLD_ASSET_EVIDENCE_INCOMPLETE:" + id);
                 continue;
             }
-            result.Add(new(id, manifest!.GameArtsRevision, manifest.StandardVersion,
+            result.Add(new(id, manifest!.BundleAssetId, manifest.GameArtsRevision, manifest.StandardVersion,
                 manifest.Sheets.OrderBy(s => s.Id, StringComparer.Ordinal)
                     .Select(s => new WorldAssetFileEvidence(s.Id,
                         s.ImageSha256, s.AtlasSha256, s.ComponentId)).ToArray()));
@@ -44,9 +44,10 @@ public sealed class WorldAssetDependencyManifestBuilder(IApprovedArtRegistry reg
         return errors.Count == 0 ? new(result, []) : new([], errors);
     }
 
-    internal static bool IsComplete(ApprovedArtManifest? manifest, string assetId) =>
-        manifest is { SchemaVersion: 1, ApprovalState: ArtApprovalState.Approved } &&
+    internal static bool IsComplete([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] ApprovedArtManifest? manifest, string assetId) =>
+        manifest is { SchemaVersion: 2, ApprovalState: ArtApprovalState.Approved } &&
         manifest.AssetId == assetId &&
+        !string.IsNullOrWhiteSpace(manifest.BundleAssetId) &&
         !string.IsNullOrWhiteSpace(manifest.GameArtsRevision) &&
         !string.IsNullOrWhiteSpace(manifest.StandardVersion) &&
         manifest.Sheets is { Count: > 0 } &&

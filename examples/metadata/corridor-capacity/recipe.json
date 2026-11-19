@@ -1,0 +1,239 @@
+{
+  "SchemaVersion": 1,
+  "Id": "corridor-reuse",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Diagnostic shared-segment capacity; independent resilience, adaptive regions, artwork and native runtime remain open"
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    0,
+    0
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "a-trunk",
+      "Kind": "travel",
+      "FromId": "corridor-reuse/a-0",
+      "ToId": "corridor-reuse/b-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "b-branch",
+      "Kind": "travel",
+      "FromId": "corridor-reuse/c-0",
+      "ToId": "corridor-reuse/d-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "flat",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 120,
+          "Y": 0
+        },
+        {
+          "X": 120,
+          "Y": 40
+        },
+        {
+          "X": 70,
+          "Y": 40
+        },
+        {
+          "X": 70,
+          "Y": 100
+        },
+        {
+          "X": 0,
+          "Y": 100
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "ground",
+        "Kind": "meadow",
+        "Purpose": "Exploration ground",
+        "SourceRuleId": "authored-ground",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 120,
+              "Y": 0
+            },
+            {
+              "X": 120,
+              "Y": 40
+            },
+            {
+              "X": 70,
+              "Y": 40
+            },
+            {
+              "X": 70,
+              "Y": 100
+            },
+            {
+              "X": 0,
+              "Y": 100
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 10,
+        "GradientX": 0,
+        "GradientY": 0
+      }
+    ],
+    "Terrain": null,
+    "HeightField": null
+  },
+  "RouteRules": [
+    {
+      "Id": "trails",
+      "ConnectionKind": "travel",
+      "Profile": {
+        "Id": "foot",
+        "Purpose": "Shared exploration trails",
+        "SourceRuleId": "test:foot",
+        "Radius": 1,
+        "MaximumSlope": 0.5,
+        "KindCosts": {
+          "meadow": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.5,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 20000000
+      },
+      "FromPortId": null,
+      "ToPortId": null,
+      "Reuse": {
+        "NewPassageCostPerMeter": 5,
+        "MaximumSourceEdges": 512
+      }
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": null,
+  "SuitabilityRules": null,
+  "Placement": null,
+  "Services": {
+    "Bindings": [
+      {
+        "ConsumerNodeId": "corridor-reuse/b-0",
+        "RequirementId": "need",
+        "ProviderNodeId": "corridor-reuse/a-0",
+        "SupplyId": "stock",
+        "ConnectionIds": [
+          "corridor-reuse/explicit/a-trunk"
+        ],
+        "Purpose": "First delivery",
+        "SourceRuleId": "test:first"
+      },
+      {
+        "ConsumerNodeId": "corridor-reuse/d-0",
+        "RequirementId": "need",
+        "ProviderNodeId": "corridor-reuse/c-0",
+        "SupplyId": "stock",
+        "ConnectionIds": [
+          "corridor-reuse/explicit/b-branch"
+        ],
+        "Purpose": "Second delivery",
+        "SourceRuleId": "test:second"
+      }
+    ],
+    "Links": [
+      {
+        "ConnectionId": "corridor-reuse/explicit/a-trunk",
+        "Capacity": 4,
+        "Unit": "units",
+        "Purpose": "First link limit",
+        "SourceRuleId": "test:link"
+      },
+      {
+        "ConnectionId": "corridor-reuse/explicit/b-branch",
+        "Capacity": 4,
+        "Unit": "units",
+        "Purpose": "Second link limit",
+        "SourceRuleId": "test:link"
+      }
+    ],
+    "MaximumWork": 2000000,
+    "CorridorCapacities": [
+      {
+        "GroupId": "trails",
+        "CapacityPerSegment": 8,
+        "Unit": "units",
+        "Purpose": "Shared physical passage budget",
+        "SourceRuleId": "test:capacity"
+      }
+    ]
+  },
+  "Context": null,
+  "Corridors": {
+    "Groups": [
+      {
+        "Id": "trails",
+        "ConnectionKind": "travel",
+        "SourceRuleId": "example:trails",
+        "Level": 0,
+        "JunctionPolicy": "connect-at-grade"
+      }
+    ],
+    "MaximumWork": 40000000
+  }
+}

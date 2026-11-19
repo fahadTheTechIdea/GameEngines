@@ -14,7 +14,7 @@ public sealed class PersistenceTests
         var scenario = h.Scenario();
         using var original = h.Start(scenario);
         original.Enqueue(Harness.Increment());
-        original.Step(Harness.Input(1));
+        original.Update(Harness.Input(1));
         var store = new MemoryStore();
         var service = new ScenarioSaveService(new ScenarioSaveCodec(), store, h.Reporter);
         Assert.True((await service.SaveAsync("slot", original.Snapshot, TestContext.Current.CancellationToken)).Committed);
@@ -25,7 +25,7 @@ public sealed class PersistenceTests
         {
             original.Enqueue(Harness.Increment(tick, "next-" + tick));
             restored.Enqueue(Harness.Increment(tick, "next-" + tick));
-            Assert.Equal(original.Step(Harness.Input(tick)).RuleStateHash, restored.Step(Harness.Input(tick)).RuleStateHash);
+            Assert.Equal(original.Update(Harness.Input(tick)).RuleStateHash, restored.Update(Harness.Input(tick)).RuleStateHash);
         }
     }
 
@@ -34,7 +34,7 @@ public sealed class PersistenceTests
     {
         using var sim = new Harness().Start();
         var codec = new ScenarioSaveCodec();
-        var bytes = codec.Encode(new(1, ScenarioSaveCodec.BuildId, DateTimeOffset.UtcNow, sim.Snapshot));
+        var bytes = codec.Encode(new(2, ScenarioSaveCodec.BuildId, DateTimeOffset.UtcNow, sim.Snapshot));
         var root = JsonNode.Parse(bytes)!;
         root["payload"]!["snapshot"]!["tick"] = 999;
         var corrupted = System.Text.Encoding.UTF8.GetBytes(root.ToJsonString());
@@ -90,7 +90,7 @@ public sealed class PersistenceTests
         var service = new ScenarioSaveService(codec, new LocalFileSaveStore(root), h.Reporter);
         Assert.True((await service.SaveAsync("slot", sim.Snapshot, TestContext.Current.CancellationToken)).Committed);
         sim.Enqueue(Harness.Increment());
-        sim.Step(Harness.Input(1));
+        sim.Update(Harness.Input(1));
         Assert.True((await service.SaveAsync("slot", sim.Snapshot, TestContext.Current.CancellationToken)).Committed);
         Assert.Equal(0, codec.Decode(await File.ReadAllBytesAsync(Path.Combine(root, "slot.json.previous"), TestContext.Current.CancellationToken)).Save!.Snapshot.Tick);
         Assert.Equal(1, (await service.LoadAsync("slot", TestContext.Current.CancellationToken)).Save!.Snapshot.Tick);
@@ -106,7 +106,7 @@ public sealed class PersistenceTests
         streams.NextUInt32("example");
         var snapshot = sim.Snapshot with { RandomStreams = streams.Capture() };
         var codec = new ScenarioSaveCodec();
-        var decoded = codec.Decode(codec.Encode(new(1, ScenarioSaveCodec.BuildId, DateTimeOffset.UtcNow, snapshot)));
+        var decoded = codec.Decode(codec.Encode(new(2, ScenarioSaveCodec.BuildId, DateTimeOffset.UtcNow, snapshot)));
         Assert.NotNull(decoded.Save);
         var restored = new PcgRandomStreams(42, decoded.Save.Snapshot.RandomStreams);
         Assert.Equal(streams.NextUInt32("example"), restored.NextUInt32("example"));

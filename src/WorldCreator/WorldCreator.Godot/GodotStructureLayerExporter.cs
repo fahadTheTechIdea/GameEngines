@@ -6,9 +6,9 @@ using WorldCreator.Core;
 
 namespace WorldCreator.Godot;
 
-/// <summary>Native Sprite2D/AtlasTexture static structure layer. No terrain, collisions,
-/// navigation or component animation is implied by this deliberately scoped export.</summary>
-public sealed class GodotStructureLayerExporter
+/// <summary>Native static structure exports and terrain-topology measurement.
+/// Each entry point retains its own explicit acceptance boundary.</summary>
+public sealed partial class GodotStructureLayerExporter
 {
     public async Task ExportAsync(StructureFirstProductionResult accepted, string newDirectory,
         double worldPixelsPerMeter = 16, CancellationToken token = default)

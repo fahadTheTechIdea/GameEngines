@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "arms-fantasy",
+  "version": "1.0.0",
+  "title": "Fantasy arms: mithril, runes, dragon-scale and sky galleons",
+  "language": "en",
+  "world": "fictional",
+  "genres": ["fantasy-arms"],
+  "dependencies": [{ "id": "ages", "version": "1.0.0" }, { "id": "arms-ancient", "version": "1.0.0" }, { "id": "arms-medieval", "version": "1.0.0" }, { "id": "core", "version": "1.0.0" }, { "id": "gear", "version": "1.0.0" }, { "id": "matter", "version": "1.0.0" }, { "id": "military", "version": "1.0.0" }, { "id": "naval", "version": "1.0.0" }, { "id": "rpg", "version": "1.0.0" }],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

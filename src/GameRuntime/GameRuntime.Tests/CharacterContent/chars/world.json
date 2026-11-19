@@ -1,0 +1,36 @@
+{
+  "time_definitions": [{
+    "id": "chars.time", "quantum": { "numerator": 60, "denominator": 1, "unit": "second" },
+    "frame_ticks": 1, "ticks_per_second": 30, "calendar": null, "horizon": null
+  }],
+  "entity_states": [
+    { "id": "chars.idle", "state": "state.chars.idle", "priority": 0, "default": true }
+  ],
+  "tile_spaces": [{ "id": "chars.tiles", "width": 128, "height": 128 }],
+  "entities": [
+    { "id": "chars.walker", "kind": "vehicle", "components": {
+      "tile_presence": { "space": "chars.tiles", "width": 1, "height": 1, "blocks": false, "movable": true },
+      "character": {}
+    } },
+    { "id": "chars.post", "kind": "structure", "components": {
+      "tile_presence": { "space": "chars.tiles", "width": 1, "height": 1, "blocks": true, "movable": false },
+      "character": {}
+    } },
+    { "id": "chars.squad", "kind": "vehicle", "components": {
+      "tile_presence": { "space": "chars.tiles", "width": 1, "height": 1, "blocks": false, "movable": true },
+      "squad": { "max_members": 20000 }
+    } },
+    { "id": "chars.small-squad", "kind": "vehicle", "components": {
+      "tile_presence": { "space": "chars.tiles", "width": 1, "height": 1, "blocks": false, "movable": true },
+      "squad": { "max_members": 40 }
+    } }
+  ],
+  "game_modes": [{ "id": "chars.mode", "name": "Character factory test", "properties": {} }],
+  "scenarios": [{
+    "id": "field", "name": "Field",
+    "modules": ["chars", "sim.characters", "gf.director"],
+    "space": "chars.tiles", "game_mode": "chars.mode", "mode_overrides": {},
+    "settings": { "sim.world-setup": { "profile": "chars.start" } },
+    "seats": 2, "default_seats": 2, "time": "chars.time"
+  }]
+}

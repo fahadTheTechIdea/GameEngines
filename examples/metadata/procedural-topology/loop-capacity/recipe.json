@@ -1,0 +1,68 @@
+{
+  "SchemaVersion": 1,
+  "Id": "encounter-expedition",
+  "GameProfile": "game-authored-exploration",
+  "CatalogId": "encounter-program",
+  "RootArchetypeId": "world",
+  "Scale": "encounter-world",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Topology capacity fixture; physical realization is separate."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": null,
+  "RequireAllPositions": false,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": null,
+  "Surface": null,
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": null,
+  "SuitabilityRules": null,
+  "Placement": null,
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": [
+    {
+      "Id": "journey",
+      "Purpose": "Explore branches before and after the transition",
+      "SourceRuleId": "program:expedition",
+      "ScopeNodeId": "encounter-expedition",
+      "StartNodeId": "encounter-expedition/entry-0",
+      "ConnectionKind": "passage",
+      "Stages": [
+        {
+          "Id": "approach",
+          "Purpose": "Capacity-constrained branching",
+          "ExitNodeId": "encounter-expedition/gate-0",
+          "MemberKinds": [
+            "early-encounter"
+          ],
+          "MinimumMembers": 4,
+          "MaximumMembers": 4
+        }
+      ],
+      "Seed": "capacity-1",
+      "MaximumDegree": 3,
+      "ExtraConnections": 4,
+      "MaximumWork": 1000000,
+      "LayerId": null
+    }
+  ]
+}

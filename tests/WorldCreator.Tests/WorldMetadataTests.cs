@@ -37,16 +37,16 @@ internal static class WorldMetadataTests
                 extra=[new("stairs-room-link","stairs","dungeon/floors-0/rooms-5","dungeon/floors-1/rooms-0")];break;
             case "platformer":
                 parameters=new(){{"levels",4}};space=new(["x","y"],"meters");origin=[0,0];positions=true;
-                types=[Type("root","campaign",[new("levels","level",0,"Authored level progression","levels",new([0,0],[200,0]))],
+                types=[Type("root","campaign",[new("levels","level",0,"Authored level progression","levels",MetadataLineLayout.Parameters([0,0],[200,0]))],
                     [new("progression","next-level",MetadataConnectionPattern.Chain,"levels",Bidirectional:false)],connected:true),
-                    Type("level","level",[new("sections","section",3,"Side-scrolling sections",Layout:new([0,0],[40,0]))],
+                    Type("level","level",[new("sections","section",3,"Side-scrolling sections",Layout:MetadataLineLayout.Parameters([0,0],[40,0]))],
                     [new("jumps","jump-path",MetadataConnectionPattern.Chain,"sections",Bidirectional:false,Properties:Props(new{ minimum_jump_meters=2.5 }))],connected:true),
                     Type("section","section",properties:new{ camera="side-scrolling", theme="game-defined" })];break;
             case "space":
                 parameters=new(){{"systems",2},{"planets",3}};space=new(["x","y","z"],"game-units");origin=[0,0,0];positions=true;
-                types=[Type("root","universe",[new("systems","system",0,"Named systems","systems",new([100,0,0],[1000,0,100]))],
+                types=[Type("root","universe",[new("systems","system",0,"Named systems","systems",MetadataLineLayout.Parameters([100,0,0],[1000,0,100]))],
                     [new("lanes","hyperspace-lane",MetadataConnectionPattern.Chain,"systems")],connected:true),
-                    Type("system","star-system",[new("planets","planet",0,"System destinations","planets",new([50,0,0],[50,0,0]))],
+                    Type("system","star-system",[new("planets","planet",0,"System destinations","planets",MetadataLineLayout.Parameters([50,0,0],[50,0,0]))],
                     [new("routes","system-travel",MetadataConnectionPattern.Hub,"self","planets")],[new("planet",1,12)],true),
                     Type("planet","planet",properties:new{ exploration="unvisited", orbital_simulation="consumer-defined" })];break;
             default:throw new ArgumentException("Unknown fixture");
@@ -97,7 +97,7 @@ internal static class WorldMetadataTests
             Type("root","hub",[new("left","leaf",2,"Left destinations"),new("right","leaf",2,"Right destinations")],
                 [new("pairs","paired-portals",MetadataConnectionPattern.Pairs,"left","right"),
                  new("routes","travel",MetadataConnectionPattern.AllPairs,"left","right")],connected:true),Type("leaf","destination")]);
-        var pairedRecipe=town.Recipe with{CatalogId=pairedCatalog.Id};
+        var pairedRecipe=town.Recipe with{CatalogId=pairedCatalog.Id,Parameters=new Dictionary<string,int>()};
         var paired=generator.Generate(pairedRecipe,pairedCatalog);
         Check(paired.Nodes.Count==5 && paired.Connections.Count(l=>l.Kind=="paired-portals")==2 &&
             paired.Connections.Count(l=>l.Kind=="travel")==4,"pair and cartesian grammars expand distinct typed connections");

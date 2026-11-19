@@ -1,0 +1,133 @@
+{
+  "SchemaVersion": 1,
+  "Id": "encounter-program",
+  "Archetypes": [
+    {
+      "Id": "world",
+      "Kind": "expedition",
+      "Purpose": "Purposeful world",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "entry",
+          "ArchetypeId": "entry",
+          "Count": 1,
+          "Purpose": "Arrival",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "gate",
+          "ArchetypeId": "gate",
+          "Count": 1,
+          "Purpose": "Mandatory transition",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "early",
+          "ArchetypeId": "early",
+          "Count": 4,
+          "Purpose": "Encounter before transition",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "entry",
+      "Kind": "entry",
+      "Purpose": "Purposeful entry",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "gate",
+      "Kind": "transition",
+      "Purpose": "Purposeful gate",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "goal",
+      "Kind": "goal",
+      "Purpose": "Purposeful goal",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "early",
+      "Kind": "early-encounter",
+      "Purpose": "Purposeful early",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "late",
+      "Kind": "late-encounter",
+      "Purpose": "Purposeful late",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

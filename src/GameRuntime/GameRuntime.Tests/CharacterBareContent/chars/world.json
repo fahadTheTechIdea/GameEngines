@@ -1,0 +1,21 @@
+{
+  "time_definitions": [{
+    "id": "chars.time", "quantum": { "numerator": 60, "denominator": 1, "unit": "second" },
+    "frame_ticks": 1, "ticks_per_second": 30, "calendar": null, "horizon": null
+  }],
+  "entity_states": [
+    { "id": "chars.idle", "state": "state.chars.idle", "priority": 0, "default": true }
+  ],
+  "entities": [
+    { "id": "chars.person", "kind": "entity", "components": { "character": {} } },
+    { "id": "chars.cohort", "kind": "entity", "components": { "squad": { "max_members": 5000 } } }
+  ],
+  "game_modes": [{ "id": "chars.mode", "name": "Character factory test without a map", "properties": {} }],
+  "scenarios": [{
+    "id": "bare", "name": "Bare",
+    "modules": ["chars", "sim.characters", "gf.director"],
+    "space": null, "game_mode": "chars.mode", "mode_overrides": {},
+    "settings": { "sim.world-setup": { "profile": "chars.start" } },
+    "seats": 1, "default_seats": 1, "time": "chars.time"
+  }]
+}

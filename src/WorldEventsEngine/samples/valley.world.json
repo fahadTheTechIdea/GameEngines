@@ -1,0 +1,1240 @@
+{
+ "format": 2,
+ "id": "valley.world",
+ "seed": 20261029,
+ "time": {
+  "stepsPerDay": 1
+ },
+ "limits": {
+  "maxHazards": 64,
+  "maxEffects": 64,
+  "maxAgenda": 64
+ },
+ "hydrology": {
+  "freezing": 0,
+  "soilCapacity": 1500,
+  "initialSoil": 600,
+  "evapPerDegree": 2,
+  "meltPerDegree": 30,
+  "drainPermille": 150,
+  "wetDecay": 140,
+  "heavyPermille": 40,
+  "heavyFactor": 3000
+ },
+ "seasons": [
+  {
+   "id": "spring",
+   "key": "season.spring",
+   "steps": 92
+  },
+  {
+   "id": "summer",
+   "key": "season.summer",
+   "steps": 92
+  },
+  {
+   "id": "autumn",
+   "key": "season.autumn",
+   "steps": 91
+  },
+  {
+   "id": "winter",
+   "key": "season.winter",
+   "steps": 90
+  }
+ ],
+ "modifiers": [
+  {
+   "id": "visibility",
+   "key": "mod.visibility",
+   "base": 1000,
+   "min": 0,
+   "max": 1000
+  },
+  {
+   "id": "mobility",
+   "key": "mod.mobility",
+   "base": 1000,
+   "min": 0,
+   "max": 1000
+  },
+  {
+   "id": "labor",
+   "key": "mod.labor",
+   "base": 1000,
+   "min": 0,
+   "max": 1500
+  }
+ ],
+ "weathers": [
+  {
+   "id": "clear",
+   "key": "weather.clear",
+   "tempOffset": 150,
+   "precip": 0,
+   "wind": 0,
+   "wet": false,
+   "modifiers": []
+  },
+  {
+   "id": "cloudy",
+   "key": "weather.cloudy",
+   "tempOffset": -50,
+   "precip": 0,
+   "wind": 10,
+   "wet": false,
+   "modifiers": []
+  },
+  {
+   "id": "fog",
+   "key": "weather.fog",
+   "tempOffset": -100,
+   "precip": 0,
+   "wind": 0,
+   "wet": false,
+   "modifiers": [
+    {
+     "modifier": "visibility",
+     "delta": -500
+    },
+    {
+     "modifier": "mobility",
+     "delta": -100
+    }
+   ]
+  },
+  {
+   "id": "rain",
+   "key": "weather.rain",
+   "tempOffset": -150,
+   "precip": 90,
+   "wind": 30,
+   "wet": true,
+   "modifiers": [
+    {
+     "modifier": "visibility",
+     "delta": -200
+    },
+    {
+     "modifier": "mobility",
+     "delta": -150
+    }
+   ]
+  },
+  {
+   "id": "storm",
+   "key": "weather.storm",
+   "tempOffset": -250,
+   "precip": 260,
+   "wind": 120,
+   "wet": true,
+   "modifiers": [
+    {
+     "modifier": "visibility",
+     "delta": -400
+    },
+    {
+     "modifier": "mobility",
+     "delta": -350
+    },
+    {
+     "modifier": "labor",
+     "delta": -200
+    }
+   ]
+  }
+ ],
+ "zones": [
+  {
+   "id": "temperate",
+   "key": "zone.temperate",
+   "koppen": "Cfb",
+   "spill": 300,
+   "seasons": [
+    {
+     "temp": 1100,
+     "sigma": 350,
+     "phi": 700,
+     "wind": 40,
+     "persistence": 600,
+     "frequency": [
+      30,
+      25,
+      10,
+      25,
+      10
+     ]
+    },
+    {
+     "temp": 2000,
+     "sigma": 300,
+     "phi": 750,
+     "wind": 30,
+     "persistence": 700,
+     "frequency": [
+      45,
+      25,
+      5,
+      15,
+      10
+     ]
+    },
+    {
+     "temp": 1000,
+     "sigma": 350,
+     "phi": 700,
+     "wind": 45,
+     "persistence": 600,
+     "frequency": [
+      20,
+      30,
+      15,
+      28,
+      7
+     ]
+    },
+    {
+     "temp": 100,
+     "sigma": 400,
+     "phi": 750,
+     "wind": 50,
+     "persistence": 650,
+     "frequency": [
+      20,
+      35,
+      10,
+      30,
+      5
+     ]
+    }
+   ]
+  },
+  {
+   "id": "coast",
+   "key": "zone.coast",
+   "koppen": "Cfb",
+   "spill": 250,
+   "seasons": [
+    {
+     "temp": 1200,
+     "sigma": 250,
+     "phi": 700,
+     "wind": 70,
+     "persistence": 550,
+     "frequency": [
+      28,
+      25,
+      14,
+      25,
+      8
+     ]
+    },
+    {
+     "temp": 2000,
+     "sigma": 220,
+     "phi": 750,
+     "wind": 60,
+     "persistence": 650,
+     "frequency": [
+      45,
+      25,
+      8,
+      15,
+      7
+     ]
+    },
+    {
+     "temp": 1300,
+     "sigma": 250,
+     "phi": 700,
+     "wind": 80,
+     "persistence": 550,
+     "frequency": [
+      20,
+      28,
+      15,
+      27,
+      10
+     ]
+    },
+    {
+     "temp": 500,
+     "sigma": 280,
+     "phi": 750,
+     "wind": 90,
+     "persistence": 600,
+     "frequency": [
+      18,
+      32,
+      12,
+      28,
+      10
+     ]
+    }
+   ]
+  }
+ ],
+ "regimes": [
+  {
+   "id": "settled",
+   "key": "regime.settled",
+   "persistence": 900,
+   "frequency": [
+    500,
+    600,
+    400,
+    300
+   ],
+   "bias": [
+    1500,
+    1000,
+    1200,
+    500,
+    150
+   ]
+  },
+  {
+   "id": "unsettled",
+   "key": "regime.unsettled",
+   "persistence": 850,
+   "frequency": [
+    400,
+    300,
+    400,
+    450
+   ],
+   "bias": [
+    700,
+    1000,
+    800,
+    1500,
+    1500
+   ]
+  },
+  {
+   "id": "stormy",
+   "key": "regime.stormy",
+   "persistence": 800,
+   "frequency": [
+    100,
+    100,
+    200,
+    250
+   ],
+   "bias": [
+    300,
+    800,
+    500,
+    1800,
+    4000
+   ]
+  }
+ ],
+ "regions": [
+  {
+   "id": "riverton",
+   "key": "region.riverton",
+   "zone": "temperate",
+   "market": "riverton",
+   "population": 12000,
+   "exposure": [
+    {
+     "hazard": "drought",
+     "permille": 1000
+    },
+    {
+     "hazard": "flood",
+     "permille": 1200
+    },
+    {
+     "hazard": "storm",
+     "permille": 800
+    },
+    {
+     "hazard": "fire",
+     "permille": 800
+    },
+    {
+     "hazard": "quake",
+     "permille": 500
+    }
+   ],
+   "immune": []
+  },
+  {
+   "id": "hillfort",
+   "key": "region.hillfort",
+   "zone": "temperate",
+   "market": "hillfort",
+   "population": 6000,
+   "exposure": [
+    {
+     "hazard": "drought",
+     "permille": 700
+    },
+    {
+     "hazard": "flood",
+     "permille": 300
+    },
+    {
+     "hazard": "storm",
+     "permille": 1000
+    },
+    {
+     "hazard": "fire",
+     "permille": 1000
+    },
+    {
+     "hazard": "quake",
+     "permille": 1500
+    }
+   ],
+   "immune": [
+    {
+     "disease": "flu",
+     "permille": 150
+    }
+   ]
+  },
+  {
+   "id": "seaport",
+   "key": "region.seaport",
+   "zone": "coast",
+   "market": "seaport",
+   "population": 20000,
+   "exposure": [
+    {
+     "hazard": "drought",
+     "permille": 300
+    },
+    {
+     "hazard": "flood",
+     "permille": 700
+    },
+    {
+     "hazard": "storm",
+     "permille": 1500
+    },
+    {
+     "hazard": "fire",
+     "permille": 500
+    },
+    {
+     "hazard": "quake",
+     "permille": 300
+    }
+   ],
+   "immune": []
+  }
+ ],
+ "links": [
+  {
+   "a": "riverton",
+   "b": "hillfort",
+   "flowPpm": 60000
+  },
+  {
+   "a": "riverton",
+   "b": "seaport",
+   "flowPpm": 90000
+  }
+ ],
+ "hazards": [
+  {
+   "id": "drought",
+   "key": "hazard.drought",
+   "kind": "drought",
+   "paced": true,
+   "ratePpm": 1000000,
+   "excite": { "jumpPpm": 0, "decayPermille": 1000, "capPpm": 0 },
+   "seasonal": [
+    500,
+    1500,
+    800,
+    0
+   ],
+   "when": {
+    "all": [
+     {
+      "fact": "soil",
+      "op": "lt",
+      "value": 150
+     },
+     {
+      "fact": "dry_steps",
+      "op": "gte",
+      "value": 10
+     }
+    ]
+   },
+   "excludes": [
+    "flood"
+   ],
+   "cooldown": 60,
+   "reach": {
+    "hops": 1,
+    "falloff": 600
+   },
+   "ladder": [
+    {
+     "id": "dry",
+     "key": "rung.dry",
+     "tailPpm": 1000000,
+     "minDuration": 20,
+     "maxDuration": 40,
+     "onsetSteps": 5,
+     "recoverySteps": 15,
+     "stress": 150,
+     "escalatePpm": 25000,
+     "effects": [
+      {
+       "signal": "world.drought.started"
+      },
+      {
+       "shock": "drought",
+       "scale": 600
+      },
+      {
+       "modifier": "labor",
+       "delta": -100
+      }
+     ]
+    },
+    {
+     "id": "severe",
+     "key": "rung.severe",
+     "tailPpm": 400000,
+     "minDuration": 30,
+     "maxDuration": 60,
+     "onsetSteps": 3,
+     "recoverySteps": 25,
+     "stress": 300,
+     "escalatePpm": 0,
+     "effects": [
+      {
+       "signal": "world.drought.severe"
+      },
+      {
+       "shock": "drought",
+       "scale": 1200
+      },
+      {
+       "modifier": "labor",
+       "delta": -250
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "flood",
+   "key": "hazard.flood",
+   "kind": "flood",
+   "paced": false,
+   "ratePpm": 1000000,
+   "excite": { "jumpPpm": 0, "decayPermille": 1000, "capPpm": 0 },
+   "seasonal": [
+    1000,
+    600,
+    1000,
+    1000
+   ],
+   "when": {
+    "fact": "river",
+    "op": "gt",
+    "value": 600
+   },
+   "excludes": [
+    "drought"
+   ],
+   "cooldown": 30,
+   "reach": {
+    "hops": 2,
+    "falloff": 500
+   },
+   "ladder": [
+    {
+     "id": "minor",
+     "key": "rung.minor",
+     "tailPpm": 1000000,
+     "minDuration": 3,
+     "maxDuration": 8,
+     "onsetSteps": 2,
+     "recoverySteps": 6,
+     "stress": 120,
+     "escalatePpm": 40000,
+     "effects": [
+      {
+       "signal": "world.flood.started"
+      },
+      {
+       "modifier": "mobility",
+       "delta": -300
+      }
+     ]
+    },
+    {
+     "id": "major",
+     "key": "rung.major",
+     "tailPpm": 250000,
+     "minDuration": 6,
+     "maxDuration": 14,
+     "onsetSteps": 1,
+     "recoverySteps": 12,
+     "stress": 300,
+     "escalatePpm": 0,
+     "effects": [
+      {
+       "signal": "world.flood.major"
+      },
+      {
+       "modifier": "mobility",
+       "delta": -700
+      },
+      {
+       "modifier": "labor",
+       "delta": -300
+      },
+      {
+       "outbreak": "flu",
+       "cases": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "storm",
+   "key": "hazard.storm",
+   "kind": "storm",
+   "paced": false,
+   "ratePpm": 250000,
+   "excite": { "jumpPpm": 0, "decayPermille": 1000, "capPpm": 0 },
+   "seasonal": [
+    800,
+    600,
+    1200,
+    1500
+   ],
+   "when": {
+    "fact": "weather",
+    "op": "eq",
+    "value": "storm"
+   },
+   "excludes": [],
+   "cooldown": 20,
+   "reach": {
+    "hops": 1,
+    "falloff": 500
+   },
+   "ladder": [
+    {
+     "id": "gale",
+     "key": "rung.gale",
+     "tailPpm": 1000000,
+     "minDuration": 1,
+     "maxDuration": 3,
+     "onsetSteps": 0,
+     "recoverySteps": 2,
+     "stress": 80,
+     "escalatePpm": 0,
+     "effects": [
+      {
+       "signal": "world.storm.landfall"
+      },
+      {
+       "modifier": "mobility",
+       "delta": -250
+      },
+      {
+       "modifier": "visibility",
+       "delta": -200
+      }
+     ]
+    },
+    {
+     "id": "tempest",
+     "key": "rung.tempest",
+     "tailPpm": 150000,
+     "minDuration": 2,
+     "maxDuration": 5,
+     "onsetSteps": 0,
+     "recoverySteps": 4,
+     "stress": 220,
+     "escalatePpm": 0,
+     "effects": [
+      {
+       "signal": "world.storm.tempest"
+      },
+      {
+       "modifier": "mobility",
+       "delta": -600
+      },
+      {
+       "modifier": "visibility",
+       "delta": -500
+      },
+      {
+       "modifier": "labor",
+       "delta": -300
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "fire",
+   "key": "hazard.fire",
+   "kind": "fire",
+   "paced": true,
+   "ratePpm": 30000,
+   "excite": { "jumpPpm": 0, "decayPermille": 1000, "capPpm": 0 },
+   "seasonal": [
+    200,
+    1800,
+    800,
+    0
+   ],
+   "when": {
+    "all": [
+     {
+      "fact": "temp",
+      "op": "gt",
+      "value": 2200
+     },
+     {
+      "fact": "soil",
+      "op": "lt",
+      "value": 350
+     }
+    ]
+   },
+   "excludes": [],
+   "cooldown": 15,
+   "reach": {
+    "hops": 1,
+    "falloff": 400
+   },
+   "ladder": [
+    {
+     "id": "blaze",
+     "key": "rung.blaze",
+     "tailPpm": 1000000,
+     "minDuration": 2,
+     "maxDuration": 6,
+     "onsetSteps": 1,
+     "recoverySteps": 4,
+     "stress": 140,
+     "escalatePpm": 50000,
+     "effects": [
+      {
+       "signal": "world.fire.started"
+      },
+      {
+       "modifier": "labor",
+       "delta": -150
+      }
+     ]
+    },
+    {
+     "id": "inferno",
+     "key": "rung.inferno",
+     "tailPpm": 200000,
+     "minDuration": 4,
+     "maxDuration": 10,
+     "onsetSteps": 0,
+     "recoverySteps": 8,
+     "stress": 260,
+     "escalatePpm": 0,
+     "effects": [
+      {
+       "signal": "world.fire.inferno"
+      },
+      {
+       "modifier": "labor",
+       "delta": -400
+      },
+      {
+       "modifier": "visibility",
+       "delta": -300
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "quake",
+   "key": "hazard.quake",
+   "kind": "quake",
+   "paced": false,
+   "ratePpm": 60,
+   "excite": { "jumpPpm": 150000, "decayPermille": 300, "capPpm": 400000 },
+   "seasonal": [
+    1000,
+    1000,
+    1000,
+    1000
+   ],
+   "excludes": [],
+   "cooldown": 2,
+   "reach": {
+    "hops": 2,
+    "falloff": 400
+   },
+   "ladder": [
+    {
+     "id": "tremor",
+     "key": "rung.tremor",
+     "tailPpm": 1000000,
+     "minDuration": 1,
+     "maxDuration": 1,
+     "onsetSteps": 0,
+     "recoverySteps": 2,
+     "stress": 40,
+     "escalatePpm": 0,
+     "effects": [
+      {
+       "signal": "world.quake.tremor"
+      }
+     ]
+    },
+    {
+     "id": "quake",
+     "key": "rung.quake",
+     "tailPpm": 126000,
+     "minDuration": 1,
+     "maxDuration": 2,
+     "onsetSteps": 0,
+     "recoverySteps": 10,
+     "stress": 250,
+     "escalatePpm": 0,
+     "effects": [
+      {
+       "signal": "world.quake.felt"
+      },
+      {
+       "modifier": "mobility",
+       "delta": -400
+      },
+      {
+       "modifier": "labor",
+       "delta": -300
+      }
+     ]
+    },
+    {
+     "id": "great",
+     "key": "rung.great",
+     "tailPpm": 16000,
+     "minDuration": 2,
+     "maxDuration": 4,
+     "onsetSteps": 0,
+     "recoverySteps": 30,
+     "stress": 600,
+     "escalatePpm": 0,
+     "effects": [
+      {
+       "signal": "world.quake.great"
+      },
+      {
+       "modifier": "mobility",
+       "delta": -800
+      },
+      {
+       "modifier": "labor",
+       "delta": -600
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "diseases": [
+  {
+   "id": "plague",
+   "key": "disease.plague",
+   "model": "seir",
+   "betaPpm": 300000,
+   "incubation": 4,
+   "infectious": 8,
+   "waning": 0,
+   "fatality": 120,
+   "seasonal": [
+    800,
+    500,
+    900,
+    1400
+   ],
+   "seedPpm": 3000,
+   "seedCases": 2,
+   "outbreakAt": 20,
+   "paced": true,
+   "stress": 250,
+   "burdenAt": 100,
+   "burden": [
+    {
+     "modifier": "labor",
+     "delta": -400
+    }
+   ],
+   "onOutbreak": [
+    {
+     "signal": "world.plague.outbreak"
+    },
+    {
+     "shock": "blockade",
+     "scale": 500
+    }
+   ]
+  },
+  {
+   "id": "flu",
+   "key": "disease.flu",
+   "model": "sir",
+   "betaPpm": 220000,
+   "incubation": 0,
+   "infectious": 5,
+   "waning": 120,
+   "fatality": 4,
+   "seasonal": [
+    1000,
+    300,
+    1000,
+    2000
+   ],
+   "seedPpm": 2000,
+   "seedCases": 3,
+   "outbreakAt": 40,
+   "paced": false,
+   "stress": 60,
+   "burdenAt": 150,
+   "burden": [
+    {
+     "modifier": "labor",
+     "delta": -150
+    }
+   ],
+   "onOutbreak": [
+    {
+     "signal": "world.flu.outbreak"
+    }
+   ]
+  }
+ ],
+ "interventions": [
+  {
+   "id": "quarantine",
+   "key": "intervention.quarantine",
+   "disease": "plague",
+   "betaPermille": 300,
+   "flowPermille": 100,
+   "vaccinate": 0,
+   "treat": 1000,
+   "fatalityPermille": 1000,
+   "autoAt": 30
+  },
+  {
+   "id": "hospital",
+   "key": "intervention.hospital",
+   "disease": "plague",
+   "betaPermille": 1000,
+   "flowPermille": 1000,
+   "vaccinate": 0,
+   "treat": 1800,
+   "fatalityPermille": 500,
+   "autoAt": 0
+  },
+  {
+   "id": "vaccination",
+   "key": "intervention.vaccination",
+   "disease": "flu",
+   "betaPermille": 1000,
+   "flowPermille": 1000,
+   "vaccinate": 20,
+   "treat": 1000,
+   "fatalityPermille": 1000,
+   "autoAt": 0
+  }
+ ],
+ "storytellers": [
+  {
+   "id": "cassandra",
+   "key": "teller.cassandra",
+   "decay": 15,
+   "peakAt": 700,
+   "relaxBelow": 250,
+   "peakHold": 4,
+   "restMin": 10,
+   "gapMin": 3,
+   "gapMax": 20,
+   "share": [
+    1000,
+    1000,
+    1000
+   ]
+  },
+  {
+   "id": "phoebe",
+   "key": "teller.phoebe",
+   "decay": 25,
+   "peakAt": 500,
+   "relaxBelow": 150,
+   "peakHold": 2,
+   "restMin": 25,
+   "gapMin": 6,
+   "gapMax": 40,
+   "share": [
+    600,
+    1000,
+    1600
+   ]
+  },
+  {
+   "id": "randy",
+   "key": "teller.randy",
+   "decay": 0,
+   "peakAt": 1001,
+   "relaxBelow": 0,
+   "peakHold": 0,
+   "restMin": 0,
+   "gapMin": 0,
+   "gapMax": 12,
+   "share": [
+    1000,
+    1000,
+    1000
+   ]
+  }
+ ],
+ "difficulties": [
+  {
+   "id": "easy",
+   "key": "difficulty.easy",
+   "hazard": 700,
+   "bad": 700,
+   "disease": 800,
+   "stressGain": 800
+  },
+  {
+   "id": "normal",
+   "key": "difficulty.normal",
+   "hazard": 1000,
+   "bad": 1000,
+   "disease": 1000,
+   "stressGain": 1000
+  },
+  {
+   "id": "hard",
+   "key": "difficulty.hard",
+   "hazard": 1400,
+   "bad": 1400,
+   "disease": 1200,
+   "stressGain": 1200
+  }
+ ],
+ "cards": [
+  {
+   "id": "raiders",
+   "key": "card.raiders",
+   "tier": "bad",
+   "scope": "region",
+   "weight": 100,
+   "cooldown": 40,
+   "group": "threat",
+   "duration": 8,
+   "intensity": 250,
+   "when": {
+    "fact": "game.garrison",
+    "op": "lt",
+    "value": 60
+   },
+   "effects": [
+    {
+     "signal": "world.raiders.sighted"
+    },
+    {
+     "modifier": "mobility",
+     "delta": -300,
+     "duration": 8
+    }
+   ],
+   "chain": [
+    {
+     "card": "aftermath",
+     "delay": 4,
+     "probability": 600
+    },
+    {
+     "card": "reinforcements",
+     "delay": 6,
+     "probability": 300,
+     "when": {
+      "fact": "mod.mobility",
+      "op": "lt",
+      "value": 800
+     }
+    }
+   ]
+  },
+  {
+   "id": "reinforcements",
+   "key": "card.reinforcements",
+   "tier": "bad",
+   "scope": "region",
+   "weight": 0,
+   "cooldown": 20,
+   "group": "threat",
+   "duration": 5,
+   "intensity": 150,
+   "effects": [
+    {
+     "signal": "world.raiders.reinforced"
+    },
+    {
+     "modifier": "labor",
+     "delta": -150,
+     "duration": 5
+    }
+   ],
+   "chain": []
+  },
+  {
+   "id": "aftermath",
+   "key": "card.aftermath",
+   "tier": "neutral",
+   "scope": "region",
+   "weight": 0,
+   "cooldown": 0,
+   "group": "",
+   "duration": 0,
+   "intensity": 0,
+   "effects": [
+    {
+     "signal": "world.raiders.aftermath"
+    }
+   ],
+   "chain": []
+  },
+  {
+   "id": "river-blockade",
+   "key": "card.blockade",
+   "tier": "bad",
+   "scope": "region",
+   "weight": 60,
+   "cooldown": 50,
+   "group": "trade",
+   "duration": 12,
+   "intensity": 200,
+   "effects": [
+    {
+     "signal": "world.trade.blockade"
+    },
+    {
+     "shock": "blockade",
+     "scale": 800
+    }
+   ],
+   "chain": []
+  },
+  {
+   "id": "market-day",
+   "key": "card.market_day",
+   "tier": "neutral",
+   "scope": "region",
+   "weight": 80,
+   "cooldown": 15,
+   "group": "",
+   "duration": 0,
+   "intensity": 0,
+   "effects": [
+    {
+     "signal": "world.market.day"
+    },
+    {
+     "modifier": "labor",
+     "delta": 150,
+     "duration": 3
+    }
+   ],
+   "chain": []
+  },
+  {
+   "id": "bountiful-harvest",
+   "key": "card.harvest",
+   "tier": "good",
+   "scope": "region",
+   "weight": 70,
+   "cooldown": 60,
+   "group": "",
+   "duration": 0,
+   "intensity": -200,
+   "when": {
+    "fact": "season",
+    "op": "eq",
+    "value": "autumn"
+   },
+   "effects": [
+    {
+     "signal": "world.harvest.bountiful"
+    }
+   ],
+   "chain": []
+  },
+  {
+   "id": "travelling-healers",
+   "key": "card.healers",
+   "tier": "good",
+   "scope": "region",
+   "weight": 120,
+   "cooldown": 30,
+   "group": "",
+   "duration": 0,
+   "intensity": -150,
+   "when": {
+    "fact": "disease.plague.infected",
+    "op": "gt",
+    "value": 0
+   },
+   "effects": [
+    {
+     "signal": "world.healers.arrive"
+    }
+   ],
+   "chain": []
+  },
+  {
+   "id": "festival",
+   "key": "card.festival",
+   "tier": "good",
+   "scope": "global",
+   "weight": 50,
+   "cooldown": 45,
+   "group": "festival",
+   "duration": 5,
+   "intensity": -250,
+   "effects": [
+    {
+     "signal": "world.festival"
+    },
+    {
+     "modifier": "labor",
+     "delta": 100,
+     "duration": 5
+    }
+   ],
+   "chain": []
+  }
+ ],
+ "facts": [
+  {
+   "id": "game.garrison",
+   "type": "int",
+   "min": 0,
+   "max": 100
+  }
+ ],
+ "start": {
+  "storyteller": "cassandra",
+  "difficulty": "normal"
+ }
+}

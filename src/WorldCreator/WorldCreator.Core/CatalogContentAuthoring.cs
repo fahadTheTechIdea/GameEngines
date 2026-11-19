@@ -11,18 +11,19 @@ public sealed record FacilityProgramPart(string Id, string DefinitionId, string 
 public sealed record FacilityProgramChild(string Id, string DefinitionId, string Purpose, int Count = 1);
 public sealed record FacilityFrontageGrammar(RoadCrossSection RoadProfile, double RoadOffsetMeters,
     double FrontSetbackMeters, double RearSetbackMeters, double SideSetbackMeters,
-    double InterSiteGapMeters, double OuterMarginMeters, RoadClass RoadClass = RoadClass.Local);
+    double InterSiteGapMeters, double OuterMarginMeters, RoadClass RoadClass = RoadClass.Local,
+    double? MaximumRowSpanMeters = null, double InterRowGapMeters = 8);
 public sealed record FacilityProgramDefinition(string Id, string Name, string SourceRuleId,
-    FacilityFrontageGrammar Layout, IReadOnlyList<FacilityProgramPart> Parts, IReadOnlyList<FacilityProgramChild> Children);
+    FacilityFrontageGrammar Layout, IReadOnlyList<FacilityProgramPart> Parts, IReadOnlyList<FacilityProgramChild> Children,SiteBoundaryRule? BoundaryRule=null);
 public sealed record CatalogContentManifest(int SchemaVersion, string Id, string CatalogId, string SourceRuleId,
     IReadOnlyList<BuildingDefinition> Structures, IReadOnlyList<FacilityProgramDefinition> Programs,
     IReadOnlyList<FacilityDefinition> Facilities, IReadOnlySet<string>? ReplaceStructureIds = null,
-    IReadOnlySet<string>? ReplaceFacilityIds = null);
+    IReadOnlySet<string>? ReplaceFacilityIds = null,IReadOnlyList<SiteObjectDefinition>? Objects=null,IReadOnlySet<string>? ReplaceObjectIds=null,IReadOnlyList<SiteAreaDefinition>? Areas=null,IReadOnlySet<string>? ReplaceAreaIds=null);
 
 /// <summary>Owns reusable catalog content authoring/loading and its common frontage grammar.
 /// User intent is interpreted by the agent into these typed records, never a setting-specific
 /// prompt branch or executable text. Registered pack policies validate all new definitions.</summary>
-public static class CatalogContentAuthoring
+public static partial class CatalogContentAuthoring
 {
     /// <summary>Materializes an explicit selection from the registered catalog snapshot.
     /// Reference-based requests and inline authoring cannot both own a definition list.</summary>
@@ -72,10 +73,16 @@ public static class CatalogContentAuthoring
             if (source.Descriptor.Composition is not null) throw new ArgumentException("CATALOG_CONTENT_EDIT_SOURCE_PACK_FIRST");
             var structures = source.Structures.ToDictionary(d => d.Id, StringComparer.Ordinal);
             var facilities = source.Facilities.ToDictionary(f => f.Id, StringComparer.Ordinal);
+            var objects=source.Objects.ToDictionary(o=>o.Id,StringComparer.Ordinal);
             var replaceStructures = manifest.ReplaceStructureIds ?? new HashSet<string>();
             var replaceFacilities = manifest.ReplaceFacilityIds ?? new HashSet<string>();
+            var areas=source.Areas.ToDictionary(a=>a.Id,StringComparer.Ordinal);
+            var replaceAreas=manifest.ReplaceAreaIds??new HashSet<string>();
+            var replaceObjects=manifest.ReplaceObjectIds??new HashSet<string>();
             if (replaceStructures.Any(id => !structures.ContainsKey(id) || !manifest.Structures.Any(d => d.Id == id)) ||
-                replaceFacilities.Any(id => !facilities.ContainsKey(id) || !manifest.Facilities.Any(f => f.Id == id) && !manifest.Programs.Any(p => p.Id == id)))
+                replaceFacilities.Any(id => !facilities.ContainsKey(id) || !manifest.Facilities.Any(f => f.Id == id) && !manifest.Programs.Any(p => p.Id == id))||
+                replaceObjects.Any(id=>!objects.ContainsKey(id)||(manifest.Objects??[]).All(o=>o.Id!=id))||
+                replaceAreas.Any(id=>!areas.ContainsKey(id)||(manifest.Areas??[]).All(a=>a.Id!=id)))
                 throw new ArgumentException("CATALOG_CONTENT_REPLACEMENT_INVALID");
             var seen = new HashSet<string>(StringComparer.Ordinal);
             foreach (var definition in manifest.Structures)
@@ -88,6 +95,16 @@ public static class CatalogContentAuthoring
                 structures[definition.Id] = definition;
             }
             seen.Clear();
+            foreach(var definition in SiteObjectPlanner.Snapshot(manifest.Objects??[],token))
+            {
+                if(objects.ContainsKey(definition.Id)&&!replaceObjects.Contains(definition.Id))throw new ArgumentException("CATALOG_CONTENT_OBJECT_CONFLICT:"+definition.Id);
+                objects[definition.Id]=definition;
+            }
+            foreach(var definition in SiteAreaPlanner.Snapshot(manifest.Areas??[],token))
+            {
+                if(areas.ContainsKey(definition.Id)&&!replaceAreas.Contains(definition.Id))throw new ArgumentException("CATALOG_CONTENT_AREA_CONFLICT:"+definition.Id);
+                areas[definition.Id]=definition;
+            }
             foreach (var facility in manifest.Facilities)
             {
                 if (facility is null || !seen.Add(facility.Id) || facilities.ContainsKey(facility.Id) && !replaceFacilities.Contains(facility.Id))
@@ -104,7 +121,7 @@ public static class CatalogContentAuthoring
                 var next = pending.OrderBy(p => p.Id, StringComparer.Ordinal).FirstOrDefault(p => p.Children is not null &&
                     p.Children.All(c => c is not null && facilities.ContainsKey(c.DefinitionId) && !pending.Any(other => other.Id == c.DefinitionId)));
                 if (next is null) throw new ArgumentException("CATALOG_CONTENT_PROGRAM_DEPENDENCY_MISSING_OR_CYCLE");
-                facilities[next.Id] = CompileProgram(next, structures.Values.ToArray(), facilities.Values.ToArray(), token);
+                facilities[next.Id] = CompileProgram(next, structures.Values.ToArray(), facilities.Values.ToArray(), token,objects.Values.ToArray(),areas.Values.ToArray());
                 pending.Remove(next);
             }
             var content = new Dictionary<string, string>(source.Descriptor.AuthoredContentDigests ?? new Dictionary<string, string>(), StringComparer.Ordinal);
@@ -112,77 +129,10 @@ public static class CatalogContentAuthoring
                 throw new ArgumentException("CATALOG_CONTENT_MANIFEST_DUPLICATE:" + manifest.Id);
             result[index] = new AuthoredProvider(source, source.Descriptor with { AuthoredContentDigests = content.ToFrozenDictionary(StringComparer.Ordinal) },
                 Array.AsReadOnly(structures.Values.OrderBy(d => d.Id, StringComparer.Ordinal).ToArray()),
-                FacilityCompositionPlanner.Snapshot(facilities.Values.ToArray(), structures.Values.ToArray(), token));
+                FacilityCompositionPlanner.Snapshot(facilities.Values.ToArray(), structures.Values.ToArray(), token,objects.Values.ToArray(),areas.Values.ToArray()),SiteObjectPlanner.Snapshot(objects.Values.ToArray(),token),SiteAreaPlanner.Snapshot(areas.Values.ToArray(),token));
         }
         _ = new SettlementCatalogRegistry(result, token);
         return Array.AsReadOnly(result.ToArray());
-    }
-
-    public static FacilityDefinition CompileProgram(FacilityProgramDefinition program,
-        IReadOnlyList<BuildingDefinition> structures, IReadOnlyList<FacilityDefinition> facilities, CancellationToken token = default)
-    {
-        token.ThrowIfCancellationRequested();
-        if (program is null || !SettlementCatalogRegistry.ValidId(program.Id) || string.IsNullOrWhiteSpace(program.Name) ||
-            !SettlementCatalogRegistry.ValidId(program.SourceRuleId) || program.Layout is null || program.Layout.RoadProfile is null || program.Parts is null || program.Children is null ||
-            program.Parts.Count + program.Children.Count is 0 or > 1000) throw new ArgumentException("CATALOG_FACILITY_PROGRAM_INVALID");
-        if (program.Parts.Any(p => p is null || p.Count is < 1 or > 256) || program.Children.Any(c => c is null || c.Count is < 1 or > 256))
-            throw new ArgumentException("CATALOG_FACILITY_PART_INVALID");
-        if (program.Parts.Sum(p => (long)p.Count) + program.Children.Sum(c => (long)c.Count) > 1000)
-            throw new ArgumentException("CATALOG_FACILITY_PROGRAM_BUDGET");
-        var layout = program.Layout; layout.RoadProfile.Validate();
-        if (!Enum.IsDefined(layout.RoadClass) || new[] { layout.RoadOffsetMeters, layout.FrontSetbackMeters, layout.RearSetbackMeters,
-            layout.SideSetbackMeters, layout.InterSiteGapMeters, layout.OuterMarginMeters }.Any(d => !double.IsFinite(d) || d < 0) ||
-            layout.OuterMarginMeters <= 0 || layout.RoadOffsetMeters < layout.RoadProfile.TotalWidthMeters / 2)
-            throw new ArgumentException("CATALOG_FACILITY_LAYOUT_INVALID");
-        var slots = new List<FacilityStructureSlot>(); var children = new List<FacilityChild>();
-        var ids = new HashSet<string>(StringComparer.Ordinal); double x = layout.OuterMarginMeters, depth = 0;
-        foreach (var part in program.Parts)
-        {
-            token.ThrowIfCancellationRequested();
-            if (part is null || part.Count is < 1 or > 256 || string.IsNullOrWhiteSpace(part.Purpose)) throw new ArgumentException("CATALOG_FACILITY_PART_INVALID");
-            if (part.Kind != CatalogPartKind.Structure) throw new ArgumentException("CATALOG_FACILITY_PART_KIND_UNSUPPORTED:" + part.Kind);
-            var definition = structures.SingleOrDefault(d => d.Id == part.DefinitionId) ?? throw new ArgumentException("CATALOG_FACILITY_PART_UNKNOWN:" + part.DefinitionId);
-            if (definition.PlacementKind != BuildingPlacementKind.FrontageSite) throw new ArgumentException("CATALOG_FACILITY_PART_GEOMETRY_UNSUPPORTED");
-            var variant = definition.SizeVariants?.SingleOrDefault(v => v.Id == part.SizeVariantId) ?? throw new ArgumentException("CATALOG_FACILITY_PART_VARIANT_UNKNOWN");
-            definition.Validate();
-            double Band(SiteBand band, double minimum) => Math.Max(minimum, (definition.SiteRules ?? [])
-                .Where(r => r.Required && r.Band == band).Select(r => r.MinimumDepthMeters + 2 * r.InsetMeters).DefaultIfEmpty(0).Max());
-            double front = Band(SiteBand.Front, layout.FrontSetbackMeters), rear = Band(SiteBand.Rear, layout.RearSetbackMeters);
-            double side = Math.Max(Band(SiteBand.Left, layout.SideSetbackMeters), Band(SiteBand.Right, layout.SideSetbackMeters));
-            double width = variant.WidthMeters + 2 * (side + variant.SiteClearanceMeters);
-            double height = variant.DepthMeters + front + rear + 2 * variant.SiteClearanceMeters;
-            for (int i = 0; i < part.Count; i++)
-            {
-                token.ThrowIfCancellationRequested(); string member = Name(part.Id, i, part.Count);
-                slots.Add(new(member, part.Purpose, new([new(x, layout.RoadOffsetMeters), new(x + width, layout.RoadOffsetMeters),
-                    new(x + width, layout.RoadOffsetMeters + height), new(x, layout.RoadOffsetMeters + height)]), "entry",
-                    new(definition.Id, front, rear, side, variant.WidthMeters, variant.DepthMeters), variant.Id, part.Components ?? []));
-                x += width + layout.InterSiteGapMeters; depth = Math.Max(depth, layout.RoadOffsetMeters + height + layout.OuterMarginMeters);
-            }
-        }
-        double roadEnd = x;
-        if (slots.Count == 0) { x = 0; roadEnd = 0; }
-        foreach (var child in program.Children)
-        {
-            token.ThrowIfCancellationRequested();
-            if (child is null || child.Count is < 1 or > 256 || string.IsNullOrWhiteSpace(child.Purpose)) throw new ArgumentException("CATALOG_FACILITY_CHILD_INVALID");
-            var nested = facilities.SingleOrDefault(f => f.Id == child.DefinitionId) ?? throw new ArgumentException("CATALOG_FACILITY_CHILD_UNKNOWN:" + child.DefinitionId);
-            for (int i = 0; i < child.Count; i++)
-            {
-                token.ThrowIfCancellationRequested();
-                children.Add(new(Name(child.Id, i, child.Count), nested.Id, new(x, 0), child.Purpose));
-                x += nested.WidthMeters; depth = Math.Max(depth, nested.DepthMeters);
-            }
-        }
-        if (slots.Count + children.Count > 1000 || !double.IsFinite(x) || !double.IsFinite(depth)) throw new ArgumentException("CATALOG_FACILITY_PROGRAM_BUDGET");
-        return new(program.Id, program.Name, x, depth, slots.Count == 0 ? [] : [new("entry",
-            new([new(0, layout.RoadOffsetMeters), new(roadEnd, layout.RoadOffsetMeters)]), layout.RoadClass, layout.RoadProfile)], slots, children);
-        string Name(string id, int index, int count)
-        {
-            string name = count == 1 ? id : id + "-" + (index + 1).ToString(System.Globalization.CultureInfo.InvariantCulture);
-            if (!SettlementCatalogRegistry.ValidId(id) || id.Contains(':') || !ids.Add(name)) throw new ArgumentException("CATALOG_FACILITY_MEMBER_ID_CONFLICT");
-            return name;
-        }
     }
 
     public static async Task<string> SaveManifestAsync(CatalogContentManifest manifest, string catalogDirectory,
@@ -227,7 +177,10 @@ public static class CatalogContentAuthoring
             manifest.Facilities.Any(f => f is null || !SettlementCatalogRegistry.ValidId(f.Id)) ||
             manifest.ReplaceStructureIds?.Any(id => !SettlementCatalogRegistry.ValidId(id)) == true ||
             manifest.ReplaceFacilityIds?.Any(id => !SettlementCatalogRegistry.ValidId(id)) == true ||
-            manifest.Structures.Count + manifest.Programs.Count + manifest.Facilities.Count is 0 or > 256)
+            manifest.ReplaceObjectIds?.Any(id=>!SettlementCatalogRegistry.ValidId(id))==true||
+            manifest.Objects?.Any(o=>o is null||!SettlementCatalogRegistry.ValidId(o.Id))==true||
+            manifest.ReplaceAreaIds?.Any(id=>!SettlementCatalogRegistry.ValidId(id))==true||manifest.Areas?.Any(a=>a is null||!SettlementCatalogRegistry.ValidId(a.Id))==true||
+            manifest.Structures.Count + manifest.Programs.Count + manifest.Facilities.Count+(manifest.Objects?.Count??0)+(manifest.Areas?.Count??0) is 0 or > 256)
             throw new ArgumentException("CATALOG_CONTENT_INVALID");
     }
 
@@ -243,7 +196,9 @@ public static class CatalogContentAuthoring
             if (!identities.Add((entry.CatalogId, entry.Id))) throw new ArgumentException("CATALOG_CONTENT_MANIFEST_DUPLICATE:" + entry.Id);
             foreach (var key in entry.Structures.Select(d => (entry.CatalogId, "structure", d.Id))
                 .Concat(entry.Programs.Select(p => (entry.CatalogId, "facility", p.Id)))
-                .Concat(entry.Facilities.Select(f => (entry.CatalogId, "facility", f.Id))))
+                .Concat(entry.Facilities.Select(f => (entry.CatalogId, "facility", f.Id)))
+                .Concat((entry.Objects??[]).Select(o=>(entry.CatalogId,"object",o.Id)))
+                .Concat((entry.Areas??[]).Select(a=>(entry.CatalogId,"area",a.Id))))
             {
                 if (owners.TryGetValue(key, out int previous) && previous != i)
                     throw new ArgumentException("CATALOG_CONTENT_MULTIPLE_OWNERS:" + key.Id);
@@ -258,22 +213,28 @@ public static class CatalogContentAuthoring
             if (done.Contains(index)) return;
             if (!active.Add(index)) throw new ArgumentException("CATALOG_CONTENT_DEPENDENCY_CYCLE");
             var entry = entries[index];
-            var structureRefs = entry.Programs.SelectMany(p => p.Parts ?? []).Where(p => p is not null).Select(p => p.DefinitionId)
+            var structureRefs = entry.Programs.SelectMany(p => p.Parts ?? []).Where(p => p is not null&&p.Kind==CatalogPartKind.Structure).Select(p => p.DefinitionId)
                 .Concat(entry.Facilities.SelectMany(f => f.Structures ?? []).Where(p => p?.Envelope is not null).Select(p => p.Envelope.BuildingType));
             var facilityRefs = entry.Programs.SelectMany(p => p.Children ?? []).Where(p => p is not null).Select(p => p.DefinitionId)
                 .Concat(entry.Facilities.SelectMany(f => f.Children ?? []).Where(p => p is not null).Select(p => p.DefinitionId));
-            foreach (var key in structureRefs.Select(id => (entry.CatalogId, "structure", id)).Concat(facilityRefs.Select(id => (entry.CatalogId, "facility", id))))
+            var objectRefs=entry.Programs.SelectMany(p=>p.Parts??[]).Where(p=>p is not null&&p.Kind==CatalogPartKind.Equipment).Select(p=>p.DefinitionId)
+                .Concat(entry.Facilities.SelectMany(f=>f.Objects??[]).Where(o=>o is not null).Select(o=>o.DefinitionId));
+            var areaRefs=entry.Programs.SelectMany(p=>p.Parts??[]).Where(p=>p is not null&&p.Kind==CatalogPartKind.GroundArea).Select(p=>p.DefinitionId)
+                .Concat(entry.Facilities.SelectMany(f=>f.Areas??[]).Where(a=>a is not null).Select(a=>a.DefinitionId));
+            foreach (var key in structureRefs.Select(id => (entry.CatalogId, "structure", id)).Concat(facilityRefs.Select(id => (entry.CatalogId, "facility", id))).Concat(objectRefs.Select(id=>(entry.CatalogId,"object",id))).Concat(areaRefs.Select(id=>(entry.CatalogId,"area",id))))
                 if (owners.TryGetValue(key, out int dependency) && dependency != index) Visit(dependency);
             active.Remove(index); done.Add(index); ordered.Add(entry);
         }
         return ordered;
     }
     private sealed class AuthoredProvider(ISettlementCatalogProvider source, SettlementCatalogDescriptor descriptor,
-        IReadOnlyList<BuildingDefinition> structures, IReadOnlyList<FacilityDefinition> facilities) : ISettlementCatalogProvider
+        IReadOnlyList<BuildingDefinition> structures, IReadOnlyList<FacilityDefinition> facilities,IReadOnlyList<SiteObjectDefinition> objects,IReadOnlyList<SiteAreaDefinition> areas) : ISettlementCatalogProvider
     {
         public SettlementCatalogDescriptor Descriptor => descriptor;
         public IReadOnlyList<BuildingDefinition> Structures => structures;
         public IReadOnlyList<FacilityDefinition> Facilities => facilities;
+        public IReadOnlyList<SiteObjectDefinition> Objects=>objects;
+        public IReadOnlyList<SiteAreaDefinition> Areas=>areas;
         public ISettlementCatalogPolicy Policy => source.Policy;
         public ISettlementDemandPolicy Demand => source.Demand;
         public IInfrastructureDesignStrategy Infrastructure => source.Infrastructure;

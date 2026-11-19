@@ -1,0 +1,38 @@
+{
+  "SchemaVersion": 1,
+  "Id": "framework-reference-city",
+  "GameProfile": "framework-reference-test",
+  "CatalogId": "framework-reference-city",
+  "RootArchetypeId": "city",
+  "Scale": "city",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Approved district and city composition, terrain and street geometry, exact map reconciliation, full terrain/object/motion asset inventory, approved production art and functional Godot world remain open."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [],
+    "Unit": "topological"
+  },
+  "Origin": null,
+  "RequireAllPositions": false,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": null,
+  "Surface": null,
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": null,
+  "SuitabilityRules": null,
+  "Placement": null,
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null
+}

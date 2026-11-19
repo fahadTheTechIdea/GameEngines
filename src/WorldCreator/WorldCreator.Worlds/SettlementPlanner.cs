@@ -11,10 +11,10 @@ public sealed class SettlementPlanner(ISettlementCatalogRegistry catalogs)
     public SettlementPlan Plan(WorldRequest request, CancellationToken token = default)
     {
         token.ThrowIfCancellationRequested();
-        if (request.Design is not null)
+        if(request.Design is not null)
         {
-            try { request=request with { Design=new FacilityCompositionPlanner(catalogs).Expand(request.Design,token) }; }
-            catch (ArgumentException ex) { return new([],[],[new(ex.Message,"facility composition rejected")]); }
+            try { request=request with { Design=CatalogContentAuthoring.BindReferences(request.Design,catalogs,token) }; }
+            catch(ArgumentException ex) { return new([],[],[new(ex.Message,"catalog reference rejected")]); }
         }
         var invalid = new MockupDesignValidator(catalogs).Validate(request,token);
         if (invalid.Count != 0)
@@ -95,7 +95,7 @@ public sealed class SettlementPlanner(ISettlementCatalogRegistry catalogs)
                 siteFeatures.AddRange(site.Features);
                 var source = new VisualPlacementSource(visual.MockupId, visual.ApprovedRevision, visual.ArtStyleId,
                     region.Id, rule.Id, position, footprint, rule.Envelope.BuildingType,
-                    sized.Variant!.Id, sized.Variant.HeightMeters, sized.Variant.ServiceCapacity,rule.Facility);
+                    sized.Variant!.Id, sized.Variant.HeightMeters, sized.Variant.ServiceCapacity);
                 anchors.Add(new(id, region.Id, position, rule.Envelope.BuildingType));
                 decisions.Add(new(id, rule.Envelope.BuildingType, id, rule.Purpose, rule.Id));
                 details.Add(id, (source, rule, entrance));

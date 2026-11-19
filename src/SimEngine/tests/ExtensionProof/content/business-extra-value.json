@@ -1,5 +1,0 @@
-{
-  "resource_values": [
-    { "id": "stone.default", "catalog": "defaults", "resource": "stone", "unit": "unit.gold", "currency": "unit.money", "value": 7 }
-  ]
-}

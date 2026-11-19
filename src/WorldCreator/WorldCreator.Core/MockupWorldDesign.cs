@@ -4,6 +4,7 @@ namespace WorldCreator.Core.Planning;
 
 /// <summary>Structured visual input, not evidence of GameArts lifecycle approval.
 /// The engine computes parcels, envelopes, terrain and props from these rules.</summary>
+[System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
 public sealed record MockupWorldDesign(int SchemaVersion,
     ApprovedVisualWorldBlueprint Blueprint, double MetersPerCell,
     IReadOnlyList<VisualDesignPath> Paths,
@@ -19,8 +20,6 @@ public sealed record MockupWorldDesign(int SchemaVersion,
     WorldSitingPlan? Siting = null, SettlementCatalogSelection? Catalog = null,
     Capture.MockupCaptureDocument? Capture = null,
     IReadOnlyList<SurfaceClearanceRule>? SurfaceClearances = null,
-    IReadOnlyList<FacilityPlacement>? FacilityPlacements = null,
-    IReadOnlyList<PlannedFacility>? PlannedFacilities = null,
     IReadOnlyList<string>? BuildingCatalogIds = null);
 
 public sealed record SurfaceClearanceRule(string Id,string RegionId,double MinimumGapMeters,
@@ -31,12 +30,13 @@ public sealed record MockupRoadRule(string PathId, RoadClass Class, RoadCrossSec
 
 /// <summary>A rectangular, north/south street-fronted region. Building count follows
 /// frontage subdivision and envelope feasibility, never a hardcoded warehouse quota.</summary>
+[System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
 public sealed record SettlementRegionRule(string Id, string RegionId, string SettlementId,
     string FrontagePathId, string Purpose, double TargetFrontageMeters,
     double MinimumFrontageMeters, BuildingEnvelopeRules Envelope,
     IReadOnlyList<BuildingComponentRule> Components,
     string? SizeVariantId = null, int RequiredCapacity = 0, SettlementDemand? Settlement = null,
-    StructureSitingContext? Siting = null, FacilityMembership? Facility = null);
+    StructureSitingContext? Siting = null);
 
 public sealed record BuildingComponentRule(string Id, string Kind, string Purpose,
     string State = "idle", string? AnimationId = null);
@@ -48,7 +48,8 @@ public sealed record MockupTerrainRule(string RegionId, CellKind Kind, int Prior
     string? SurfaceMaterialId = null);
 
 /// <summary>Exact visual-source provenance retained beside raster coordinates.</summary>
+[System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
 public sealed record VisualPlacementSource(string MockupId, string MockupRevision,
     string ArtStyleId, string RegionId, string FeatureId, WorldPoint PositionMeters,
     WorldPolygon? Footprint = null, string? BuildingDefinitionId = null,
-    string? SizeVariantId = null, double? HeightMeters = null, int? ServiceCapacity = null, FacilityMembership? Facility = null);
+    string? SizeVariantId = null, double? HeightMeters = null, int? ServiceCapacity = null);

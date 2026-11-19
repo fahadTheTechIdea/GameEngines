@@ -1,0 +1,286 @@
+{
+    "source":  "Unicode CLDR common/supplemental/plurals.xml and ordinals.xml (unicode-org/cldr, main branch, Copyright 1991-2025 Unicode, Inc., Unicode-3.0 licence), reduced to the locales the engine ships",
+    "retrieved":  "2026-10-28",
+    "locales":  {
+                    "ar":  {
+                               "cardinal":  [
+                                                {
+                                                    "category":  "zero",
+                                                    "rule":  "n = 0",
+                                                    "samples":  "@integer 0 @decimal 0.0, 0.00, 0.000, 0.0000"
+                                                },
+                                                {
+                                                    "category":  "one",
+                                                    "rule":  "n = 1",
+                                                    "samples":  "@integer 1 @decimal 1.0, 1.00, 1.000, 1.0000"
+                                                },
+                                                {
+                                                    "category":  "two",
+                                                    "rule":  "n = 2",
+                                                    "samples":  "@integer 2 @decimal 2.0, 2.00, 2.000, 2.0000"
+                                                },
+                                                {
+                                                    "category":  "few",
+                                                    "rule":  "n % 100 = 3..10",
+                                                    "samples":  "@integer 3~10, 103~110, 1003, … @decimal 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 103.0, 1003.0, …"
+                                                },
+                                                {
+                                                    "category":  "many",
+                                                    "rule":  "n % 100 = 11..99",
+                                                    "samples":  "@integer 11~26, 111, 1011, … @decimal 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 111.0, 1011.0, …"
+                                                },
+                                                {
+                                                    "category":  "other",
+                                                    "rule":  "",
+                                                    "samples":  "@integer 100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …"
+                                                }
+                                            ],
+                               "ordinal":  [
+                                               {
+                                                   "category":  "other",
+                                                   "rule":  "",
+                                                   "samples":  "@integer 0~15, 100, 1000, 10000, 100000, 1000000, …"
+                                               }
+                                           ]
+                           },
+                    "de":  {
+                               "cardinal":  [
+                                                {
+                                                    "category":  "one",
+                                                    "rule":  "i = 1 and v = 0",
+                                                    "samples":  "@integer 1"
+                                                },
+                                                {
+                                                    "category":  "other",
+                                                    "rule":  "",
+                                                    "samples":  "@integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …"
+                                                }
+                                            ],
+                               "ordinal":  [
+                                               {
+                                                   "category":  "other",
+                                                   "rule":  "",
+                                                   "samples":  "@integer 0~15, 100, 1000, 10000, 100000, 1000000, …"
+                                               }
+                                           ]
+                           },
+                    "en":  {
+                               "cardinal":  [
+                                                {
+                                                    "category":  "one",
+                                                    "rule":  "i = 1 and v = 0",
+                                                    "samples":  "@integer 1"
+                                                },
+                                                {
+                                                    "category":  "other",
+                                                    "rule":  "",
+                                                    "samples":  "@integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …"
+                                                }
+                                            ],
+                               "ordinal":  [
+                                               {
+                                                   "category":  "one",
+                                                   "rule":  "n % 10 = 1 and n % 100 != 11",
+                                                   "samples":  "@integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                                               },
+                                               {
+                                                   "category":  "two",
+                                                   "rule":  "n % 10 = 2 and n % 100 != 12",
+                                                   "samples":  "@integer 2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                                               },
+                                               {
+                                                   "category":  "few",
+                                                   "rule":  "n % 10 = 3 and n % 100 != 13",
+                                                   "samples":  "@integer 3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                                               },
+                                               {
+                                                   "category":  "other",
+                                                   "rule":  "",
+                                                   "samples":  "@integer 0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                                               }
+                                           ]
+                           },
+                    "es":  {
+                               "cardinal":  [
+                                                {
+                                                    "category":  "one",
+                                                    "rule":  "n = 1",
+                                                    "samples":  "@integer 1 @decimal 1.0, 1.00, 1.000, 1.0000"
+                                                },
+                                                {
+                                                    "category":  "many",
+                                                    "rule":  "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
+                                                    "samples":  "@integer 1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, … @decimal 1.0000001c6, 1.1c6, 2.0000001c6, 2.1c6, 3.0000001c6, 3.1c6, …"
+                                                },
+                                                {
+                                                    "category":  "other",
+                                                    "rule":  "",
+                                                    "samples":  "@integer 0, 2~16, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, 1.0001c3, 1.1c3, 2.0001c3, 2.1c3, 3.0001c3, 3.1c3, …"
+                                                }
+                                            ],
+                               "ordinal":  [
+                                               {
+                                                   "category":  "one",
+                                                   "rule":  "n % 10 = 1,3 and n % 100 != 11",
+                                                   "samples":  "@integer 1, 3, 13, 21, 23, 31, 33, 41, 101, 1001, …"
+                                               },
+                                               {
+                                                   "category":  "other",
+                                                   "rule":  "",
+                                                   "samples":  "@integer 0, 2, 4~12, 14~18, 100, 1000, 10000, 100000, 1000000, …"
+                                               }
+                                           ]
+                           },
+                    "fr":  {
+                               "cardinal":  [
+                                                {
+                                                    "category":  "one",
+                                                    "rule":  "i = 0..1",
+                                                    "samples":  "@integer 0, 1 @decimal 0.0~1.5"
+                                                },
+                                                {
+                                                    "category":  "many",
+                                                    "rule":  "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
+                                                    "samples":  "@integer 1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, … @decimal 1.0000001c6, 1.1c6, 2.0000001c6, 2.1c6, 3.0000001c6, 3.1c6, …"
+                                                },
+                                                {
+                                                    "category":  "other",
+                                                    "rule":  "",
+                                                    "samples":  "@integer 2~17, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, … @decimal 2.0~3.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, 1.0001c3, 1.1c3, 2.0001c3, 2.1c3, 3.0001c3, 3.1c3, …"
+                                                }
+                                            ],
+                               "ordinal":  [
+                                               {
+                                                   "category":  "one",
+                                                   "rule":  "n = 1",
+                                                   "samples":  "@integer 1"
+                                               },
+                                               {
+                                                   "category":  "other",
+                                                   "rule":  "",
+                                                   "samples":  "@integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                                               }
+                                           ]
+                           },
+                    "he":  {
+                               "cardinal":  [
+                                                {
+                                                    "category":  "one",
+                                                    "rule":  "i = 1 and v = 0 or i = 0 and v != 0",
+                                                    "samples":  "@integer 1 @decimal 0.0~0.9, 0.00~0.05"
+                                                },
+                                                {
+                                                    "category":  "two",
+                                                    "rule":  "i = 2 and v = 0",
+                                                    "samples":  "@integer 2"
+                                                },
+                                                {
+                                                    "category":  "other",
+                                                    "rule":  "",
+                                                    "samples":  "@integer 0, 3~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.0~2.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …"
+                                                }
+                                            ],
+                               "ordinal":  [
+                                               {
+                                                   "category":  "other",
+                                                   "rule":  "",
+                                                   "samples":  "@integer 0~15, 100, 1000, 10000, 100000, 1000000, …"
+                                               }
+                                           ]
+                           },
+                    "ja":  {
+                               "cardinal":  [
+                                                {
+                                                    "category":  "other",
+                                                    "rule":  "",
+                                                    "samples":  "@integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …"
+                                                }
+                                            ],
+                               "ordinal":  [
+                                               {
+                                                   "category":  "other",
+                                                   "rule":  "",
+                                                   "samples":  "@integer 0~15, 100, 1000, 10000, 100000, 1000000, …"
+                                               }
+                                           ]
+                           },
+                    "pl":  {
+                               "cardinal":  [
+                                                {
+                                                    "category":  "one",
+                                                    "rule":  "i = 1 and v = 0",
+                                                    "samples":  "@integer 1"
+                                                },
+                                                {
+                                                    "category":  "few",
+                                                    "rule":  "v = 0 and i % 10 = 2..4 and i % 100 != 12..14",
+                                                    "samples":  "@integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …"
+                                                },
+                                                {
+                                                    "category":  "many",
+                                                    "rule":  "v = 0 and i != 1 and i % 10 = 0..1 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 12..14",
+                                                    "samples":  "@integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+                                                },
+                                                {
+                                                    "category":  "other",
+                                                    "rule":  "",
+                                                    "samples":  "@decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …"
+                                                }
+                                            ],
+                               "ordinal":  [
+                                               {
+                                                   "category":  "other",
+                                                   "rule":  "",
+                                                   "samples":  "@integer 0~15, 100, 1000, 10000, 100000, 1000000, …"
+                                               }
+                                           ]
+                           },
+                    "ru":  {
+                               "cardinal":  [
+                                                {
+                                                    "category":  "one",
+                                                    "rule":  "v = 0 and i % 10 = 1 and i % 100 != 11",
+                                                    "samples":  "@integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                                                },
+                                                {
+                                                    "category":  "few",
+                                                    "rule":  "v = 0 and i % 10 = 2..4 and i % 100 != 12..14",
+                                                    "samples":  "@integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …"
+                                                },
+                                                {
+                                                    "category":  "many",
+                                                    "rule":  "v = 0 and i % 10 = 0 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 11..14",
+                                                    "samples":  "@integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+                                                },
+                                                {
+                                                    "category":  "other",
+                                                    "rule":  "",
+                                                    "samples":  "@decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …"
+                                                }
+                                            ],
+                               "ordinal":  [
+                                               {
+                                                   "category":  "other",
+                                                   "rule":  "",
+                                                   "samples":  "@integer 0~15, 100, 1000, 10000, 100000, 1000000, …"
+                                               }
+                                           ]
+                           },
+                    "zh":  {
+                               "cardinal":  [
+                                                {
+                                                    "category":  "other",
+                                                    "rule":  "",
+                                                    "samples":  "@integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …"
+                                                }
+                                            ],
+                               "ordinal":  [
+                                               {
+                                                   "category":  "other",
+                                                   "rule":  "",
+                                                   "samples":  "@integer 0~15, 100, 1000, 10000, 100000, 1000000, …"
+                                               }
+                                           ]
+                           }
+                }
+}

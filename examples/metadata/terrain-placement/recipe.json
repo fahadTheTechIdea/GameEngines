@@ -1,0 +1,378 @@
+{
+  "SchemaVersion": 1,
+  "Id": "terrain-placement",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Terrain-driven placement, reserved footprints and parent-relative constituent points; physical constituent geometry, route redesign, junctions, art and runtime remain open."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    35,
+    35
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "exploration",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 80,
+          "Y": 5
+        },
+        {
+          "X": 75,
+          "Y": 75
+        },
+        {
+          "X": 30,
+          "Y": 80
+        },
+        {
+          "X": 0,
+          "Y": 65
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [],
+    "Terrain": {
+      "SchemaVersion": 1,
+      "Id": "exploration-land",
+      "Kind": "ground",
+      "Purpose": "Generate exploration terrain",
+      "SourceRuleId": "example:terrain",
+      "Unit": "meters",
+      "Origin": {
+        "X": 0,
+        "Y": 0
+      },
+      "StepX": 10,
+      "StepY": 10,
+      "Columns": 9,
+      "Rows": 9,
+      "BaseElevation": 4,
+      "GradientX": 0.08,
+      "GradientY": 0.03,
+      "Operations": [
+        {
+          "Id": "ridge",
+          "Purpose": "High ground",
+          "SourceRuleId": "example:ridge",
+          "Mode": "Add",
+          "ControlPath": [
+            {
+              "X": 55,
+              "Y": 25
+            },
+            {
+              "X": 65,
+              "Y": 65
+            }
+          ],
+          "Radius": 25,
+          "Height": 12
+        }
+      ],
+      "Detail": null,
+      "MaximumWork": 20000000
+    },
+    "HeightField": null
+  },
+  "RouteRules": null,
+  "NetworkRules": [
+    {
+      "Id": "regional-access",
+      "RegionNodeId": "terrain-placement",
+      "DestinationKind": "camp",
+      "MinimumDestinations": 2,
+      "MaximumDestinations": 2,
+      "ConnectionKind": "regional-travel",
+      "Options": {
+        "Purpose": "Connect required exploration locations",
+        "SourceRuleId": "example:access",
+        "Scale": "region",
+        "Profile": {
+          "Id": "foot",
+          "Purpose": "Walk between destinations",
+          "SourceRuleId": "example:walking",
+          "Radius": 1,
+          "MaximumSlope": 1.5,
+          "KindCosts": {
+            "ground": 1
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "Search": {
+          "Clearance": 0.5,
+          "Waypoints": [],
+          "MaximumCandidates": 256,
+          "MaximumEdgeChecks": 32768,
+          "MaximumWork": 2000000
+        },
+        "Connectivity": "Connected",
+        "NearestNeighbors": 1,
+        "MaximumPairChecks": 128,
+        "MaximumWork": 30000000,
+        "RequiredConnections": null
+      },
+      "LayerId": "intent"
+    }
+  ],
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "exploration-values",
+    "Fields": [
+      {
+        "Id": "height",
+        "Purpose": "Ground height",
+        "SourceRuleId": "example:height",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Elevation",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "slope",
+        "Purpose": "Ground steepness",
+        "SourceRuleId": "example:slope",
+        "Unit": "ratio",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Slope",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ]
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "exploration-sites",
+      "Purpose": "Place camps for exploration",
+      "SourceRuleId": "example:placement",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 80,
+            "Y": 5
+          },
+          {
+            "X": 75,
+            "Y": 75
+          },
+          {
+            "X": 30,
+            "Y": 80
+          },
+          {
+            "X": 0,
+            "Y": 65
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "camp-a",
+          "Purpose": "Low-altitude rest camp",
+          "SourceRuleId": "example:camp-a",
+          "Footprint": {
+            "Vertices": [
+              {
+                "X": -3,
+                "Y": -2
+              },
+              {
+                "X": 4,
+                "Y": -2
+              },
+              {
+                "X": 2,
+                "Y": 3
+              },
+              {
+                "X": -3,
+                "Y": 3
+              }
+            ]
+          },
+          "Profile": {
+            "Id": "camp-ground",
+            "Purpose": "Gentle dry location at desired altitude",
+            "SourceRuleId": "example:camp",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "dry",
+                "FieldId": "height",
+                "Purpose": "Above water level",
+                "SourceRuleId": "example:dry",
+                "Minimum": 3,
+                "Maximum": 50
+              },
+              {
+                "Id": "gentle",
+                "FieldId": "slope",
+                "Purpose": "Usable footprint slope",
+                "SourceRuleId": "example:gentle",
+                "Minimum": 0,
+                "Maximum": 1.5
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "example:altitude",
+                "Ideal": 8,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          }
+        },
+        {
+          "Id": "camp-b",
+          "Purpose": "High-altitude lookout camp",
+          "SourceRuleId": "example:camp-b",
+          "Footprint": {
+            "Vertices": [
+              {
+                "X": -3,
+                "Y": -2
+              },
+              {
+                "X": 4,
+                "Y": -2
+              },
+              {
+                "X": 2,
+                "Y": 3
+              },
+              {
+                "X": -3,
+                "Y": 3
+              }
+            ]
+          },
+          "Profile": {
+            "Id": "camp-ground",
+            "Purpose": "Gentle dry location at desired altitude",
+            "SourceRuleId": "example:camp",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "dry",
+                "FieldId": "height",
+                "Purpose": "Above water level",
+                "SourceRuleId": "example:dry",
+                "Minimum": 3,
+                "Maximum": 50
+              },
+              {
+                "Id": "gentle",
+                "FieldId": "slope",
+                "Purpose": "Usable footprint slope",
+                "SourceRuleId": "example:gentle",
+                "Minimum": 0,
+                "Maximum": 1.5
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "altitude",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "example:altitude",
+                "Ideal": 17,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          }
+        }
+      ],
+      "Anchors": [],
+      "Relations": [
+        {
+          "Id": "journey",
+          "FromId": "camp-a",
+          "ToId": "camp-b",
+          "Purpose": "Separate destinations for travel",
+          "SourceRuleId": "example:journey",
+          "Minimum": 20,
+          "Maximum": 70,
+          "Ideal": 35,
+          "Weight": 1
+        }
+      ],
+      "MinimumSeparation": 10,
+      "MaximumCandidates": 2048,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 50000000
+    },
+    "Bindings": [
+      {
+        "DemandId": "camp-a",
+        "NodeId": "terrain-placement/camps-0"
+      },
+      {
+        "DemandId": "camp-b",
+        "NodeId": "terrain-placement/camps-1"
+      }
+    ]
+  }
+}

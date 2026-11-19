@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "kitchen",
+  "version": "1.0.0",
+  "title": "Restaurant kitchen: prep, plate, serve",
+  "language": "en",
+  "world": "timeless",
+  "genres": ["cooking-restaurant"],
+  "dependencies": [{ "id": "core", "version": "1.0.0" }],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

@@ -1,0 +1,347 @@
+{
+  "SchemaVersion": 1,
+  "Id": "clearance-world",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Source footprints and reserved surroundings; directional site grammar, shared services, full siting, junctions, artwork and native runtime remain open."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    20,
+    15
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "flat",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 40,
+          "Y": 0
+        },
+        {
+          "X": 40,
+          "Y": 30
+        },
+        {
+          "X": 0,
+          "Y": 30
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [],
+    "Terrain": null,
+    "HeightField": {
+      "SchemaVersion": 1,
+      "Id": "flat",
+      "Kind": "ground",
+      "Purpose": "Flat test terrain",
+      "SourceRuleId": "test",
+      "Unit": "meters",
+      "Origin": {
+        "X": 0,
+        "Y": 0
+      },
+      "StepX": 5,
+      "StepY": 5,
+      "Columns": 9,
+      "Rows": 7,
+      "Heights": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "RouteRules": [
+    {
+      "Id": "walk",
+      "ConnectionKind": "walk",
+      "Profile": {
+        "Id": "foot",
+        "Purpose": "Walk between destinations",
+        "SourceRuleId": "example:walking",
+        "Radius": 0.3,
+        "MaximumSlope": 1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.5,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 2000000
+      },
+      "FromPortId": "entry",
+      "ToPortId": "entry"
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "position",
+    "Fields": [
+      {
+        "Id": "x",
+        "Purpose": "World x",
+        "SourceRuleId": "test",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "X",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ]
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "sites",
+      "Purpose": "Place source sites and clearance",
+      "SourceRuleId": "test",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 40,
+            "Y": 0
+          },
+          {
+            "X": 40,
+            "Y": 30
+          },
+          {
+            "X": 0,
+            "Y": 30
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "a",
+          "Purpose": "First required site",
+          "SourceRuleId": "test",
+          "Footprint": null,
+          "Profile": {
+            "Id": "central",
+            "Purpose": "Prefer central sites",
+            "SourceRuleId": "test",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [],
+            "Preferences": [
+              {
+                "Id": "center",
+                "FieldId": "x",
+                "Purpose": "Central purpose",
+                "SourceRuleId": "test",
+                "Ideal": 20,
+                "Tolerance": 40,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null
+        },
+        {
+          "Id": "b",
+          "Purpose": "Second required site",
+          "SourceRuleId": "test",
+          "Footprint": null,
+          "Profile": {
+            "Id": "central",
+            "Purpose": "Prefer central sites",
+            "SourceRuleId": "test",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [],
+            "Preferences": [
+              {
+                "Id": "center",
+                "FieldId": "x",
+                "Purpose": "Central purpose",
+                "SourceRuleId": "test",
+                "Ideal": 20,
+                "Tolerance": 40,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null
+        }
+      ],
+      "Anchors": [
+        {
+          "Id": "first",
+          "Position": {
+            "X": 10,
+            "Y": 10
+          }
+        },
+        {
+          "Id": "second",
+          "Position": {
+            "X": 30,
+            "Y": 20
+          }
+        }
+      ],
+      "Relations": [
+        {
+          "Id": "first",
+          "FromId": "a",
+          "ToId": "first",
+          "Purpose": "First source anchor",
+          "SourceRuleId": "test",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "second",
+          "FromId": "b",
+          "ToId": "second",
+          "Purpose": "Second source anchor",
+          "SourceRuleId": "test",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        }
+      ],
+      "MinimumSeparation": 0,
+      "MaximumCandidates": 2048,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 50000000
+    },
+    "Bindings": [
+      {
+        "DemandId": "a",
+        "NodeId": "clearance-world/sites-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 30,
+        "PartId": null
+      },
+      {
+        "DemandId": "b",
+        "NodeId": "clearance-world/sites-1",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": -20,
+        "PartId": null
+      }
+    ],
+    "NestedStages": null,
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 32
+  }
+}

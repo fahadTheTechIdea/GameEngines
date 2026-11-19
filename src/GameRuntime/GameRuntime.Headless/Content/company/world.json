@@ -1,0 +1,24 @@
+{
+  "entity_states": [
+    { "id": "company.idle", "state": "state.company.idle", "priority": 0, "default": true }
+  ],
+  "entities": [
+    { "id": "company.marker", "kind": "marker", "components": {} }
+  ],
+  "scenarios": [
+    {
+      "id": "company",
+      "mode_overrides": {},
+      "game_mode": "business-money",
+      "time": "business.second",
+      "modules": ["proof.business", "sim.tycoon", "sim.access", "sim.world-setup", "sim.objectives", "tycoon.company", "gf.director"],
+      "seats": 1,
+      "default_seats": 1,
+      "settings": {
+        "sim.tycoon": { "account_policy": "colony.accounts" },
+        "sim.world-setup": { "profile": "company.start" },
+        "sim.objectives": { "companies": [ { "company": 0, "objectives": ["company.founded"] } ] }
+      }
+    }
+  ]
+}

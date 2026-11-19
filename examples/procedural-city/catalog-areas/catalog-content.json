@@ -1,0 +1,921 @@
+{
+  "SchemaVersion": 1,
+  "Id": "user.catalog-areas",
+  "CatalogId": "modern",
+  "SourceRuleId": "test.requested-parent-parts",
+  "Structures": [
+    {
+      "Id": "user.garden-office",
+      "Function": "Employment",
+      "ServiceCapacity": 1,
+      "AllowedClasses": [
+        "Village",
+        "Town",
+        "City"
+      ],
+      "FavoredRoles": [],
+      "SizeVariants": [
+        {
+          "Id": "compact",
+          "WidthMeters": 6,
+          "DepthMeters": 8,
+          "HeightMeters": 4,
+          "ServiceCapacity": 1,
+          "SiteClearanceMeters": 1,
+          "AllowedClasses": null,
+          "MinimumRoadWidthMeters": 0
+        }
+      ],
+      "ScaleDemandPerResident": 0,
+      "SiteRules": [
+        {
+          "Id": "entrance-court",
+          "Kind": "Forecourt",
+          "Band": "Front",
+          "MinimumDepthMeters": 3,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": 20
+        },
+        {
+          "Id": "staff-green",
+          "Kind": "Garden",
+          "Band": "Rear",
+          "MinimumDepthMeters": 3,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": 20
+        }
+      ],
+      "AccessWidthMeters": 1.5,
+      "MinimumRoadWidthMeters": 3,
+      "AllowedRoles": null,
+      "Category": "OfficeFinance",
+      "CapacityUnit": "workers",
+      "AutomaticDemand": false,
+      "PlacementKind": "FrontageSite",
+      "SitingProfile": {
+        "Id": "siting:office-building",
+        "Revision": 1,
+        "ResearchRuleIds": [
+          "S01",
+          "S42"
+        ],
+        "SourceIds": [
+          "R22"
+        ],
+        "AllowedDistricts": [
+          "CommercialCenter",
+          "MixedUse",
+          "Research"
+        ],
+        "AllowedTechnologies": [
+          "Standard"
+        ],
+        "Tags": [],
+        "Requirements": [
+          {
+            "Id": "customers",
+            "Kind": "PedestrianCatchment",
+            "Mode": "Pedestrian",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": null,
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          },
+          {
+            "Id": "potable-water",
+            "Kind": "PotableWater",
+            "Mode": "Utility",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": [
+              "potable",
+              "reliable"
+            ],
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          },
+          {
+            "Id": "power",
+            "Kind": "Electricity",
+            "Mode": "Utility",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": null,
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          },
+          {
+            "Id": "wastewater",
+            "Kind": "Wastewater",
+            "Mode": "Utility",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": null,
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          }
+        ],
+        "RequiredSurroundings": [
+          "AccessWalkway",
+          "Forecourt",
+          "Garden"
+        ],
+        "Provides": [
+          "ParentFacility"
+        ],
+        "OutputUnit": "game-service-units",
+        "OutputUnitsPerCapacity": 1
+      },
+      "Composition": {
+        "Representation": "SingleStructure",
+        "GeometryScope": "one small garden office building",
+        "ReviewBasis": "synthetic user-request authoring fixture",
+        "PartRoles": [
+          {
+            "Role": "workspace",
+            "Kind": "Interior",
+            "CandidateDefinitionIds": []
+          }
+        ]
+      },
+      "BoundaryRule": null
+    },
+    {
+      "Id": "user.fenced-studio",
+      "Function": "Employment",
+      "ServiceCapacity": 60,
+      "AllowedClasses": [
+        "Village",
+        "Town",
+        "City"
+      ],
+      "FavoredRoles": [],
+      "SizeVariants": [
+        {
+          "Id": "compact",
+          "WidthMeters": 6,
+          "DepthMeters": 8,
+          "HeightMeters": 4,
+          "ServiceCapacity": 1,
+          "SiteClearanceMeters": 6,
+          "AllowedClasses": null,
+          "MinimumRoadWidthMeters": 0
+        }
+      ],
+      "ScaleDemandPerResident": 0,
+      "SiteRules": [
+        {
+          "Id": "arrival",
+          "Kind": "Forecourt",
+          "Band": "Front",
+          "MinimumDepthMeters": 4,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        },
+        {
+          "Id": "garden",
+          "Kind": "Garden",
+          "Band": "Rear",
+          "MinimumDepthMeters": 3,
+          "InsetMeters": 0,
+          "Required": true,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        },
+        {
+          "Id": "parking",
+          "Kind": "Parking",
+          "Band": "Right",
+          "MinimumDepthMeters": 5,
+          "InsetMeters": 0,
+          "Required": false,
+          "SpeciesAssetId": null,
+          "PlantSpacingMeters": 0,
+          "PlantMarginMeters": 0,
+          "MaximumDepthMeters": null
+        }
+      ],
+      "AccessWidthMeters": 6,
+      "MinimumRoadWidthMeters": 3,
+      "AllowedRoles": null,
+      "Category": "OfficeFinance",
+      "CapacityUnit": "workers",
+      "AutomaticDemand": false,
+      "PlacementKind": "FrontageSite",
+      "SitingProfile": {
+        "Id": "siting:office-building",
+        "Revision": 1,
+        "ResearchRuleIds": [
+          "S01",
+          "S42"
+        ],
+        "SourceIds": [
+          "R22"
+        ],
+        "AllowedDistricts": [
+          "CommercialCenter",
+          "MixedUse",
+          "Research"
+        ],
+        "AllowedTechnologies": [
+          "Standard"
+        ],
+        "Tags": [],
+        "Requirements": [
+          {
+            "Id": "customers",
+            "Kind": "PedestrianCatchment",
+            "Mode": "Pedestrian",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": null,
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          },
+          {
+            "Id": "potable-water",
+            "Kind": "PotableWater",
+            "Mode": "Utility",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": [
+              "potable",
+              "reliable"
+            ],
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          },
+          {
+            "Id": "power",
+            "Kind": "Electricity",
+            "Mode": "Utility",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": null,
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          },
+          {
+            "Id": "wastewater",
+            "Kind": "Wastewater",
+            "Mode": "Utility",
+            "Unit": "game-service-units",
+            "BaseQuantity": 1,
+            "QuantityPerCapacity": 0.1,
+            "RequiredQualities": null,
+            "RequiredOrigin": null,
+            "WhenTechnologies": null,
+            "SourceContainsSite": false,
+            "MinimumRouteWidthMeters": 0,
+            "MaximumRouteLengthMeters": null
+          }
+        ],
+        "RequiredSurroundings": [
+          "AccessWalkway",
+          "Forecourt",
+          "Garden"
+        ],
+        "Provides": [
+          "ParentFacility"
+        ],
+        "OutputUnit": "game-service-units",
+        "OutputUnitsPerCapacity": 1
+      },
+      "Composition": {
+        "Representation": "SingleStructure",
+        "GeometryScope": "One studio building",
+        "ReviewBasis": "Authored catalog-city test program",
+        "PartRoles": []
+      },
+      "BoundaryRule": {
+        "Id": "studio-perimeter",
+        "Kind": "railings",
+        "Purpose": "Define the authored site\u0027s perimeter",
+        "ThicknessMeters": 0.2,
+        "HeightMeters": 2,
+        "MinimumOpeningMeters": 3,
+        "OpeningClearanceMeters": 0.3
+      }
+    }
+  ],
+  "Programs": [
+    {
+      "Id": "user.learning-and-care",
+      "Name": "Learning and care site",
+      "SourceRuleId": "test.combined-program",
+      "Layout": {
+        "RoadProfile": {
+          "LaneWidthMeters": 4,
+          "LaneCount": 2,
+          "SidewalkLeftMeters": 0,
+          "SidewalkRightMeters": 0,
+          "CurbLeftMeters": 0,
+          "CurbRightMeters": 0,
+          "MedianMeters": 0,
+          "TotalWidthMeters": 8
+        },
+        "RoadOffsetMeters": 8,
+        "FrontSetbackMeters": 8,
+        "RearSetbackMeters": 8,
+        "SideSetbackMeters": 4,
+        "InterSiteGapMeters": 8,
+        "OuterMarginMeters": 8,
+        "RoadClass": "Local"
+      },
+      "Parts": [],
+      "Children": [
+        {
+          "Id": "learning",
+          "DefinitionId": "user.school-program",
+          "Purpose": "teaching precinct",
+          "Count": 1
+        },
+        {
+          "Id": "care",
+          "DefinitionId": "user.care-program",
+          "Purpose": "care precinct",
+          "Count": 1
+        }
+      ],
+      "BoundaryRule": {
+        "Id": "campus-perimeter",
+        "Kind": "fence",
+        "Purpose": "Define the authored site\u0027s perimeter",
+        "ThicknessMeters": 0.3,
+        "HeightMeters": 2,
+        "MinimumOpeningMeters": 3,
+        "OpeningClearanceMeters": 0.3
+      }
+    },
+    {
+      "Id": "user.school-program",
+      "Name": "Requested school and library",
+      "SourceRuleId": "test.school-request",
+      "Layout": {
+        "RoadProfile": {
+          "LaneWidthMeters": 4,
+          "LaneCount": 2,
+          "SidewalkLeftMeters": 0,
+          "SidewalkRightMeters": 0,
+          "CurbLeftMeters": 0,
+          "CurbRightMeters": 0,
+          "MedianMeters": 0,
+          "TotalWidthMeters": 8
+        },
+        "RoadOffsetMeters": 8,
+        "FrontSetbackMeters": 8,
+        "RearSetbackMeters": 8,
+        "SideSetbackMeters": 4,
+        "InterSiteGapMeters": 8,
+        "OuterMarginMeters": 8,
+        "RoadClass": "Local"
+      },
+      "Parts": [
+        {
+          "Id": "teaching",
+          "DefinitionId": "primary-school",
+          "SizeVariantId": "small",
+          "Purpose": "user-authored teaching",
+          "Count": 1,
+          "Kind": "Structure",
+          "Components": null
+        },
+        {
+          "Id": "library",
+          "DefinitionId": "library",
+          "SizeVariantId": "small",
+          "Purpose": "user-authored library",
+          "Count": 1,
+          "Kind": "Structure",
+          "Components": null
+        }
+      ],
+      "Children": [],
+      "BoundaryRule": {
+        "Id": "learning-perimeter",
+        "Kind": "hedge",
+        "Purpose": "Define the authored site\u0027s perimeter",
+        "ThicknessMeters": 0.2,
+        "HeightMeters": 2,
+        "MinimumOpeningMeters": 3,
+        "OpeningClearanceMeters": 0.3
+      }
+    },
+    {
+      "Id": "user.care-program",
+      "Name": "Requested care site",
+      "SourceRuleId": "test.care-request",
+      "Layout": {
+        "RoadProfile": {
+          "LaneWidthMeters": 4,
+          "LaneCount": 2,
+          "SidewalkLeftMeters": 0,
+          "SidewalkRightMeters": 0,
+          "CurbLeftMeters": 0,
+          "CurbRightMeters": 0,
+          "MedianMeters": 0,
+          "TotalWidthMeters": 8
+        },
+        "RoadOffsetMeters": 8,
+        "FrontSetbackMeters": 8,
+        "RearSetbackMeters": 8,
+        "SideSetbackMeters": 4,
+        "InterSiteGapMeters": 8,
+        "OuterMarginMeters": 8,
+        "RoadClass": "Local"
+      },
+      "Parts": [
+        {
+          "Id": "care",
+          "DefinitionId": "clinic",
+          "SizeVariantId": "local",
+          "Purpose": "user-authored care",
+          "Count": 2,
+          "Kind": "Structure",
+          "Components": null
+        }
+      ],
+      "Children": [],
+      "BoundaryRule": {
+        "Id": "care-perimeter",
+        "Kind": "wall",
+        "Purpose": "Define the authored site\u0027s perimeter",
+        "ThicknessMeters": 0.25,
+        "HeightMeters": 2,
+        "MinimumOpeningMeters": 3,
+        "OpeningClearanceMeters": 0.3
+      }
+    },
+    {
+      "Id": "user.home-program",
+      "Name": "Requested home with two garden offices",
+      "SourceRuleId": "test.home-request",
+      "Layout": {
+        "RoadProfile": {
+          "LaneWidthMeters": 4,
+          "LaneCount": 2,
+          "SidewalkLeftMeters": 0,
+          "SidewalkRightMeters": 0,
+          "CurbLeftMeters": 0,
+          "CurbRightMeters": 0,
+          "MedianMeters": 0,
+          "TotalWidthMeters": 8
+        },
+        "RoadOffsetMeters": 8,
+        "FrontSetbackMeters": 8,
+        "RearSetbackMeters": 8,
+        "SideSetbackMeters": 4,
+        "InterSiteGapMeters": 8,
+        "OuterMarginMeters": 8,
+        "RoadClass": "Local"
+      },
+      "Parts": [
+        {
+          "Id": "home",
+          "DefinitionId": "bungalow",
+          "SizeVariantId": "small",
+          "Purpose": "user-authored home",
+          "Count": 1,
+          "Kind": "Structure",
+          "Components": null
+        },
+        {
+          "Id": "garden-office",
+          "DefinitionId": "user.garden-office",
+          "SizeVariantId": "compact",
+          "Purpose": "requested detached garden office",
+          "Count": 2,
+          "Kind": "Structure",
+          "Components": null
+        }
+      ],
+      "Children": [],
+      "BoundaryRule": null
+    },
+    {
+      "Id": "user.object-yard",
+      "Name": "Object-only yard",
+      "SourceRuleId": "test.object-yard",
+      "Layout": {
+        "RoadProfile": {
+          "LaneWidthMeters": 4,
+          "LaneCount": 2,
+          "SidewalkLeftMeters": 0,
+          "SidewalkRightMeters": 0,
+          "CurbLeftMeters": 0,
+          "CurbRightMeters": 0,
+          "MedianMeters": 0,
+          "TotalWidthMeters": 8
+        },
+        "RoadOffsetMeters": 8,
+        "FrontSetbackMeters": 8,
+        "RearSetbackMeters": 8,
+        "SideSetbackMeters": 4,
+        "InterSiteGapMeters": 8,
+        "OuterMarginMeters": 8,
+        "RoadClass": "Local"
+      },
+      "Parts": [
+        {
+          "Id": "storage-rack",
+          "DefinitionId": "user.storage-rack",
+          "SizeVariantId": "standard",
+          "Purpose": "Authored storage-rack",
+          "Count": 2,
+          "Kind": "Equipment",
+          "Components": [
+            {
+              "Id": "service-panel",
+              "Kind": "service-panel",
+              "Purpose": "Declared service component",
+              "State": "closed",
+              "AnimationId": null
+            }
+          ]
+        },
+        {
+          "Id": "projection",
+          "DefinitionId": "user.projection",
+          "SizeVariantId": "standard",
+          "Purpose": "Authored projection",
+          "Count": 1,
+          "Kind": "Equipment",
+          "Components": [
+            {
+              "Id": "service-panel",
+              "Kind": "service-panel",
+              "Purpose": "Declared service component",
+              "State": "closed",
+              "AnimationId": null
+            }
+          ]
+        }
+      ],
+      "Children": [],
+      "BoundaryRule": {
+        "Id": "yard-perimeter",
+        "Kind": "railings",
+        "Purpose": "Define storage yard",
+        "ThicknessMeters": 0.2,
+        "HeightMeters": 1,
+        "MinimumOpeningMeters": 3,
+        "OpeningClearanceMeters": 0.3
+      }
+    },
+    {
+      "Id": "user.production-program",
+      "Name": "Production buildings and equipment",
+      "SourceRuleId": "test.production-program",
+      "Layout": {
+        "RoadProfile": {
+          "LaneWidthMeters": 4,
+          "LaneCount": 2,
+          "SidewalkLeftMeters": 0,
+          "SidewalkRightMeters": 0,
+          "CurbLeftMeters": 0,
+          "CurbRightMeters": 0,
+          "MedianMeters": 0,
+          "TotalWidthMeters": 8
+        },
+        "RoadOffsetMeters": 8,
+        "FrontSetbackMeters": 8,
+        "RearSetbackMeters": 8,
+        "SideSetbackMeters": 4,
+        "InterSiteGapMeters": 8,
+        "OuterMarginMeters": 8,
+        "RoadClass": "Local"
+      },
+      "Parts": [
+        {
+          "Id": "workshop",
+          "DefinitionId": "workshop",
+          "SizeVariantId": "small",
+          "Purpose": "Production structure",
+          "Count": 1,
+          "Kind": "Structure",
+          "Components": null
+        },
+        {
+          "Id": "fabricator",
+          "DefinitionId": "user.fabricator",
+          "SizeVariantId": "compact",
+          "Purpose": "Authored fabricator",
+          "Count": 1,
+          "Kind": "Equipment",
+          "Components": [
+            {
+              "Id": "service-panel",
+              "Kind": "service-panel",
+              "Purpose": "Declared service component",
+              "State": "closed",
+              "AnimationId": null
+            }
+          ]
+        },
+        {
+          "Id": "activity",
+          "DefinitionId": "user.practice-surface",
+          "SizeVariantId": "compact",
+          "Purpose": "Outdoor activity ground",
+          "Count": 1,
+          "Kind": "GroundArea",
+          "Components": [
+            {
+              "Id": "surface-marking",
+              "Kind": "surface-marking",
+              "Purpose": "Declared ground component",
+              "State": "idle",
+              "AnimationId": null
+            }
+          ]
+        },
+        {
+          "Id": "arrival",
+          "DefinitionId": "user.shared-court",
+          "SizeVariantId": "standard",
+          "Purpose": "Common arrival court",
+          "Count": 1,
+          "Kind": "GroundArea",
+          "Components": [
+            {
+              "Id": "surface-marking",
+              "Kind": "surface-marking",
+              "Purpose": "Declared ground component",
+              "State": "idle",
+              "AnimationId": null
+            }
+          ]
+        }
+      ],
+      "Children": [
+        {
+          "Id": "stores",
+          "DefinitionId": "user.object-yard",
+          "Purpose": "Nested storage and marker yard",
+          "Count": 1
+        },
+        {
+          "Id": "grounds",
+          "DefinitionId": "user.garden-precinct",
+          "Purpose": "Nested ground-only precinct",
+          "Count": 1
+        }
+      ],
+      "BoundaryRule": {
+        "Id": "production-perimeter",
+        "Kind": "fence",
+        "Purpose": "Define production site",
+        "ThicknessMeters": 0.3,
+        "HeightMeters": 2,
+        "MinimumOpeningMeters": 3,
+        "OpeningClearanceMeters": 0.3
+      }
+    },
+    {
+      "Id": "user.garden-precinct",
+      "Name": "Ground-only precinct",
+      "SourceRuleId": "test.ground-precinct",
+      "Layout": {
+        "RoadProfile": {
+          "LaneWidthMeters": 4,
+          "LaneCount": 2,
+          "SidewalkLeftMeters": 0,
+          "SidewalkRightMeters": 0,
+          "CurbLeftMeters": 0,
+          "CurbRightMeters": 0,
+          "MedianMeters": 0,
+          "TotalWidthMeters": 8
+        },
+        "RoadOffsetMeters": 8,
+        "FrontSetbackMeters": 8,
+        "RearSetbackMeters": 8,
+        "SideSetbackMeters": 4,
+        "InterSiteGapMeters": 8,
+        "OuterMarginMeters": 8,
+        "RoadClass": "Local"
+      },
+      "Parts": [
+        {
+          "Id": "garden",
+          "DefinitionId": "user.quiet-garden",
+          "SizeVariantId": "standard",
+          "Purpose": "Quiet garden",
+          "Count": 1,
+          "Kind": "GroundArea",
+          "Components": [
+            {
+              "Id": "surface-marking",
+              "Kind": "surface-marking",
+              "Purpose": "Declared ground component",
+              "State": "idle",
+              "AnimationId": null
+            }
+          ]
+        },
+        {
+          "Id": "court",
+          "DefinitionId": "user.shared-court",
+          "SizeVariantId": "standard",
+          "Purpose": "Precinct court",
+          "Count": 1,
+          "Kind": "GroundArea",
+          "Components": [
+            {
+              "Id": "surface-marking",
+              "Kind": "surface-marking",
+              "Purpose": "Declared ground component",
+              "State": "idle",
+              "AnimationId": null
+            }
+          ]
+        }
+      ],
+      "Children": [],
+      "BoundaryRule": {
+        "Id": "ground-perimeter",
+        "Kind": "hedge",
+        "Purpose": "Define the ground precinct",
+        "ThicknessMeters": 0.2,
+        "HeightMeters": 1,
+        "MinimumOpeningMeters": 3,
+        "OpeningClearanceMeters": 0.3
+      }
+    }
+  ],
+  "Facilities": [],
+  "ReplaceStructureIds": null,
+  "ReplaceFacilityIds": null,
+  "Objects": [
+    {
+      "Id": "user.fabricator",
+      "Kind": "fabricator",
+      "Purpose": "Production equipment",
+      "Variants": [
+        {
+          "Id": "compact",
+          "WidthMeters": 6,
+          "DepthMeters": 4,
+          "HeightMeters": 3,
+          "ClearanceMeters": 1
+        },
+        {
+          "Id": "large",
+          "WidthMeters": 8,
+          "DepthMeters": 6,
+          "HeightMeters": 4,
+          "ClearanceMeters": 1
+        }
+      ],
+      "BlocksMovement": true,
+      "AccessWidthMeters": 2,
+      "MinimumRoadWidthMeters": 6,
+      "Properties": {
+        "z-model": "test-model",
+        "a-cycle": 12
+      }
+    },
+    {
+      "Id": "user.storage-rack",
+      "Kind": "storage-rack",
+      "Purpose": "Reserved materials storage",
+      "Variants": [
+        {
+          "Id": "standard",
+          "WidthMeters": 4,
+          "DepthMeters": 3,
+          "HeightMeters": 2.5,
+          "ClearanceMeters": 0.5
+        }
+      ],
+      "BlocksMovement": true,
+      "AccessWidthMeters": 0,
+      "MinimumRoadWidthMeters": 0,
+      "Properties": null
+    },
+    {
+      "Id": "user.projection",
+      "Kind": "projection",
+      "Purpose": "Nonblocking site marker",
+      "Variants": [
+        {
+          "Id": "standard",
+          "WidthMeters": 2,
+          "DepthMeters": 2,
+          "HeightMeters": 0,
+          "ClearanceMeters": 0
+        }
+      ],
+      "BlocksMovement": false,
+      "AccessWidthMeters": 0,
+      "MinimumRoadWidthMeters": 0,
+      "Properties": null
+    }
+  ],
+  "ReplaceObjectIds": null,
+  "Areas": [
+    {
+      "Id": "user.practice-surface",
+      "Kind": "practice-field",
+      "Purpose": "Game-authored activity surface",
+      "Variants": [
+        {
+          "Id": "compact",
+          "WidthMeters": 24,
+          "DepthMeters": 16,
+          "ClearanceMeters": 1
+        },
+        {
+          "Id": "large",
+          "WidthMeters": 64,
+          "DepthMeters": 40,
+          "ClearanceMeters": 2
+        }
+      ],
+      "AllowsThroughAccess": false,
+      "AccessWidthMeters": 2,
+      "MinimumRoadWidthMeters": 6,
+      "Properties": {
+        "z-markings": "training",
+        "a-surface": "authored-surface"
+      }
+    },
+    {
+      "Id": "user.shared-court",
+      "Kind": "shared-court",
+      "Purpose": "Shared circulation court",
+      "Variants": [
+        {
+          "Id": "standard",
+          "WidthMeters": 12,
+          "DepthMeters": 10,
+          "ClearanceMeters": 0.5
+        }
+      ],
+      "AllowsThroughAccess": true,
+      "AccessWidthMeters": 3,
+      "MinimumRoadWidthMeters": 6,
+      "Properties": null
+    },
+    {
+      "Id": "user.quiet-garden",
+      "Kind": "quiet-garden",
+      "Purpose": "Reserved quiet ground",
+      "Variants": [
+        {
+          "Id": "standard",
+          "WidthMeters": 10,
+          "DepthMeters": 8,
+          "ClearanceMeters": 1
+        }
+      ],
+      "AllowsThroughAccess": false,
+      "AccessWidthMeters": 0,
+      "MinimumRoadWidthMeters": 0,
+      "Properties": null
+    }
+  ],
+  "ReplaceAreaIds": null
+}

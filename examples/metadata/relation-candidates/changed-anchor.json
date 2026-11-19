@@ -1,0 +1,303 @@
+{
+  "SchemaVersion": 1,
+  "Id": "relation-world",
+  "GameProfile": "framework-reference",
+  "CatalogId": "coordination-catalog",
+  "RootArchetypeId": "root",
+  "Scale": "area",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Framework technical reference; Godot deferred"
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    0,
+    0
+  ],
+  "RequireAllPositions": false,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": null,
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "relation-ground",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": -2,
+          "Y": -6
+        },
+        {
+          "X": 14,
+          "Y": -6
+        },
+        {
+          "X": 14,
+          "Y": 8
+        },
+        {
+          "X": -2,
+          "Y": 8
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "ground",
+        "Kind": "ground",
+        "Purpose": "Supported ground",
+        "SourceRuleId": "test:ground",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": -2,
+              "Y": -6
+            },
+            {
+              "X": 14,
+              "Y": -6
+            },
+            {
+              "X": 14,
+              "Y": 8
+            },
+            {
+              "X": -2,
+              "Y": 8
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 0,
+        "GradientX": 0,
+        "GradientY": 0
+      }
+    ],
+    "Terrain": null,
+    "HeightField": null
+  },
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "relation-fields",
+    "Fields": [
+      {
+        "Id": "height",
+        "Purpose": "Ground height",
+        "SourceRuleId": "test:height",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Elevation",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ],
+    "SampledFields": null
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "relation-sites",
+      "Purpose": "Place required source at declared relation contacts",
+      "SourceRuleId": "test:relations",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": -2,
+            "Y": -6
+          },
+          {
+            "X": 14,
+            "Y": -6
+          },
+          {
+            "X": 14,
+            "Y": 8
+          },
+          {
+            "X": -2,
+            "Y": 8
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "a",
+          "Purpose": "Required source-sized site",
+          "SourceRuleId": "test:site",
+          "Footprint": null,
+          "Profile": {
+            "Id": "relation-purpose",
+            "Purpose": "Declare exact distance intent",
+            "SourceRuleId": "test:purpose",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "b",
+          "Purpose": "Required source-sized site",
+          "SourceRuleId": "test:site",
+          "Footprint": null,
+          "Profile": {
+            "Id": "relation-purpose",
+            "Purpose": "Declare exact distance intent",
+            "SourceRuleId": "test:purpose",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        }
+      ],
+      "Anchors": [
+        {
+          "Id": "first",
+          "Position": {
+            "X": 0,
+            "Y": 0
+          }
+        },
+        {
+          "Id": "second",
+          "Position": {
+            "X": 8,
+            "Y": 0
+          }
+        }
+      ],
+      "Relations": [
+        {
+          "Id": "a-first-band",
+          "FromId": "a",
+          "ToId": "first",
+          "Purpose": "First distance intent",
+          "SourceRuleId": "test:first",
+          "Minimum": 5,
+          "Maximum": 5,
+          "Ideal": 5,
+          "Weight": 1
+        },
+        {
+          "Id": "b-first-band",
+          "FromId": "b",
+          "ToId": "first",
+          "Purpose": "First distance intent",
+          "SourceRuleId": "test:first",
+          "Minimum": 5,
+          "Maximum": 5,
+          "Ideal": 5,
+          "Weight": 1
+        },
+        {
+          "Id": "a-second-band",
+          "FromId": "a",
+          "ToId": "second",
+          "Purpose": "Second distance intent",
+          "SourceRuleId": "test:second",
+          "Minimum": 5,
+          "Maximum": 5,
+          "Ideal": 5,
+          "Weight": 1
+        },
+        {
+          "Id": "b-second-band",
+          "FromId": "b",
+          "ToId": "second",
+          "Purpose": "Second distance intent",
+          "SourceRuleId": "test:second",
+          "Minimum": 5,
+          "Maximum": 5,
+          "Ideal": 5,
+          "Weight": 1
+        }
+      ],
+      "MinimumSeparation": 1,
+      "MaximumCandidates": 2048,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 20000000,
+      "AllowBoundaryContact": false,
+      "Growth": null,
+      "Execution": "Search",
+      "Nogoods": null
+    },
+    "Bindings": [
+      {
+        "DemandId": "a",
+        "NodeId": "relation-world/sites-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "b",
+        "NodeId": "relation-world/sites-1",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      }
+    ],
+    "NestedStages": null,
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 32,
+    "SourceWorld": null,
+    "ConnectedLayouts": null,
+    "Programs": null,
+    "RegionAnchors": null,
+    "AllocationAnchors": null,
+    "Nogoods": null
+  },
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": null,
+  "RouteBudget": null,
+  "Interiors": null,
+  "TerrainDemands": null,
+  "ProgramComposition": null,
+  "Drainage": null,
+  "Water": null,
+  "WindMoisture": null
+}

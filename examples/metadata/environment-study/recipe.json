@@ -1,0 +1,285 @@
+{
+  "SchemaVersion": 1,
+  "Id": "environment-study",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Authored observation points; environmental formulas and point suitability only. Whole-site constraints, destination placement, hydrology, art and runtime remain open."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    32,
+    32
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "generated-landforms",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 8,
+          "Y": 12
+        },
+        {
+          "X": 76,
+          "Y": 0
+        },
+        {
+          "X": 120,
+          "Y": 24
+        },
+        {
+          "X": 128,
+          "Y": 84
+        },
+        {
+          "X": 96,
+          "Y": 120
+        },
+        {
+          "X": 28,
+          "Y": 128
+        },
+        {
+          "X": 0,
+          "Y": 72
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [],
+    "Terrain": {
+      "SchemaVersion": 1,
+      "Id": "landforms",
+      "Kind": "ground",
+      "Purpose": "Editable exploration landforms",
+      "SourceRuleId": "example:terrain",
+      "Unit": "meters",
+      "Origin": {
+        "X": 0,
+        "Y": 0
+      },
+      "StepX": 4,
+      "StepY": 4,
+      "Columns": 33,
+      "Rows": 33,
+      "BaseElevation": 10,
+      "GradientX": 0.01,
+      "GradientY": 0,
+      "Operations": [
+        {
+          "Id": "ridge",
+          "Purpose": "Raised route barrier",
+          "SourceRuleId": "example:ridge",
+          "Mode": "Add",
+          "ControlPath": [
+            {
+              "X": 24,
+              "Y": 80
+            },
+            {
+              "X": 64,
+              "Y": 56
+            },
+            {
+              "X": 112,
+              "Y": 88
+            }
+          ],
+          "Radius": 30,
+          "Height": 38
+        },
+        {
+          "Id": "valley",
+          "Purpose": "Lower passage through the ridge",
+          "SourceRuleId": "example:valley",
+          "Mode": "Add",
+          "ControlPath": [
+            {
+              "X": 48,
+              "Y": 0
+            },
+            {
+              "X": 64,
+              "Y": 64
+            },
+            {
+              "X": 100,
+              "Y": 128
+            }
+          ],
+          "Radius": 16,
+          "Height": -16
+        },
+        {
+          "Id": "landing",
+          "Purpose": "Level authored landing anchor",
+          "SourceRuleId": "example:landing",
+          "Mode": "Level",
+          "ControlPath": [
+            {
+              "X": 32,
+              "Y": 32
+            }
+          ],
+          "Radius": 14,
+          "Height": 12
+        }
+      ],
+      "Detail": {
+        "Seed": 178,
+        "Wavelength": 37,
+        "Amplitude": 3,
+        "Octaves": 3
+      },
+      "MaximumWork": 20000000
+    },
+    "HeightField": null
+  },
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "exploration-fields",
+    "Fields": [
+      {
+        "Id": "elevation",
+        "Purpose": "Ground elevation",
+        "SourceRuleId": "example:height",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Elevation",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "slope",
+        "Purpose": "Ground steepness",
+        "SourceRuleId": "example:slope",
+        "Unit": "rise-per-run",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Slope",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "temperature",
+        "Purpose": "Authored altitude temperature gradient",
+        "SourceRuleId": "example:temperature",
+        "Unit": "degrees-c",
+        "Offset": 25,
+        "Terms": [
+          {
+            "Input": "Field",
+            "Coefficient": -0.1,
+            "FieldId": "elevation"
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "water-depth",
+        "Purpose": "Depth below authored water level",
+        "SourceRuleId": "example:water-level",
+        "Unit": "meters",
+        "Offset": 5,
+        "Terms": [
+          {
+            "Input": "Field",
+            "Coefficient": -1,
+            "FieldId": "elevation"
+          }
+        ],
+        "Minimum": 0,
+        "Maximum": null
+      }
+    ]
+  },
+  "SuitabilityRules": [
+    {
+      "Id": "rest-checks",
+      "RegionNodeId": "environment-study",
+      "NodeKind": "destination",
+      "MinimumNodes": 4,
+      "MaximumNodes": 4,
+      "Profile": {
+        "Id": "rest-point",
+        "Purpose": "A dry gentle resting location",
+        "SourceRuleId": "example:rest",
+        "AllowedKinds": [
+          "meadow",
+          "ground"
+        ],
+        "Requirements": [
+          {
+            "Id": "dry",
+            "FieldId": "water-depth",
+            "Purpose": "Keep the location above authored water level",
+            "SourceRuleId": "example:dry",
+            "Minimum": 0,
+            "Maximum": 0
+          },
+          {
+            "Id": "gentle",
+            "FieldId": "slope",
+            "Purpose": "Allow declared gentle ground",
+            "SourceRuleId": "example:gentle",
+            "Minimum": 0,
+            "Maximum": 0.3
+          }
+        ],
+        "Preferences": [
+          {
+            "Id": "comfortable",
+            "FieldId": "temperature",
+            "Purpose": "Prefer the authored temperature target",
+            "SourceRuleId": "example:comfort",
+            "Ideal": 23,
+            "Tolerance": 10,
+            "Weight": 1
+          }
+        ]
+      },
+      "RequireEligible": false
+    }
+  ]
+}

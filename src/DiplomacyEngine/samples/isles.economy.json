@@ -1,0 +1,805 @@
+{
+  "format": 6,
+  "id": "isles-economy",
+  "seed": 20261029,
+  "time": {
+    "stepsPerDay": 24,
+    "periodSteps": 24
+  },
+  "limits": {
+    "maxShipments": 200,
+    "maxLoans": 16,
+    "maxShocks": 8,
+    "history": 16
+  },
+  "price": {
+    "responseMin": 200,
+    "responseMax": 3000,
+    "settlePeriods": 6,
+    "bandMargin": 40,
+    "noise": 20,
+    "arrearsPenalty": 300
+  },
+  "routing": {
+    "mode": "direct"
+  },
+  "recipes": [],
+  "currencies": [
+    {
+      "id": "crown",
+      "key": "econ.cur.crown",
+      "reference": true,
+      "anchor": 1000000,
+      "money": 2000000,
+      "growthPpm": 0,
+      "maxRateStepPpm": 0
+    },
+    {
+      "id": "florin",
+      "key": "econ.cur.florin",
+      "reference": false,
+      "anchor": 500000,
+      "money": 900000,
+      "growthPpm": 0,
+      "maxRateStepPpm": 20000
+    }
+  ],
+  "goods": [
+    {
+      "id": "grain",
+      "key": "econ.good.grain",
+      "base": 2000,
+      "demandElasticity": 600,
+      "supplyElasticity": 800,
+      "floor": 250,
+      "ceiling": 4000,
+      "speed": 300,
+      "maxStep": 80,
+      "inertia": 400,
+      "decay": 5,
+      "weight": 3,
+      "tags": [
+        "food"
+      ]
+    },
+    {
+      "id": "cloth",
+      "key": "econ.good.cloth",
+      "base": 12000,
+      "demandElasticity": 900,
+      "supplyElasticity": 700,
+      "floor": 250,
+      "ceiling": 4000,
+      "speed": 300,
+      "maxStep": 80,
+      "inertia": 400,
+      "decay": 0,
+      "weight": 1,
+      "tags": [
+        "luxury"
+      ]
+    },
+    {
+      "id": "iron",
+      "key": "econ.good.iron",
+      "base": 8000,
+      "demandElasticity": 500,
+      "supplyElasticity": 600,
+      "floor": 250,
+      "ceiling": 4000,
+      "speed": 300,
+      "maxStep": 80,
+      "inertia": 400,
+      "decay": 0,
+      "weight": 5,
+      "tags": [
+        "material"
+      ]
+    },
+    {
+      "id": "ale",
+      "key": "econ.good.ale",
+      "base": 3000,
+      "demandElasticity": 700,
+      "supplyElasticity": 800,
+      "floor": 250,
+      "ceiling": 4000,
+      "speed": 300,
+      "maxStep": 80,
+      "inertia": 400,
+      "decay": 2,
+      "weight": 2,
+      "tags": [
+        "food"
+      ]
+    }
+  ],
+  "bands": [
+    {
+      "id": "cheap",
+      "key": "econ.band.cheap",
+      "from": 0
+    },
+    {
+      "id": "fair",
+      "key": "econ.band.fair",
+      "from": 800
+    },
+    {
+      "id": "dear",
+      "key": "econ.band.dear",
+      "from": 1250
+    },
+    {
+      "id": "scarce",
+      "key": "econ.band.scarce",
+      "from": 2000
+    }
+  ],
+  "schedules": [
+    {
+      "id": "payday",
+      "key": "econ.sched.payday",
+      "every": 7,
+      "offset": 0,
+      "manual": false
+    },
+    {
+      "id": "taxday",
+      "key": "econ.sched.taxday",
+      "every": 30,
+      "offset": 0,
+      "manual": false
+    },
+    {
+      "id": "decree",
+      "key": "econ.sched.decree",
+      "every": 1,
+      "offset": 0,
+      "manual": true
+    }
+  ],
+  "policies": [
+    {
+      "id": "sales-tax",
+      "kind": "sales",
+      "rate": 100,
+      "perUnit": 0,
+      "tags": [],
+      "schedule": "taxday"
+    },
+    {
+      "id": "import-tariff",
+      "kind": "import",
+      "rate": 150,
+      "perUnit": 0,
+      "tags": [],
+      "schedule": "taxday"
+    },
+    {
+      "id": "export-duty",
+      "kind": "export",
+      "rate": 50,
+      "perUnit": 0,
+      "tags": [],
+      "schedule": "taxday"
+    },
+    {
+      "id": "farm-subsidy",
+      "kind": "subsidy",
+      "rate": 0,
+      "perUnit": 300,
+      "tags": [
+        "food"
+      ],
+      "schedule": ""
+    },
+    {
+      "id": "luxury-duty",
+      "kind": "sales",
+      "rate": 200,
+      "perUnit": 0,
+      "tags": [
+        "luxury"
+      ],
+      "schedule": "decree"
+    }
+  ],
+  "modifiers": [
+    {
+      "id": "winter-hunger",
+      "kind": "demand",
+      "good": "",
+      "tag": "food",
+      "permille": 300,
+      "when": {
+        "fact": "cal.season",
+        "op": "eq",
+        "value": "winter"
+      }
+    },
+    {
+      "id": "autumn-harvest",
+      "kind": "supply",
+      "good": "",
+      "tag": "food",
+      "permille": 400,
+      "when": {
+        "fact": "cal.season",
+        "op": "eq",
+        "value": "autumn"
+      }
+    },
+    {
+      "id": "plague-labour",
+      "kind": "supply",
+      "good": "",
+      "tag": "",
+      "permille": -300,
+      "when": {
+        "fact": "story.plague",
+        "op": "gte",
+        "value": 2
+      }
+    }
+  ],
+  "shocks": [
+    {
+      "id": "embargo",
+      "key": "econ.shock.embargo",
+      "duration": 30,
+      "effects": [
+        {
+          "kind": "route",
+          "good": "",
+          "tag": "",
+          "route": "",
+          "amount": -1000
+        }
+      ]
+    },
+    {
+      "id": "embargo-lifted",
+      "key": "econ.shock.embargo_lifted",
+      "duration": 3,
+      "effects": [
+        {
+          "kind": "price",
+          "good": "grain",
+          "tag": "",
+          "route": "",
+          "amount": -100
+        }
+      ]
+    },
+    {
+      "id": "trade-boom",
+      "key": "econ.shock.trade_boom",
+      "duration": 20,
+      "effects": [
+        {
+          "kind": "demand",
+          "good": "",
+          "tag": "food",
+          "route": "",
+          "amount": 200
+        }
+      ]
+    },
+    {
+      "id": "trade-bust",
+      "key": "econ.shock.trade_bust",
+      "duration": 20,
+      "effects": [
+        {
+          "kind": "demand",
+          "good": "",
+          "tag": "food",
+          "route": "",
+          "amount": -200
+        }
+      ]
+    },
+    {
+      "id": "sabotage",
+      "key": "econ.shock.sabotage",
+      "duration": 15,
+      "effects": [
+        {
+          "kind": "supply",
+          "good": "",
+          "tag": "food",
+          "route": "",
+          "amount": -400
+        }
+      ]
+    }
+  ],
+  "markets": [
+    {
+      "id": "aurel-market",
+      "key": "econ.market.aurel",
+      "currency": "crown",
+      "treasury": 400000,
+      "staff": 40,
+      "spread": 50,
+      "pairs": [
+        {
+          "good": "grain",
+          "production": 450,
+          "consumption": 600,
+          "stock": 1800,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "cloth",
+          "production": 560,
+          "consumption": 180,
+          "stock": 540,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "iron",
+          "production": 50,
+          "consumption": 60,
+          "stock": 880,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "ale",
+          "production": 200,
+          "consumption": 250,
+          "stock": 750,
+          "cover": 3,
+          "capacity": 100000
+        }
+      ],
+      "policies": [
+        "sales-tax",
+        "farm-subsidy",
+        "export-duty"
+      ],
+      "lines": [],
+      "budget": [
+        {
+          "id": "wages",
+          "kind": "wage",
+          "schedule": "payday",
+          "amount": 0,
+          "perHead": 120,
+          "indexed": true
+        },
+        {
+          "id": "granary",
+          "kind": "upkeep",
+          "schedule": "taxday",
+          "amount": 2000,
+          "perHead": 0,
+          "indexed": false
+        },
+        {
+          "id": "court",
+          "kind": "upkeep",
+          "schedule": "decree",
+          "amount": 1500,
+          "perHead": 0,
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "id": "brass-market",
+      "key": "econ.market.brass",
+      "currency": "florin",
+      "treasury": 400000,
+      "staff": 40,
+      "spread": 50,
+      "pairs": [
+        {
+          "good": "grain",
+          "production": 410,
+          "consumption": 480,
+          "stock": 1440,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "cloth",
+          "production": 20,
+          "consumption": 140,
+          "stock": 620,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "iron",
+          "production": 130,
+          "consumption": 100,
+          "stock": 300,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "ale",
+          "production": 160,
+          "consumption": 250,
+          "stock": 750,
+          "cover": 3,
+          "capacity": 100000
+        }
+      ],
+      "policies": [
+        "sales-tax",
+        "farm-subsidy",
+        "export-duty"
+      ],
+      "lines": [],
+      "budget": [
+        {
+          "id": "wages",
+          "kind": "wage",
+          "schedule": "payday",
+          "amount": 0,
+          "perHead": 120,
+          "indexed": true
+        },
+        {
+          "id": "granary",
+          "kind": "upkeep",
+          "schedule": "taxday",
+          "amount": 2000,
+          "perHead": 0,
+          "indexed": false
+        },
+        {
+          "id": "court",
+          "kind": "upkeep",
+          "schedule": "decree",
+          "amount": 1500,
+          "perHead": 0,
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "id": "cinder-market",
+      "key": "econ.market.cinder",
+      "currency": "crown",
+      "treasury": 400000,
+      "staff": 40,
+      "spread": 50,
+      "pairs": [
+        {
+          "good": "grain",
+          "production": 410,
+          "consumption": 540,
+          "stock": 1620,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "cloth",
+          "production": 20,
+          "consumption": 110,
+          "stock": 330,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "iron",
+          "production": 20,
+          "consumption": 80,
+          "stock": 240,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "ale",
+          "production": 220,
+          "consumption": 250,
+          "stock": 750,
+          "cover": 3,
+          "capacity": 100000
+        }
+      ],
+      "policies": [
+        "sales-tax",
+        "farm-subsidy",
+        "export-duty"
+      ],
+      "lines": [],
+      "budget": [
+        {
+          "id": "wages",
+          "kind": "wage",
+          "schedule": "payday",
+          "amount": 0,
+          "perHead": 120,
+          "indexed": true
+        },
+        {
+          "id": "granary",
+          "kind": "upkeep",
+          "schedule": "taxday",
+          "amount": 2000,
+          "perHead": 0,
+          "indexed": false
+        },
+        {
+          "id": "court",
+          "kind": "upkeep",
+          "schedule": "decree",
+          "amount": 1500,
+          "perHead": 0,
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "id": "dune-market",
+      "key": "econ.market.dune",
+      "currency": "crown",
+      "treasury": 400000,
+      "staff": 40,
+      "spread": 50,
+      "pairs": [
+        {
+          "good": "grain",
+          "production": 420,
+          "consumption": 600,
+          "stock": 1800,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "cloth",
+          "production": 70,
+          "consumption": 140,
+          "stock": 420,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "iron",
+          "production": 340,
+          "consumption": 80,
+          "stock": 440,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "ale",
+          "production": 250,
+          "consumption": 300,
+          "stock": 900,
+          "cover": 3,
+          "capacity": 100000
+        }
+      ],
+      "policies": [
+        "sales-tax",
+        "farm-subsidy",
+        "export-duty"
+      ],
+      "lines": [],
+      "budget": [
+        {
+          "id": "wages",
+          "kind": "wage",
+          "schedule": "payday",
+          "amount": 0,
+          "perHead": 120,
+          "indexed": true
+        },
+        {
+          "id": "granary",
+          "kind": "upkeep",
+          "schedule": "taxday",
+          "amount": 2000,
+          "perHead": 0,
+          "indexed": false
+        },
+        {
+          "id": "court",
+          "kind": "upkeep",
+          "schedule": "decree",
+          "amount": 1500,
+          "perHead": 0,
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "id": "ember-market",
+      "key": "econ.market.ember",
+      "currency": "crown",
+      "treasury": 400000,
+      "staff": 40,
+      "spread": 50,
+      "pairs": [
+        {
+          "good": "grain",
+          "production": 490,
+          "consumption": 600,
+          "stock": 1800,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "cloth",
+          "production": 890,
+          "consumption": 140,
+          "stock": 920,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "iron",
+          "production": 10,
+          "consumption": 80,
+          "stock": 240,
+          "cover": 3,
+          "capacity": 100000
+        },
+        {
+          "good": "ale",
+          "production": 160,
+          "consumption": 200,
+          "stock": 600,
+          "cover": 3,
+          "capacity": 100000
+        }
+      ],
+      "policies": [
+        "sales-tax",
+        "farm-subsidy",
+        "export-duty"
+      ],
+      "lines": [],
+      "budget": [
+        {
+          "id": "wages",
+          "kind": "wage",
+          "schedule": "payday",
+          "amount": 0,
+          "perHead": 120,
+          "indexed": true
+        },
+        {
+          "id": "granary",
+          "kind": "upkeep",
+          "schedule": "taxday",
+          "amount": 2000,
+          "perHead": 0,
+          "indexed": false
+        },
+        {
+          "id": "court",
+          "kind": "upkeep",
+          "schedule": "decree",
+          "amount": 1500,
+          "perHead": 0,
+          "indexed": false
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "id": "aurel-brass",
+      "from": "aurel-market",
+      "to": "brass-market",
+      "delay": 2,
+      "capacity": 1200,
+      "costPerWeight": 100,
+      "margin": 50,
+      "share": 800
+    },
+    {
+      "id": "brass-aurel",
+      "from": "brass-market",
+      "to": "aurel-market",
+      "delay": 2,
+      "capacity": 1200,
+      "costPerWeight": 100,
+      "margin": 50,
+      "share": 800
+    },
+    {
+      "id": "brass-cinder",
+      "from": "brass-market",
+      "to": "cinder-market",
+      "delay": 3,
+      "capacity": 1200,
+      "costPerWeight": 100,
+      "margin": 50,
+      "share": 800
+    },
+    {
+      "id": "cinder-brass",
+      "from": "cinder-market",
+      "to": "brass-market",
+      "delay": 3,
+      "capacity": 1200,
+      "costPerWeight": 100,
+      "margin": 50,
+      "share": 800
+    },
+    {
+      "id": "cinder-dune",
+      "from": "cinder-market",
+      "to": "dune-market",
+      "delay": 3,
+      "capacity": 1200,
+      "costPerWeight": 100,
+      "margin": 50,
+      "share": 800
+    },
+    {
+      "id": "dune-cinder",
+      "from": "dune-market",
+      "to": "cinder-market",
+      "delay": 3,
+      "capacity": 1200,
+      "costPerWeight": 100,
+      "margin": 50,
+      "share": 800
+    },
+    {
+      "id": "dune-ember",
+      "from": "dune-market",
+      "to": "ember-market",
+      "delay": 4,
+      "capacity": 1200,
+      "costPerWeight": 100,
+      "margin": 50,
+      "share": 800
+    },
+    {
+      "id": "ember-dune",
+      "from": "ember-market",
+      "to": "dune-market",
+      "delay": 4,
+      "capacity": 1200,
+      "costPerWeight": 100,
+      "margin": 50,
+      "share": 800
+    },
+    {
+      "id": "ember-aurel",
+      "from": "ember-market",
+      "to": "aurel-market",
+      "delay": 4,
+      "capacity": 1200,
+      "costPerWeight": 100,
+      "margin": 50,
+      "share": 800
+    },
+    {
+      "id": "aurel-ember",
+      "from": "aurel-market",
+      "to": "ember-market",
+      "delay": 4,
+      "capacity": 1200,
+      "costPerWeight": 100,
+      "margin": 50,
+      "share": 800
+    }
+  ],
+  "loans": [],
+  "facts": [
+    {
+      "id": "cal.season",
+      "type": "string"
+    },
+    {
+      "id": "story.plague",
+      "type": "int",
+      "min": 0,
+      "max": 3
+    }
+  ]
+}

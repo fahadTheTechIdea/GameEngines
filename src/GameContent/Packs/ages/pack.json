@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "ages",
+  "version": "1.0.0",
+  "title": "Ages of history: Stone Age to modern age, and when common materials appear",
+  "language": "en",
+  "world": "historical",
+  "genres": ["eras"],
+  "dependencies": [{ "id": "core", "version": "1.0.0" }, { "id": "electronics", "version": "1.0.0" }, { "id": "matter", "version": "1.0.0" }, { "id": "mining", "version": "1.0.0" }, { "id": "naval", "version": "1.0.0" }],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

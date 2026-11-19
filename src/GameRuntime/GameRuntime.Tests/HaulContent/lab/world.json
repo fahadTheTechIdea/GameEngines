@@ -1,0 +1,40 @@
+{
+  "time_definitions": [{
+    "id": "lab.time", "quantum": { "numerator": 60, "denominator": 1, "unit": "second" },
+    "frame_ticks": 1, "ticks_per_second": 30, "calendar": null, "horizon": null
+  }],
+  "entity_states": [
+    { "id": "lab.idle", "state": "state.lab.idle", "priority": 0, "default": true },
+    { "id": "lab.working", "state": "state.lab.working", "priority": 20 },
+    { "id": "lab.loading", "state": "state.lab.loading", "priority": 30 },
+    { "id": "lab.moving", "state": "state.lab.moving", "priority": 40 },
+    { "id": "lab.stopped", "state": "state.lab.stopped", "priority": 60 }
+  ],
+  "tile_spaces": [{ "id": "lab.tiles", "width": 12, "height": 8 }],
+  "entities": [
+    { "id": "lab.bench", "kind": "structure", "components": {
+      "tile_presence": { "space": "lab.tiles", "width": 1, "height": 1, "blocks": true, "movable": false },
+      "storage": { "capacity_policy": "lab.shelf", "initial_stock": { "lab.sample": 5 } }
+    } },
+    { "id": "lab.annex", "kind": "structure", "components": {
+      "tile_presence": { "space": "lab.tiles", "width": 1, "height": 1, "blocks": true, "movable": false },
+      "storage": { "capacity_policy": "lab.shelf" }
+    } },
+    { "id": "lab.hauler", "kind": "vehicle", "components": {
+      "tile_presence": { "space": "lab.tiles", "width": 1, "height": 1, "blocks": true, "movable": true },
+      "mover": { "classes": ["land"], "class": "land", "speed": 60, "states": { "moving": "lab.moving", "stopped": "lab.stopped" } },
+      "worker": { "work_rate": 1, "roles": ["haul"], "states": { "working": "lab.working", "loading": "lab.loading", "stopped": "lab.stopped" } },
+      "storage": { "capacity_policy": "lab.cart", "public": false },
+      "transporter": { "handling": "lab.handling" },
+      "work_policy": { "profile": "lab.hauler.work" }
+    } }
+  ],
+  "game_modes": [{ "id": "lab.resource-only", "name": "Resource-only simulation", "properties": {} }],
+  "scenarios": [{
+    "id": "lab", "name": "Haul lab",
+    "modules": ["lab", "sim.inventory", "sim.motion", "sim.tile-navigation", "sim.work", "sim.logistics", "gf.director"],
+    "space": "lab.tiles", "game_mode": "lab.resource-only", "mode_overrides": {},
+    "settings": { "sim.world-setup": { "profile": "lab.start" }, "sim.work": { "retry": "lab.retry" } },
+    "seats": 1, "default_seats": 1, "time": "lab.time"
+  }]
+}

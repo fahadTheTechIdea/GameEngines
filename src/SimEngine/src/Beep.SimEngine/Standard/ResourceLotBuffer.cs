@@ -10,6 +10,9 @@ namespace Beep.SimEngine.Standard
     {
         private readonly List<ResourceLotAmount> _lots = new List<ResourceLotAmount>();
         public IReadOnlyList<ResourceLotAmount> Lots => new List<ResourceLotAmount>(_lots).AsReadOnly();
+        /// <summary>Read access for the state codec, which walks the partitions on every save and hash and must not copy them each time.</summary>
+        public int LotCount => _lots.Count;
+        public ResourceLotAmount LotAt(int index) => _lots[index];
         public List<ResourceAmount> Aggregate()
             => new List<ResourceAmount>(this);
         public int Count

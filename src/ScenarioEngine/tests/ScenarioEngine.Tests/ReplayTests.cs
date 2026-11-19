@@ -8,22 +8,19 @@ namespace ScenarioEngine.Tests;
 public sealed class ReplayTests
 {
     [Fact]
-    public void PortableReplayPreservesWorldInputsCommandsCancellationPauseAndEnding()
+    public void PortableReplayPreservesWorldInputsCommandsCancellationAndEnding()
     {
         var h = new Harness();
         var scenario = h.Scenario();
         var service = new ReplayService(h.Factory, h.Reporter);
         using var recording = service.Record(h.Factory.Create(scenario, Harness.Options(), Harness.Frame(0)), Harness.Frame(0));
-        recording.Start();
         recording.Enqueue(Harness.Increment(id: "cancelled"));
         recording.CancelQueued("player", "cancelled");
-        recording.Pause();
-        recording.Resume();
         recording.Enqueue(Harness.Increment());
         var world = new WorldFrame(0, 1, [new(1, "test_counter.adjustment", null, ContractJson.Element(new { delta = 1 }))]);
-        Assert.True(recording.Step(new(1, world)).Committed);
+        Assert.True(recording.Update(new(1, world)).Committed);
         recording.Enqueue(Harness.Increment(2, "next"));
-        Assert.True(recording.Step(Harness.Input(2)).Committed);
+        Assert.True(recording.Update(Harness.Input(2)).Committed);
         var decoded = service.Decode(service.Encode(recording.CaptureReplay()));
         Assert.True(decoded.Report.IsValid);
         var result = service.Verify(scenario, decoded.Tape!);
@@ -41,7 +38,7 @@ public sealed class ReplayTests
         using var recording = service.Record(h.Start(scenario), Harness.Frame(0));
         recording.Enqueue(Harness.Increment());
         var world = new WorldFrame(0, 1, [new(1, "test_counter.adjustment", null, ContractJson.Element(new { delta = 0 }))]);
-        recording.Step(new(1, world));
+        recording.Update(new(1, world));
         var tape = recording.CaptureReplay();
         var step = tape.Entries[1];
         var input = step.Input!;
@@ -63,7 +60,7 @@ public sealed class ReplayTests
         var service = new ReplayService(h.Factory, h.Reporter);
         using var recording = service.Record(h.Start(scenario), Harness.Frame(0));
         recording.Enqueue(Harness.Increment());
-        recording.Step(Harness.Input(1));
+        recording.Update(Harness.Input(1));
         var changed = new Harness(new DecoratingLayer((result, _) => result with
         {
             Events = [.. result.Events.Select(e => e with { Kind = "test_counter.changed_event" })]
@@ -99,7 +96,7 @@ public sealed class ReplayTests
         using var recording = service.Record(h.Start(scenario), Harness.Frame(0));
         using (var json = JsonDocument.Parse("""{"amount":1}"""))
             recording.Enqueue(Harness.Increment() with { Payload = json.RootElement });
-        recording.Step(Harness.Input(1));
+        recording.Update(Harness.Input(1));
         Assert.True(service.Verify(scenario, service.Decode(service.Encode(recording.CaptureReplay())).Tape!).Matches);
     }
 

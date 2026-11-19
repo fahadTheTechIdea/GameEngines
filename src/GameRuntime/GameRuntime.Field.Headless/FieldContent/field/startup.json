@@ -1,0 +1,7 @@
+{
+  "world_setup_profiles": [{ "id": "field.start", "entries": ["field.depot-a.start", "field.depot-b.start"], "includes": [] }],
+  "entity_setups": [
+    { "id": "field.depot-a.start", "after": [], "entity": "field.depot", "company": 0, "placement": { "space": "field.tiles", "x": 2, "y": 2 }, "home": null },
+    { "id": "field.depot-b.start", "after": ["field.depot-a.start"], "entity": "field.depot", "company": 0, "placement": { "space": "field.tiles", "x": 2, "y": 152 }, "home": null }
+  ]
+}

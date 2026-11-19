@@ -1,0 +1,5 @@
+variant,worst_step_median_ms,worst_step_min_ms,worst_step_max_ms,day_total_median_ms,worst_step_bytes,step0_median_ms,step1_median_ms,step2_median_ms,step3_median_ms,step4_median_ms,step5_median_ms,ordinary_median_ms,rounds
+passes-off,10.65,4.80,56.34,22.04,4377176,10.65,0.49,0.47,0.46,0.49,0.44,0.47,25
+atomic,32.82,21.78,184.49,44.78,7629112,32.82,0.53,0.55,0.53,0.54,0.56,0.56,25
+spread,10.58,7.11,56.13,45.73,1123744,9.39,4.65,9.49,9.09,3.08,0.55,0.53,25
+spread-passes-off,9.74,4.88,13.27,23.41,4233280,9.74,0.51,0.50,0.51,3.02,0.50,0.52,25

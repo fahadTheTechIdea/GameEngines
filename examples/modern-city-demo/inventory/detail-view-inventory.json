@@ -1,0 +1,651 @@
+{
+  "Version": 1,
+  "Status": "DraftAuthoringScopeOnly",
+  "Policy": "visual-view-policy.json",
+  "Views": [
+    {
+      "ScopeId": "old-center-civic-and-market-01",
+      "District": "old-center",
+      "SemanticGroup": "civic-and-market",
+      "MemberRootIds": [
+        "framework-reference-city/old-center-0/cafes-0",
+        "framework-reference-city/old-center-0/cafes-1",
+        "framework-reference-city/old-center-0/cafes-2",
+        "framework-reference-city/old-center-0/cafes-3",
+        "framework-reference-city/old-center-0/cafes-4",
+        "framework-reference-city/old-center-0/civic-0",
+        "framework-reference-city/old-center-0/food-0",
+        "framework-reference-city/old-center-0/food-1",
+        "framework-reference-city/old-center-0/food-2",
+        "framework-reference-city/old-center-0/food-3",
+        "framework-reference-city/old-center-0/food-4",
+        "framework-reference-city/old-center-0/library-0",
+        "framework-reference-city/old-center-0/plazas-0",
+        "framework-reference-city/old-center-0/plazas-1",
+        "framework-reference-city/old-center-0/shops-0"
+      ],
+      "BuildingBodies": 13,
+      "MemberCount": 15,
+      "Kinds": {
+        "building": 13,
+        "ground-area": 2
+      }
+    },
+    {
+      "ScopeId": "old-center-civic-and-market-02",
+      "District": "old-center",
+      "SemanticGroup": "civic-and-market",
+      "MemberRootIds": [
+        "framework-reference-city/old-center-0/shops-1",
+        "framework-reference-city/old-center-0/shops-10",
+        "framework-reference-city/old-center-0/shops-11",
+        "framework-reference-city/old-center-0/shops-12",
+        "framework-reference-city/old-center-0/shops-13",
+        "framework-reference-city/old-center-0/shops-2",
+        "framework-reference-city/old-center-0/shops-3",
+        "framework-reference-city/old-center-0/shops-4",
+        "framework-reference-city/old-center-0/shops-5",
+        "framework-reference-city/old-center-0/shops-6",
+        "framework-reference-city/old-center-0/shops-7",
+        "framework-reference-city/old-center-0/shops-8",
+        "framework-reference-city/old-center-0/shops-9"
+      ],
+      "BuildingBodies": 13,
+      "MemberCount": 13,
+      "Kinds": {
+        "building": 13
+      }
+    },
+    {
+      "ScopeId": "old-center-residential-frontages-01",
+      "District": "old-center",
+      "SemanticGroup": "residential-frontages",
+      "MemberRootIds": [
+        "framework-reference-city/old-center-0/homes-0",
+        "framework-reference-city/old-center-0/homes-1",
+        "framework-reference-city/old-center-0/homes-10",
+        "framework-reference-city/old-center-0/homes-11",
+        "framework-reference-city/old-center-0/homes-12",
+        "framework-reference-city/old-center-0/homes-13",
+        "framework-reference-city/old-center-0/homes-14",
+        "framework-reference-city/old-center-0/homes-15",
+        "framework-reference-city/old-center-0/homes-16",
+        "framework-reference-city/old-center-0/homes-17",
+        "framework-reference-city/old-center-0/homes-18",
+        "framework-reference-city/old-center-0/homes-19",
+        "framework-reference-city/old-center-0/homes-2",
+        "framework-reference-city/old-center-0/homes-20",
+        "framework-reference-city/old-center-0/homes-21",
+        "framework-reference-city/old-center-0/homes-22",
+        "framework-reference-city/old-center-0/homes-23"
+      ],
+      "BuildingBodies": 17,
+      "MemberCount": 17,
+      "Kinds": {
+        "building": 17
+      }
+    },
+    {
+      "ScopeId": "old-center-residential-frontages-02",
+      "District": "old-center",
+      "SemanticGroup": "residential-frontages",
+      "MemberRootIds": [
+        "framework-reference-city/old-center-0/homes-24",
+        "framework-reference-city/old-center-0/homes-25",
+        "framework-reference-city/old-center-0/homes-26",
+        "framework-reference-city/old-center-0/homes-27",
+        "framework-reference-city/old-center-0/homes-28",
+        "framework-reference-city/old-center-0/homes-29",
+        "framework-reference-city/old-center-0/homes-3",
+        "framework-reference-city/old-center-0/homes-30",
+        "framework-reference-city/old-center-0/homes-31",
+        "framework-reference-city/old-center-0/homes-32",
+        "framework-reference-city/old-center-0/homes-33",
+        "framework-reference-city/old-center-0/homes-4",
+        "framework-reference-city/old-center-0/homes-5",
+        "framework-reference-city/old-center-0/homes-6",
+        "framework-reference-city/old-center-0/homes-7",
+        "framework-reference-city/old-center-0/homes-8",
+        "framework-reference-city/old-center-0/homes-9"
+      ],
+      "BuildingBodies": 17,
+      "MemberCount": 17,
+      "Kinds": {
+        "building": 17
+      }
+    },
+    {
+      "ScopeId": "garden-neighborhood-residential-gardens-01",
+      "District": "garden-neighborhood",
+      "SemanticGroup": "residential-gardens",
+      "MemberRootIds": [
+        "framework-reference-city/garden-neighborhood-0/homes-0",
+        "framework-reference-city/garden-neighborhood-0/homes-1",
+        "framework-reference-city/garden-neighborhood-0/homes-10",
+        "framework-reference-city/garden-neighborhood-0/homes-11",
+        "framework-reference-city/garden-neighborhood-0/homes-12",
+        "framework-reference-city/garden-neighborhood-0/homes-13",
+        "framework-reference-city/garden-neighborhood-0/homes-14",
+        "framework-reference-city/garden-neighborhood-0/homes-15",
+        "framework-reference-city/garden-neighborhood-0/homes-16",
+        "framework-reference-city/garden-neighborhood-0/homes-17",
+        "framework-reference-city/garden-neighborhood-0/homes-18",
+        "framework-reference-city/garden-neighborhood-0/homes-19",
+        "framework-reference-city/garden-neighborhood-0/homes-2",
+        "framework-reference-city/garden-neighborhood-0/homes-20",
+        "framework-reference-city/garden-neighborhood-0/homes-21",
+        "framework-reference-city/garden-neighborhood-0/homes-22",
+        "framework-reference-city/garden-neighborhood-0/homes-23",
+        "framework-reference-city/garden-neighborhood-0/homes-24",
+        "framework-reference-city/garden-neighborhood-0/homes-25",
+        "framework-reference-city/garden-neighborhood-0/homes-26"
+      ],
+      "BuildingBodies": 20,
+      "MemberCount": 80,
+      "Kinds": {
+        "site": 20,
+        "ground-area": 40,
+        "building": 20
+      }
+    },
+    {
+      "ScopeId": "garden-neighborhood-residential-gardens-02",
+      "District": "garden-neighborhood",
+      "SemanticGroup": "residential-gardens",
+      "MemberRootIds": [
+        "framework-reference-city/garden-neighborhood-0/homes-27",
+        "framework-reference-city/garden-neighborhood-0/homes-28",
+        "framework-reference-city/garden-neighborhood-0/homes-29",
+        "framework-reference-city/garden-neighborhood-0/homes-3",
+        "framework-reference-city/garden-neighborhood-0/homes-30",
+        "framework-reference-city/garden-neighborhood-0/homes-31",
+        "framework-reference-city/garden-neighborhood-0/homes-32",
+        "framework-reference-city/garden-neighborhood-0/homes-33",
+        "framework-reference-city/garden-neighborhood-0/homes-34",
+        "framework-reference-city/garden-neighborhood-0/homes-35",
+        "framework-reference-city/garden-neighborhood-0/homes-36",
+        "framework-reference-city/garden-neighborhood-0/homes-37",
+        "framework-reference-city/garden-neighborhood-0/homes-38",
+        "framework-reference-city/garden-neighborhood-0/homes-39",
+        "framework-reference-city/garden-neighborhood-0/homes-4",
+        "framework-reference-city/garden-neighborhood-0/homes-40",
+        "framework-reference-city/garden-neighborhood-0/homes-41",
+        "framework-reference-city/garden-neighborhood-0/homes-42",
+        "framework-reference-city/garden-neighborhood-0/homes-43",
+        "framework-reference-city/garden-neighborhood-0/homes-44"
+      ],
+      "BuildingBodies": 20,
+      "MemberCount": 80,
+      "Kinds": {
+        "site": 20,
+        "ground-area": 40,
+        "building": 20
+      }
+    },
+    {
+      "ScopeId": "garden-neighborhood-residential-gardens-03",
+      "District": "garden-neighborhood",
+      "SemanticGroup": "residential-gardens",
+      "MemberRootIds": [
+        "framework-reference-city/garden-neighborhood-0/homes-45",
+        "framework-reference-city/garden-neighborhood-0/homes-46",
+        "framework-reference-city/garden-neighborhood-0/homes-47",
+        "framework-reference-city/garden-neighborhood-0/homes-48",
+        "framework-reference-city/garden-neighborhood-0/homes-49",
+        "framework-reference-city/garden-neighborhood-0/homes-5",
+        "framework-reference-city/garden-neighborhood-0/homes-50",
+        "framework-reference-city/garden-neighborhood-0/homes-51",
+        "framework-reference-city/garden-neighborhood-0/homes-52",
+        "framework-reference-city/garden-neighborhood-0/homes-53",
+        "framework-reference-city/garden-neighborhood-0/homes-54",
+        "framework-reference-city/garden-neighborhood-0/homes-55",
+        "framework-reference-city/garden-neighborhood-0/homes-56",
+        "framework-reference-city/garden-neighborhood-0/homes-57",
+        "framework-reference-city/garden-neighborhood-0/homes-58",
+        "framework-reference-city/garden-neighborhood-0/homes-59",
+        "framework-reference-city/garden-neighborhood-0/homes-6",
+        "framework-reference-city/garden-neighborhood-0/homes-7",
+        "framework-reference-city/garden-neighborhood-0/homes-8",
+        "framework-reference-city/garden-neighborhood-0/homes-9"
+      ],
+      "BuildingBodies": 20,
+      "MemberCount": 80,
+      "Kinds": {
+        "site": 20,
+        "ground-area": 40,
+        "building": 20
+      }
+    },
+    {
+      "ScopeId": "garden-neighborhood-local-center-01",
+      "District": "garden-neighborhood",
+      "SemanticGroup": "local-center",
+      "MemberRootIds": [
+        "framework-reference-city/garden-neighborhood-0/clinic-0",
+        "framework-reference-city/garden-neighborhood-0/park-0",
+        "framework-reference-city/garden-neighborhood-0/school-0",
+        "framework-reference-city/garden-neighborhood-0/shops-0",
+        "framework-reference-city/garden-neighborhood-0/shops-1",
+        "framework-reference-city/garden-neighborhood-0/shops-2",
+        "framework-reference-city/garden-neighborhood-0/shops-3",
+        "framework-reference-city/garden-neighborhood-0/shops-4"
+      ],
+      "BuildingBodies": 7,
+      "MemberCount": 11,
+      "Kinds": {
+        "building": 7,
+        "ground-area": 3,
+        "site": 1
+      }
+    },
+    {
+      "ScopeId": "riverside-waterfront-housing-01",
+      "District": "riverside",
+      "SemanticGroup": "waterfront-housing",
+      "MemberRootIds": [
+        "framework-reference-city/riverside-0/homes-0",
+        "framework-reference-city/riverside-0/homes-1",
+        "framework-reference-city/riverside-0/homes-10",
+        "framework-reference-city/riverside-0/homes-11",
+        "framework-reference-city/riverside-0/homes-12",
+        "framework-reference-city/riverside-0/homes-13",
+        "framework-reference-city/riverside-0/homes-14",
+        "framework-reference-city/riverside-0/homes-15",
+        "framework-reference-city/riverside-0/homes-16",
+        "framework-reference-city/riverside-0/homes-17",
+        "framework-reference-city/riverside-0/homes-18",
+        "framework-reference-city/riverside-0/homes-19",
+        "framework-reference-city/riverside-0/homes-2",
+        "framework-reference-city/riverside-0/homes-20",
+        "framework-reference-city/riverside-0/homes-21",
+        "framework-reference-city/riverside-0/homes-22",
+        "framework-reference-city/riverside-0/homes-23",
+        "framework-reference-city/riverside-0/homes-3",
+        "framework-reference-city/riverside-0/homes-4",
+        "framework-reference-city/riverside-0/homes-5",
+        "framework-reference-city/riverside-0/homes-6",
+        "framework-reference-city/riverside-0/homes-7",
+        "framework-reference-city/riverside-0/homes-8",
+        "framework-reference-city/riverside-0/homes-9"
+      ],
+      "BuildingBodies": 24,
+      "MemberCount": 96,
+      "Kinds": {
+        "site": 24,
+        "building": 24,
+        "ground-area": 48
+      }
+    },
+    {
+      "ScopeId": "riverside-promenade-and-services-01",
+      "District": "riverside",
+      "SemanticGroup": "promenade-and-services",
+      "MemberRootIds": [
+        "framework-reference-city/riverside-0/cafes-0",
+        "framework-reference-city/riverside-0/cafes-1",
+        "framework-reference-city/riverside-0/cafes-2",
+        "framework-reference-city/riverside-0/cafes-3",
+        "framework-reference-city/riverside-0/park-0",
+        "framework-reference-city/riverside-0/park-1",
+        "framework-reference-city/riverside-0/shops-0",
+        "framework-reference-city/riverside-0/shops-1",
+        "framework-reference-city/riverside-0/shops-2",
+        "framework-reference-city/riverside-0/shops-3",
+        "framework-reference-city/riverside-0/shops-4",
+        "framework-reference-city/riverside-0/shops-5",
+        "framework-reference-city/riverside-0/shops-6",
+        "framework-reference-city/riverside-0/shops-7"
+      ],
+      "BuildingBodies": 12,
+      "MemberCount": 14,
+      "Kinds": {
+        "building": 12,
+        "ground-area": 2
+      }
+    },
+    {
+      "ScopeId": "mixed-center-workplaces-01",
+      "District": "mixed-center",
+      "SemanticGroup": "workplaces",
+      "MemberRootIds": [
+        "framework-reference-city/mixed-center-0/offices-0",
+        "framework-reference-city/mixed-center-0/offices-1",
+        "framework-reference-city/mixed-center-0/offices-10",
+        "framework-reference-city/mixed-center-0/offices-11",
+        "framework-reference-city/mixed-center-0/offices-12",
+        "framework-reference-city/mixed-center-0/offices-13",
+        "framework-reference-city/mixed-center-0/offices-14",
+        "framework-reference-city/mixed-center-0/offices-15",
+        "framework-reference-city/mixed-center-0/offices-16",
+        "framework-reference-city/mixed-center-0/offices-17",
+        "framework-reference-city/mixed-center-0/offices-2",
+        "framework-reference-city/mixed-center-0/offices-3",
+        "framework-reference-city/mixed-center-0/offices-4",
+        "framework-reference-city/mixed-center-0/offices-5",
+        "framework-reference-city/mixed-center-0/offices-6",
+        "framework-reference-city/mixed-center-0/offices-7",
+        "framework-reference-city/mixed-center-0/offices-8",
+        "framework-reference-city/mixed-center-0/offices-9"
+      ],
+      "BuildingBodies": 18,
+      "MemberCount": 18,
+      "Kinds": {
+        "building": 18
+      }
+    },
+    {
+      "ScopeId": "mixed-center-mixed-housing-01",
+      "District": "mixed-center",
+      "SemanticGroup": "mixed-housing",
+      "MemberRootIds": [
+        "framework-reference-city/mixed-center-0/homes-0",
+        "framework-reference-city/mixed-center-0/homes-1",
+        "framework-reference-city/mixed-center-0/homes-10",
+        "framework-reference-city/mixed-center-0/homes-11",
+        "framework-reference-city/mixed-center-0/homes-12",
+        "framework-reference-city/mixed-center-0/homes-13",
+        "framework-reference-city/mixed-center-0/homes-14",
+        "framework-reference-city/mixed-center-0/homes-15",
+        "framework-reference-city/mixed-center-0/homes-16",
+        "framework-reference-city/mixed-center-0/homes-17",
+        "framework-reference-city/mixed-center-0/homes-2",
+        "framework-reference-city/mixed-center-0/homes-3",
+        "framework-reference-city/mixed-center-0/homes-4",
+        "framework-reference-city/mixed-center-0/homes-5",
+        "framework-reference-city/mixed-center-0/homes-6",
+        "framework-reference-city/mixed-center-0/homes-7",
+        "framework-reference-city/mixed-center-0/homes-8",
+        "framework-reference-city/mixed-center-0/homes-9"
+      ],
+      "BuildingBodies": 18,
+      "MemberCount": 72,
+      "Kinds": {
+        "site": 18,
+        "building": 18,
+        "ground-area": 36
+      }
+    },
+    {
+      "ScopeId": "mixed-center-commercial-core-01",
+      "District": "mixed-center",
+      "SemanticGroup": "commercial-core",
+      "MemberRootIds": [
+        "framework-reference-city/mixed-center-0/clinic-0",
+        "framework-reference-city/mixed-center-0/food-0",
+        "framework-reference-city/mixed-center-0/food-1",
+        "framework-reference-city/mixed-center-0/food-2",
+        "framework-reference-city/mixed-center-0/food-3",
+        "framework-reference-city/mixed-center-0/food-4",
+        "framework-reference-city/mixed-center-0/food-5",
+        "framework-reference-city/mixed-center-0/food-6",
+        "framework-reference-city/mixed-center-0/food-7",
+        "framework-reference-city/mixed-center-0/plaza-0",
+        "framework-reference-city/mixed-center-0/shops-0",
+        "framework-reference-city/mixed-center-0/shops-1",
+        "framework-reference-city/mixed-center-0/shops-10",
+        "framework-reference-city/mixed-center-0/shops-11",
+        "framework-reference-city/mixed-center-0/shops-12",
+        "framework-reference-city/mixed-center-0/shops-13"
+      ],
+      "BuildingBodies": 15,
+      "MemberCount": 16,
+      "Kinds": {
+        "building": 15,
+        "ground-area": 1
+      }
+    },
+    {
+      "ScopeId": "mixed-center-commercial-core-02",
+      "District": "mixed-center",
+      "SemanticGroup": "commercial-core",
+      "MemberRootIds": [
+        "framework-reference-city/mixed-center-0/shops-14",
+        "framework-reference-city/mixed-center-0/shops-15",
+        "framework-reference-city/mixed-center-0/shops-16",
+        "framework-reference-city/mixed-center-0/shops-17",
+        "framework-reference-city/mixed-center-0/shops-18",
+        "framework-reference-city/mixed-center-0/shops-19",
+        "framework-reference-city/mixed-center-0/shops-2",
+        "framework-reference-city/mixed-center-0/shops-3",
+        "framework-reference-city/mixed-center-0/shops-4",
+        "framework-reference-city/mixed-center-0/shops-5",
+        "framework-reference-city/mixed-center-0/shops-6",
+        "framework-reference-city/mixed-center-0/shops-7",
+        "framework-reference-city/mixed-center-0/shops-8",
+        "framework-reference-city/mixed-center-0/shops-9"
+      ],
+      "BuildingBodies": 14,
+      "MemberCount": 14,
+      "Kinds": {
+        "building": 14
+      }
+    },
+    {
+      "ScopeId": "work-district-factory-compounds-01",
+      "District": "work-district",
+      "SemanticGroup": "factory-compounds",
+      "MemberRootIds": [
+        "framework-reference-city/work-district-0/factories-0",
+        "framework-reference-city/work-district-0/factories-1"
+      ],
+      "BuildingBodies": 14,
+      "MemberCount": 22,
+      "Kinds": {
+        "site": 2,
+        "building": 14,
+        "ground-area": 6
+      }
+    },
+    {
+      "ScopeId": "work-district-factory-compounds-02",
+      "District": "work-district",
+      "SemanticGroup": "factory-compounds",
+      "MemberRootIds": [
+        "framework-reference-city/work-district-0/factories-2",
+        "framework-reference-city/work-district-0/factories-3"
+      ],
+      "BuildingBodies": 14,
+      "MemberCount": 22,
+      "Kinds": {
+        "site": 2,
+        "building": 14,
+        "ground-area": 6
+      }
+    },
+    {
+      "ScopeId": "work-district-work-services-01",
+      "District": "work-district",
+      "SemanticGroup": "work-services",
+      "MemberRootIds": [
+        "framework-reference-city/work-district-0/food-0",
+        "framework-reference-city/work-district-0/food-1",
+        "framework-reference-city/work-district-0/food-2",
+        "framework-reference-city/work-district-0/warehouses-0",
+        "framework-reference-city/work-district-0/warehouses-1",
+        "framework-reference-city/work-district-0/warehouses-2",
+        "framework-reference-city/work-district-0/warehouses-3",
+        "framework-reference-city/work-district-0/warehouses-4",
+        "framework-reference-city/work-district-0/warehouses-5",
+        "framework-reference-city/work-district-0/warehouses-6",
+        "framework-reference-city/work-district-0/warehouses-7",
+        "framework-reference-city/work-district-0/workshops-0",
+        "framework-reference-city/work-district-0/workshops-1",
+        "framework-reference-city/work-district-0/workshops-2",
+        "framework-reference-city/work-district-0/workshops-3",
+        "framework-reference-city/work-district-0/workshops-4",
+        "framework-reference-city/work-district-0/workshops-5",
+        "framework-reference-city/work-district-0/workshops-6",
+        "framework-reference-city/work-district-0/workshops-7",
+        "framework-reference-city/work-district-0/workshops-8",
+        "framework-reference-city/work-district-0/workshops-9"
+      ],
+      "BuildingBodies": 21,
+      "MemberCount": 21,
+      "Kinds": {
+        "building": 21
+      }
+    },
+    {
+      "ScopeId": "outer-neighborhood-residential-01",
+      "District": "outer-neighborhood",
+      "SemanticGroup": "residential",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0/homes-0",
+        "framework-reference-city/outer-neighborhood-0/homes-1",
+        "framework-reference-city/outer-neighborhood-0/homes-10",
+        "framework-reference-city/outer-neighborhood-0/homes-11",
+        "framework-reference-city/outer-neighborhood-0/homes-12",
+        "framework-reference-city/outer-neighborhood-0/homes-13",
+        "framework-reference-city/outer-neighborhood-0/homes-14",
+        "framework-reference-city/outer-neighborhood-0/homes-15",
+        "framework-reference-city/outer-neighborhood-0/homes-16",
+        "framework-reference-city/outer-neighborhood-0/homes-17",
+        "framework-reference-city/outer-neighborhood-0/homes-18",
+        "framework-reference-city/outer-neighborhood-0/homes-19",
+        "framework-reference-city/outer-neighborhood-0/homes-2",
+        "framework-reference-city/outer-neighborhood-0/homes-20",
+        "framework-reference-city/outer-neighborhood-0/homes-21",
+        "framework-reference-city/outer-neighborhood-0/homes-22",
+        "framework-reference-city/outer-neighborhood-0/homes-23",
+        "framework-reference-city/outer-neighborhood-0/homes-24",
+        "framework-reference-city/outer-neighborhood-0/homes-25",
+        "framework-reference-city/outer-neighborhood-0/homes-26",
+        "framework-reference-city/outer-neighborhood-0/homes-27"
+      ],
+      "BuildingBodies": 21,
+      "MemberCount": 84,
+      "Kinds": {
+        "site": 21,
+        "ground-area": 42,
+        "building": 21
+      }
+    },
+    {
+      "ScopeId": "outer-neighborhood-residential-02",
+      "District": "outer-neighborhood",
+      "SemanticGroup": "residential",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0/homes-28",
+        "framework-reference-city/outer-neighborhood-0/homes-29",
+        "framework-reference-city/outer-neighborhood-0/homes-3",
+        "framework-reference-city/outer-neighborhood-0/homes-30",
+        "framework-reference-city/outer-neighborhood-0/homes-31",
+        "framework-reference-city/outer-neighborhood-0/homes-32",
+        "framework-reference-city/outer-neighborhood-0/homes-33",
+        "framework-reference-city/outer-neighborhood-0/homes-34",
+        "framework-reference-city/outer-neighborhood-0/homes-35",
+        "framework-reference-city/outer-neighborhood-0/homes-36",
+        "framework-reference-city/outer-neighborhood-0/homes-37",
+        "framework-reference-city/outer-neighborhood-0/homes-38",
+        "framework-reference-city/outer-neighborhood-0/homes-39",
+        "framework-reference-city/outer-neighborhood-0/homes-4",
+        "framework-reference-city/outer-neighborhood-0/homes-40",
+        "framework-reference-city/outer-neighborhood-0/homes-41",
+        "framework-reference-city/outer-neighborhood-0/homes-42",
+        "framework-reference-city/outer-neighborhood-0/homes-43",
+        "framework-reference-city/outer-neighborhood-0/homes-44",
+        "framework-reference-city/outer-neighborhood-0/homes-45",
+        "framework-reference-city/outer-neighborhood-0/homes-46"
+      ],
+      "BuildingBodies": 21,
+      "MemberCount": 84,
+      "Kinds": {
+        "site": 21,
+        "ground-area": 42,
+        "building": 21
+      }
+    },
+    {
+      "ScopeId": "outer-neighborhood-residential-03",
+      "District": "outer-neighborhood",
+      "SemanticGroup": "residential",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0/homes-47",
+        "framework-reference-city/outer-neighborhood-0/homes-48",
+        "framework-reference-city/outer-neighborhood-0/homes-49",
+        "framework-reference-city/outer-neighborhood-0/homes-5",
+        "framework-reference-city/outer-neighborhood-0/homes-6",
+        "framework-reference-city/outer-neighborhood-0/homes-7",
+        "framework-reference-city/outer-neighborhood-0/homes-8",
+        "framework-reference-city/outer-neighborhood-0/homes-9",
+        "framework-reference-city/outer-neighborhood-0/townhomes-0",
+        "framework-reference-city/outer-neighborhood-0/townhomes-1",
+        "framework-reference-city/outer-neighborhood-0/townhomes-10",
+        "framework-reference-city/outer-neighborhood-0/townhomes-11",
+        "framework-reference-city/outer-neighborhood-0/townhomes-12",
+        "framework-reference-city/outer-neighborhood-0/townhomes-13",
+        "framework-reference-city/outer-neighborhood-0/townhomes-14",
+        "framework-reference-city/outer-neighborhood-0/townhomes-15",
+        "framework-reference-city/outer-neighborhood-0/townhomes-16",
+        "framework-reference-city/outer-neighborhood-0/townhomes-17",
+        "framework-reference-city/outer-neighborhood-0/townhomes-18",
+        "framework-reference-city/outer-neighborhood-0/townhomes-19",
+        "framework-reference-city/outer-neighborhood-0/townhomes-2"
+      ],
+      "BuildingBodies": 21,
+      "MemberCount": 45,
+      "Kinds": {
+        "site": 8,
+        "ground-area": 16,
+        "building": 21
+      }
+    },
+    {
+      "ScopeId": "outer-neighborhood-residential-04",
+      "District": "outer-neighborhood",
+      "SemanticGroup": "residential",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0/townhomes-20",
+        "framework-reference-city/outer-neighborhood-0/townhomes-21",
+        "framework-reference-city/outer-neighborhood-0/townhomes-22",
+        "framework-reference-city/outer-neighborhood-0/townhomes-23",
+        "framework-reference-city/outer-neighborhood-0/townhomes-24",
+        "framework-reference-city/outer-neighborhood-0/townhomes-25",
+        "framework-reference-city/outer-neighborhood-0/townhomes-26",
+        "framework-reference-city/outer-neighborhood-0/townhomes-27",
+        "framework-reference-city/outer-neighborhood-0/townhomes-28",
+        "framework-reference-city/outer-neighborhood-0/townhomes-29",
+        "framework-reference-city/outer-neighborhood-0/townhomes-3",
+        "framework-reference-city/outer-neighborhood-0/townhomes-30",
+        "framework-reference-city/outer-neighborhood-0/townhomes-31",
+        "framework-reference-city/outer-neighborhood-0/townhomes-4",
+        "framework-reference-city/outer-neighborhood-0/townhomes-5",
+        "framework-reference-city/outer-neighborhood-0/townhomes-6",
+        "framework-reference-city/outer-neighborhood-0/townhomes-7",
+        "framework-reference-city/outer-neighborhood-0/townhomes-8",
+        "framework-reference-city/outer-neighborhood-0/townhomes-9"
+      ],
+      "BuildingBodies": 19,
+      "MemberCount": 19,
+      "Kinds": {
+        "building": 19
+      }
+    },
+    {
+      "ScopeId": "outer-neighborhood-neighborhood-center-01",
+      "District": "outer-neighborhood",
+      "SemanticGroup": "neighborhood-center",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0/clinic-0",
+        "framework-reference-city/outer-neighborhood-0/park-0",
+        "framework-reference-city/outer-neighborhood-0/park-1",
+        "framework-reference-city/outer-neighborhood-0/school-0",
+        "framework-reference-city/outer-neighborhood-0/shops-0",
+        "framework-reference-city/outer-neighborhood-0/shops-1",
+        "framework-reference-city/outer-neighborhood-0/shops-2",
+        "framework-reference-city/outer-neighborhood-0/shops-3",
+        "framework-reference-city/outer-neighborhood-0/shops-4",
+        "framework-reference-city/outer-neighborhood-0/shops-5",
+        "framework-reference-city/outer-neighborhood-0/shops-6",
+        "framework-reference-city/outer-neighborhood-0/shops-7"
+      ],
+      "BuildingBodies": 10,
+      "MemberCount": 15,
+      "Kinds": {
+        "building": 10,
+        "ground-area": 4,
+        "site": 1
+      }
+    }
+  ]
+}

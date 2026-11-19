@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- A pure library: no clock, no files, no floating point, no world. Checked arithmetic: an overflow is an exception, never a wrapped number. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><CheckForOverflowUnderflow>true</CheckForOverflowUnderflow></PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="SpatialEngine.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../EngineCommon/EngineCommon.Core/EngineCommon.Core.csproj" />
+  </ItemGroup>
+</Project>

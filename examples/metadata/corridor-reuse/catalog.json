@@ -1,0 +1,123 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "a",
+          "ArchetypeId": "location",
+          "Count": 1,
+          "Purpose": "Required exploration destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                10,
+                20
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        },
+        {
+          "Id": "b",
+          "ArchetypeId": "location",
+          "Count": 1,
+          "Purpose": "Required exploration destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                90,
+                20
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        },
+        {
+          "Id": "c",
+          "ArchetypeId": "location",
+          "Count": 1,
+          "Purpose": "Required exploration destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                40,
+                25
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        },
+        {
+          "Id": "d",
+          "ArchetypeId": "location",
+          "Count": 1,
+          "Purpose": "Required exploration destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                60,
+                25
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "location",
+      "Kind": "destination",
+      "Purpose": "A game-defined destination",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

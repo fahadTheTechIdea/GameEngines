@@ -1,0 +1,694 @@
+{
+  "Version": 1,
+  "Id": "framework-city-district-views",
+  "WorldSha256": "0e4513b0d544a8554ad0751121b0f28b018e5557d849d2875d0ba302356c2893",
+  "Bindings": [
+    {
+      "ArchetypeId": "house",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "townhouse",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "apartment",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "shop",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "cafe",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "restaurant",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "office",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "clinic",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "civic",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "library",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "school-building",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "warehouse",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "workshop",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "guardhouse",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "garden",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "entry-walk",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "courtyard",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "playground",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "yard",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "plaza",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "park",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "utility-yard",
+      "Role": "Ground"
+    },
+    {
+      "ArchetypeId": "production-hall",
+      "Role": "Structure"
+    },
+    {
+      "ArchetypeId": "house-site",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "apartment-site",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "school-site",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "factory-site",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "old-center",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "garden-neighborhood",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "riverside",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "mixed-center",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "work-district",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "outer-neighborhood",
+      "Role": "Group"
+    },
+    {
+      "ArchetypeId": "city",
+      "Role": "Group"
+    }
+  ],
+  "Scopes": [
+    {
+      "Id": "city-overview",
+      "ParentId": null,
+      "Purpose": "Complete city overview indexing all six district overviews and their complete detail views",
+      "MemberRootIds": []
+    },
+    {
+      "Id": "old-center",
+      "ParentId": "city-overview",
+      "Purpose": "Older center with irregular streets and connected civic spaces; overview must preserve all detail views",
+      "MemberRootIds": []
+    },
+    {
+      "Id": "old-center-civic-and-market-01",
+      "ParentId": "old-center",
+      "Purpose": "Older center with irregular streets and connected civic spaces: civic-and-market detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/old-center-0/cafes-0",
+        "framework-reference-city/old-center-0/cafes-1",
+        "framework-reference-city/old-center-0/cafes-2",
+        "framework-reference-city/old-center-0/cafes-3",
+        "framework-reference-city/old-center-0/cafes-4",
+        "framework-reference-city/old-center-0/civic-0",
+        "framework-reference-city/old-center-0/food-0",
+        "framework-reference-city/old-center-0/food-1",
+        "framework-reference-city/old-center-0/food-2",
+        "framework-reference-city/old-center-0/food-3",
+        "framework-reference-city/old-center-0/food-4",
+        "framework-reference-city/old-center-0/library-0",
+        "framework-reference-city/old-center-0/plazas-0",
+        "framework-reference-city/old-center-0/plazas-1",
+        "framework-reference-city/old-center-0/shops-0"
+      ]
+    },
+    {
+      "Id": "old-center-civic-and-market-02",
+      "ParentId": "old-center",
+      "Purpose": "Older center with irregular streets and connected civic spaces: civic-and-market detail 2; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/old-center-0/shops-1",
+        "framework-reference-city/old-center-0/shops-10",
+        "framework-reference-city/old-center-0/shops-11",
+        "framework-reference-city/old-center-0/shops-12",
+        "framework-reference-city/old-center-0/shops-13",
+        "framework-reference-city/old-center-0/shops-2",
+        "framework-reference-city/old-center-0/shops-3",
+        "framework-reference-city/old-center-0/shops-4",
+        "framework-reference-city/old-center-0/shops-5",
+        "framework-reference-city/old-center-0/shops-6",
+        "framework-reference-city/old-center-0/shops-7",
+        "framework-reference-city/old-center-0/shops-8",
+        "framework-reference-city/old-center-0/shops-9"
+      ]
+    },
+    {
+      "Id": "old-center-residential-frontages-01",
+      "ParentId": "old-center",
+      "Purpose": "Older center with irregular streets and connected civic spaces: residential-frontages detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/old-center-0/homes-0",
+        "framework-reference-city/old-center-0/homes-1",
+        "framework-reference-city/old-center-0/homes-10",
+        "framework-reference-city/old-center-0/homes-11",
+        "framework-reference-city/old-center-0/homes-12",
+        "framework-reference-city/old-center-0/homes-13",
+        "framework-reference-city/old-center-0/homes-14",
+        "framework-reference-city/old-center-0/homes-15",
+        "framework-reference-city/old-center-0/homes-16",
+        "framework-reference-city/old-center-0/homes-17",
+        "framework-reference-city/old-center-0/homes-18",
+        "framework-reference-city/old-center-0/homes-19",
+        "framework-reference-city/old-center-0/homes-2",
+        "framework-reference-city/old-center-0/homes-20",
+        "framework-reference-city/old-center-0/homes-21",
+        "framework-reference-city/old-center-0/homes-22",
+        "framework-reference-city/old-center-0/homes-23"
+      ]
+    },
+    {
+      "Id": "old-center-residential-frontages-02",
+      "ParentId": "old-center",
+      "Purpose": "Older center with irregular streets and connected civic spaces: residential-frontages detail 2; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/old-center-0/homes-24",
+        "framework-reference-city/old-center-0/homes-25",
+        "framework-reference-city/old-center-0/homes-26",
+        "framework-reference-city/old-center-0/homes-27",
+        "framework-reference-city/old-center-0/homes-28",
+        "framework-reference-city/old-center-0/homes-29",
+        "framework-reference-city/old-center-0/homes-3",
+        "framework-reference-city/old-center-0/homes-30",
+        "framework-reference-city/old-center-0/homes-31",
+        "framework-reference-city/old-center-0/homes-32",
+        "framework-reference-city/old-center-0/homes-33",
+        "framework-reference-city/old-center-0/homes-4",
+        "framework-reference-city/old-center-0/homes-5",
+        "framework-reference-city/old-center-0/homes-6",
+        "framework-reference-city/old-center-0/homes-7",
+        "framework-reference-city/old-center-0/homes-8",
+        "framework-reference-city/old-center-0/homes-9"
+      ]
+    },
+    {
+      "Id": "garden-neighborhood",
+      "ParentId": "city-overview",
+      "Purpose": "Residential neighborhood responding to slopes and park edges; overview must preserve all detail views",
+      "MemberRootIds": []
+    },
+    {
+      "Id": "garden-neighborhood-residential-gardens-01",
+      "ParentId": "garden-neighborhood",
+      "Purpose": "Residential neighborhood responding to slopes and park edges: residential-gardens detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/garden-neighborhood-0/homes-0",
+        "framework-reference-city/garden-neighborhood-0/homes-1",
+        "framework-reference-city/garden-neighborhood-0/homes-10",
+        "framework-reference-city/garden-neighborhood-0/homes-11",
+        "framework-reference-city/garden-neighborhood-0/homes-12",
+        "framework-reference-city/garden-neighborhood-0/homes-13",
+        "framework-reference-city/garden-neighborhood-0/homes-14",
+        "framework-reference-city/garden-neighborhood-0/homes-15",
+        "framework-reference-city/garden-neighborhood-0/homes-16",
+        "framework-reference-city/garden-neighborhood-0/homes-17",
+        "framework-reference-city/garden-neighborhood-0/homes-18",
+        "framework-reference-city/garden-neighborhood-0/homes-19",
+        "framework-reference-city/garden-neighborhood-0/homes-2",
+        "framework-reference-city/garden-neighborhood-0/homes-20",
+        "framework-reference-city/garden-neighborhood-0/homes-21",
+        "framework-reference-city/garden-neighborhood-0/homes-22",
+        "framework-reference-city/garden-neighborhood-0/homes-23",
+        "framework-reference-city/garden-neighborhood-0/homes-24",
+        "framework-reference-city/garden-neighborhood-0/homes-25",
+        "framework-reference-city/garden-neighborhood-0/homes-26"
+      ]
+    },
+    {
+      "Id": "garden-neighborhood-residential-gardens-02",
+      "ParentId": "garden-neighborhood",
+      "Purpose": "Residential neighborhood responding to slopes and park edges: residential-gardens detail 2; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/garden-neighborhood-0/homes-27",
+        "framework-reference-city/garden-neighborhood-0/homes-28",
+        "framework-reference-city/garden-neighborhood-0/homes-29",
+        "framework-reference-city/garden-neighborhood-0/homes-3",
+        "framework-reference-city/garden-neighborhood-0/homes-30",
+        "framework-reference-city/garden-neighborhood-0/homes-31",
+        "framework-reference-city/garden-neighborhood-0/homes-32",
+        "framework-reference-city/garden-neighborhood-0/homes-33",
+        "framework-reference-city/garden-neighborhood-0/homes-34",
+        "framework-reference-city/garden-neighborhood-0/homes-35",
+        "framework-reference-city/garden-neighborhood-0/homes-36",
+        "framework-reference-city/garden-neighborhood-0/homes-37",
+        "framework-reference-city/garden-neighborhood-0/homes-38",
+        "framework-reference-city/garden-neighborhood-0/homes-39",
+        "framework-reference-city/garden-neighborhood-0/homes-4",
+        "framework-reference-city/garden-neighborhood-0/homes-40",
+        "framework-reference-city/garden-neighborhood-0/homes-41",
+        "framework-reference-city/garden-neighborhood-0/homes-42",
+        "framework-reference-city/garden-neighborhood-0/homes-43",
+        "framework-reference-city/garden-neighborhood-0/homes-44"
+      ]
+    },
+    {
+      "Id": "garden-neighborhood-residential-gardens-03",
+      "ParentId": "garden-neighborhood",
+      "Purpose": "Residential neighborhood responding to slopes and park edges: residential-gardens detail 3; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/garden-neighborhood-0/homes-45",
+        "framework-reference-city/garden-neighborhood-0/homes-46",
+        "framework-reference-city/garden-neighborhood-0/homes-47",
+        "framework-reference-city/garden-neighborhood-0/homes-48",
+        "framework-reference-city/garden-neighborhood-0/homes-49",
+        "framework-reference-city/garden-neighborhood-0/homes-5",
+        "framework-reference-city/garden-neighborhood-0/homes-50",
+        "framework-reference-city/garden-neighborhood-0/homes-51",
+        "framework-reference-city/garden-neighborhood-0/homes-52",
+        "framework-reference-city/garden-neighborhood-0/homes-53",
+        "framework-reference-city/garden-neighborhood-0/homes-54",
+        "framework-reference-city/garden-neighborhood-0/homes-55",
+        "framework-reference-city/garden-neighborhood-0/homes-56",
+        "framework-reference-city/garden-neighborhood-0/homes-57",
+        "framework-reference-city/garden-neighborhood-0/homes-58",
+        "framework-reference-city/garden-neighborhood-0/homes-59",
+        "framework-reference-city/garden-neighborhood-0/homes-6",
+        "framework-reference-city/garden-neighborhood-0/homes-7",
+        "framework-reference-city/garden-neighborhood-0/homes-8",
+        "framework-reference-city/garden-neighborhood-0/homes-9"
+      ]
+    },
+    {
+      "Id": "garden-neighborhood-local-center-01",
+      "ParentId": "garden-neighborhood",
+      "Purpose": "Residential neighborhood responding to slopes and park edges: local-center detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/garden-neighborhood-0/clinic-0",
+        "framework-reference-city/garden-neighborhood-0/park-0",
+        "framework-reference-city/garden-neighborhood-0/school-0",
+        "framework-reference-city/garden-neighborhood-0/shops-0",
+        "framework-reference-city/garden-neighborhood-0/shops-1",
+        "framework-reference-city/garden-neighborhood-0/shops-2",
+        "framework-reference-city/garden-neighborhood-0/shops-3",
+        "framework-reference-city/garden-neighborhood-0/shops-4"
+      ]
+    },
+    {
+      "Id": "riverside",
+      "ParentId": "city-overview",
+      "Purpose": "River-edge residential district with a continuous public landscape; overview must preserve all detail views",
+      "MemberRootIds": []
+    },
+    {
+      "Id": "riverside-waterfront-housing-01",
+      "ParentId": "riverside",
+      "Purpose": "River-edge residential district with a continuous public landscape: waterfront-housing detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/riverside-0/homes-0",
+        "framework-reference-city/riverside-0/homes-1",
+        "framework-reference-city/riverside-0/homes-10",
+        "framework-reference-city/riverside-0/homes-11",
+        "framework-reference-city/riverside-0/homes-12",
+        "framework-reference-city/riverside-0/homes-13",
+        "framework-reference-city/riverside-0/homes-14",
+        "framework-reference-city/riverside-0/homes-15",
+        "framework-reference-city/riverside-0/homes-16",
+        "framework-reference-city/riverside-0/homes-17",
+        "framework-reference-city/riverside-0/homes-18",
+        "framework-reference-city/riverside-0/homes-19",
+        "framework-reference-city/riverside-0/homes-2",
+        "framework-reference-city/riverside-0/homes-20",
+        "framework-reference-city/riverside-0/homes-21",
+        "framework-reference-city/riverside-0/homes-22",
+        "framework-reference-city/riverside-0/homes-23",
+        "framework-reference-city/riverside-0/homes-3",
+        "framework-reference-city/riverside-0/homes-4",
+        "framework-reference-city/riverside-0/homes-5",
+        "framework-reference-city/riverside-0/homes-6",
+        "framework-reference-city/riverside-0/homes-7",
+        "framework-reference-city/riverside-0/homes-8",
+        "framework-reference-city/riverside-0/homes-9"
+      ]
+    },
+    {
+      "Id": "riverside-promenade-and-services-01",
+      "ParentId": "riverside",
+      "Purpose": "River-edge residential district with a continuous public landscape: promenade-and-services detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/riverside-0/cafes-0",
+        "framework-reference-city/riverside-0/cafes-1",
+        "framework-reference-city/riverside-0/cafes-2",
+        "framework-reference-city/riverside-0/cafes-3",
+        "framework-reference-city/riverside-0/park-0",
+        "framework-reference-city/riverside-0/park-1",
+        "framework-reference-city/riverside-0/shops-0",
+        "framework-reference-city/riverside-0/shops-1",
+        "framework-reference-city/riverside-0/shops-2",
+        "framework-reference-city/riverside-0/shops-3",
+        "framework-reference-city/riverside-0/shops-4",
+        "framework-reference-city/riverside-0/shops-5",
+        "framework-reference-city/riverside-0/shops-6",
+        "framework-reference-city/riverside-0/shops-7"
+      ]
+    },
+    {
+      "Id": "mixed-center",
+      "ParentId": "city-overview",
+      "Purpose": "Mixed commercial and residential center; overview must preserve all detail views",
+      "MemberRootIds": []
+    },
+    {
+      "Id": "mixed-center-workplaces-01",
+      "ParentId": "mixed-center",
+      "Purpose": "Mixed commercial and residential center: workplaces detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/mixed-center-0/offices-0",
+        "framework-reference-city/mixed-center-0/offices-1",
+        "framework-reference-city/mixed-center-0/offices-10",
+        "framework-reference-city/mixed-center-0/offices-11",
+        "framework-reference-city/mixed-center-0/offices-12",
+        "framework-reference-city/mixed-center-0/offices-13",
+        "framework-reference-city/mixed-center-0/offices-14",
+        "framework-reference-city/mixed-center-0/offices-15",
+        "framework-reference-city/mixed-center-0/offices-16",
+        "framework-reference-city/mixed-center-0/offices-17",
+        "framework-reference-city/mixed-center-0/offices-2",
+        "framework-reference-city/mixed-center-0/offices-3",
+        "framework-reference-city/mixed-center-0/offices-4",
+        "framework-reference-city/mixed-center-0/offices-5",
+        "framework-reference-city/mixed-center-0/offices-6",
+        "framework-reference-city/mixed-center-0/offices-7",
+        "framework-reference-city/mixed-center-0/offices-8",
+        "framework-reference-city/mixed-center-0/offices-9"
+      ]
+    },
+    {
+      "Id": "mixed-center-mixed-housing-01",
+      "ParentId": "mixed-center",
+      "Purpose": "Mixed commercial and residential center: mixed-housing detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/mixed-center-0/homes-0",
+        "framework-reference-city/mixed-center-0/homes-1",
+        "framework-reference-city/mixed-center-0/homes-10",
+        "framework-reference-city/mixed-center-0/homes-11",
+        "framework-reference-city/mixed-center-0/homes-12",
+        "framework-reference-city/mixed-center-0/homes-13",
+        "framework-reference-city/mixed-center-0/homes-14",
+        "framework-reference-city/mixed-center-0/homes-15",
+        "framework-reference-city/mixed-center-0/homes-16",
+        "framework-reference-city/mixed-center-0/homes-17",
+        "framework-reference-city/mixed-center-0/homes-2",
+        "framework-reference-city/mixed-center-0/homes-3",
+        "framework-reference-city/mixed-center-0/homes-4",
+        "framework-reference-city/mixed-center-0/homes-5",
+        "framework-reference-city/mixed-center-0/homes-6",
+        "framework-reference-city/mixed-center-0/homes-7",
+        "framework-reference-city/mixed-center-0/homes-8",
+        "framework-reference-city/mixed-center-0/homes-9"
+      ]
+    },
+    {
+      "Id": "mixed-center-commercial-core-01",
+      "ParentId": "mixed-center",
+      "Purpose": "Mixed commercial and residential center: commercial-core detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/mixed-center-0/clinic-0",
+        "framework-reference-city/mixed-center-0/food-0",
+        "framework-reference-city/mixed-center-0/food-1",
+        "framework-reference-city/mixed-center-0/food-2",
+        "framework-reference-city/mixed-center-0/food-3",
+        "framework-reference-city/mixed-center-0/food-4",
+        "framework-reference-city/mixed-center-0/food-5",
+        "framework-reference-city/mixed-center-0/food-6",
+        "framework-reference-city/mixed-center-0/food-7",
+        "framework-reference-city/mixed-center-0/plaza-0",
+        "framework-reference-city/mixed-center-0/shops-0",
+        "framework-reference-city/mixed-center-0/shops-1",
+        "framework-reference-city/mixed-center-0/shops-10",
+        "framework-reference-city/mixed-center-0/shops-11",
+        "framework-reference-city/mixed-center-0/shops-12",
+        "framework-reference-city/mixed-center-0/shops-13"
+      ]
+    },
+    {
+      "Id": "mixed-center-commercial-core-02",
+      "ParentId": "mixed-center",
+      "Purpose": "Mixed commercial and residential center: commercial-core detail 2; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/mixed-center-0/shops-14",
+        "framework-reference-city/mixed-center-0/shops-15",
+        "framework-reference-city/mixed-center-0/shops-16",
+        "framework-reference-city/mixed-center-0/shops-17",
+        "framework-reference-city/mixed-center-0/shops-18",
+        "framework-reference-city/mixed-center-0/shops-19",
+        "framework-reference-city/mixed-center-0/shops-2",
+        "framework-reference-city/mixed-center-0/shops-3",
+        "framework-reference-city/mixed-center-0/shops-4",
+        "framework-reference-city/mixed-center-0/shops-5",
+        "framework-reference-city/mixed-center-0/shops-6",
+        "framework-reference-city/mixed-center-0/shops-7",
+        "framework-reference-city/mixed-center-0/shops-8",
+        "framework-reference-city/mixed-center-0/shops-9"
+      ]
+    },
+    {
+      "Id": "work-district",
+      "ParentId": "city-overview",
+      "Purpose": "Productive district with complete factory compounds and local services; overview must preserve all detail views",
+      "MemberRootIds": []
+    },
+    {
+      "Id": "work-district-factory-compounds-01",
+      "ParentId": "work-district",
+      "Purpose": "Productive district with complete factory compounds and local services: factory-compounds detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/work-district-0/factories-0",
+        "framework-reference-city/work-district-0/factories-1"
+      ]
+    },
+    {
+      "Id": "work-district-factory-compounds-02",
+      "ParentId": "work-district",
+      "Purpose": "Productive district with complete factory compounds and local services: factory-compounds detail 2; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/work-district-0/factories-2",
+        "framework-reference-city/work-district-0/factories-3"
+      ]
+    },
+    {
+      "Id": "work-district-work-services-01",
+      "ParentId": "work-district",
+      "Purpose": "Productive district with complete factory compounds and local services: work-services detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/work-district-0/food-0",
+        "framework-reference-city/work-district-0/food-1",
+        "framework-reference-city/work-district-0/food-2",
+        "framework-reference-city/work-district-0/warehouses-0",
+        "framework-reference-city/work-district-0/warehouses-1",
+        "framework-reference-city/work-district-0/warehouses-2",
+        "framework-reference-city/work-district-0/warehouses-3",
+        "framework-reference-city/work-district-0/warehouses-4",
+        "framework-reference-city/work-district-0/warehouses-5",
+        "framework-reference-city/work-district-0/warehouses-6",
+        "framework-reference-city/work-district-0/warehouses-7",
+        "framework-reference-city/work-district-0/workshops-0",
+        "framework-reference-city/work-district-0/workshops-1",
+        "framework-reference-city/work-district-0/workshops-2",
+        "framework-reference-city/work-district-0/workshops-3",
+        "framework-reference-city/work-district-0/workshops-4",
+        "framework-reference-city/work-district-0/workshops-5",
+        "framework-reference-city/work-district-0/workshops-6",
+        "framework-reference-city/work-district-0/workshops-7",
+        "framework-reference-city/work-district-0/workshops-8",
+        "framework-reference-city/work-district-0/workshops-9"
+      ]
+    },
+    {
+      "Id": "outer-neighborhood",
+      "ParentId": "city-overview",
+      "Purpose": "Outer residential neighborhood with a local center; overview must preserve all detail views",
+      "MemberRootIds": []
+    },
+    {
+      "Id": "outer-neighborhood-residential-01",
+      "ParentId": "outer-neighborhood",
+      "Purpose": "Outer residential neighborhood with a local center: residential detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0/homes-0",
+        "framework-reference-city/outer-neighborhood-0/homes-1",
+        "framework-reference-city/outer-neighborhood-0/homes-10",
+        "framework-reference-city/outer-neighborhood-0/homes-11",
+        "framework-reference-city/outer-neighborhood-0/homes-12",
+        "framework-reference-city/outer-neighborhood-0/homes-13",
+        "framework-reference-city/outer-neighborhood-0/homes-14",
+        "framework-reference-city/outer-neighborhood-0/homes-15",
+        "framework-reference-city/outer-neighborhood-0/homes-16",
+        "framework-reference-city/outer-neighborhood-0/homes-17",
+        "framework-reference-city/outer-neighborhood-0/homes-18",
+        "framework-reference-city/outer-neighborhood-0/homes-19",
+        "framework-reference-city/outer-neighborhood-0/homes-2",
+        "framework-reference-city/outer-neighborhood-0/homes-20",
+        "framework-reference-city/outer-neighborhood-0/homes-21",
+        "framework-reference-city/outer-neighborhood-0/homes-22",
+        "framework-reference-city/outer-neighborhood-0/homes-23",
+        "framework-reference-city/outer-neighborhood-0/homes-24",
+        "framework-reference-city/outer-neighborhood-0/homes-25",
+        "framework-reference-city/outer-neighborhood-0/homes-26",
+        "framework-reference-city/outer-neighborhood-0/homes-27"
+      ]
+    },
+    {
+      "Id": "outer-neighborhood-residential-02",
+      "ParentId": "outer-neighborhood",
+      "Purpose": "Outer residential neighborhood with a local center: residential detail 2; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0/homes-28",
+        "framework-reference-city/outer-neighborhood-0/homes-29",
+        "framework-reference-city/outer-neighborhood-0/homes-3",
+        "framework-reference-city/outer-neighborhood-0/homes-30",
+        "framework-reference-city/outer-neighborhood-0/homes-31",
+        "framework-reference-city/outer-neighborhood-0/homes-32",
+        "framework-reference-city/outer-neighborhood-0/homes-33",
+        "framework-reference-city/outer-neighborhood-0/homes-34",
+        "framework-reference-city/outer-neighborhood-0/homes-35",
+        "framework-reference-city/outer-neighborhood-0/homes-36",
+        "framework-reference-city/outer-neighborhood-0/homes-37",
+        "framework-reference-city/outer-neighborhood-0/homes-38",
+        "framework-reference-city/outer-neighborhood-0/homes-39",
+        "framework-reference-city/outer-neighborhood-0/homes-4",
+        "framework-reference-city/outer-neighborhood-0/homes-40",
+        "framework-reference-city/outer-neighborhood-0/homes-41",
+        "framework-reference-city/outer-neighborhood-0/homes-42",
+        "framework-reference-city/outer-neighborhood-0/homes-43",
+        "framework-reference-city/outer-neighborhood-0/homes-44",
+        "framework-reference-city/outer-neighborhood-0/homes-45",
+        "framework-reference-city/outer-neighborhood-0/homes-46"
+      ]
+    },
+    {
+      "Id": "outer-neighborhood-residential-03",
+      "ParentId": "outer-neighborhood",
+      "Purpose": "Outer residential neighborhood with a local center: residential detail 3; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0/homes-47",
+        "framework-reference-city/outer-neighborhood-0/homes-48",
+        "framework-reference-city/outer-neighborhood-0/homes-49",
+        "framework-reference-city/outer-neighborhood-0/homes-5",
+        "framework-reference-city/outer-neighborhood-0/homes-6",
+        "framework-reference-city/outer-neighborhood-0/homes-7",
+        "framework-reference-city/outer-neighborhood-0/homes-8",
+        "framework-reference-city/outer-neighborhood-0/homes-9",
+        "framework-reference-city/outer-neighborhood-0/townhomes-0",
+        "framework-reference-city/outer-neighborhood-0/townhomes-1",
+        "framework-reference-city/outer-neighborhood-0/townhomes-10",
+        "framework-reference-city/outer-neighborhood-0/townhomes-11",
+        "framework-reference-city/outer-neighborhood-0/townhomes-12",
+        "framework-reference-city/outer-neighborhood-0/townhomes-13",
+        "framework-reference-city/outer-neighborhood-0/townhomes-14",
+        "framework-reference-city/outer-neighborhood-0/townhomes-15",
+        "framework-reference-city/outer-neighborhood-0/townhomes-16",
+        "framework-reference-city/outer-neighborhood-0/townhomes-17",
+        "framework-reference-city/outer-neighborhood-0/townhomes-18",
+        "framework-reference-city/outer-neighborhood-0/townhomes-19",
+        "framework-reference-city/outer-neighborhood-0/townhomes-2"
+      ]
+    },
+    {
+      "Id": "outer-neighborhood-residential-04",
+      "ParentId": "outer-neighborhood",
+      "Purpose": "Outer residential neighborhood with a local center: residential detail 4; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0/townhomes-20",
+        "framework-reference-city/outer-neighborhood-0/townhomes-21",
+        "framework-reference-city/outer-neighborhood-0/townhomes-22",
+        "framework-reference-city/outer-neighborhood-0/townhomes-23",
+        "framework-reference-city/outer-neighborhood-0/townhomes-24",
+        "framework-reference-city/outer-neighborhood-0/townhomes-25",
+        "framework-reference-city/outer-neighborhood-0/townhomes-26",
+        "framework-reference-city/outer-neighborhood-0/townhomes-27",
+        "framework-reference-city/outer-neighborhood-0/townhomes-28",
+        "framework-reference-city/outer-neighborhood-0/townhomes-29",
+        "framework-reference-city/outer-neighborhood-0/townhomes-3",
+        "framework-reference-city/outer-neighborhood-0/townhomes-30",
+        "framework-reference-city/outer-neighborhood-0/townhomes-31",
+        "framework-reference-city/outer-neighborhood-0/townhomes-4",
+        "framework-reference-city/outer-neighborhood-0/townhomes-5",
+        "framework-reference-city/outer-neighborhood-0/townhomes-6",
+        "framework-reference-city/outer-neighborhood-0/townhomes-7",
+        "framework-reference-city/outer-neighborhood-0/townhomes-8",
+        "framework-reference-city/outer-neighborhood-0/townhomes-9"
+      ]
+    },
+    {
+      "Id": "outer-neighborhood-neighborhood-center-01",
+      "ParentId": "outer-neighborhood",
+      "Purpose": "Outer residential neighborhood with a local center: neighborhood-center detail 1; retain every selected site constituent",
+      "MemberRootIds": [
+        "framework-reference-city/outer-neighborhood-0/clinic-0",
+        "framework-reference-city/outer-neighborhood-0/park-0",
+        "framework-reference-city/outer-neighborhood-0/park-1",
+        "framework-reference-city/outer-neighborhood-0/school-0",
+        "framework-reference-city/outer-neighborhood-0/shops-0",
+        "framework-reference-city/outer-neighborhood-0/shops-1",
+        "framework-reference-city/outer-neighborhood-0/shops-2",
+        "framework-reference-city/outer-neighborhood-0/shops-3",
+        "framework-reference-city/outer-neighborhood-0/shops-4",
+        "framework-reference-city/outer-neighborhood-0/shops-5",
+        "framework-reference-city/outer-neighborhood-0/shops-6",
+        "framework-reference-city/outer-neighborhood-0/shops-7"
+      ]
+    }
+  ]
+}

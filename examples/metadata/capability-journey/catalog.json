@@ -1,0 +1,89 @@
+{
+  "SchemaVersion": 1,
+  "Id": "capability-catalog",
+  "Archetypes": [
+    {
+      "Id": "journey",
+      "Kind": "journey",
+      "Purpose": "Reusable capability-gated journey",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "entry",
+          "ArchetypeId": "location",
+          "Count": 1,
+          "Purpose": "Required entry",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "hall",
+          "ArchetypeId": "location",
+          "Count": 1,
+          "Purpose": "Required hall",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "key",
+          "ArchetypeId": "location",
+          "Count": 1,
+          "Purpose": "Required key",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "vault",
+          "ArchetypeId": "location",
+          "Count": 1,
+          "Purpose": "Required vault",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "exit",
+          "ArchetypeId": "location",
+          "Count": 1,
+          "Purpose": "Required exit",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "location",
+      "Kind": "location",
+      "Purpose": "Game-authored location",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

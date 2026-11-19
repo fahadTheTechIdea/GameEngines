@@ -30,8 +30,9 @@ public sealed class ModernCatalog : ISettlementCatalogProvider, IWorldPlanPalett
     public ISettlementDemandPolicy Demand { get; } = new ModernDemandPolicy();
     public static SettlementCatalogSelection Selection => new("modern",ModernCapabilities.All);
 }
-public sealed class ModernCatalogPolicy : ISettlementCatalogPolicy
+public sealed class ModernCatalogPolicy : ISettlementCatalogPolicy,WorldCreator.Core.IWorldGenerationDependency
 {
+    public string ConfigurationSha256=>WorldCreator.Core.WorldGenerationDependencyIdentity.EmptyConfigurationSha256;
     public string Id => "modern.siting";
     public BuildingDefinition Resolve(BuildingDefinition definition,string technology) => ModernSitingProfiles.Resolve(definition,technology);
     public IReadOnlySet<string> RequiredCapabilities(MockupWorldDesign design) => design.RoadRules.Any(r=>
@@ -49,16 +50,20 @@ public sealed class ModernCatalogPolicy : ISettlementCatalogPolicy
         if (definition.PlacementKind==BuildingPlacementKind.FrontageSite) result.Add(ModernCapabilities.MotorRoads);
         return result;
     }
-    public IReadOnlyList<string> ValidateSupply(MockupWorldDesign design,BuildingDefinition definition,StructureResourceRequirement requirement,SitingResourceSource source,StructureSitingContext context,CancellationToken token=default)
+    public IReadOnlyList<CatalogSupplyIssue> ValidateSupply(BuildingDefinition definition,StructureResourceRequirement requirement,CatalogSupplySource source,CatalogSupplyContext context,CancellationToken token=default)
     {
-        var errors=new List<string>(); var sources=design.Siting!.Sources.ToDictionary(s=>s.Id,StringComparer.Ordinal);
+        var errors=new List<CatalogSupplyIssue>(); var sources=context.Sources;
         if (source.Qualities.Contains("potable") && (source.Qualities.Contains("marine") || source.Qualities.Contains("brackish")))
-            errors.Add("potable supply cannot also be declared marine or brackish without treatment");
-        if (requirement.Id=="cooling-intake" && context.Dependencies.FirstOrDefault(b=>b.RequirementId=="water-outfall") is { } outfall &&
-            source.Port.DistanceTo(sources[outfall.SourceId].Port)<1e-8) errors.Add("cooling intake and thermal outfall cannot be the same service point");
-        if (requirement.Kind==SitingResourceKind.ParentFacility && source.ProviderObjectId is null) errors.Add("a real parent facility is required");
+            errors.Add(new("modern.water-quality-conflict","potable supply cannot also be declared marine or brackish without treatment"));
+        if (requirement.Id=="cooling-intake" && context.RequirementSources.TryGetValue("water-outfall",out var outfall))
+        {
+            if(source.ServicePoint is not {} intakePoint||sources[outfall].ServicePoint is not {} outfallPoint)
+                errors.Add(new("modern.service-point-required","cooling intake and thermal outfall require declared service points"));
+            else if(intakePoint.DistanceTo(outfallPoint)<1e-8)errors.Add(new("modern.intake-outfall-coincident","cooling intake and thermal outfall cannot be the same service point",true));
+        }
+        if (requirement.Kind==SitingResourceKind.ParentFacility && source.ProviderId is null) errors.Add(new("modern.parent-facility-required","a real parent facility is required"));
         if (requirement.RequiredQualities?.Contains("protected")==true && Contaminated(source.Id,new(StringComparer.Ordinal)))
-            errors.Add("protected intake has an incompatible upstream discharge/contamination source");
+            errors.Add(new("modern.protected-intake-contaminated","protected intake has an incompatible upstream discharge/contamination source"));
         return errors;
         bool Contaminated(string id,HashSet<string> visited)
         { token.ThrowIfCancellationRequested(); return visited.Add(id) && (sources[id].Qualities.Contains("contaminated") ||

@@ -1,0 +1,181 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "a",
+          "ArchetypeId": "supply",
+          "Count": 1,
+          "Purpose": "Required exploration destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                10,
+                20
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        },
+        {
+          "Id": "b",
+          "ArchetypeId": "consumer",
+          "Count": 1,
+          "Purpose": "Required exploration destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                90,
+                20
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        },
+        {
+          "Id": "c",
+          "ArchetypeId": "supply",
+          "Count": 1,
+          "Purpose": "Required exploration destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                40,
+                25
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        },
+        {
+          "Id": "d",
+          "ArchetypeId": "consumer",
+          "Count": 1,
+          "Purpose": "Required exploration destination",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                60,
+                25
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "supply",
+      "Kind": "destination",
+      "Purpose": "A game-defined destination",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": {
+        "Supplies": [
+          {
+            "Id": "stock",
+            "Kind": "support",
+            "Unit": "units",
+            "Quantity": 8,
+            "Qualities": [],
+            "Origin": "facility",
+            "Purpose": "Game service source",
+            "SourceRuleId": "test:source",
+            "PortId": null,
+            "UpstreamSources": null,
+            "Area": null
+          }
+        ],
+        "Requirements": [],
+        "UseStructureProfile": false,
+        "OutputQualities": null,
+        "Outputs": null
+      }
+    },
+    {
+      "Id": "consumer",
+      "Kind": "destination",
+      "Purpose": "A game-defined destination",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": {
+        "Supplies": [],
+        "Requirements": [
+          {
+            "Id": "need",
+            "Kind": "support",
+            "Unit": "units",
+            "Quantity": 4,
+            "ConnectionKind": "travel",
+            "Purpose": "Required game delivery",
+            "SourceRuleId": "test:demand",
+            "RequiredQualities": null,
+            "RequiredOrigin": null,
+            "RequirePhysicalRoute": true,
+            "MinimumWidth": 1,
+            "MaximumDistance": null,
+            "SourceContainsSite": false
+          }
+        ],
+        "UseStructureProfile": false,
+        "OutputQualities": null,
+        "Outputs": null
+      }
+    }
+  ]
+}

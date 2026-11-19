@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GameFrameWork catalog locale document, format 1",
+  "description": "Display names of a pack's own resources, stations, skills and recipes in one language. Keys are ids; nothing is defaulted, and a missing key means 'not translated', never a guess.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "pack", "language", "texts"],
+  "properties": {
+    "format": { "const": 1 },
+    "pack": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$" },
+    "language": { "type": "string", "pattern": "^[a-z]{2,3}(-[a-z0-9]{2,8}){0,3}$" },
+    "texts": {
+      "type": "object",
+      "propertyNames": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}\\.[a-z][a-z0-9-]{0,47}$" },
+      "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 80 }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Core/GameRuntime.Core.csproj" />
+    <ProjectReference Include="../GameRuntime.Sim/GameRuntime.Sim.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Contracts/ScenarioEngine.Contracts.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Persistence/ScenarioEngine.Persistence.csproj" />
+  </ItemGroup>
+</Project>

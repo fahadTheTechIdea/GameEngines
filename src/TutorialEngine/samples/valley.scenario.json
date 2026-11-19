@@ -1,0 +1,21 @@
+{
+  "facts": { "input.gamepad": false, "ui.menu_open": false, "game.paused": false, "game.population": 0 },
+  "script": [
+    { "at": 0, "do": "language", "arg": "en" },
+    { "at": 1, "do": "next" }, { "at": 2, "do": "next" }, { "at": 3, "do": "next" }, { "at": 4, "do": "next" },
+    { "at": 5, "do": "entry", "arg": "host" },
+    { "at": 6, "do": "start" },
+    { "at": 40, "do": "observe", "arg": "moved", "n": 1 },
+    { "at": 500, "do": "observe", "arg": "camera_moved" },
+    { "at": 520, "do": "observe", "arg": "menu_opened" },
+    { "at": 1500, "do": "observe", "arg": "structure_built" },
+    { "at": 1520, "do": "skip-step", "arg": "road" },
+    { "at": 1600, "do": "fact", "arg": "game.paused=true" },
+    { "at": 1700, "do": "observe", "arg": "worker_hired" },
+    { "at": 1710, "do": "observe", "arg": "dialogue_finished" },
+    { "at": 1720, "do": "observe", "arg": "trade_made" },
+    { "at": 1730, "do": "observe", "arg": "bond_made" },
+    { "at": 1740, "do": "observe", "arg": "saved_game" },
+    { "at": 1800, "do": "fact", "arg": "game.population=12" }
+  ]
+}

@@ -8,18 +8,15 @@ namespace ScenarioEngine.Tests;
 public sealed class SourceAndFactoryTests
 {
     [Fact]
-    public async Task ContractSourceLoadsAndGameFactoryUsesCommonLifecycle()
+    public async Task ContractSourceLoadsAndSessionFactoryRunsTheScenario()
     {
         var h = new Harness();
         IScenarioContentService content = h.Content;
         var source = new ByteSource(Encoding.UTF8.GetBytes(Harness.Pack().ToJsonString()));
         var loaded = await content.LoadAsync(source, TestContext.Current.CancellationToken);
         Assert.True(loaded.IsReady);
-        IGameFactory factory = new GameFactory(h.Factory, h.Registry);
-        using var game = factory.Create(loaded.Scenarios[0]);
-        Assert.IsAssignableFrom<GameBase>(game);
-        game.Init(new(loaded.Scenarios[0], Harness.Options(), Harness.Frame(0)));
-        game.Submit(Harness.Increment());
+        using var game = h.Factory.Create(loaded.Scenarios[0], Harness.Options(), Harness.Frame(0));
+        game.Enqueue(Harness.Increment());
         Assert.True(game.Update(Harness.Input(1)).Committed);
     }
 
@@ -55,7 +52,7 @@ public sealed class SourceAndFactoryTests
         Assert.Empty(h.Content.ListPlayable());
         Assert.False(h.Content.TryResolve(scenario.Identity, out _));
         session.Enqueue(Harness.Increment());
-        Assert.True(session.Step(Harness.Input(1)).Committed);
+        Assert.True(session.Update(Harness.Input(1)).Committed);
         Assert.Equal("PACK_NOT_INSTALLED", h.Content.RemoveFromCatalog(scenario.Identity.PackId, scenario.Identity.ContentDigest).Code);
     }
 
@@ -70,13 +67,12 @@ public sealed class SourceAndFactoryTests
     }
 
     [Fact]
-    public void FactoryRejectsUnregisteredLayer()
+    public void SessionFactoryRejectsUnregisteredLayer()
     {
         var h = new Harness();
         var scenario = h.Scenario();
-        IGameFactory factory = new GameFactory(h.Factory, h.Registry);
         Assert.Equal("LAYER_UNAVAILABLE", Assert.Throws<ScenarioContractException>(() =>
-            factory.Create(scenario with { Identity = scenario.Identity with { LayerId = "not_registered" } })).Code);
+            h.Factory.Create(scenario with { Identity = scenario.Identity with { LayerId = "not_registered" } }, Harness.Options(), Harness.Frame(0))).Code);
     }
 
     private sealed class ByteSource(byte[] bytes, Action? afterRead = null) : IScenarioPackSource

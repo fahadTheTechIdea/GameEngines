@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "pack": "trading",
+  "resources": [
+    { "id": "trading.grain-cargo", "name": "Grain cargo", "class": "raw", "unit": "kg", "origin": "crafted", "stack": { "max": 5000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["commodity", "food"], "properties": { "base-price": 1 } },
+    { "id": "trading.spice", "name": "Spice", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["commodity", "luxury"], "properties": { "base-price": 10 } },
+    { "id": "trading.grapes", "name": "Grapes", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 2000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["commodity", "food"], "properties": { "base-price": 2 } },
+    { "id": "trading.gems", "name": "Cut gems", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 500 }, "grade": { "scheme": "rarity", "levels": ["common", "rare", "exotic"] }, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["commodity", "luxury"], "properties": { "base-price": 100 } },
+    { "id": "trading.textiles", "name": "Textiles", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 2000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["commodity"], "properties": { "base-price": 3 } },
+    { "id": "trading.wine", "name": "Wine", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 2000 }, "grade": { "scheme": "quality", "levels": ["table", "reserve", "vintage"] }, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["commodity", "luxury"], "properties": { "base-price": 3 } },
+    { "id": "trading.machinery", "name": "Machinery", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["commodity", "industrial"], "properties": { "base-price": 500 } },
+    { "id": "trading.cargo-crate", "name": "Cargo crate", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["container"], "properties": { "capacity-kg": 20 } },
+    { "id": "trading.freight-fuel", "name": "Freight fuel", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 5000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["fuel"], "properties": {} },
+    { "id": "trading.cargo-ship", "name": "Cargo ship", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["vehicle", "freight"], "properties": { "capacity-kg": 40000 } },
+    { "id": "trading.trade-license", "name": "Trade license", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 10 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["permit"], "properties": {} },
+    { "id": "trading.contract-voucher", "name": "Contract voucher", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["contract"], "properties": {} },
+    { "id": "trading.escort", "name": "Escort service", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["service"], "properties": {} },
+    { "id": "trading.furs", "name": "Furs", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 500 }, "grade": { "scheme": "quality", "levels": ["common", "fine", "prime"] }, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["commodity", "luxury"], "properties": { "base-price": 25 } },
+    { "id": "trading.tea", "name": "Tea", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["commodity", "food"], "properties": { "base-price": 6 } },
+    { "id": "trading.silk", "name": "Silk", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["commodity", "luxury"], "properties": { "base-price": 40 } },
+    { "id": "trading.timber", "name": "Timber", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 5000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["commodity", "building"], "properties": { "base-price": 1 } },
+    { "id": "trading.salt-fish", "name": "Salt fish", "class": "consumable", "unit": "kg", "origin": "natural", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["commodity", "food", "preserved"], "properties": { "base-price": 3 } },
+    { "id": "trading.pottery", "name": "Pottery", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["commodity"], "properties": { "base-price": 9 } },
+    { "id": "trading.ledger", "name": "Merchant ledger", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["accounting"], "properties": {} },
+    { "id": "trading.insurance", "name": "Cargo insurance", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["service"], "properties": {} },
+    { "id": "trading.warehouse", "name": "Warehouse", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["structure", "storage"], "properties": { "capacity-kg": 100000 } },
+    { "id": "trading.caravan", "name": "Pack caravan", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["vehicle", "freight"], "properties": { "capacity-kg": 3000 } }
+  ],
+  "stations": [
+    { "id": "trading.market", "name": "Market hall", "levels": 2 },
+    { "id": "trading.winery", "name": "Winery", "levels": 1 },
+    { "id": "trading.loom-house", "name": "Loom house", "levels": 1 },
+    { "id": "trading.machine-works", "name": "Machine works", "levels": 1 },
+    { "id": "trading.dockyard", "name": "Dockyard", "levels": 2 },
+    { "id": "trading.guild-office", "name": "Guild office", "levels": 1 },
+    { "id": "trading.kiln", "name": "Pottery kiln", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "trading.haggling", "name": "Haggling", "max": 10 }
+  ]
+}

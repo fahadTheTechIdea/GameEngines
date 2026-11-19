@@ -1,6 +1,0 @@
-{
-  "independent_line_effects": [
-    { "id": "segment.stamp", "operation": "segment" },
-    { "id": "segment.finish", "operation": "finish" }
-  ]
-}

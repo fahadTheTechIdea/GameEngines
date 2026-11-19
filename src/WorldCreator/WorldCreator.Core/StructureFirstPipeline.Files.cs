@@ -23,6 +23,9 @@ public sealed partial class StructureFirstPipeline
     }
 
     public static async Task SaveSpecificationAsync(StructureFirstSpecification specification, string newFile, CancellationToken token = default)
+        => await SaveNewJsonAsync(specification,newFile,token);
+
+    private static async Task SaveNewJsonAsync<T>(T specification,string newFile,CancellationToken token)
     {
         string full = Path.GetFullPath(newFile);
         if (File.Exists(full) || Directory.Exists(full)) throw new IOException("STRUCTURE_SPECIFICATION_EXISTS");

@@ -1,0 +1,31 @@
+{
+  "format": 1,
+  "pack": "city",
+  "resources": [
+    { "id": "city.wheat", "name": "Wheat", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["crop"], "properties": {} },
+    { "id": "city.cotton", "name": "Cotton", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["crop", "fiber"], "properties": {} },
+    { "id": "city.fabric", "name": "Fabric", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["textile"], "properties": {} },
+    { "id": "city.clothes", "name": "Clothes", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["textile", "need-basic"], "properties": {} },
+    { "id": "city.cement", "name": "Cement", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["building"], "properties": {} },
+    { "id": "city.concrete", "name": "Concrete", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["building"], "properties": {} },
+    { "id": "city.steel-beam", "name": "Steel beam", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["building", "metal"], "properties": {} },
+    { "id": "city.furniture", "name": "Furniture", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["need-comfort"], "properties": {} },
+    { "id": "city.tap-water", "name": "Tap water", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 5000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["need-basic", "utility"], "properties": {} },
+    { "id": "city.house-small", "name": "Small house", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["building", "housing"], "properties": { "residents": 6, "tier": 1 } },
+    { "id": "city.house-large", "name": "Apartment block", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["building", "housing"], "properties": { "residents": 40, "tier": 2 } },
+    { "id": "city.market-stall", "name": "Market stall", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["building", "commerce"], "properties": {} },
+    { "id": "city.fire-station", "name": "Fire station", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["building", "service"], "properties": {} },
+    { "id": "city.road-segment", "name": "Road segment", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["infrastructure"], "properties": {} },
+    { "id": "city.rubbish", "name": "Rubbish", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["waste"], "properties": {} },
+    { "id": "city.compost", "name": "Compost", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["waste", "fertilizer"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "city.bakery", "name": "Bakery", "levels": 1 },
+    { "id": "city.textile-mill", "name": "Textile mill", "levels": 1 },
+    { "id": "city.cement-works", "name": "Cement works", "levels": 1 },
+    { "id": "city.carpenter", "name": "Carpenter", "levels": 2 },
+    { "id": "city.water-works", "name": "Water works", "levels": 1 },
+    { "id": "city.construction-yard", "name": "Construction yard", "levels": 3 },
+    { "id": "city.recycling-yard", "name": "Recycling yard", "levels": 1 }
+  ]
+}

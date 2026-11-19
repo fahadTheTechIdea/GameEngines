@@ -46,7 +46,6 @@ internal sealed class Harness
     public IScenarioSimulation Start(ValidatedScenario? scenario = null, string sessionId = "test")
     {
         var simulation = Factory.Create(scenario ?? Scenario(), Options(sessionId), Frame(0));
-        simulation.Start();
         return simulation;
     }
     public static ScenarioStartOptions Options(string id = "test") => new(id, 42, ImmutableHashSet.Create("player"));

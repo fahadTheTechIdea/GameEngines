@@ -1,0 +1,18 @@
+engine,document,variant,seeds,from_seed,horizon,metric,n,min,p10,p50,p90,p99,max,mean,positive,median95_low,median95_high
+relationship,crowd.relationship.json,sample,200,1,45 days,changes.balance,200,14,17,21,26,27,30,21.225,200,21,22
+relationship,crowd.relationship.json,sample,200,1,45 days,changes.bonds,200,0,0,0,0,0,0,0.000,0,0,0
+relationship,crowd.relationship.json,sample,200,1,45 days,changes.communities,200,109,123,141,159,183,188,141.525,200,139,144
+relationship,crowd.relationship.json,sample,200,1,45 days,changes.evictions,200,165,180,196,211,221,225,196.525,200,195,199
+relationship,crowd.relationship.json,sample,200,1,45 days,changes.memories,200,1425,1447,1475,1501,1523,1538,1474.855,200,1471,1478
+relationship,crowd.relationship.json,sample,200,1,45 days,changes.moodlets,200,0,0,0,0,0,0,0.000,0,0,0
+relationship,crowd.relationship.json,sample,200,1,45 days,changes.moods,200,15782,15847,15888,15929,15980,16007,15889.260,200,15881,15895
+relationship,crowd.relationship.json,sample,200,1,45 days,changes.needs,200,10641,10665,10690,10714,10733,10737,10690.630,200,10687,10693
+relationship,crowd.relationship.json,sample,200,1,45 days,changes.standing,200,1303,1329,1347,1365,1375,1387,1347.070,200,1345,1350
+relationship,crowd.relationship.json,sample,200,1,45 days,changes.states,200,47,54,59,64,67,69,58.885,200,58,59
+relationship,crowd.relationship.json,sample,200,1,45 days,communities.end,200,99,100,101,101,101,101,100.530,200,100,101
+relationship,crowd.relationship.json,sample,200,1,45 days,edges.total,200,1550,1568,1581,1596,1609,1617,1581.465,200,1580,1583
+relationship,crowd.relationship.json,sample,200,1,45 days,interactions.accepted,200,1223,1252,1272,1292,1305,1316,1271.380,200,1270,1274
+relationship,crowd.relationship.json,sample,200,1,45 days,interactions.declined,200,741,764,785,805,826,834,785.620,200,783,787
+relationship,crowd.relationship.json,sample,200,1,45 days,rolls,200,3362,3380,3400,3424,3436,3445,3401.740,200,3398,3403
+relationship,crowd.relationship.json,sample,200,1,45 days,scenario.refused,200,13,13,13,13,13,13,13.000,200,13,13
+relationship,crowd.relationship.json,sample,200,1,45 days,standing.spread,200,6784,7279,8833,12691,15822,17552,9639.565,200,8564,9351

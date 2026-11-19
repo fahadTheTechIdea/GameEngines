@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "pack": "survival",
+  "resources": [
+    { "id": "survival.berries", "name": "Wild berries", "class": "consumable", "unit": "kg", "origin": "natural", "stack": { "max": 50 }, "grade": null, "perishable": { "ticks": 6000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "0", "tags": ["food", "plant"], "properties": { "calories": 250 } },
+    { "id": "survival.mushroom", "name": "Mushroom", "class": "consumable", "unit": "kg", "origin": "natural", "stack": { "max": 50 }, "grade": null, "perishable": { "ticks": 5000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "0", "tags": ["food", "plant"], "properties": { "calories": 120 } },
+    { "id": "survival.raw-meat", "name": "Raw meat", "class": "consumable", "unit": "kg", "origin": "natural", "stack": { "max": 30 }, "grade": null, "perishable": { "ticks": 3000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "0", "tags": ["food", "animal"], "properties": { "calories": 1500 } },
+    { "id": "survival.fish", "name": "Fresh fish", "class": "consumable", "unit": "kg", "origin": "natural", "stack": { "max": 30 }, "grade": null, "perishable": { "ticks": 2500, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "0", "tags": ["food", "animal"], "properties": { "calories": 900 } },
+    { "id": "survival.hide", "name": "Animal hide", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["animal"], "properties": {} },
+    { "id": "survival.bone", "name": "Bone", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["animal"], "properties": {} },
+    { "id": "survival.flint", "name": "Flint", "class": "raw", "unit": "{each}", "origin": "natural", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["mineral"], "properties": {} },
+    { "id": "survival.clean-water", "name": "Clean water", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["liquid", "drink"], "properties": {} },
+    { "id": "survival.cooked-meat", "name": "Cooked meat", "class": "consumable", "unit": "kg", "origin": "crafted", "stack": { "max": 30 }, "grade": { "scheme": "quality", "levels": ["poor", "good", "excellent"] }, "perishable": { "ticks": 9000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["food", "cooked"], "properties": { "calories": 2000 } },
+    { "id": "survival.cooked-fish", "name": "Cooked fish", "class": "consumable", "unit": "kg", "origin": "crafted", "stack": { "max": 30 }, "grade": null, "perishable": { "ticks": 8000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["food", "cooked"], "properties": { "calories": 1100 } },
+    { "id": "survival.dried-berries", "name": "Dried berries", "class": "consumable", "unit": "kg", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["food", "preserved"], "properties": { "calories": 700 } },
+    { "id": "survival.stew", "name": "Hearty stew", "class": "consumable", "unit": "kg", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": { "ticks": 7000, "result": "core.spoiled-food" }, "durability": null, "currency": null, "cpc": "2", "tags": ["food", "cooked"], "properties": { "calories": 1800 } },
+    { "id": "survival.leather", "name": "Leather", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["animal"], "properties": {} },
+    { "id": "survival.arrow", "name": "Arrow", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["ammo"], "properties": {} },
+    { "id": "survival.bandage", "name": "Bandage", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["medical"], "properties": {} },
+    { "id": "survival.spear", "name": "Spear", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 80 }, "currency": null, "cpc": "4", "tags": ["tool", "hunting"], "properties": {} },
+    { "id": "survival.bow", "name": "Hunting bow", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 150 }, "currency": null, "cpc": "4", "tags": ["tool", "hunting"], "properties": {} },
+    { "id": "survival.fishing-rod", "name": "Fishing rod", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 120 }, "currency": null, "cpc": "4", "tags": ["tool", "fishing"], "properties": {} },
+    { "id": "survival.torch", "name": "Torch", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 60 }, "currency": null, "cpc": "4", "tags": ["light"], "properties": {} },
+    { "id": "survival.waterskin", "name": "Waterskin", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 500 }, "currency": null, "cpc": "4", "tags": ["container"], "properties": {} },
+    { "id": "survival.backpack", "name": "Backpack", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 1000 }, "currency": null, "cpc": "4", "tags": ["container"], "properties": { "slots": 12 } },
+    { "id": "survival.tent", "name": "Tent", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 800 }, "currency": null, "cpc": "4", "tags": ["shelter"], "properties": {} },
+    { "id": "survival.campfire-kit", "name": "Campfire kit", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 5 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["shelter", "heat"], "properties": {} },
+    { "id": "survival.bone-needle", "name": "Bone needle", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 100 }, "currency": null, "cpc": "4", "tags": ["tool", "sewing"], "properties": {} },
+    { "id": "survival.warm-coat", "name": "Warm coat", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 1200 }, "currency": null, "cpc": "2", "tags": ["clothing", "warmth"], "properties": { "warmth": 30 } }
+  ],
+  "stations": [
+    { "id": "survival.campfire", "name": "Campfire", "levels": 2 },
+    { "id": "survival.cabin-bench", "name": "Cabin bench", "levels": 3 }
+  ],
+  "skills": [
+    { "id": "survival.tailoring", "name": "Tailoring", "max": 10 }
+  ]
+}

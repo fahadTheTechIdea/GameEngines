@@ -12,7 +12,7 @@ public sealed record SpriteSheetManifest(
     string Id, string ImagePath, string AtlasPath, string ImageSha256, string AtlasSha256,
     string ComponentId, IReadOnlyList<string> Directions);
 public sealed record ApprovedArtManifest(
-    int SchemaVersion, string AssetId, string GameArtsRevision, string StandardVersion,
+    int SchemaVersion, string AssetId, string BundleAssetId, string GameArtsRevision, string StandardVersion,
     ArtApprovalState ApprovalState, IReadOnlyList<SpriteSheetManifest> Sheets,
     IReadOnlyList<ComponentAttachment> Attachments);
 public sealed record ComponentAttachment(string ComponentId, string ParentId, string AnchorName,

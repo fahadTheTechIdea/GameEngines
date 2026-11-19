@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "colony",
+  "version": "1.0.0",
+  "title": "Colony simulation: farms, kitchens, clinics, homes",
+  "language": "en",
+  "world": "timeless",
+  "genres": ["colony-sim"],
+  "dependencies": [{ "id": "core", "version": "1.0.0" }],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

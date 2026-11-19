@@ -1,0 +1,10 @@
+{
+  "Version": 1,
+  "Corpus": "../metadata/generation-study/study.json",
+  "Pairs": [
+    { "Id": "wilderness", "Baseline": "north-pass", "Changed": "south-pass", "InitialNodes": 9, "EditedNodes": 9 },
+    { "Id": "interior", "Baseline": "branching", "Changed": "rotated", "InitialNodes": 13, "EditedNodes": 13 },
+    { "Id": "compound", "Baseline": "inland", "Changed": "coastal", "InitialNodes": 61, "EditedNodes": 61 },
+    { "Id": "topology", "Baseline": "encounter", "Changed": "loop-capacity", "InitialNodes": 25, "EditedNodes": 7 }
+  ]
+}

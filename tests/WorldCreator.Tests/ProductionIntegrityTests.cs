@@ -12,9 +12,9 @@ internal static class ProductionIntegrityTests
         var registry = new MappedRegistry(manifests);
         var verifier = new PortableWorldPackageVerifier(registry);
         var originalBytes = await File.ReadAllBytesAsync(exportedPath);
-        var world = JsonSerializer.Deserialize<DummyVillageWorldDocument>(originalBytes)!;
+        var world = JsonSerializer.Deserialize<WorldSceneDocument>(originalBytes)!;
         var home = world.AssetDependencies!.Single(x => x.AssetId == "fixture-home");
-        var malformed = new (string Name, DummyVillageWorldDocument World, string Issue)[]
+        var malformed = new (string Name, WorldSceneDocument World, string Issue)[]
         {
             ("null-base", world with { SemanticWorld = world.SemanticWorld with { Base = null! } },
                 "WORLD_DEPENDENCY_STRUCTURE_INVALID"),
@@ -125,7 +125,7 @@ internal static class ProductionIntegrityTests
             Console.WriteLine("NOT RUN: CLI process checks (supply --cli <WorldCreator.Cli.dll>).");
         Console.WriteLine("PASS: production integrity regressions (synthetic GameArts fixtures).");
 
-        DummyVillageWorldDocument WithHome(WorldAssetDependency replacement) => world with {
+        WorldSceneDocument WithHome(WorldAssetDependency replacement) => world with {
             AssetDependencies = world.AssetDependencies!.Select(x => x.AssetId == "fixture-home" ? replacement : x).ToArray()
         };
     }

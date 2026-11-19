@@ -7,8 +7,8 @@ namespace WorldCreator.Worlds;
 /// The resulting portable document is assembled only after transport quality rules pass.</summary>
 public sealed class SettlementTransportWorldAssembler
 {
-    public (DummyVillageWorldDocument? World, IReadOnlyList<string> Issues) Assemble(
-        DummyVillageWorldDocument world,
+    public (WorldSceneDocument? World, IReadOnlyList<string> Issues) Assemble(
+        WorldSceneDocument world,
         SettlementDesignResult settlement,
         SettlementTransportSpecification specification,
         WorldQualityRules qualityRules)

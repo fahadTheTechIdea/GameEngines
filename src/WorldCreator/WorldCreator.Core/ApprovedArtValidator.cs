@@ -11,7 +11,8 @@ public sealed class ApprovedArtValidator
             Fail("ART_MISSING", "Approved production art is not available.");
             return new(issues);
         }
-        if (manifest.SchemaVersion != 1) Fail("SCHEMA_VERSION", "Unsupported art manifest schema.");
+        if (manifest.SchemaVersion != 2) Fail("SCHEMA_VERSION", "Unsupported art manifest schema.");
+        if (string.IsNullOrWhiteSpace(manifest.BundleAssetId)) Fail("BUNDLE_ASSET_ID", "Native bundle identity is required.");
         if (manifest.AssetId != requirement.Id) Fail("ASSET_ID", "Manifest asset ID mismatch.");
         if (manifest.ApprovalState != ArtApprovalState.Approved) Fail("NOT_APPROVED", "Production bundle must be approved.");
         if (string.IsNullOrWhiteSpace(manifest.GameArtsRevision) || string.IsNullOrWhiteSpace(manifest.StandardVersion))

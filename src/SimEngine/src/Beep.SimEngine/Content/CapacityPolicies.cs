@@ -78,9 +78,21 @@ namespace Beep.SimEngine.Content
                 unit: exceeded, usage: facts);
         }
 
+        // The native quantum of a resource follows only from the authored limits and the resource measures, never from stock, promises or the number of
+        // instances, and content does not change once loaded, so each resource is worked out once. Games share content across threads, hence the concurrent map.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<ResourceId, CapacityQuantum> _quanta = new System.Collections.Concurrent.ConcurrentDictionary<ResourceId, CapacityQuantum>();
+
         public CapacityQuantum Quantum(ICapacityPolicy policy, ResourceId resource)
         {
             if (policy == null) throw new ArgumentNullException(nameof(policy));
+            if (_quanta.TryGetValue(resource, out CapacityQuantum known)) return known;
+            CapacityQuantum worked = WorkOutQuantum(policy, resource);
+            _quanta[resource] = worked;
+            return worked;
+        }
+
+        private CapacityQuantum WorkOutQuantum(ICapacityPolicy policy, ResourceId resource)
+        {
             CapacityCheck check = CapacityPolicyContracts.Check(policy, Array.Empty<ResourceAmount>(), Array.Empty<ResourceAmount>(),
                 new[] { new ResourceAmount(resource, Fix.Zero) });
             if (!check.Fits) return new CapacityQuantum(check.Status);

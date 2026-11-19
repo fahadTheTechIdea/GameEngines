@@ -1,0 +1,33 @@
+{
+  "time_definitions": [{
+    "id": "field.time", "quantum": { "numerator": 60, "denominator": 1, "unit": "second" },
+    "frame_ticks": 1, "ticks_per_second": 30, "calendar": null, "horizon": null
+  }],
+  "entity_states": [
+    { "id": "field.idle", "state": "state.field.idle", "priority": 0, "default": true }
+  ],
+  "tile_spaces": [{ "id": "field.tiles", "width": 256, "height": 256 }],
+  "entities": [
+    { "id": "field.depot", "kind": "structure", "components": {
+      "tile_presence": { "space": "field.tiles", "width": 1, "height": 1, "blocks": false, "movable": false },
+      "storage": { "capacity_policy": "stock.squad-store" }
+    } },
+    { "id": "field.person", "kind": "structure", "components": {
+      "tile_presence": { "space": "field.tiles", "width": 1, "height": 1, "blocks": false, "movable": false },
+      "character": {}
+    } },
+    { "id": "field.squad", "kind": "structure", "components": {
+      "tile_presence": { "space": "field.tiles", "width": 1, "height": 1, "blocks": false, "movable": false },
+      "squad": { "max_members": 20000 },
+      "storage": { "capacity_policy": "stock.squad-store" }
+    } }
+  ],
+  "game_modes": [{ "id": "field.mode", "name": "Field", "properties": {} }],
+  "scenarios": [{
+    "id": "field", "name": "Field",
+    "modules": ["field", "sim.inventory", "sim.characters", "gf.director"],
+    "space": "field.tiles", "game_mode": "field.mode", "mode_overrides": {},
+    "settings": { "sim.world-setup": { "profile": "field.start" } },
+    "seats": 1, "default_seats": 1, "time": "field.time"
+  }]
+}

@@ -1,0 +1,18 @@
+{
+  "character_stats": [{ "id": "chars.stat.strength", "min": 1, "max": 20 }],
+  "character_skills": [],
+  "character_traits": [],
+  "name_pools": [
+    { "id": "chars.names.given", "names": ["Ada", "Bo", "Cy"] },
+    { "id": "chars.names.family", "names": ["Dahl", "Egan", "Fry"] }
+  ],
+  "character_archetypes": [
+    { "id": "chars.villager", "entity": "chars.person", "max_spawn": 100, "given_names": "chars.names.given", "family_names": "chars.names.family",
+      "stats": [{ "stat": "chars.stat.strength", "min": 1, "max": 20 }], "skills": [],
+      "traits": { "min": 0, "max": 0, "pool": [] }, "equipment": [], "roles": ["civilian"] }
+  ],
+  "character_formations": [
+    { "id": "chars.village", "squad_entity": "chars.cohort", "max_squads": 5, "catalog_unit": null,
+      "members": [{ "archetype": "chars.villager", "count": 50 }], "equipment": [] }
+  ]
+}

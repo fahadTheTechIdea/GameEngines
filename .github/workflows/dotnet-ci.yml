@@ -36,16 +36,14 @@ jobs:
         shell: bash
         run: |
           test -s generated/ci-desert/world.json
-          test -s generated/ci-desert/GeneratedWorld.tscn
-          test -s generated/ci-desert/EXPORT_STATUS.md
+          test -s generated/ci-desert/plan.svg
       - name: Smoke test infrastructure CLI
         run: dotnet run --project src/WorldCreator/WorldCreator.Cli/WorldCreator.Cli.csproj --configuration Release --no-build -- generate-world tests/fixtures/synthetic-infrastructure-world.json generated/ci-infrastructure
       - name: Verify infrastructure export data
         shell: bash
         run: |
           test -s generated/ci-infrastructure/world.json
-          test -s generated/ci-infrastructure/GeneratedWorld.tscn
-          test -s generated/ci-infrastructure/EXPORT_STATUS.md
+          test -s generated/ci-infrastructure/plan.svg
 
       - name: Smoke test contextual siting CLI
         run: dotnet run --project src/WorldCreator/WorldCreator.Cli/WorldCreator.Cli.csproj --configuration Release --no-build -- generate-world tests/fixtures/synthetic-siting-world.json generated/ci-siting
@@ -53,15 +51,4 @@ jobs:
         shell: bash
         run: |
           test -s generated/ci-siting/world.json
-          test -s generated/ci-siting/GeneratedWorld.tscn
-          test -s generated/ci-siting/EXPORT_STATUS.md
-
-      - name: Assemble dummy pixel village
-        run: dotnet run --project src/WorldCreator/WorldCreator.Cli/WorldCreator.Cli.csproj --configuration Release --no-build -- dummy-village generated/dummy-village
-      - name: Inspect dummy Godot project
-        shell: bash
-        run: |
-          test -s generated/dummy-village/project.godot
-          test -s generated/dummy-village/Village.tscn
-          test -s generated/dummy-village/Village.gd
-          test -s generated/dummy-village/design.json
+          test -s generated/ci-siting/plan.svg

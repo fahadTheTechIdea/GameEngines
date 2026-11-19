@@ -27,15 +27,13 @@ try
     }
     var factory = new ScenarioSessionFactory(registry, validator, diagnostics);
     var selected = load.Scenarios[0];
-    IGameFactory games = new GameFactory(factory, registry);
-    using var game = games.Create(selected);
     var options = new ScenarioStartOptions("counter-demo", 42, ImmutableHashSet.Create("player"));
-    game.Init(new(selected, options, new(0, 0, [])));
+    using var game = factory.Create(selected, options, new(0, 0, []));
     var hashes = new List<string>();
     var saveService = new ScenarioSaveService(new ScenarioSaveCodec(), new LocalFileSaveStore(Path.Combine(output, "saves")), diagnostics);
     for (var tick = 1; tick <= 3; tick++)
     {
-        var receipt = game.Submit(new("increment-" + tick, "player", tick, 0,
+        var receipt = game.Enqueue(new("increment-" + tick, "player", tick, 0,
             "test_counter.increment", ContractJson.Element(new { amount = 1 })));
         if (!receipt.Accepted) throw new InvalidOperationException(receipt.Code);
         var step = game.Update(new(tick, new(0, tick, [])));
@@ -60,28 +58,27 @@ try
     {
         restored.Enqueue(new("increment-" + tick, "player", tick, 0,
             "test_counter.increment", ContractJson.Element(new { amount = 1 })));
-        var step = restored.Step(new(tick, new(0, tick, [])));
+        var step = restored.Update(new(tick, new(0, tick, [])));
         if (!step.Committed || step.RuleStateHash != hashes[tick - 1])
             throw new InvalidOperationException("Save continuation diverged.");
     }
     var replay = new ReplayService(factory, diagnostics);
     using var recording = replay.Record(factory.Create(selected, options, new(0, 0, [])), new(0, 0, []));
-    recording.Start();
     for (var tick = 1; tick <= 3; tick++)
     {
         recording.Enqueue(new("increment-" + tick, "player", tick, 0,
             "test_counter.increment", ContractJson.Element(new { amount = 1 })));
-        recording.Step(new(tick, new(0, tick, [])));
+        recording.Update(new(tick, new(0, tick, [])));
     }
     var replayBytes = replay.Encode(recording.CaptureReplay());
     await File.WriteAllBytesAsync(Path.Combine(output, "replay.json"), replayBytes);
     var replayResult = replay.Verify(selected, replay.Decode(replayBytes).Tape!);
     if (!replayResult.Matches || replayResult.ActualHash != hashes[^1])
-        throw new InvalidOperationException("Recorded replay differs from the GameBase run: " + replayResult.Code);
+        throw new InvalidOperationException("Recorded replay differs from the direct run: " + replayResult.Code);
     var result = new { layer = "test_counter", ending = game.Snapshot.EndingId, hashes,
         saveRestoreMatches = true, previousGenerationRecoveryMatches = true, replayMatches = true, nativeWorld = "not_run" };
     await File.WriteAllBytesAsync(Path.Combine(output, "result.json"), ContractJson.Canonical(ContractJson.Element(result)));
-    Console.WriteLine("PASS: GameBase.Init/Update, game factory, ending, explicit previous-save recovery, continuation and portable replay.");
+    Console.WriteLine("PASS: session factory, Update, ending, explicit previous-save recovery, continuation and portable replay.");
     return 0;
 }
 catch (Exception exception)

@@ -1,0 +1,23 @@
+[
+  {
+    "Domain": "level-a",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/rectangle-16-extra1/recipe.json",
+    "RecipeSha256": "bf5a336ea47f8cf34c71f5e6de2939fb03e8a625b801767f49c1340097c0c2d4",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/rectangle-16-extra1/catalog.json",
+    "CatalogSha256": "f35212e18c54c46d18aadd2e2662825f0c02842c2902e4503abfa38dfe211067"
+  },
+  {
+    "Domain": "level-b",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/hexagon-16-extra1/recipe.json",
+    "RecipeSha256": "caac4e5d27d8e525b6cb72f540260db4a6da2bf949d07c257af1ff40685145f6",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/hexagon-16-extra1/catalog.json",
+    "CatalogSha256": "84f8340d755213e2cde14ab895d798c5907ad58ac81de00bf26ffe1807d384d9"
+  },
+  {
+    "Domain": "level-c",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/rectangle-16-extra1/recipe.json",
+    "RecipeSha256": "bf5a336ea47f8cf34c71f5e6de2939fb03e8a625b801767f49c1340097c0c2d4",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/rectangle-16-extra1/catalog.json",
+    "CatalogSha256": "f35212e18c54c46d18aadd2e2662825f0c02842c2902e4503abfa38dfe211067"
+  }
+]

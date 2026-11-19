@@ -7,7 +7,7 @@ namespace WorldCreator.Core;
 public sealed class PedestrianReachabilityValidator
 {
     private const double Epsilon = 1e-6;
-    public IReadOnlyList<string> Validate(DummyVillageWorldDocument world)
+    public IReadOnlyList<string> Validate(WorldSceneDocument world)
     {
         ArgumentNullException.ThrowIfNull(world);
         var issues = new List<string>();

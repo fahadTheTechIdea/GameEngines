@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
 using WorldCreator.Core.Planning;
 namespace WorldCreator.Core;
-public enum Biome { Desert, Forest, Grassland, Coastal, Water, Rock }
 public enum CellKind { Sand, Rock, Road, Structure, Water, Grass, Tree }
-public sealed record WorldRequest(int Width = 64, int Height = 64, int Seed = 42, Biome Biome = Biome.Desert, int SettlementCount = 1,
+[JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
+public sealed record WorldRequest(int Width = 64, int Height = 64, int SettlementCount = 1,
     MockupWorldDesign? Design = null)
 {
     public void Validate()
@@ -16,12 +16,12 @@ public sealed record WorldCell(int X, int Y, CellKind Kind, float HeightMeters, 
     string? SourceVisualRegionId = null, string? DesignRuleId = null, string? SurfaceMaterialId = null);
 public sealed record WorldObject(string Id, string Kind, int X, int Y, string State, string? AnimationId = null,
     VisualPlacementSource? VisualSource = null);
+[JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
 public sealed record WorldDocument(int SchemaVersion, WorldRequest Request, IReadOnlyList<WorldCell> Cells, IReadOnlyList<WorldObject> Objects,
     WorldDesignPlan? Design = null, IReadOnlyList<BuildingSiteFeature>? SiteFeatures = null,
     IReadOnlyList<PlannedVegetation>? Vegetation = null, IReadOnlyList<LandscapeZone>? Landscape = null,
     IReadOnlyList<PlannedInfrastructure>? Infrastructure = null,
-    IReadOnlyList<InfrastructureRasterCell>? InfrastructureLayers = null, WorldSitingAssessment? Siting = null, ResolvedSettlementCatalog? Catalog = null,
-    IReadOnlyList<PlannedFacility>? Facilities = null)
+    IReadOnlyList<InfrastructureRasterCell>? InfrastructureLayers = null, WorldSitingAssessment? Siting = null, ResolvedSettlementCatalog? Catalog = null)
 {
     [JsonIgnore] public int Width => Request.Width;
     [JsonIgnore] public int Height => Request.Height;

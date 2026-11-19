@@ -1,0 +1,2126 @@
+{
+  "Version": 1,
+  "Id": "joint-terrain-world",
+  "Purpose": "Terrain-only sources and complete physical nested content",
+  "SourceRuleId": "joint:world",
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "terrain",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 80,
+          "Y": 0
+        },
+        {
+          "X": 80,
+          "Y": 40
+        },
+        {
+          "X": 0,
+          "Y": 40
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [],
+    "Terrain": null,
+    "HeightField": {
+      "SchemaVersion": 1,
+      "Id": "generated-ground",
+      "Kind": "ground",
+      "Purpose": "Procedural exploration terrain",
+      "SourceRuleId": "example:terrain",
+      "Unit": "meters",
+      "Origin": {
+        "X": -5,
+        "Y": -5
+      },
+      "StepX": 5,
+      "StepY": 5,
+      "Columns": 19,
+      "Rows": 11,
+      "Heights": [
+        2.00573427466372,
+        2.0055925318723,
+        2.0048100547564713,
+        2.001923223601409,
+        1.9993936756266169,
+        1.9994966394358062,
+        2.0011049816683038,
+        2.0043413170884476,
+        2.007220369328321,
+        2.007943270635801,
+        2.008138655478457,
+        2.0087299303064294,
+        2.008811929030512,
+        2.0077451948330935,
+        2.005989267325244,
+        2.0034315256339026,
+        2.0013830600464506,
+        2.0008892515786756,
+        2.0014878868161676,
+        2.0062251305289,
+        2.00610383189031,
+        2.005207139448979,
+        2.0018827523628193,
+        1.998915357698321,
+        1.9989033856063247,
+        2.0005644907143116,
+        2.0040052974006928,
+        2.0070891116654126,
+        2.007865496424065,
+        2.0081199272395587,
+        2.0089358664617296,
+        2.0092376898176396,
+        2.008218007399357,
+        2.006390113402817,
+        2.0035963339212506,
+        2.001316670305945,
+        2.0007628895431813,
+        2.001507573772548,
+        2.006276065719318,
+        2.006225548018672,
+        2.0053966411041517,
+        2.00233749498476,
+        1.9996535277599339,
+        1.9997544120189024,
+        2.0014072651960406,
+        2.0046676317521293,
+        2.0075528194136525,
+        2.008275881417302,
+        2.0085160528931216,
+        2.0092802732967567,
+        2.00953977043292,
+        2.0085291059850037,
+        2.0066808245148215,
+        2.0037320904147586,
+        2.0012880795821686,
+        2.0006906340357222,
+        2.0014599232008106,
+        2.006437510036555,
+        2.0066538213229803,
+        2.006090155375228,
+        2.004077497109785,
+        2.0025391098137058,
+        2.003150811050898,
+        2.0048506136362962,
+        2.0074798598059846,
+        2.009634835006309,
+        2.010159270406762,
+        2.0103477230640463,
+        2.0109296362074884,
+        2.0110580032471987,
+        2.0101224503430597,
+        2.008236652017905,
+        2.0047253998035384,
+        2.0016676936929034,
+        2.000905900929172,
+        2.0017622319758357,
+        2.0064898698289175,
+        2.0069591492938543,
+        2.0066789107857743,
+        2.005811832449078,
+        2.0056135442767262,
+        2.0069907422628903,
+        2.0089921740272954,
+        2.011184819005564,
+        2.012708673819488,
+        2.0130526690896486,
+        2.013198795527186,
+        2.0136495785741753,
+        2.0137472770398337,
+        2.013018367775812,
+        2.011226584692025,
+        2.0072532758857555,
+        2.003633051660816,
+        2.0027163042785885,
+        2.003636335740745,
+        2.0062704651098664,
+        2.00677617481327,
+        2.0066087926561544,
+        2.0062525312976827,
+        2.0068197398743024,
+        2.008940957121545,
+        2.011565299865215,
+        2.014059574022491,
+        2.0156303782446745,
+        2.0159661215839866,
+        2.01612126599189,
+        2.0166471605826564,
+        2.0169515026884324,
+        2.016557582242228,
+        2.0150713825322506,
+        2.011192088967348,
+        2.007534347887437,
+        2.0065972130315672,
+        2.0074840031874164,
+        2.0048246366107283,
+        2.0051715582052188,
+        2.0052101182656625,
+        2.005721210317844,
+        2.0074104520758644,
+        2.01036877445078,
+        2.0136545962547387,
+        2.016598222618337,
+        2.0183636992760956,
+        2.0187297587655824,
+        2.0188516492044464,
+        2.0192907458352294,
+        2.019639822077361,
+        2.0195386185095687,
+        2.0184267132840583,
+        2.0149046114787046,
+        2.0114725300620018,
+        2.010583718843148,
+        2.0113343001220243,
+        2.0001795619246456,
+        2.00003172859353,
+        2.000710252526075,
+        2.0037325263142316,
+        2.0081274690032083,
+        2.0122078245595247,
+        2.015942998569806,
+        2.0190158308088715,
+        2.0207159941471176,
+        2.021049336533627,
+        2.020966991248983,
+        2.020654813834945,
+        2.020353077554658,
+        2.020296608123222,
+        2.01954189465726,
+        2.0165657519805826,
+        2.0135791681701547,
+        2.012798578850985,
+        2.0132184753218607,
+        1.995643571763437,
+        1.9950148443152758,
+        1.996315145647018,
+        2.0017495090963515,
+        2.0086556335213035,
+        2.0136033424882736,
+        2.0175331889341295,
+        2.0205407078536823,
+        2.0220764657976167,
+        2.0223589046082453,
+        2.022062931001305,
+        2.0209483023787063,
+        2.0198952920535986,
+        2.0197520246621785,
+        2.0192229708594254,
+        2.016692325789023,
+        2.014100062421129,
+        2.013418302402856,
+        2.013530855531813,
+        1.994468083173769,
+        1.9937149183161709,
+        1.9951760910413185,
+        2.001232231889849,
+        2.0087783201869023,
+        2.0139319713714317,
+        2.0178921339674623,
+        2.020866935784038,
+        2.0223517901520913,
+        2.02261947428874,
+        2.02226696940272,
+        2.0209387124578253,
+        2.0196814664092093,
+        2.01950494504875,
+        2.019024214883013,
+        2.0166017917122945,
+        2.014108357645297,
+        2.013451643953999,
+        2.0134858344480127,
+        1.9952912951834365,
+        1.9945750141962972,
+        1.9959728368879854,
+        2.0017773559996086,
+        2.0090427119452103,
+        2.0140608693993673,
+        2.0179649985290617,
+        2.0209634157979472,
+        2.0225009962328544,
+        2.0227847906000798,
+        2.0223954136513598,
+        2.0209241937837215,
+        2.0195183567749235,
+        2.019291015606806,
+        2.01890248553526,
+        2.01687926461333,
+        2.01479066083256,
+        2.014240094980411,
+        2.014179204015131
+      ]
+    }
+  },
+  "Regions": [
+    {
+      "Id": "alpha",
+      "Purpose": "Complete alpha habitat",
+      "SourceRuleId": "joint:alpha",
+      "Weight": 1,
+      "MinimumArea": 1,
+      "MinimumClearance": 0,
+      "Profile": {
+        "Id": "ground",
+        "Purpose": "Required game ground",
+        "SourceRuleId": "joint:ground",
+        "AllowedKinds": [
+          "ground"
+        ],
+        "Requirements": [],
+        "Preferences": []
+      },
+      "PlacementAnchorId": "regional-origin",
+      "Recipe": {
+        "SchemaVersion": 1,
+        "Id": "joint-terrain",
+        "GameProfile": "framework-reference",
+        "CatalogId": "joint-terrain-catalog",
+        "RootArchetypeId": "root",
+        "Scale": "habitat",
+        "Coverage": "PartialScope",
+        "RemainingScopes": [
+          "Complete declared technical terrain/content/journey control; broad professional-world design remains open."
+        ],
+        "Parameters": {},
+        "Space": {
+          "Axes": [
+            "x",
+            "y"
+          ],
+          "Unit": "meters"
+        },
+        "Origin": null,
+        "RequireAllPositions": true,
+        "MaximumNodes": 10000,
+        "MaximumConnections": 50000,
+        "AdditionalConnections": null,
+        "Layers": null,
+        "Surface": null,
+        "RouteRules": [
+          {
+            "Id": "walk",
+            "ConnectionKind": "walk",
+            "Profile": {
+              "Id": "walk",
+              "Purpose": "Every required discovery journey and return",
+              "SourceRuleId": "joint:walk",
+              "Radius": 0.2,
+              "MaximumSlope": 0.5,
+              "KindCosts": {
+                "ground": 1
+              },
+              "AscentCost": 1,
+              "DescentCost": 1,
+              "MaximumHeightStep": 1
+            },
+            "Search": {
+              "Clearance": 0.1,
+              "Waypoints": [],
+              "MaximumCandidates": 256,
+              "MaximumEdgeChecks": 32768,
+              "MaximumWork": 20000000,
+              "Objective": "LowestCost"
+            },
+            "FromPortId": null,
+            "ToPortId": null,
+            "Reuse": null,
+            "Interfaces": null,
+            "Alignments": null
+          }
+        ],
+        "NetworkRules": null,
+        "Environment": {
+          "SchemaVersion": 1,
+          "Id": "fields",
+          "Fields": [
+            {
+              "Id": "constant",
+              "Purpose": "Game-authored neutral field",
+              "SourceRuleId": "joint:field",
+              "Unit": "relative",
+              "Offset": 1,
+              "Terms": [],
+              "Minimum": null,
+              "Maximum": null
+            }
+          ],
+          "SampledFields": null
+        },
+        "SuitabilityRules": null,
+        "Placement": {
+          "Request": {
+            "Id": "discoveries",
+            "Purpose": "Allocate all actual habitat discoveries",
+            "SourceRuleId": "joint:placement",
+            "Boundary": null,
+            "Demands": [
+              {
+                "Id": "landmarks",
+                "Purpose": "Complete source-sized discoveries",
+                "SourceRuleId": "joint:discovery",
+                "Footprint": null,
+                "Profile": {
+                  "Id": "ground",
+                  "Purpose": "Required game ground",
+                  "SourceRuleId": "joint:ground",
+                  "AllowedKinds": [
+                    "ground"
+                  ],
+                  "Requirements": [],
+                  "Preferences": []
+                },
+                "Reservation": null,
+                "RegionId": "habitat",
+                "AllocationId": null
+              }
+            ],
+            "Anchors": [],
+            "Relations": [],
+            "MinimumSeparation": 0,
+            "MaximumCandidates": 2048,
+            "MaximumSearchStates": 100000,
+            "MaximumWork": 20000000,
+            "AllowBoundaryContact": false,
+            "Growth": null,
+            "Execution": "Prescribed",
+            "Nogoods": null
+          },
+          "Bindings": [
+            {
+              "DemandId": "landmarks",
+              "NodeId": "joint-terrain",
+              "UseCatalogFootprint": true,
+              "RotationDegrees": 0,
+              "PartId": "landmarks",
+              "SiteLayout": null,
+              "Population": {
+                "Purpose": "Represent actual suitable owned habitat",
+                "SourceRuleId": "joint:population",
+                "Path": null,
+                "Boundary": null,
+                "Sockets": null,
+                "Route": null,
+                "Region": {
+                  "RegionId": "habitat",
+                  "Pattern": null,
+                  "AllocationId": null,
+                  "Contour": null,
+                  "Area": {
+                    "DensityFieldId": null,
+                    "AxisRotationDegrees": 0,
+                    "MaximumCells": 4096,
+                    "MaximumDepth": 32,
+                    "Interior": {
+                      "Precision": 0.1,
+                      "MaximumCells": 65536,
+                      "MinimumClearance": 0
+                    },
+                    "PartitionSearch": null
+                  }
+                },
+                "GeneratedBoundary": null,
+                "Facing": null
+              }
+            }
+          ],
+          "NestedStages": null,
+          "MaximumWork": 200000000,
+          "MaximumStageAttempts": 128,
+          "MaximumFeasibilityAttempts": 32,
+          "SourceWorld": null,
+          "ConnectedLayouts": null,
+          "Programs": [
+            {
+              "Id": "markers-landmark",
+              "Purpose": "Expand every actual discovery parent",
+              "SourceRuleId": "joint:markers",
+              "ScopeNodeId": "joint-terrain",
+              "ParentArchetypeId": "landmark",
+              "MinimumParents": 0,
+              "MaximumParents": 128,
+              "Request": {
+                "Id": "markers",
+                "Purpose": "Retain each complete nested marker",
+                "SourceRuleId": "joint:marker",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "marker",
+                    "Purpose": "Complete marker",
+                    "SourceRuleId": "joint:marker",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "ground",
+                      "Purpose": "Required game ground",
+                      "SourceRuleId": "joint:ground",
+                      "AllowedKinds": [
+                        "ground"
+                      ],
+                      "Requirements": [],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [
+                  {
+                    "Id": "marker-origin",
+                    "Position": {
+                      "X": 0,
+                      "Y": 0
+                    }
+                  }
+                ],
+                "Relations": [
+                  {
+                    "Id": "marker-pin",
+                    "FromId": "marker",
+                    "ToId": "marker-origin",
+                    "Purpose": "Source-local discovery center",
+                    "SourceRuleId": "joint:marker",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null,
+                "Execution": "Prescribed",
+                "Nogoods": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "marker",
+                  "PartId": "marker",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "Growth": null
+            },
+            {
+              "Id": "markers-landmark-alt",
+              "Purpose": "Expand every actual discovery parent",
+              "SourceRuleId": "joint:markers",
+              "ScopeNodeId": "joint-terrain",
+              "ParentArchetypeId": "landmark-alt",
+              "MinimumParents": 0,
+              "MaximumParents": 128,
+              "Request": {
+                "Id": "markers",
+                "Purpose": "Retain each complete nested marker",
+                "SourceRuleId": "joint:marker",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "marker",
+                    "Purpose": "Complete marker",
+                    "SourceRuleId": "joint:marker",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "ground",
+                      "Purpose": "Required game ground",
+                      "SourceRuleId": "joint:ground",
+                      "AllowedKinds": [
+                        "ground"
+                      ],
+                      "Requirements": [],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [
+                  {
+                    "Id": "marker-origin",
+                    "Position": {
+                      "X": 0,
+                      "Y": 0
+                    }
+                  }
+                ],
+                "Relations": [
+                  {
+                    "Id": "marker-pin",
+                    "FromId": "marker",
+                    "ToId": "marker-origin",
+                    "Purpose": "Source-local discovery center",
+                    "SourceRuleId": "joint:marker",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null,
+                "Execution": "Prescribed",
+                "Nogoods": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "marker",
+                  "PartId": "marker",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "Growth": null
+            }
+          ],
+          "RegionAnchors": null,
+          "AllocationAnchors": null,
+          "Nogoods": null
+        },
+        "Services": null,
+        "Context": null,
+        "Corridors": null,
+        "Regions": null,
+        "LocalLayouts": null,
+        "LayoutAdaptation": null,
+        "ProgressionRules": null,
+        "PopulationSource": {
+          "Recipe": {
+            "SchemaVersion": 1,
+            "Id": "joint-terrain",
+            "GameProfile": "framework-reference",
+            "CatalogId": "joint-terrain-catalog",
+            "RootArchetypeId": "root",
+            "Scale": "habitat",
+            "Coverage": "PartialScope",
+            "RemainingScopes": [
+              "Complete declared technical terrain/content/journey control; broad professional-world design remains open."
+            ],
+            "Parameters": {},
+            "Space": {
+              "Axes": [
+                "x",
+                "y"
+              ],
+              "Unit": "meters"
+            },
+            "Origin": null,
+            "RequireAllPositions": false,
+            "MaximumNodes": 10000,
+            "MaximumConnections": 50000,
+            "AdditionalConnections": null,
+            "Layers": null,
+            "Surface": null,
+            "RouteRules": null,
+            "NetworkRules": null,
+            "Environment": {
+              "SchemaVersion": 1,
+              "Id": "fields",
+              "Fields": [
+                {
+                  "Id": "constant",
+                  "Purpose": "Game-authored neutral field",
+                  "SourceRuleId": "joint:field",
+                  "Unit": "relative",
+                  "Offset": 1,
+                  "Terms": [],
+                  "Minimum": null,
+                  "Maximum": null
+                }
+              ],
+              "SampledFields": null
+            },
+            "SuitabilityRules": null,
+            "Placement": null,
+            "Services": null,
+            "Context": null,
+            "Corridors": null,
+            "Regions": {
+              "Id": "habitat",
+              "Purpose": "Actual suitable owned habitat",
+              "SourceRuleId": "joint:habitat",
+              "Boundary": null,
+              "Profile": {
+                "Id": "ground",
+                "Purpose": "Required game ground",
+                "SourceRuleId": "joint:ground",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Seeds": [],
+              "MaximumCells": 1024,
+              "MaximumWork": 50000000,
+              "Intents": [
+                {
+                  "Id": "habitat",
+                  "Purpose": "Required owned habitat",
+                  "SourceRuleId": "joint:habitat",
+                  "MinimumArea": 1,
+                  "MinimumClearance": 0,
+                  "Profile": null
+                }
+              ],
+              "AnchorPrecision": 0.1,
+              "MaximumAnchorCells": 65536,
+              "MaximumIntentCandidates": 1024,
+              "MaximumIntentStates": 100000,
+              "ExcludedAssignments": null,
+              "IntentRelations": null
+            },
+            "LocalLayouts": null,
+            "LayoutAdaptation": null,
+            "ProgressionRules": null,
+            "PopulationSource": null,
+            "Chunks": null,
+            "TopologyRules": null,
+            "RouteBudget": null,
+            "Interiors": null,
+            "TerrainDemands": null,
+            "ProgramComposition": null,
+            "Drainage": null,
+            "Water": null,
+            "WindMoisture": null
+          },
+          "Catalog": {
+            "SchemaVersion": 1,
+            "Id": "joint-terrain-catalog",
+            "Archetypes": [
+              {
+                "Id": "root",
+                "Kind": "world",
+                "Purpose": "Whole source habitat",
+                "Properties": {},
+                "Parts": [],
+                "Connections": [],
+                "ChildRequirements": [],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": null,
+                "PhysicalFootprint": null,
+                "Access": null,
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              }
+            ]
+          },
+          "Context": {
+            "PlacementAnchorIds": [],
+            "UsePlacementBoundary": true
+          }
+        },
+        "Chunks": null,
+        "TopologyRules": null,
+        "RouteBudget": null,
+        "Interiors": null,
+        "TerrainDemands": {
+          "Rules": [
+            {
+              "Id": "discoveries",
+              "Purpose": "Actual suitable owned habitat funds every discovery",
+              "SourceRuleId": "joint:count",
+              "ParentNodeId": "joint-terrain",
+              "PartId": "landmarks",
+              "RegionId": "habitat",
+              "AmountPerMember": 300,
+              "DensityFieldId": null,
+              "AllocationId": null,
+              "MaximumCount": 1024,
+              "MaximumCells": 4096
+            }
+          ],
+          "MaximumWork": 5000000
+        },
+        "ProgramComposition": {
+          "Id": "choices",
+          "Purpose": "Complete actual habitat programs",
+          "SourceRuleId": "joint:choices",
+          "MaximumAttempts": 64,
+          "MaximumAlternativesPerMix": 32,
+          "MaximumSelections": 4096,
+          "MaximumMixWork": 20000000,
+          "MaximumCacheBytes": 8388608,
+          "MaximumReceiptBytes": 8388608,
+          "MaximumRegionAlternatives": 32,
+          "MaximumRegionWork": 100000000
+        },
+        "Drainage": null,
+        "Water": null,
+        "WindMoisture": null
+      },
+      "Catalog": {
+        "SchemaVersion": 1,
+        "Id": "joint-terrain-catalog",
+        "Archetypes": [
+          {
+            "Id": "root",
+            "Kind": "world",
+            "Purpose": "Whole source habitat",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "landmarks",
+                "ArchetypeId": "landmark",
+                "Count": 1,
+                "Purpose": "Every terrain-required complete discovery",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null,
+                "ProgramMix": {
+                  "Id": "discovery-parents",
+                  "Purpose": "Complete parent programs for every habitat-driven discovery",
+                  "SourceRuleId": "joint:parents",
+                  "Offers": [
+                    {
+                      "ArchetypeId": "landmark",
+                      "Cost": 1,
+                      "MinimumCount": 0,
+                      "MaximumCount": 32,
+                      "StructureCapacityId": null
+                    },
+                    {
+                      "ArchetypeId": "landmark-alt",
+                      "Cost": 2,
+                      "MinimumCount": 0,
+                      "MaximumCount": 32,
+                      "StructureCapacityId": null
+                    }
+                  ],
+                  "Demands": [
+                    {
+                      "CapacityId": "function",
+                      "Unit": "units",
+                      "Quantity": 1,
+                      "QuantityParameter": null
+                    }
+                  ],
+                  "CostUnit": "parent-budget",
+                  "MaximumCost": 256,
+                  "MaximumCount": 128,
+                  "MaximumSearchStates": 100000,
+                  "MaximumWork": 5000000
+                }
+              }
+            ],
+            "Connections": [
+              {
+                "Id": "chain",
+                "Kind": "walk",
+                "Pattern": "Chain",
+                "FromPart": "landmarks",
+                "ToPart": null,
+                "Bidirectional": true,
+                "Properties": null,
+                "LayerId": null
+              }
+            ],
+            "ChildRequirements": [
+              {
+                "Kind": "discovery",
+                "Minimum": 1,
+                "Maximum": 128
+              }
+            ],
+            "RequireWeaklyConnectedChildren": true,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": null,
+            "Access": null,
+            "Capacities": null,
+            "Services": null,
+            "ProgramInputs": null
+          },
+          {
+            "Id": "landmark",
+            "Kind": "discovery",
+            "Purpose": "Required playable discovery target",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "marker",
+                "ArchetypeId": "marker",
+                "Count": 1,
+                "Purpose": "Every required complete marker",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null,
+                "ProgramMix": {
+                  "Id": "marker-option",
+                  "Purpose": "One full original marker in every discovery",
+                  "SourceRuleId": "joint:marker",
+                  "Offers": [
+                    {
+                      "ArchetypeId": "marker",
+                      "Cost": 1,
+                      "MinimumCount": 0,
+                      "MaximumCount": 1,
+                      "StructureCapacityId": null
+                    }
+                  ],
+                  "Demands": [
+                    {
+                      "CapacityId": "marker",
+                      "Unit": "units",
+                      "Quantity": 1,
+                      "QuantityParameter": null
+                    }
+                  ],
+                  "CostUnit": "marker-budget",
+                  "MaximumCost": 1,
+                  "MaximumCount": 1,
+                  "MaximumSearchStates": 100000,
+                  "MaximumWork": 5000000
+                }
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [
+              {
+                "Kind": "marker",
+                "Minimum": 1,
+                "Maximum": 1
+              }
+            ],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Whole game-authored target",
+              "SourceRuleId": "coupling:body",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -1,
+                    "Y": -1
+                  },
+                  {
+                    "X": 1,
+                    "Y": -1
+                  },
+                  {
+                    "X": 1,
+                    "Y": 1
+                  },
+                  {
+                    "X": -1,
+                    "Y": 1
+                  }
+                ]
+              },
+              "Reservation": {
+                "Vertices": [
+                  {
+                    "X": -1.5,
+                    "Y": -1.5
+                  },
+                  {
+                    "X": 1.5,
+                    "Y": -1.5
+                  },
+                  {
+                    "X": 1.5,
+                    "Y": 1.5
+                  },
+                  {
+                    "X": -1.5,
+                    "Y": 1.5
+                  }
+                ]
+              }
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": [
+              {
+                "Id": "function",
+                "Unit": "units",
+                "Quantity": 1,
+                "Purpose": "One complete discovery program",
+                "SourceRuleId": "joint:discovery"
+              }
+            ],
+            "Services": null,
+            "ProgramInputs": null
+          },
+          {
+            "Id": "landmark-alt",
+            "Kind": "discovery",
+            "Purpose": "Required playable discovery target",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "marker",
+                "ArchetypeId": "marker",
+                "Count": 1,
+                "Purpose": "Every required complete marker",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null,
+                "ProgramMix": {
+                  "Id": "marker-option",
+                  "Purpose": "One full original marker in every discovery",
+                  "SourceRuleId": "joint:marker",
+                  "Offers": [
+                    {
+                      "ArchetypeId": "marker",
+                      "Cost": 1,
+                      "MinimumCount": 0,
+                      "MaximumCount": 1,
+                      "StructureCapacityId": null
+                    }
+                  ],
+                  "Demands": [
+                    {
+                      "CapacityId": "marker",
+                      "Unit": "units",
+                      "Quantity": 1,
+                      "QuantityParameter": null
+                    }
+                  ],
+                  "CostUnit": "marker-budget",
+                  "MaximumCost": 1,
+                  "MaximumCount": 1,
+                  "MaximumSearchStates": 100000,
+                  "MaximumWork": 5000000
+                }
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [
+              {
+                "Kind": "marker",
+                "Minimum": 1,
+                "Maximum": 1
+              }
+            ],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Declared3.2m parent for the same original marker",
+              "SourceRuleId": "joint:larger-parent",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -1.6,
+                    "Y": -1.6
+                  },
+                  {
+                    "X": 1.6,
+                    "Y": -1.6
+                  },
+                  {
+                    "X": 1.6,
+                    "Y": 1.6
+                  },
+                  {
+                    "X": -1.6,
+                    "Y": 1.6
+                  }
+                ]
+              },
+              "Reservation": {
+                "Vertices": [
+                  {
+                    "X": -2.1,
+                    "Y": -2.1
+                  },
+                  {
+                    "X": 2.1,
+                    "Y": -2.1
+                  },
+                  {
+                    "X": 2.1,
+                    "Y": 2.1
+                  },
+                  {
+                    "X": -2.1,
+                    "Y": 2.1
+                  }
+                ]
+              }
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": [
+              {
+                "Id": "function",
+                "Unit": "units",
+                "Quantity": 1,
+                "Purpose": "One complete discovery program",
+                "SourceRuleId": "joint:discovery"
+              }
+            ],
+            "Services": null,
+            "ProgramInputs": null
+          },
+          {
+            "Id": "marker",
+            "Kind": "marker",
+            "Purpose": "Required2.4m nested discovery marker",
+            "Properties": {},
+            "Parts": [],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Original2.4m marker in both parent alternatives",
+              "SourceRuleId": "joint:marker",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -1.2,
+                    "Y": -1.2
+                  },
+                  {
+                    "X": 1.2,
+                    "Y": -1.2
+                  },
+                  {
+                    "X": 1.2,
+                    "Y": 1.2
+                  },
+                  {
+                    "X": -1.2,
+                    "Y": 1.2
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": [
+              {
+                "Id": "marker",
+                "Unit": "units",
+                "Quantity": 1,
+                "Purpose": "Required complete marker",
+                "SourceRuleId": "joint:marker"
+              }
+            ],
+            "Services": null,
+            "ProgramInputs": null
+          }
+        ]
+      },
+      "Capacity": {
+        "Purpose": "Reserve every complete source program",
+        "SourceRuleId": "joint:capacity",
+        "MaximumCoverage": 0.7
+      }
+    },
+    {
+      "Id": "beta",
+      "Purpose": "Complete beta habitat",
+      "SourceRuleId": "joint:beta",
+      "Weight": 1,
+      "MinimumArea": 1,
+      "MinimumClearance": 0,
+      "Profile": {
+        "Id": "ground",
+        "Purpose": "Required game ground",
+        "SourceRuleId": "joint:ground",
+        "AllowedKinds": [
+          "ground"
+        ],
+        "Requirements": [],
+        "Preferences": []
+      },
+      "PlacementAnchorId": "regional-origin",
+      "Recipe": {
+        "SchemaVersion": 1,
+        "Id": "joint-terrain",
+        "GameProfile": "framework-reference",
+        "CatalogId": "joint-terrain-catalog",
+        "RootArchetypeId": "root",
+        "Scale": "habitat",
+        "Coverage": "PartialScope",
+        "RemainingScopes": [
+          "Complete declared technical terrain/content/journey control; broad professional-world design remains open."
+        ],
+        "Parameters": {},
+        "Space": {
+          "Axes": [
+            "x",
+            "y"
+          ],
+          "Unit": "meters"
+        },
+        "Origin": null,
+        "RequireAllPositions": true,
+        "MaximumNodes": 10000,
+        "MaximumConnections": 50000,
+        "AdditionalConnections": null,
+        "Layers": null,
+        "Surface": null,
+        "RouteRules": [
+          {
+            "Id": "walk",
+            "ConnectionKind": "walk",
+            "Profile": {
+              "Id": "walk",
+              "Purpose": "Every required discovery journey and return",
+              "SourceRuleId": "joint:walk",
+              "Radius": 0.2,
+              "MaximumSlope": 0.5,
+              "KindCosts": {
+                "ground": 1
+              },
+              "AscentCost": 1,
+              "DescentCost": 1,
+              "MaximumHeightStep": 1
+            },
+            "Search": {
+              "Clearance": 0.1,
+              "Waypoints": [],
+              "MaximumCandidates": 256,
+              "MaximumEdgeChecks": 32768,
+              "MaximumWork": 20000000,
+              "Objective": "LowestCost"
+            },
+            "FromPortId": null,
+            "ToPortId": null,
+            "Reuse": null,
+            "Interfaces": null,
+            "Alignments": null
+          }
+        ],
+        "NetworkRules": null,
+        "Environment": {
+          "SchemaVersion": 1,
+          "Id": "fields",
+          "Fields": [
+            {
+              "Id": "constant",
+              "Purpose": "Game-authored neutral field",
+              "SourceRuleId": "joint:field",
+              "Unit": "relative",
+              "Offset": 1,
+              "Terms": [],
+              "Minimum": null,
+              "Maximum": null
+            }
+          ],
+          "SampledFields": null
+        },
+        "SuitabilityRules": null,
+        "Placement": {
+          "Request": {
+            "Id": "discoveries",
+            "Purpose": "Allocate all actual habitat discoveries",
+            "SourceRuleId": "joint:placement",
+            "Boundary": null,
+            "Demands": [
+              {
+                "Id": "landmarks",
+                "Purpose": "Complete source-sized discoveries",
+                "SourceRuleId": "joint:discovery",
+                "Footprint": null,
+                "Profile": {
+                  "Id": "ground",
+                  "Purpose": "Required game ground",
+                  "SourceRuleId": "joint:ground",
+                  "AllowedKinds": [
+                    "ground"
+                  ],
+                  "Requirements": [],
+                  "Preferences": []
+                },
+                "Reservation": null,
+                "RegionId": "habitat",
+                "AllocationId": null
+              }
+            ],
+            "Anchors": [],
+            "Relations": [],
+            "MinimumSeparation": 0,
+            "MaximumCandidates": 2048,
+            "MaximumSearchStates": 100000,
+            "MaximumWork": 20000000,
+            "AllowBoundaryContact": false,
+            "Growth": null,
+            "Execution": "Prescribed",
+            "Nogoods": null
+          },
+          "Bindings": [
+            {
+              "DemandId": "landmarks",
+              "NodeId": "joint-terrain",
+              "UseCatalogFootprint": true,
+              "RotationDegrees": 0,
+              "PartId": "landmarks",
+              "SiteLayout": null,
+              "Population": {
+                "Purpose": "Represent actual suitable owned habitat",
+                "SourceRuleId": "joint:population",
+                "Path": null,
+                "Boundary": null,
+                "Sockets": null,
+                "Route": null,
+                "Region": {
+                  "RegionId": "habitat",
+                  "Pattern": null,
+                  "AllocationId": null,
+                  "Contour": null,
+                  "Area": {
+                    "DensityFieldId": null,
+                    "AxisRotationDegrees": 0,
+                    "MaximumCells": 4096,
+                    "MaximumDepth": 32,
+                    "Interior": {
+                      "Precision": 0.1,
+                      "MaximumCells": 65536,
+                      "MinimumClearance": 0
+                    },
+                    "PartitionSearch": null
+                  }
+                },
+                "GeneratedBoundary": null,
+                "Facing": null
+              }
+            }
+          ],
+          "NestedStages": null,
+          "MaximumWork": 200000000,
+          "MaximumStageAttempts": 128,
+          "MaximumFeasibilityAttempts": 32,
+          "SourceWorld": null,
+          "ConnectedLayouts": null,
+          "Programs": [
+            {
+              "Id": "markers-landmark",
+              "Purpose": "Expand every actual discovery parent",
+              "SourceRuleId": "joint:markers",
+              "ScopeNodeId": "joint-terrain",
+              "ParentArchetypeId": "landmark",
+              "MinimumParents": 0,
+              "MaximumParents": 128,
+              "Request": {
+                "Id": "markers",
+                "Purpose": "Retain each complete nested marker",
+                "SourceRuleId": "joint:marker",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "marker",
+                    "Purpose": "Complete marker",
+                    "SourceRuleId": "joint:marker",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "ground",
+                      "Purpose": "Required game ground",
+                      "SourceRuleId": "joint:ground",
+                      "AllowedKinds": [
+                        "ground"
+                      ],
+                      "Requirements": [],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [
+                  {
+                    "Id": "marker-origin",
+                    "Position": {
+                      "X": 0,
+                      "Y": 0
+                    }
+                  }
+                ],
+                "Relations": [
+                  {
+                    "Id": "marker-pin",
+                    "FromId": "marker",
+                    "ToId": "marker-origin",
+                    "Purpose": "Source-local discovery center",
+                    "SourceRuleId": "joint:marker",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null,
+                "Execution": "Prescribed",
+                "Nogoods": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "marker",
+                  "PartId": "marker",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "Growth": null
+            },
+            {
+              "Id": "markers-landmark-alt",
+              "Purpose": "Expand every actual discovery parent",
+              "SourceRuleId": "joint:markers",
+              "ScopeNodeId": "joint-terrain",
+              "ParentArchetypeId": "landmark-alt",
+              "MinimumParents": 0,
+              "MaximumParents": 128,
+              "Request": {
+                "Id": "markers",
+                "Purpose": "Retain each complete nested marker",
+                "SourceRuleId": "joint:marker",
+                "Boundary": null,
+                "Demands": [
+                  {
+                    "Id": "marker",
+                    "Purpose": "Complete marker",
+                    "SourceRuleId": "joint:marker",
+                    "Footprint": null,
+                    "Profile": {
+                      "Id": "ground",
+                      "Purpose": "Required game ground",
+                      "SourceRuleId": "joint:ground",
+                      "AllowedKinds": [
+                        "ground"
+                      ],
+                      "Requirements": [],
+                      "Preferences": []
+                    },
+                    "Reservation": null,
+                    "RegionId": null,
+                    "AllocationId": null
+                  }
+                ],
+                "Anchors": [
+                  {
+                    "Id": "marker-origin",
+                    "Position": {
+                      "X": 0,
+                      "Y": 0
+                    }
+                  }
+                ],
+                "Relations": [
+                  {
+                    "Id": "marker-pin",
+                    "FromId": "marker",
+                    "ToId": "marker-origin",
+                    "Purpose": "Source-local discovery center",
+                    "SourceRuleId": "joint:marker",
+                    "Minimum": 0,
+                    "Maximum": 0,
+                    "Ideal": 0,
+                    "Weight": 1
+                  }
+                ],
+                "MinimumSeparation": 0,
+                "MaximumCandidates": 2048,
+                "MaximumSearchStates": 100000,
+                "MaximumWork": 20000000,
+                "AllowBoundaryContact": false,
+                "Growth": null,
+                "Execution": "Prescribed",
+                "Nogoods": null
+              },
+              "Bindings": [
+                {
+                  "DemandId": "marker",
+                  "PartId": "marker",
+                  "UseCatalogFootprint": true,
+                  "RotationDegrees": 0,
+                  "SiteLayout": null,
+                  "Population": null
+                }
+              ],
+              "Growth": null
+            }
+          ],
+          "RegionAnchors": null,
+          "AllocationAnchors": null,
+          "Nogoods": null
+        },
+        "Services": null,
+        "Context": null,
+        "Corridors": null,
+        "Regions": null,
+        "LocalLayouts": null,
+        "LayoutAdaptation": null,
+        "ProgressionRules": null,
+        "PopulationSource": {
+          "Recipe": {
+            "SchemaVersion": 1,
+            "Id": "joint-terrain",
+            "GameProfile": "framework-reference",
+            "CatalogId": "joint-terrain-catalog",
+            "RootArchetypeId": "root",
+            "Scale": "habitat",
+            "Coverage": "PartialScope",
+            "RemainingScopes": [
+              "Complete declared technical terrain/content/journey control; broad professional-world design remains open."
+            ],
+            "Parameters": {},
+            "Space": {
+              "Axes": [
+                "x",
+                "y"
+              ],
+              "Unit": "meters"
+            },
+            "Origin": null,
+            "RequireAllPositions": false,
+            "MaximumNodes": 10000,
+            "MaximumConnections": 50000,
+            "AdditionalConnections": null,
+            "Layers": null,
+            "Surface": null,
+            "RouteRules": null,
+            "NetworkRules": null,
+            "Environment": {
+              "SchemaVersion": 1,
+              "Id": "fields",
+              "Fields": [
+                {
+                  "Id": "constant",
+                  "Purpose": "Game-authored neutral field",
+                  "SourceRuleId": "joint:field",
+                  "Unit": "relative",
+                  "Offset": 1,
+                  "Terms": [],
+                  "Minimum": null,
+                  "Maximum": null
+                }
+              ],
+              "SampledFields": null
+            },
+            "SuitabilityRules": null,
+            "Placement": null,
+            "Services": null,
+            "Context": null,
+            "Corridors": null,
+            "Regions": {
+              "Id": "habitat",
+              "Purpose": "Actual suitable owned habitat",
+              "SourceRuleId": "joint:habitat",
+              "Boundary": null,
+              "Profile": {
+                "Id": "ground",
+                "Purpose": "Required game ground",
+                "SourceRuleId": "joint:ground",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Seeds": [],
+              "MaximumCells": 1024,
+              "MaximumWork": 50000000,
+              "Intents": [
+                {
+                  "Id": "habitat",
+                  "Purpose": "Required owned habitat",
+                  "SourceRuleId": "joint:habitat",
+                  "MinimumArea": 1,
+                  "MinimumClearance": 0,
+                  "Profile": null
+                }
+              ],
+              "AnchorPrecision": 0.1,
+              "MaximumAnchorCells": 65536,
+              "MaximumIntentCandidates": 1024,
+              "MaximumIntentStates": 100000,
+              "ExcludedAssignments": null,
+              "IntentRelations": null
+            },
+            "LocalLayouts": null,
+            "LayoutAdaptation": null,
+            "ProgressionRules": null,
+            "PopulationSource": null,
+            "Chunks": null,
+            "TopologyRules": null,
+            "RouteBudget": null,
+            "Interiors": null,
+            "TerrainDemands": null,
+            "ProgramComposition": null,
+            "Drainage": null,
+            "Water": null,
+            "WindMoisture": null
+          },
+          "Catalog": {
+            "SchemaVersion": 1,
+            "Id": "joint-terrain-catalog",
+            "Archetypes": [
+              {
+                "Id": "root",
+                "Kind": "world",
+                "Purpose": "Whole source habitat",
+                "Properties": {},
+                "Parts": [],
+                "Connections": [],
+                "ChildRequirements": [],
+                "RequireWeaklyConnectedChildren": false,
+                "Structure": null,
+                "LayerId": null,
+                "PhysicalFootprint": null,
+                "Access": null,
+                "Capacities": null,
+                "Services": null,
+                "ProgramInputs": null
+              }
+            ]
+          },
+          "Context": {
+            "PlacementAnchorIds": [],
+            "UsePlacementBoundary": true
+          }
+        },
+        "Chunks": null,
+        "TopologyRules": null,
+        "RouteBudget": null,
+        "Interiors": null,
+        "TerrainDemands": {
+          "Rules": [
+            {
+              "Id": "discoveries",
+              "Purpose": "Actual suitable owned habitat funds every discovery",
+              "SourceRuleId": "joint:count",
+              "ParentNodeId": "joint-terrain",
+              "PartId": "landmarks",
+              "RegionId": "habitat",
+              "AmountPerMember": 300,
+              "DensityFieldId": null,
+              "AllocationId": null,
+              "MaximumCount": 1024,
+              "MaximumCells": 4096
+            }
+          ],
+          "MaximumWork": 5000000
+        },
+        "ProgramComposition": {
+          "Id": "choices",
+          "Purpose": "Complete actual habitat programs",
+          "SourceRuleId": "joint:choices",
+          "MaximumAttempts": 64,
+          "MaximumAlternativesPerMix": 32,
+          "MaximumSelections": 4096,
+          "MaximumMixWork": 20000000,
+          "MaximumCacheBytes": 8388608,
+          "MaximumReceiptBytes": 8388608,
+          "MaximumRegionAlternatives": 32,
+          "MaximumRegionWork": 100000000
+        },
+        "Drainage": null,
+        "Water": null,
+        "WindMoisture": null
+      },
+      "Catalog": {
+        "SchemaVersion": 1,
+        "Id": "joint-terrain-catalog",
+        "Archetypes": [
+          {
+            "Id": "root",
+            "Kind": "world",
+            "Purpose": "Whole source habitat",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "landmarks",
+                "ArchetypeId": "landmark",
+                "Count": 1,
+                "Purpose": "Every terrain-required complete discovery",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null,
+                "ProgramMix": {
+                  "Id": "discovery-parents",
+                  "Purpose": "Complete parent programs for every habitat-driven discovery",
+                  "SourceRuleId": "joint:parents",
+                  "Offers": [
+                    {
+                      "ArchetypeId": "landmark",
+                      "Cost": 1,
+                      "MinimumCount": 0,
+                      "MaximumCount": 32,
+                      "StructureCapacityId": null
+                    },
+                    {
+                      "ArchetypeId": "landmark-alt",
+                      "Cost": 2,
+                      "MinimumCount": 0,
+                      "MaximumCount": 32,
+                      "StructureCapacityId": null
+                    }
+                  ],
+                  "Demands": [
+                    {
+                      "CapacityId": "function",
+                      "Unit": "units",
+                      "Quantity": 1,
+                      "QuantityParameter": null
+                    }
+                  ],
+                  "CostUnit": "parent-budget",
+                  "MaximumCost": 256,
+                  "MaximumCount": 128,
+                  "MaximumSearchStates": 100000,
+                  "MaximumWork": 5000000
+                }
+              }
+            ],
+            "Connections": [
+              {
+                "Id": "chain",
+                "Kind": "walk",
+                "Pattern": "Chain",
+                "FromPart": "landmarks",
+                "ToPart": null,
+                "Bidirectional": true,
+                "Properties": null,
+                "LayerId": null
+              }
+            ],
+            "ChildRequirements": [
+              {
+                "Kind": "discovery",
+                "Minimum": 1,
+                "Maximum": 128
+              }
+            ],
+            "RequireWeaklyConnectedChildren": true,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": null,
+            "Access": null,
+            "Capacities": null,
+            "Services": null,
+            "ProgramInputs": null
+          },
+          {
+            "Id": "landmark",
+            "Kind": "discovery",
+            "Purpose": "Required playable discovery target",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "marker",
+                "ArchetypeId": "marker",
+                "Count": 1,
+                "Purpose": "Every required complete marker",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null,
+                "ProgramMix": {
+                  "Id": "marker-option",
+                  "Purpose": "One full original marker in every discovery",
+                  "SourceRuleId": "joint:marker",
+                  "Offers": [
+                    {
+                      "ArchetypeId": "marker",
+                      "Cost": 1,
+                      "MinimumCount": 0,
+                      "MaximumCount": 1,
+                      "StructureCapacityId": null
+                    }
+                  ],
+                  "Demands": [
+                    {
+                      "CapacityId": "marker",
+                      "Unit": "units",
+                      "Quantity": 1,
+                      "QuantityParameter": null
+                    }
+                  ],
+                  "CostUnit": "marker-budget",
+                  "MaximumCost": 1,
+                  "MaximumCount": 1,
+                  "MaximumSearchStates": 100000,
+                  "MaximumWork": 5000000
+                }
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [
+              {
+                "Kind": "marker",
+                "Minimum": 1,
+                "Maximum": 1
+              }
+            ],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Whole game-authored target",
+              "SourceRuleId": "coupling:body",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -1,
+                    "Y": -1
+                  },
+                  {
+                    "X": 1,
+                    "Y": -1
+                  },
+                  {
+                    "X": 1,
+                    "Y": 1
+                  },
+                  {
+                    "X": -1,
+                    "Y": 1
+                  }
+                ]
+              },
+              "Reservation": {
+                "Vertices": [
+                  {
+                    "X": -1.5,
+                    "Y": -1.5
+                  },
+                  {
+                    "X": 1.5,
+                    "Y": -1.5
+                  },
+                  {
+                    "X": 1.5,
+                    "Y": 1.5
+                  },
+                  {
+                    "X": -1.5,
+                    "Y": 1.5
+                  }
+                ]
+              }
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": [
+              {
+                "Id": "function",
+                "Unit": "units",
+                "Quantity": 1,
+                "Purpose": "One complete discovery program",
+                "SourceRuleId": "joint:discovery"
+              }
+            ],
+            "Services": null,
+            "ProgramInputs": null
+          },
+          {
+            "Id": "landmark-alt",
+            "Kind": "discovery",
+            "Purpose": "Required playable discovery target",
+            "Properties": {},
+            "Parts": [
+              {
+                "Id": "marker",
+                "ArchetypeId": "marker",
+                "Count": 1,
+                "Purpose": "Every required complete marker",
+                "CountParameter": null,
+                "Layout": null,
+                "Capacity": null,
+                "Variation": null,
+                "ProgramMix": {
+                  "Id": "marker-option",
+                  "Purpose": "One full original marker in every discovery",
+                  "SourceRuleId": "joint:marker",
+                  "Offers": [
+                    {
+                      "ArchetypeId": "marker",
+                      "Cost": 1,
+                      "MinimumCount": 0,
+                      "MaximumCount": 1,
+                      "StructureCapacityId": null
+                    }
+                  ],
+                  "Demands": [
+                    {
+                      "CapacityId": "marker",
+                      "Unit": "units",
+                      "Quantity": 1,
+                      "QuantityParameter": null
+                    }
+                  ],
+                  "CostUnit": "marker-budget",
+                  "MaximumCost": 1,
+                  "MaximumCount": 1,
+                  "MaximumSearchStates": 100000,
+                  "MaximumWork": 5000000
+                }
+              }
+            ],
+            "Connections": [],
+            "ChildRequirements": [
+              {
+                "Kind": "marker",
+                "Minimum": 1,
+                "Maximum": 1
+              }
+            ],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Declared3.2m parent for the same original marker",
+              "SourceRuleId": "joint:larger-parent",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -1.6,
+                    "Y": -1.6
+                  },
+                  {
+                    "X": 1.6,
+                    "Y": -1.6
+                  },
+                  {
+                    "X": 1.6,
+                    "Y": 1.6
+                  },
+                  {
+                    "X": -1.6,
+                    "Y": 1.6
+                  }
+                ]
+              },
+              "Reservation": {
+                "Vertices": [
+                  {
+                    "X": -2.1,
+                    "Y": -2.1
+                  },
+                  {
+                    "X": 2.1,
+                    "Y": -2.1
+                  },
+                  {
+                    "X": 2.1,
+                    "Y": 2.1
+                  },
+                  {
+                    "X": -2.1,
+                    "Y": 2.1
+                  }
+                ]
+              }
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": [
+              {
+                "Id": "function",
+                "Unit": "units",
+                "Quantity": 1,
+                "Purpose": "One complete discovery program",
+                "SourceRuleId": "joint:discovery"
+              }
+            ],
+            "Services": null,
+            "ProgramInputs": null
+          },
+          {
+            "Id": "marker",
+            "Kind": "marker",
+            "Purpose": "Required2.4m nested discovery marker",
+            "Properties": {},
+            "Parts": [],
+            "Connections": [],
+            "ChildRequirements": [],
+            "RequireWeaklyConnectedChildren": false,
+            "Structure": null,
+            "LayerId": null,
+            "PhysicalFootprint": {
+              "Unit": "meters",
+              "Purpose": "Original2.4m marker in both parent alternatives",
+              "SourceRuleId": "joint:marker",
+              "Polygon": {
+                "Vertices": [
+                  {
+                    "X": -1.2,
+                    "Y": -1.2
+                  },
+                  {
+                    "X": 1.2,
+                    "Y": -1.2
+                  },
+                  {
+                    "X": 1.2,
+                    "Y": 1.2
+                  },
+                  {
+                    "X": -1.2,
+                    "Y": 1.2
+                  }
+                ]
+              },
+              "Reservation": null
+            },
+            "Access": {
+              "Occupancy": "Reservation",
+              "Ports": []
+            },
+            "Capacities": [
+              {
+                "Id": "marker",
+                "Unit": "units",
+                "Quantity": 1,
+                "Purpose": "Required complete marker",
+                "SourceRuleId": "joint:marker"
+              }
+            ],
+            "Services": null,
+            "ProgramInputs": null
+          }
+        ]
+      },
+      "Capacity": {
+        "Purpose": "Reserve every complete source program",
+        "SourceRuleId": "joint:capacity",
+        "MaximumCoverage": 0.7
+      }
+    }
+  ],
+  "Connections": [
+    {
+      "Id": "journey",
+      "Kind": "walk",
+      "Purpose": "Join both actual game regions",
+      "SourceRuleId": "joint:journey",
+      "From": {
+        "RegionId": "alpha",
+        "NodeId": "joint-terrain/landmarks-0",
+        "PortId": null
+      },
+      "To": {
+        "RegionId": "beta",
+        "NodeId": "joint-terrain/landmarks-0",
+        "PortId": null
+      },
+      "OwnerRegionId": "alpha",
+      "RoutingDomain": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 80,
+            "Y": 0
+          },
+          {
+            "X": 80,
+            "Y": 40
+          },
+          {
+            "X": 0,
+            "Y": 40
+          }
+        ]
+      },
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Every required discovery journey and return",
+        "SourceRuleId": "joint:walk",
+        "Radius": 0.2,
+        "MaximumSlope": 0.5,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 1,
+        "DescentCost": 1,
+        "MaximumHeightStep": 1
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 20000000,
+        "Objective": "LowestCost"
+      },
+      "Bidirectional": true
+    }
+  ],
+  "Pattern": {
+    "DensityFieldId": null,
+    "AxisRotationDegrees": 0,
+    "MaximumCells": 4096,
+    "MaximumDepth": 32,
+    "Interior": {
+      "Precision": 0.1,
+      "MaximumCells": 65536,
+      "MinimumClearance": 0
+    },
+    "PartitionSearch": null
+  },
+  "AnchorPrecision": 0.1,
+  "MaximumAnchorCells": 65536,
+  "MaximumTotalNodes": 50000,
+  "MaximumTotalConnections": 100000,
+  "MaximumReferences": 200000,
+  "MaximumWork": 20000000,
+  "Coupling": {
+    "Purpose": "Converge actual habitat counts and source space",
+    "SourceRuleId": "joint:coupling",
+    "MaximumIterations": 16
+  },
+  "ProgramComposition": {
+    "Purpose": "Select complete source programs",
+    "SourceRuleId": "joint:choices",
+    "MaximumAttempts": 16
+  }
+}

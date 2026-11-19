@@ -1,0 +1,197 @@
+{
+  "SchemaVersion": 1,
+  "Id": "catalog-ground-city",
+  "Structures": [
+    {
+      "Id": "house",
+      "Kind": "house",
+      "Purpose": "Residential home",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 14,
+        "Height": 12
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2,
+      "FacilityReference": null,
+      "BoundaryRule": null
+    },
+    {
+      "Id": "shop",
+      "Kind": "shop",
+      "Purpose": "Neighborhood trade",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 18,
+        "Height": 14
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2,
+      "FacilityReference": null,
+      "BoundaryRule": null
+    },
+    {
+      "Id": "civic",
+      "Kind": "civic-building",
+      "Purpose": "Public services",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 24,
+        "Height": 18
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2,
+      "FacilityReference": null,
+      "BoundaryRule": null
+    },
+    {
+      "Id": "workshop",
+      "Kind": "workshop",
+      "Purpose": "Production building",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 20,
+        "Height": 18
+      },
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2,
+      "FacilityReference": null,
+      "BoundaryRule": null
+    },
+    {
+      "Id": "compound",
+      "Kind": "facility",
+      "Purpose": "Reusable compound site",
+      "Footprint": {
+        "X": 0,
+        "Y": 0,
+        "Width": 52,
+        "Height": 36
+      },
+      "Parts": [
+        {
+          "Id": "workspaces",
+          "StructureId": "workshop",
+          "Count": 2,
+          "Purpose": "Separate production structures"
+        }
+      ],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2,
+      "FacilityReference": null,
+      "BoundaryRule": null
+    },
+    {
+      "Id": "production-campus",
+      "Kind": "production-campus",
+      "Purpose": "Registered production program",
+      "Footprint": null,
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2,
+      "FacilityReference": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "modern.factory-campus"
+      },
+      "BoundaryRule": null
+    },
+    {
+      "Id": "care-campus",
+      "Kind": "care-campus",
+      "Purpose": "Registered learning and care program",
+      "Footprint": null,
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2,
+      "FacilityReference": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "user.learning-and-care"
+      },
+      "BoundaryRule": null
+    },
+    {
+      "Id": "mixed-campus",
+      "Kind": "mixed-campus",
+      "Purpose": "Buildings, objects and standalone grounds",
+      "Footprint": null,
+      "Parts": [],
+      "IsOpenSpace": false,
+      "CatalogReference": null,
+      "SiteRules": null,
+      "IncludeCatalogSurroundings": false,
+      "MemberMarginMeters": 4,
+      "AccessWidthMeters": 2,
+      "FacilityReference": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "user.production-program"
+      },
+      "BoundaryRule": null
+    }
+  ]
+}

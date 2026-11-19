@@ -1,0 +1,27 @@
+measurement,value,unit,note
+batches in flight,2000,count,
+lines with a batch in flight,1500,count,
+save size,4477,KB,whole save
+  batches grouped (format 4),85658,bytes,
+  batches one to an entry (format 3),102228,bytes,the same batches written the old way
+  pairs as arrays (format 4),649752,bytes,
+  pairs as objects (format 3),2609750,bytes,the same pairs written the old way
+  price history,1928398,bytes,
+  lines,61738,bytes,
+batches share of the save grouped,1.87,percent,
+batches share of the save one to an entry,2.22,percent,
+digest text of the batches grouped,33157,bytes,
+digest text of the batches one to an entry,36227,bytes,
+serialize the batches grouped,0.68,ms,median of 7
+serialize the batches one to an entry,0.47,ms,median of 7
+build the image and digest,71.04,ms,median of 7
+  canonical text alone,40.61,ms,median of 7
+  serialize the whole image alone,34.25,ms,median of 7
+open: deserialize alone,90.36,ms,median of 7
+open: ranges alone,7.63,ms,median of 7
+open: canonical text and digest alone,54.62,ms,median of 7
+open: restore and check against the document alone,15.43,ms,median of 7
+save write,229.11,ms,median of 7
+save write worst,254.97,ms,max of 7
+save open,206.50,ms,median of 7
+save open worst,436.75,ms,max of 7

@@ -10,7 +10,7 @@ public sealed record PedestrianCrossingSpan(string CrossingId, WorldPoint FirstC
 public sealed class PedestrianCrossingSpanValidator
 {
     private const double Tolerance = 1e-5;
-    public IReadOnlyList<string> Validate(DummyVillageWorldDocument world,
+    public IReadOnlyList<string> Validate(WorldSceneDocument world,
         IReadOnlyList<PedestrianCrossingSpan> spans)
     {
         ArgumentNullException.ThrowIfNull(world);

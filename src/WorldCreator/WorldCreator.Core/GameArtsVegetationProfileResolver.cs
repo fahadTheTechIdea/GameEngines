@@ -48,7 +48,7 @@ public sealed class GameArtsVegetationProfileResolver(IApprovedArtRegistry regis
                 continue;
             }
             var manifest = await registry.ResolveAsync(assetId, cancellationToken);
-            if (manifest is null || manifest.SchemaVersion != 1 ||
+            if (manifest is null || manifest.SchemaVersion != 2 ||
                 manifest.AssetId != assetId ||
                 manifest.ApprovalState != ArtApprovalState.Approved ||
                 string.IsNullOrWhiteSpace(manifest.GameArtsRevision))

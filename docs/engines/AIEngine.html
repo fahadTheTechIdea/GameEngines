@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="AIEngine.html" aria-current="page">AIEngine</a>
+      <a href="../AI_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>AIEngine</h1>
+  <p class="lede">Deterministic decision-making for non-player agents: a JSON document of keys, percepts, intents and behaviours, a runtime that thinks the agents that are due inside a work budget, and intents the game executes.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">pure core</span>
+    <span class="tag">GameRuntime component</span>
+    <span class="tag ok">save / restore</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#boundary">Layer boundary</a></li>
+    <li><a href="#document">Document format 1</a></li>
+    <li><a href="#nodes">Node kinds</a></li>
+    <li><a href="#cost">Work accounting and budget</a></li>
+    <li><a href="#api">Runtime API</a></li>
+    <li><a href="#determinism">Determinism, save and restore</a></li>
+    <li><a href="#trace">Explaining a decision</a></li>
+    <li><a href="#cli">Command line</a></li>
+    <li><a href="#runtime">GameRuntime integration</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>AIEngine decides <em>what an agent wants to do next</em> and says so as a named <strong>intent</strong> with typed arguments. It never moves a unit, spends money, deals damage or reads a clock. The host tells the agent what it may know, calls <code>Step(tick, budget)</code>, and receives intents. The component that owns the concern — economy, combat, simulation commands — decides what an intent means.</p>
+<p>Three properties are deliberate:</p>
+<ul>
+  <li><strong>Deterministic</strong> — a step is a pure function of the document, the runtime state, the tick and the budget. Random choices use a seeded, stateless roll keyed by string, so replay and save/restore reproduce decisions exactly.</li>
+  <li><strong>Bounded</strong> — every behaviour has a static work-unit bound computed at load; a step never spends more than its budget, and an agent that does not fit waits and goes first next step.</li>
+  <li><strong>Explainable</strong> — tracing one agent records each node it ran and why, without changing the decision, the document digest or a save.</li>
+</ul>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/AIEngine/AIEngine.Core</code></td><td>Document reader and validator, cost bound, agent runtime, scheduler, knowledge store, save image, trace recorder. No I/O, no clock.</td><td>net8.0</td></tr>
+    <tr><td><code>src/AIEngine/AIEngine.Cli</code></td><td><code>check</code>, <code>explain</code> and offline <code>import-tree</code> authoring tool.</td><td>net8.0</td></tr>
+    <tr><td><code>src/AIEngine/AIEngine.Tests</code></td><td>Format, node, scheduler, perception, save, trace and tree-import tests.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.AI</code></td><td><code>AiComponent</code> + event catalog + checkpoint bridge. Requests queue, then apply in <code>Update</code> in arrival order.</td><td>net10.0</td></tr>
+  </tbody>
+</table>
+<p>Samples live in <code>src/AIEngine/samples</code>: <code>guard.ai.json</code>, <code>guard.tree.json</code>, <code>guard.draft.tree.json</code>, <code>guard.trace.json</code>.</p>
+
+<h2 id="boundary" class="anchor">Layer boundary</h2>
+<div class="grid">
+  <div class="card">
+    <h3>AIEngine owns</h3>
+    <p>The document schema, validation and refusals, the static cost bound, the agent runtime and its scheduler, percept memory and expiry, keys, intents, save images and decision traces.</p>
+  </div>
+  <div class="card">
+    <h3>The game owns</h3>
+    <p>What an intent means, which agent exists, what it perceives, host-key values, and every effect. Adapters hold no thresholds and no target rule.</p>
+  </div>
+  <div class="card">
+    <h3>GameRuntime owns</h3>
+    <p>Tick order, event delivery and session checkpoints. <code>AiComponent</code> translates request events into runtime calls and intents into events.</p>
+  </div>
+</div>
+
+<h2 id="document" class="anchor">Document format 1</h2>
+<p>A document is strict JSON. Unknown fields are refused (<code>AI_UNKNOWN_FIELD</code>) rather than ignored, so a typo cannot silently change behaviour. The reader records the digest of the exact accepted text; saves are checked against it.</p>
+
+<pre><code>{ "format": 1, "id": "guard.ai",
+  "keys": [
+    { "id": "distance", "type": "int", "initial": 500, "min": 0, "max": 500, "source": "host" } ],
+  "percepts": [
+    { "id": "enemy", "memory": 40, "capacity": 8, "owned": true,
+      "attrs": [ { "id": "range", "type": "int", "min": 0, "max": 500 } ] } ],
+  "intents": [
+    { "id": "attack", "args": [ { "id": "weight", "type": "int", "min": 0, "max": 100 } ] } ],
+  "behaviors": [
+    { "id": "guard", "every": 5, "root":
+      { "id": "n0", "kind": "selector", "resume": false, "children": [
+        { "id": "n1", "kind": "condition", "when": { "fact": "key.threat", "op": "lte", "value": 20 } },
+        { "id": "n2", "kind": "act", "intent": "hold", "args": { "weight": 40 } } ] } } ] }</code></pre>
+
+<table>
+  <thead><tr><th>Section</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>keys</code></td><td>Typed values with an initial value and a range. <code>source</code> is <code>host</code> (only the host writes) or <code>agent</code> (a <code>let</code> node writes). A key's index is its position in id order.</td></tr>
+    <tr><td><code>percepts</code></td><td>Kinds of thing an agent can be told about, each with typed attributes, an unknown/default value per attribute, memory in ticks, and optional per-owner capacity. <code>owned</code> percepts are keyed by kind, owner and id.</td></tr>
+    <tr><td><code>intents</code></td><td>Names with typed arguments. An <code>act</code> node emits one; nothing else may invent an intent name.</td></tr>
+    <tr><td><code>behaviors</code></td><td>An id, a think interval (<code>every</code> ticks), and a root node. The loader computes the behaviour's maximum work cost and the persistent slot set.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="nodes" class="anchor">Node kinds</h2>
+<table>
+  <thead><tr><th>Kind</th><th>Behaviour</th></tr></thead>
+  <tbody>
+    <tr><td><code>sequence</code></td><td>Runs children in order; fails on the first failure; can resume a running child across thinks.</td></tr>
+    <tr><td><code>selector</code></td><td>Runs children until one succeeds; fails when all fail; can resume.</td></tr>
+    <tr><td><code>condition</code></td><td>Tests the shared condition grammar over <code>key.*</code>, <code>item.*</code> and <code>tick</code>.</td></tr>
+    <tr><td><code>let</code></td><td>Writes an agent-owned key (an expression evaluated to the key's range).</td></tr>
+    <tr><td><code>act</code></td><td>Emits an intent with literal or computed arguments.</td></tr>
+    <tr><td><code>invert</code> / <code>succeed</code></td><td>Flip a child's status / report success after running a child.</td></tr>
+    <tr><td><code>cooldown</code></td><td>Blocks re-entry for a number of ticks per agent slot.</td></tr>
+    <tr><td><code>utility</code></td><td>Weighs options by considerations and momentum, then runs the highest scoring.</td></tr>
+    <tr><td><code>random</code></td><td>Seeded weighted choice among child nodes.</td></tr>
+    <tr><td><code>forEach</code> / <code>count</code> / <code>select</code></td><td>Query percepts: run a child per match, count matches, or pick min / max / nth by an attribute or fact expression.</td></tr>
+    <tr><td><code>adjust</code></td><td>Changes a percept attribute by an expression (bounded by the attribute range).</td></tr>
+  </tbody>
+</table>
+
+<h2 id="cost" class="anchor">Work accounting and budget</h2>
+<p>One work unit is charged for each node run and for each percept a query looks at. The loader computes a static upper bound for every behaviour, and <code>AiSet.MaxCost</code> is the largest of them.</p>
+<ul>
+  <li><code>Step(tick, budget)</code> refuses a budget below <code>MaxCost</code> (<code>AI_BUDGET_TOO_SMALL</code>), because otherwise some agent could never be thought.</li>
+  <li>Due agents are served oldest-due first. A think only starts when the remaining budget covers that agent's whole behaviour bound, so a step never overspends.</li>
+  <li>An agent that was due but did not fit stays due; the next step serves it first and reports it in <code>Deferred</code> with the longest wait.</li>
+  <li>Agents added on the same tick get a seeded offset below <code>every</code>, so they do not all think on one tick.</li>
+</ul>
+
+<h2 id="api" class="anchor">Runtime API</h2>
+<table>
+  <thead><tr><th>Member</th><th>Contract</th></tr></thead>
+  <tbody>
+    <tr><td><code>new AiRuntime(AiSet set, ulong seed)</code></td><td>Bind a loaded document to a deterministic seed.</td></tr>
+    <tr><td><code>Add(id, behavior, tick)</code> / <code>Remove(id)</code></td><td>Agent ids are 1–128 chars of <code>a-z 0-9 - . _</code>; duplicates and unknown behaviours are refused.</td></tr>
+    <tr><td><code>Perceive(agent, kind, id, owner, attrs, tick)</code></td><td>Tell an agent about a percept. Every declared attribute is required exactly; owned kinds need an owner; capacity overflow is refused (<code>AI_PERCEPT_CAPACITY</code>).</td></tr>
+    <tr><td><code>Lose(agent, kind, id)</code></td><td>Tell an agent a thing is gone; not knowing it already is not an error.</td></tr>
+    <tr><td><code>SetKey(agent, key, value)</code> / <code>Key(agent, key)</code></td><td>Write or read a host-owned key; writing an agent-owned key is refused (<code>AI_KEY_WRITE</code>).</td></tr>
+    <tr><td><code>Known(agent, kind)</code></td><td>What the agent knows of one kind, in id order, as <code>PerceptInfo</code>.</td></tr>
+    <tr><td><code>Step(tick, budget)</code></td><td>Think due agents, oldest first, and return a <code>StepReport</code>: intents, thought count, spent units, deferred count, longest wait.</td></tr>
+    <tr><td><code>Due(agent)</code>, <code>BehaviorOf(agent)</code>, <code>Agents</code>, <code>LastTick</code></td><td>Read-only inspection. Ticks may not go backwards (<code>AI_TICK_ORDER</code>).</td></tr>
+    <tr><td><code>Trace(agent, on)</code> / <code>Explain(agent)</code></td><td>Record and read the last decision trace of one agent.</td></tr>
+  </tbody>
+</table>
+
+<pre><code>var set = AiLoader.Load(File.ReadAllText("guard.ai.json"));
+var ai  = new AiRuntime(set, seed: 1234);
+ai.Add("guard-1", "guard", tick: 0);
+ai.SetKey("guard-1", "threat", FactValue.From(15));
+ai.Perceive("guard-1", "enemy", "e1", owner: "site",
+            attrs: new Dictionary&lt;string, FactValue&gt; { ["range"] = FactValue.From(90) }, tick: 0);
+
+var report = ai.Step(tick: 10, budget: set.MaxCost);
+foreach (var intent in report.Intents)
+    Console.WriteLine($"{intent.Agent} -> {intent.Name}");</code></pre>
+
+<h2 id="determinism" class="anchor">Determinism, save and restore</h2>
+<p>Randomness is a <em>stateless seeded roll</em>: the seed and a caller-supplied string label determine the value, and a per-agent roll counter advances the label. No global random state exists, so order of unrelated agents cannot change a result.</p>
+<pre><code>var image = AiSave.Capture(ai);            // canonical agent rows + knowledge
+var bytes = AiSave.Write(image);          // format, document digest, state digest
+var same  = AiSave.Restore(set, bytes, out var restored); // verifies both digests</code></pre>
+<ul>
+  <li><code>AI_SAVE_DOCUMENT</code> — the save was made against a different document digest.</li>
+  <li><code>AI_SAVE_STATE</code> — the state digest does not match; the image was edited or corrupted.</li>
+  <li>A checkpoint is only consistent when the runtime has no pending request waiting to be applied.</li>
+</ul>
+
+<h2 id="trace" class="anchor">Explaining a decision</h2>
+<p><code>Trace(agent, true)</code> records every node run, its depth, kind, status and detail for that agent's next think; <code>Explain</code> returns a <code>ThinkTrace</code> with the tick, units spent and whether recording was truncated. Recording is observation only: it does not change a choice, the set digest or a save. The CLI prints the same information from a scenario.</p>
+
+<h2 id="cli" class="anchor">Command line</h2>
+<pre><code>AIEngine.Cli check &lt;document.json&gt;
+AIEngine.Cli explain &lt;document.json&gt; &lt;scenario.json&gt;
+AIEngine.Cli import-tree &lt;tree.json&gt; --id &lt;document-id&gt; --out &lt;ai-document.json&gt; [--trace &lt;map.json&gt;]</code></pre>
+<p><code>check</code> prints the accepted document's counts, each behaviour's interval, node count, memory slots and max cost, plus the minimum step budget. <code>explain</code> runs one think on a scenario and prints the decision path. <code>import-tree</code> converts an offline integer decision tree into a format-1 document; trees are compiled offline and never at run time.</p>
+<p>Exit codes: <code>0</code> done, <code>1</code> refused (the refusal code is printed, e.g. <code>AI_FORMAT</code>), <code>2</code> usage or file problem.</p>
+
+<h2 id="runtime" class="anchor">GameRuntime integration</h2>
+<p><code>AiComponent</code> is the only thing that changes the runtime during a session. Its event catalog is declared once, before <code>Init</code>:</p>
+<table>
+  <thead><tr><th>Event</th><th>Direction</th></tr></thead>
+  <tbody>
+    <tr><td><code>ai.agent-add-requested</code>, <code>ai.agent-remove-requested</code></td><td>Request in</td></tr>
+    <tr><td><code>ai.percept-posted</code>, <code>ai.percept-lost</code>, <code>ai.key-posted</code></td><td>Request in</td></tr>
+    <tr><td><code>ai.intent-raised</code></td><td>Result out — the owning component translates it</td></tr>
+    <tr><td><code>ai.step-done</code>, <code>ai.refused</code></td><td>Diagnostics out</td></tr>
+  </tbody>
+</table>
+<p>Requests only queue; <code>Update</code> applies them in arrival order, then steps the runtime with the session tick and the configured budget. <code>IsQuiet</code> is true when no request waits, which is when a checkpoint is consistent. <code>Fingerprint()</code> reports tick, state digest prefix, step count and pending count. The component refuses a budget below <code>MaxCost</code> at construction (<code>AI_NOT_QUIET</code> is the checkpoint-refusal code).</p>
+
+<h2 id="testing" class="anchor">Testing</h2>
+<pre><code>dotnet run --project src/AIEngine/AIEngine.Tests -c Release</code></pre>
+<p>Coverage groups: format and refusals (<code>FormatTests</code>), node semantics (<code>NodeTests</code>), cost bounds (<code>CostTests</code>, <code>NodeCostTests</code>), scheduler accounting (<code>SchedulerTests</code>), perception and memory (<code>PerceptionTests</code>, <code>PerceptStoreTests</code>), save round-trip and tamper (<code>SaveTests</code>), trace (<code>TraceTests</code>), and the offline tree pipeline (<code>TreeImportTests</code>, <code>TreeExactnessTests</code>, <code>TreeCliTests</code>).</p>
+
+<h2 id="source" class="anchor">Source map</h2>
+<dl class="kv">
+  <dt>Reader</dt><dd><code>AIEngine.Core/AiReader.cs</code>, <code>AiReader.Nodes.cs</code>, <code>AiReader.Conditions.cs</code>, <code>AiReader.Exprs.cs</code></dd>
+  <dt>Model</dt><dd><code>AiSet.cs</code>, <code>Node.cs</code>, <code>BehaviorDef.cs</code>, <code>PerceptKindDef.cs</code>, <code>IntentDef.cs</code>, <code>ValueDef.cs</code></dd>
+  <dt>Runtime</dt><dd><code>AiRuntime.cs</code>, <code>AiRuntime.Knowledge.cs</code>, <code>ThinkContext.cs</code>, <code>AgentState.cs</code></dd>
+  <dt>Save</dt><dd><code>AiSave.cs</code>, <code>AiImage.cs</code></dd>
+  <dt>Trace</dt><dd><code>TraceRecorder.cs</code>, <code>ThinkTrace.cs</code>, <code>TraceText.cs</code></dd>
+  <dt>Refusals</dt><dd><code>AiCodes.cs</code></dd>
+  <dt>Tree import</dt><dd><code>AIEngine.Cli/TreeReader.cs</code>, <code>TreeImport*.cs</code>, <code>TreeOps.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Generated from the engine source in <code>src/AIEngine</code> (revision read on 2026-11-06). The design record and research notes are in <a href="../AI_ENGINE.md">docs/AI_ENGINE.md</a>. Sibling runtime component: <a href="../ENGINE_GRAPH.md">docs/ENGINE_GRAPH.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

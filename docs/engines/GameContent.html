@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GameContent — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="GameContent.html" aria-current="page">GameContent</a>
+      <a href="../RESOURCE_RECIPE_CATALOG.md">Catalog record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>GameContent</h1>
+  <p class="lede">One validated catalog of resources, recipes, stations, skills, eras, items, formations and stats, shipped as versioned packs with dependencies and locale tables — then converted into EconomyEngine, AlchemyEngine, SimEngine and CombatEngine inputs.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">pack format 1</span>
+    <span class="tag">validated whole</span>
+    <span class="tag">converters</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#packs">Packs and manifests</a></li>
+    <li><a href="#resources">Resources</a></li>
+    <li><a href="#recipes">Recipes</a></li>
+    <li><a href="#validation">Validation</a></li>
+    <li><a href="#library">Library rules</a></li>
+    <li><a href="#converters">Converters and adapters</a></li>
+    <li><a href="#generator">Pack generator and scaffold</a></li>
+    <li><a href="#api">Loading and lookup</a></li>
+    <li><a href="#cli">Command line</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>GameContent is the game's data layer: what things exist, what they are made of, what they cost, what station and skill they need and which era they belong to. It is authored once as packs and consumed by several engines through converters, so an item's numbers are not typed twice and cannot disagree.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Pack manifest and documents, resource and recipe schemas, units and stats, semantic validation, cross-pack library rules, locale tables, conversion reports.</p></div>
+  <div class="card"><h3>It does not own</h3><p>Runtime market prices (EconomyEngine), crafting attempts (AlchemyEngine), production scheduling (SimEngine), or combat resolution (CombatEngine).</p></div>
+  <div class="card"><h3>Nothing is repaired</h3><p>Every finding is collected in a <code>CatalogReport</code> with a code and location. A pack is accepted whole or refused whole.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th></tr></thead>
+  <tbody>
+    <tr><td><code>GameContent.Catalog</code></td><td>Manifest and document schemas, loader, validator, writer, units, stats, formats, library duplicate rules.</td></tr>
+    <tr><td><code>GameContent.Catalog.Economy</code></td><td><code>CatalogToEconomy.Convert(set, options)</code> → goods and recipes JSON + names.</td></tr>
+    <tr><td><code>GameContent.Catalog.Alchemy</code></td><td><code>CatalogToAlchemy.Convert(set)</code> → <code>AlchemyContent</code> and a conversion report.</td></tr>
+    <tr><td><code>GameContent.Catalog.Sim</code></td><td><code>CatalogToSim.Convert(set, ownership)</code> → SimEngine module, content, vehicles and quality.</td></tr>
+    <tr><td><code>GameContent.Catalog.Combat</code></td><td><code>CatalogCombat.Weapon/Ammo/Group</code> — build combat values from catalog items.</td></tr>
+    <tr><td><code>GameContent.Catalog.Characters</code></td><td><code>CatalogCharacters.Document</code> — character templates from a formation.</td></tr>
+    <tr><td><code>GameContent.Cli</code></td><td><code>list</code>, <code>validate</code>, <code>validate-all</code>, <code>stats</code>, <code>alchemy</code>, <code>sim</code>, <code>economy</code>, <code>new-pack</code>.</td></tr>
+    <tr><td><code>GameContent.Generator</code></td><td>Generates the shipped genre packs from data tables.</td></tr>
+  </tbody>
+</table>
+<p>Shipped packs: <code>src/GameContent/Packs/*</code> — <code>core</code>, <code>ages</code>, <code>arms-*</code>, <code>alchemy</code>, <code>city</code>, <code>colony</code>, <code>farming</code>, <code>kitchen</code>, <code>trading</code>, <code>rpg</code>, <code>space</code>, <code>war</code> and more.</p>
+
+<h2 id="packs" class="anchor">Packs and manifests</h2>
+<pre><code>{ "format": 1,
+  "id": "core", "version": "1.0.0",
+  "title": "Core materials, energy, money and labor",
+  "language": "en", "world": "timeless",
+  "genres": ["common"],
+  "dependencies": [],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"] }</code></pre>
+<ul>
+  <li>Pack ids follow a namespace: every id inside a pack starts with <code>&lt;pack&gt;.</code> (<code>CATALOG_ID_NAMESPACE</code>).</li>
+  <li>Dependencies are loaded first and version-checked; cycles are refused (<code>CATALOG_DEPENDENCY_CYCLE</code>).</li>
+  <li>Every document names its pack and format; a document in the wrong folder is refused (<code>CATALOG_DOCUMENT_PACK</code>).</li>
+  <li>Locale documents are declared in <code>locales</code>; their language and ids are checked.</li>
+</ul>
+
+<h2 id="resources" class="anchor">Resources</h2>
+<pre><code>{ "id": "core.iron-ingot", "name": "Iron ingot", "class": "intermediate",
+  "unit": "kg", "origin": "crafted",
+  "stack": { "max": 100 },
+  "grade": null, "perishable": null, "durability": null, "currency": null,
+  "cpc": "4", "tags": ["metal"],
+  "properties": { "base-price": 4 } }</code></pre>
+<table>
+  <thead><tr><th>Field</th><th>Rule</th></tr></thead>
+  <tbody>
+    <tr><td><code>class</code></td><td><code>raw</code>, <code>intermediate</code>, <code>product</code>, <code>consumable</code>, <code>currency</code>, <code>energy</code>, <code>fluid</code>, <code>gas</code>, <code>information</code>, <code>labor</code>, <code>population</code>, <code>tool</code>, <code>equipment</code>, <code>unique</code>.</td></tr>
+    <tr><td><code>unit</code></td><td>A UCUM code from <code>CatalogUnits</code>; must match the class (discrete/continuous rules).</td></tr>
+    <tr><td><code>stack</code>, <code>durability</code>, <code>perishable</code>, <code>grade</code></td><td>Capacity, uses and time limits; grade schemes are quality or rarity, compared only within a scheme.</td></tr>
+    <tr><td><code>currency</code></td><td>ISO-4217 or fictional code; only currency-class resources have one.</td></tr>
+    <tr><td><code>cpc</code></td><td>Crafting-progress class (a small integer as text) used to reason about tiers.</td></tr>
+    <tr><td><code>properties</code></td><td>String, number or boolean; typed by <code>CatalogSchemas</code>, so a misspelt property is refused.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="recipes" class="anchor">Recipes</h2>
+<pre><code>{ "id": "core.smelt-iron", "name": "Smelt iron", "kind": "smelt",
+  "inputs":     [ { "resource": "core.iron-ore", "amount": 2 }, { "resource": "core.coal", "amount": 0.5 } ],
+  "catalysts":  [], "tools": [],
+  "outputs":    [ { "resource": "core.iron-ingot", "amount": 1 } ],
+  "byproducts": [], "drops": [],
+  "station": { "id": "core.furnace", "level": 1 },
+  "skill": null, "environment": [],
+  "duration": { "value": 20, "unit": "s" },
+  "quality": null, "reverse": null }</code></pre>
+<ul>
+  <li><code>kind</code>: the closed vocabulary <code>extract</code>, <code>harvest</code>, <code>grow</code>, <code>transform</code>, <code>smelt</code>, <code>refine</code>, <code>craft</code>, <code>assemble</code>, <code>disassemble</code>, <code>cook</code>, <code>brew</code>, <code>combine</code>, <code>upgrade</code>, <code>repair</code>, <code>construct</code>, <code>research</code>, <code>trade</code>, <code>upkeep</code>, <code>consume</code>, <code>decay</code>, <code>loot</code>. Generative kinds may bring a resource into the world without consuming it.</li>
+  <li><code>tools</code> are tools with uses; a resource cannot be both a tool and an input (<code>CATALOG_TOOL_CONFLICT</code>).</li>
+  <li><code>drops</code> are chance outputs with an exact fraction; <code>reverse</code> names the disassembly recipe and must be reciprocal.</li>
+  <li><code>quality</code> = <code>inheritInput</code> or <code>skill</code>; <code>environment</code> tags must be declared by the pack.</li>
+</ul>
+
+<h2 id="validation" class="anchor">Validation</h2>
+<p>The loader validates in order: schema, model, then semantic rules. Findings are <code>CatalogDiagnostic(Code, Message, Location, Severity)</code>; warnings are listed but do not refuse.</p>
+<table>
+  <thead><tr><th>Group</th><th>Examples</th></tr></thead>
+  <tbody>
+    <tr><td>Identity and references</td><td>Duplicates, namespace, unknown refs, visibility across pack dependencies, duplicate ingredients.</td></tr>
+    <tr><td>Units and values</td><td>Unknown or mismatched units, stack/durability/perishable limits, bad prices, currency rules.</td></tr>
+    <tr><td>Recipes</td><td>No inputs/outputs, bad chance, station/skill level, reverse reciprocity, quality mode, tool conflicts.</td></tr>
+    <tr><td>Graph and economy</td><td>Unreachable resources, cycles without a source, non-conserved mass, income-only loops.</td></tr>
+    <tr><td>Eras and formations</td><td>Era spans overlap, tier order, formation equipment exists and is usable, training levels.</td></tr>
+    <tr><td>Balance</td><td>Implausible prices or durations against tier and inputs (warnings).</td></tr>
+  </tbody>
+</table>
+<p>Codes are in <code>CatalogCodes</code> (<code>CATALOG_*</code>); <code>CatalogRefusedException</code> carries the report.</p>
+
+<h2 id="library">Library rules</h2>
+<p>A pack is validated with its dependencies, so it cannot see a sibling genre pack. <code>CatalogLibrary.CheckDuplicates(sets)</code> compares roots: a resource, station or skill with the same display name or the same slug in two different packs is a duplicate (<code>CATALOG_DUPLICATE_NAME</code>, <code>CATALOG_DUPLICATE_SLUG</code>). The shared thing belongs in a pack both depend on — usually <code>core</code>.</p>
+
+<h2 id="converters">Converters and adapters</h2>
+<table>
+  <thead><tr><th>Target</th><th>Entry point</th><th>What it produces</th></tr></thead>
+  <tbody>
+    <tr><td>EconomyEngine</td><td><code>CatalogToEconomy.Convert(set, options)</code></td><td>Goods and recipes JSON, names and a conversion report. Options set milli-per-price-unit, seconds per period, tuning, locked recipes and recipe ownership.</td></tr>
+    <tr><td>AlchemyEngine</td><td><code>CatalogToAlchemy.Convert(set)</code></td><td><code>AlchemyContent</code>, element/recipe counts and a report listing every reduction.</td></tr>
+    <tr><td>SimEngine</td><td><code>CatalogToSim.Convert(set, ownership)</code></td><td>Content/module documents, transformations, stations, vehicles and quality rules.</td></tr>
+    <tr><td>CombatEngine</td><td><code>CatalogCombat.Weapon</code>, <code>Ammo</code>, <code>Group</code></td><td><code>WeaponSpec</code>, <code>AmmoSpec</code> and a <code>Group</code> with batteries from a formation.</td></tr>
+    <tr><td>Characters</td><td><code>CatalogCharacters.Document</code></td><td>A character template document with stat plans and trait weights.</td></tr>
+  </tbody>
+</table>
+<p>A conversion never invents data: anything it cannot express is reported as <code>ConversionNote</code> — <code>Reduced</code> or <code>Refused</code> — with a code, subject and detail. Read the report before trusting a converted document.</p>
+
+<h2 id="generator">Pack generator and scaffold</h2>
+<ul>
+  <li><code>CatalogScaffold</code> writes a valid new pack skeleton (<code>new-pack</code>).</li>
+  <li><code>GameContent.Generator/PackGenerator</code> builds the shipped packs from <code>Data*.cs</code> tables; generated packs are then validated like any other.</li>
+  <li><code>CatalogWriter</code> serialises a model back to canonical JSON, so tools and edits round-trip.</li>
+</ul>
+
+<h2 id="api">Loading and lookup</h2>
+<pre><code>var source = new DirectoryCatalogSource("src/GameContent/Packs");
+CatalogLoadResult result = CatalogLoader.Load(source, "core");
+if (result.Set is null) { foreach (var d in result.Report.Items) Console.WriteLine(d); return; }
+CatalogSet set = result.Set;
+
+set.TryResource("core.iron-ingot", out var iron);
+set.TryRecipe("core.smelt-iron", out var recipe);
+foreach (var item in set.Items) { /* ... */ }</code></pre>
+<p><code>CatalogSet.Packs</code> is dependency-first and ends with the requested pack (the <code>Root</code>). Lookups span the whole set; reference visibility is still enforced per pack.</p>
+
+<h2 id="cli">Command line</h2>
+<pre><code>GameContent.Cli list &lt;packs&gt;
+GameContent.Cli validate &lt;packs&gt; &lt;pack&gt;
+GameContent.Cli validate-all &lt;packs&gt;
+GameContent.Cli stats &lt;packs&gt; &lt;pack&gt;
+GameContent.Cli alchemy &lt;packs&gt; &lt;pack&gt; [--notes]
+GameContent.Cli sim &lt;packs&gt; &lt;pack&gt; [--notes] [--out &lt;dir&gt;]
+GameContent.Cli economy &lt;packs&gt; &lt;pack&gt; [--notes]
+GameContent.Cli new-pack &lt;packs&gt; &lt;id&gt; &lt;genre&gt; &lt;author&gt;</code></pre>
+<p>Exit codes: <code>0</code> done, <code>1</code> refused, <code>2</code> usage or file problem.</p>
+
+<h2 id="testing">Testing</h2>
+<pre><code>dotnet run --project src/GameContent/GameContent.Tests -c Release</code></pre>
+<p>Suites: validator, shipped-pack, arms-pack, equipment, formation, locale, recipe layer and ownership, conversion (economy, alchemy, combat, sim), generator, roster coverage and audit guards.</p>
+
+<h2 id="source">Source map</h2>
+<dl class="kv">
+  <dt>Loader</dt><dd><code>CatalogLoader.cs</code>, <code>CatalogSchemas.cs</code>, <code>CatalogReader.cs</code>, <code>CatalogReader.Equipment.cs</code></dd>
+  <dt>Model</dt><dd><code>CatalogSet.cs</code>, <code>CatalogResource.cs</code>, <code>CatalogRecipe.cs</code>, <code>CatalogPackData.cs</code>, <code>CatalogItem.cs</code>, <code>CatalogStats.cs</code></dd>
+  <dt>Validation</dt><dd><code>CatalogValidator*.cs</code>, <code>CatalogLibrary.cs</code>, <code>CatalogCodes.cs</code></dd>
+  <dt>Writing</dt><dd><code>CatalogWriter.cs</code>, <code>CatalogWriter.Equipment.cs</code>, <code>CatalogScaffold.cs</code></dd>
+  <dt>Converters</dt><dd><code>GameContent.Catalog.Economy/*</code>, <code>.Alchemy/*</code>, <code>.Sim/*</code>, <code>.Combat/*</code>, <code>.Characters/*</code></dd>
+  <dt>Units and text</dt><dd><code>CatalogUnits.cs</code>, <code>CatalogStatUnits.cs</code>, <code>CatalogText.cs</code>, <code>CatalogPrices.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/GameContent</code>. Catalog review and composition notes: <a href="../RESOURCE_RECIPE_CATALOG.md">docs/RESOURCE_RECIPE_CATALOG.md</a> and <a href="../CATALOG_COMPOSITION_REVIEW.md">docs/CATALOG_COMPOSITION_REVIEW.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

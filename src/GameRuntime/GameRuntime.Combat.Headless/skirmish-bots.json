@@ -1,0 +1,108 @@
+{
+  "format": 1,
+  "id": "skirmish.bots",
+  "keys": [
+    { "id": "can-act", "type": "bool", "initial": false, "source": "host" },
+    { "id": "fighting", "type": "bool", "initial": false, "source": "host" },
+    { "id": "settled", "type": "bool", "initial": false, "source": "host" },
+    { "id": "distance", "type": "int", "initial": 0, "min": 0, "max": 100000, "source": "host" },
+    { "id": "start", "type": "int", "initial": 1, "min": 1, "max": 100000, "source": "host" },
+    { "id": "seconds", "type": "int", "initial": 1, "min": 1, "max": 3600, "source": "host" },
+    { "id": "terrain", "type": "string", "initial": "open", "source": "host" },
+    { "id": "phase", "type": "int", "initial": 0, "min": 0, "max": 14, "source": "agent" },
+    { "id": "first", "type": "string", "initial": "", "source": "agent" },
+    { "id": "second", "type": "string", "initial": "", "source": "agent" },
+    { "id": "target", "type": "string", "initial": "", "source": "agent" },
+    { "id": "dist", "type": "int", "initial": 0, "min": 0, "max": 100000, "source": "agent" },
+    { "id": "wanted", "type": "int", "initial": 0, "min": 0, "max": 100000, "source": "agent" },
+    { "id": "excess", "type": "int", "initial": 0, "min": -100000, "max": 100000, "source": "agent" }
+  ],
+  "percepts": [
+    { "kind": "group", "capacity": 64, "memory": 1000000000, "owned": false, "attrs": [
+        { "id": "side", "type": "int", "min": 0, "max": 1000, "unknown": 0 },
+        { "id": "health", "type": "int", "min": 0, "max": 1000000000, "unknown": 0 },
+        { "id": "range", "type": "int", "min": 0, "max": 1000000000, "unknown": 0 },
+        { "id": "standing", "type": "bool", "unknown": false } ] },
+    { "kind": "foe", "capacity": 4032, "ownerCapacity": 63, "memory": 1000000000, "owned": true, "attrs": [
+        { "id": "group", "type": "string", "unknown": "" },
+        { "id": "health", "type": "int", "min": 0, "max": 1000000000, "unknown": 0 },
+        { "id": "standing", "type": "bool", "unknown": false } ] }
+  ],
+  "intents": [
+    { "id": "march", "args": [ { "id": "group", "type": "string" }, { "id": "metres", "type": "int", "min": 0, "max": 100000 }, { "id": "seconds", "type": "int", "min": 1, "max": 3600 }, { "id": "terrain", "type": "string" } ] },
+    { "id": "engage", "args": [ { "id": "attacker", "type": "string" }, { "id": "defender", "type": "string" }, { "id": "metres", "type": "int", "min": 0, "max": 100000 }, { "id": "seconds", "type": "int", "min": 1, "max": 3600 },
+                               { "id": "cover", "type": "string" }, { "id": "terrain", "type": "string" }, { "id": "mutual", "type": "bool" } ] },
+    { "id": "fire", "args": [ { "id": "attacker", "type": "string" }, { "id": "defender", "type": "string" }, { "id": "metres", "type": "int", "min": 0, "max": 100000 }, { "id": "cover", "type": "string" }, { "id": "terrain", "type": "string" } ] }
+  ],
+  "behaviors": [
+    { "id": "aggressor", "every": 1, "root": { "id": "play", "kind": "sequence", "resume": false, "children": [
+        { "id": "can-act", "kind": "condition", "when": { "fact": "key.can-act", "op": "eq", "value": true } },
+        { "id": "beat", "kind": "let", "key": "phase", "value": { "op": "mod", "args": [ { "op": "tick" }, 15 ] } },
+        { "id": "on-beat", "kind": "condition", "when": { "fact": "key.phase", "op": "eq", "value": 0 } },
+        { "id": "pick-first", "kind": "select", "from": "group", "into": "first", "pick": { "nth": 0 } },
+        { "id": "pick-second", "kind": "select", "from": "group", "into": "second", "pick": { "nth": 1 } },
+        { "id": "distance", "kind": "selector", "resume": false, "children": [
+            { "id": "known-distance", "kind": "sequence", "resume": false, "children": [
+                { "id": "is-settled", "kind": "condition", "when": { "fact": "key.settled", "op": "eq", "value": true } },
+                { "id": "keep-distance", "kind": "let", "key": "dist", "value": { "key": "distance" } } ] },
+            { "id": "start-distance", "kind": "let", "key": "dist", "value": { "key": "start" } } ] },
+        { "id": "order", "kind": "selector", "resume": false, "children": [
+            { "id": "approach", "kind": "sequence", "resume": false, "children": [
+                { "id": "not-fighting", "kind": "condition", "when": { "fact": "key.fighting", "op": "eq", "value": false } },
+                { "id": "march", "kind": "act", "intent": "march", "args": { "group": { "key": "first" }, "metres": { "key": "dist" }, "seconds": { "key": "seconds" }, "terrain": { "key": "terrain" } } } ] },
+            { "id": "fight", "kind": "act", "intent": "engage", "args": { "attacker": { "key": "first" }, "defender": { "key": "second" }, "metres": { "key": "dist" }, "seconds": { "key": "seconds" },
+                                                                          "cover": "open", "terrain": { "key": "terrain" }, "mutual": true } } ] } ] } },
+
+    { "id": "defender", "every": 1, "root": { "id": "play", "kind": "sequence", "resume": false, "children": [
+        { "id": "can-act", "kind": "condition", "when": { "fact": "key.can-act", "op": "eq", "value": true } },
+        { "id": "beat", "kind": "let", "key": "phase", "value": { "op": "mod", "args": [ { "op": "tick" }, 15 ] } },
+        { "id": "on-beat", "kind": "condition", "when": { "fact": "key.phase", "op": "eq", "value": 0 } },
+        { "id": "pick-first", "kind": "select", "from": "group", "into": "first", "pick": { "nth": 0 } },
+        { "id": "pick-second", "kind": "select", "from": "group", "into": "second", "pick": { "nth": 1 } },
+        { "id": "distance", "kind": "selector", "resume": false, "children": [
+            { "id": "known-distance", "kind": "sequence", "resume": false, "children": [
+                { "id": "is-settled", "kind": "condition", "when": { "fact": "key.settled", "op": "eq", "value": true } },
+                { "id": "keep-distance", "kind": "let", "key": "dist", "value": { "key": "distance" } } ] },
+            { "id": "start-distance", "kind": "let", "key": "dist", "value": { "key": "start" } } ] },
+        { "id": "hold", "kind": "act", "intent": "engage", "args": { "attacker": { "key": "second" }, "defender": { "key": "first" }, "metres": { "key": "dist" }, "seconds": { "key": "seconds" },
+                                                                    "cover": "heavy", "terrain": { "key": "terrain" }, "mutual": true } } ] } },
+
+    { "id": "skirmisher", "every": 1, "root": { "id": "play", "kind": "sequence", "resume": false, "children": [
+        { "id": "can-act", "kind": "condition", "when": { "fact": "key.can-act", "op": "eq", "value": true } },
+        { "id": "beat", "kind": "let", "key": "phase", "value": { "op": "mod", "args": [ { "op": "tick" }, 15 ] } },
+        { "id": "on-beat", "kind": "condition", "when": { "fact": "key.phase", "op": "eq", "value": 0 } },
+        { "id": "pick-first", "kind": "select", "from": "group", "into": "first", "pick": { "nth": 0 } },
+        { "id": "pick-second", "kind": "select", "from": "group", "into": "second", "pick": { "nth": 1 } },
+        { "id": "distance", "kind": "selector", "resume": false, "children": [
+            { "id": "known-distance", "kind": "sequence", "resume": false, "children": [
+                { "id": "is-settled", "kind": "condition", "when": { "fact": "key.settled", "op": "eq", "value": true } },
+                { "id": "keep-distance", "kind": "let", "key": "dist", "value": { "key": "distance" } } ] },
+            { "id": "start-distance", "kind": "let", "key": "dist", "value": { "key": "start" } } ] },
+        { "id": "range-wanted", "kind": "let", "key": "wanted", "value": { "op": "min", "args": [
+            { "op": "max", "args": [ { "op": "div", "args": [ { "op": "mul", "args": [ { "known": { "from": "group", "id": { "key": "first" }, "attr": "range" } }, 9 ] }, 10 ] }, 2 ] },
+            { "key": "start" } ] } },
+        { "id": "gap", "kind": "let", "key": "excess", "value": { "op": "sub", "args": [ { "key": "dist" }, { "key": "wanted" } ] } },
+        { "id": "order", "kind": "selector", "resume": false, "children": [
+            { "id": "close-in", "kind": "sequence", "resume": false, "children": [
+                { "id": "not-fighting", "kind": "condition", "when": { "fact": "key.fighting", "op": "eq", "value": false } },
+                { "id": "too-far", "kind": "condition", "when": { "fact": "key.excess", "op": "gt", "value": 0 } },
+                { "id": "march", "kind": "act", "intent": "march", "args": { "group": { "key": "first" }, "metres": { "key": "dist" }, "seconds": { "key": "seconds" }, "terrain": { "key": "terrain" } } } ] },
+            { "id": "stand", "kind": "act", "intent": "engage", "args": { "attacker": { "key": "first" }, "defender": { "key": "second" }, "metres": { "key": "dist" }, "seconds": { "key": "seconds" },
+                                                                         "cover": "light", "terrain": { "key": "terrain" }, "mutual": true } } ] } ] } },
+
+    { "id": "melee", "every": 1, "root": { "id": "play", "kind": "sequence", "resume": false, "children": [
+        { "id": "can-act", "kind": "condition", "when": { "fact": "key.can-act", "op": "eq", "value": true } },
+        { "id": "beat", "kind": "let", "key": "phase", "value": { "op": "mod", "args": [ { "op": "tick" }, 15 ] } },
+        { "id": "on-beat", "kind": "condition", "when": { "fact": "key.phase", "op": "eq", "value": 0 } },
+        { "id": "distance", "kind": "selector", "resume": false, "children": [
+            { "id": "closing", "kind": "sequence", "resume": false, "children": [
+                { "id": "is-settled", "kind": "condition", "when": { "fact": "key.settled", "op": "eq", "value": true } },
+                { "id": "halve-distance", "kind": "let", "key": "dist", "value": { "op": "max", "args": [ 2, { "op": "div", "args": [ { "key": "distance" }, 2 ] } ] } } ] },
+            { "id": "start-distance", "kind": "let", "key": "dist", "value": { "key": "start" } } ] },
+        { "id": "each-group", "kind": "forEach", "from": "group", "limit": 64, "where": { "fact": "item.standing", "op": "eq", "value": true }, "child":
+            { "id": "shoot", "kind": "sequence", "resume": false, "children": [
+                { "id": "weakest-foe", "kind": "select", "from": "foe", "of": { "item": "id" }, "into": "target", "pick": { "min": "health" }, "where": { "fact": "item.standing", "op": "eq", "value": true } },
+                { "id": "fire", "kind": "act", "intent": "fire", "args": { "attacker": { "item": "id" }, "defender": { "known": { "from": "foe", "id": { "key": "target" }, "attr": "group" } },
+                                                                        "metres": { "key": "dist" }, "cover": "open", "terrain": { "key": "terrain" } } } ] } } ] } }
+  ]
+}

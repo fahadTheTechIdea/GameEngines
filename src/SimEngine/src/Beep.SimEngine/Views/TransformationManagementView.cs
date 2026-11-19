@@ -41,7 +41,6 @@ namespace Beep.SimEngine.Views
             if (current.Transformation != definition.Id) status = ProductiveEstimateStatus.NotHead;
             else if (current.Phase == TransformationPhase.Returning) status = ProductiveEstimateStatus.Returning;
             else if (!control.Enabled || !gates.Blocker.IsNone || !current.Blocker.IsNone) status = ProductiveEstimateStatus.Blocked;
-            else if (_world.Clock.Paused) status = ProductiveEstimateStatus.Paused;
             else if (control.Target <= Fix.Zero) status = ProductiveEstimateStatus.ZeroRate;
             else if (current.Phase != TransformationPhase.Working) status = ProductiveEstimateStatus.Waiting;
             else if (definition.Mode == TransformationMode.Continuous) status = ProductiveEstimateStatus.Continuous;
@@ -53,7 +52,7 @@ namespace Beep.SimEngine.Views
                 completion = _world.Tick + updates; status = ProductiveEstimateStatus.Conditional;
             }
             return new TransformationExecutionPreview(definition, control, current, gates, cost, _world.Tick,
-                _world.Clock.Paused, cycle, remaining, completion, status);
+                cycle, remaining, completion, status);
         }
         public Code ReadOutputPorts(EntityId entityId, Code capability, string transformationId, out IReadOnlyList<ResourcePortSnapshot> ports)
             => ReadPorts(entityId, capability, transformationId, 0, out ports);

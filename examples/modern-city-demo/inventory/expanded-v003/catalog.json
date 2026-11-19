@@ -1,0 +1,1811 @@
+{
+  "SchemaVersion": 1,
+  "Id": "framework-reference-city",
+  "Archetypes": [
+    {
+      "Id": "house",
+      "Kind": "building",
+      "Purpose": "Individual detached-house building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one dwelling shell; detached structures require an authored program",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "living-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "outbuilding",
+              "Kind": "Structure",
+              "CandidateDefinitionIds": [
+                "agricultural-equipment-shed"
+              ]
+            },
+            {
+              "Role": "garden",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "detached-house",
+        "VariantId": "small",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "townhouse",
+      "Kind": "building",
+      "Purpose": "Individual townhouse building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one dwelling shell; detached structures require an authored program",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "living-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "outbuilding",
+              "Kind": "Structure",
+              "CandidateDefinitionIds": [
+                "agricultural-equipment-shed"
+              ]
+            },
+            {
+              "Role": "garden",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "townhouse",
+        "VariantId": "compact",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "apartment",
+      "Kind": "building",
+      "Purpose": "Individual apartment building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "ContextDependentSite",
+          "GeometryScope": "one residential block or an authored group of blocks",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "housing-block",
+              "Kind": "Structure",
+              "CandidateDefinitionIds": [
+                "apartment",
+                "dormitory"
+              ]
+            },
+            {
+              "Role": "shared-services",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "shared-ground",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "apartment",
+        "VariantId": "low-rise",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "shop",
+      "Kind": "building",
+      "Purpose": "Individual convenience-store building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one retail unit shell; shop departments are interiors",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "sales-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "stockroom",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "delivery-space",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "convenience-store",
+        "VariantId": "small",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "cafe",
+      "Kind": "building",
+      "Purpose": "Individual cafe building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one hospitality/food building shell; functional rooms remain interiors",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "service-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "kitchen-or-support",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "service-ground",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "cafe",
+        "VariantId": "small",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "restaurant",
+      "Kind": "building",
+      "Purpose": "Individual restaurant building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one hospitality/food building shell; functional rooms remain interiors",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "service-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "kitchen-or-support",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "service-ground",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "restaurant",
+        "VariantId": "small",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "office",
+      "Kind": "building",
+      "Purpose": "Individual office-building building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one workplace/service building shell",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "workplace-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "public-or-staff-services",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "arrival-ground",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "office-building",
+        "VariantId": "small",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "clinic",
+      "Kind": "building",
+      "Purpose": "Individual clinic building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one outpatient/dispensing building shell",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "care-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "support-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "arrival-ground",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "clinic",
+        "VariantId": "local",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "civic",
+      "Kind": "building",
+      "Purpose": "Individual town-hall building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one workplace/service building shell",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "workplace-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "public-or-staff-services",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "arrival-ground",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "town-hall",
+        "VariantId": "small",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "library",
+      "Kind": "building",
+      "Purpose": "Individual library building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "ContextDependentSite",
+          "GeometryScope": "one specialist building or a separated specialist/support site",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "specialist-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "specialist-equipment",
+              "Kind": "Equipment",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "support-building",
+              "Kind": "Structure",
+              "CandidateDefinitionIds": [
+                "office-building"
+              ]
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "library",
+        "VariantId": "small",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "school-building",
+      "Kind": "building",
+      "Purpose": "Individual primary-school building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "ContextDependentSite",
+          "GeometryScope": "one teaching building or a school site with distinct grounds/blocks",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "teaching-blocks",
+              "Kind": "Structure",
+              "CandidateDefinitionIds": [
+                "school",
+                "university-building"
+              ]
+            },
+            {
+              "Role": "specialist-rooms",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "activity-ground",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "primary-school",
+        "VariantId": "small",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "warehouse",
+      "Kind": "building",
+      "Purpose": "Individual warehouse building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one storage/maintenance building; yards/support may be separately authored",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "storage-or-work-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "handling-ground",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "support-building",
+              "Kind": "Structure",
+              "CandidateDefinitionIds": [
+                "office-building"
+              ]
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "warehouse",
+        "VariantId": "medium",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "workshop",
+      "Kind": "building",
+      "Purpose": "Individual workshop building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one storage/maintenance building; yards/support may be separately authored",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "storage-or-work-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "handling-ground",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "support-building",
+              "Kind": "Structure",
+              "CandidateDefinitionIds": [
+                "office-building"
+              ]
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "workshop",
+        "VariantId": "small",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "guardhouse",
+      "Kind": "building",
+      "Purpose": "Individual guardhouse building reference; surroundings belong to containing site",
+      "Properties": {
+        "referenceScope": "single building body; not the complete site",
+        "catalogComposition": {
+          "Representation": "SingleStructure",
+          "GeometryScope": "one public-service building/object; surrounding site is separately authored",
+          "ReviewBasis": "Authored game inventory review; requested scope/parts determine the reusable program. No universal component count or completed artwork is implied.",
+          "PartRoles": [
+            {
+              "Role": "service-interior",
+              "Kind": "Interior",
+              "CandidateDefinitionIds": []
+            },
+            {
+              "Role": "public-ground",
+              "Kind": "GroundArea",
+              "CandidateDefinitionIds": []
+            }
+          ]
+        }
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "guardhouse",
+        "VariantId": "small",
+        "Technology": null
+      },
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "garden",
+      "Kind": "ground-area",
+      "Purpose": "Private planted house garden",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "entry-walk",
+      "Kind": "ground-area",
+      "Purpose": "Pedestrian connection from public frontage to entrance",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "courtyard",
+      "Kind": "ground-area",
+      "Purpose": "Shared residential courtyard",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "playground",
+      "Kind": "ground-area",
+      "Purpose": "School outdoor play area",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "yard",
+      "Kind": "ground-area",
+      "Purpose": "Factory service and loading yard",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "plaza",
+      "Kind": "ground-area",
+      "Purpose": "Civic gathering and circulation area",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "park",
+      "Kind": "ground-area",
+      "Purpose": "Public green with pedestrian paths",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "utility-yard",
+      "Kind": "ground-area",
+      "Purpose": "Factory plant and service enclosure",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "production-hall",
+      "Kind": "building",
+      "Purpose": "Factory production hall, individual constituent of a factory compound",
+      "Properties": {
+        "referenceScope": "single production hall",
+        "designRule": "Authored framework example constituent; dimensions and anchors await approved reference and map calibration",
+        "movingComponents": [
+          "roof-exhaust-fan"
+        ]
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "house-site",
+      "Kind": "site",
+      "Purpose": "Detached house with its entrance and private garden",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "house",
+          "ArchetypeId": "house",
+          "Count": 1,
+          "Purpose": "Dwelling",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "garden",
+          "ArchetypeId": "garden",
+          "Count": 1,
+          "Purpose": "Private outdoor area",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "walk",
+          "ArchetypeId": "entry-walk",
+          "Count": 1,
+          "Purpose": "Entrance access",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "apartment-site",
+      "Kind": "site",
+      "Purpose": "Low-rise residential body with shared grounds",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "body",
+          "ArchetypeId": "apartment",
+          "Count": 1,
+          "Purpose": "One residential block",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "court",
+          "ArchetypeId": "courtyard",
+          "Count": 1,
+          "Purpose": "Shared outdoor space",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "walk",
+          "ArchetypeId": "entry-walk",
+          "Count": 1,
+          "Purpose": "Common entrance access",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "school-site",
+      "Kind": "site",
+      "Purpose": "Local school building with outdoor play and access",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "body",
+          "ArchetypeId": "school-building",
+          "Count": 1,
+          "Purpose": "Teaching building",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "play",
+          "ArchetypeId": "playground",
+          "Count": 1,
+          "Purpose": "Outdoor school space",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "walk",
+          "ArchetypeId": "entry-walk",
+          "Count": 1,
+          "Purpose": "School entrance access",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "factory-site",
+      "Kind": "site",
+      "Purpose": "Complete light-manufacturing compound",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "halls",
+          "ArchetypeId": "production-hall",
+          "Count": 2,
+          "Purpose": "Production halls",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "stores",
+          "ArchetypeId": "warehouse",
+          "Count": 2,
+          "Purpose": "Material and finished-goods storage",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "admin",
+          "ArchetypeId": "office",
+          "Count": 1,
+          "Purpose": "Site administration",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "workshop",
+          "ArchetypeId": "workshop",
+          "Count": 1,
+          "Purpose": "Maintenance",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "gate",
+          "ArchetypeId": "guardhouse",
+          "Count": 1,
+          "Purpose": "Controlled site entrance",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "yard",
+          "ArchetypeId": "yard",
+          "Count": 1,
+          "Purpose": "Loading and vehicle circulation",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "plant",
+          "ArchetypeId": "utility-yard",
+          "Count": 1,
+          "Purpose": "Site services",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "walk",
+          "ArchetypeId": "entry-walk",
+          "Count": 1,
+          "Purpose": "Pedestrian entrance route",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "old-center",
+      "Kind": "district",
+      "Purpose": "Older center with irregular streets and connected civic spaces",
+      "Properties": {
+        "layoutIntent": "Irregular terrain-aware boundary; local street patterns follow destinations and ground. No imposed citywide grid."
+      },
+      "Parts": [
+        {
+          "Id": "shops",
+          "ArchetypeId": "shop",
+          "Count": 14,
+          "Purpose": "Older center with irregular streets and connected civic spaces",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "cafes",
+          "ArchetypeId": "cafe",
+          "Count": 5,
+          "Purpose": "Older center with irregular streets and connected civic spaces",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "food",
+          "ArchetypeId": "restaurant",
+          "Count": 5,
+          "Purpose": "Older center with irregular streets and connected civic spaces",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "homes",
+          "ArchetypeId": "townhouse",
+          "Count": 34,
+          "Purpose": "Older center with irregular streets and connected civic spaces",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "civic",
+          "ArchetypeId": "civic",
+          "Count": 1,
+          "Purpose": "Older center with irregular streets and connected civic spaces",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "library",
+          "ArchetypeId": "library",
+          "Count": 1,
+          "Purpose": "Older center with irregular streets and connected civic spaces",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "plazas",
+          "ArchetypeId": "plaza",
+          "Count": 2,
+          "Purpose": "Older center with irregular streets and connected civic spaces",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "garden-neighborhood",
+      "Kind": "district",
+      "Purpose": "Residential neighborhood responding to slopes and park edges",
+      "Properties": {
+        "layoutIntent": "Irregular terrain-aware boundary; local street patterns follow destinations and ground. No imposed citywide grid."
+      },
+      "Parts": [
+        {
+          "Id": "homes",
+          "ArchetypeId": "house-site",
+          "Count": 60,
+          "Purpose": "Residential neighborhood responding to slopes and park edges",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "school",
+          "ArchetypeId": "school-site",
+          "Count": 1,
+          "Purpose": "Residential neighborhood responding to slopes and park edges",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "clinic",
+          "ArchetypeId": "clinic",
+          "Count": 1,
+          "Purpose": "Residential neighborhood responding to slopes and park edges",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "shops",
+          "ArchetypeId": "shop",
+          "Count": 5,
+          "Purpose": "Residential neighborhood responding to slopes and park edges",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "park",
+          "ArchetypeId": "park",
+          "Count": 1,
+          "Purpose": "Residential neighborhood responding to slopes and park edges",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "riverside",
+      "Kind": "district",
+      "Purpose": "River-edge residential district with a continuous public landscape",
+      "Properties": {
+        "layoutIntent": "Irregular terrain-aware boundary; local street patterns follow destinations and ground. No imposed citywide grid."
+      },
+      "Parts": [
+        {
+          "Id": "homes",
+          "ArchetypeId": "apartment-site",
+          "Count": 24,
+          "Purpose": "River-edge residential district with a continuous public landscape",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "cafes",
+          "ArchetypeId": "cafe",
+          "Count": 4,
+          "Purpose": "River-edge residential district with a continuous public landscape",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "shops",
+          "ArchetypeId": "shop",
+          "Count": 8,
+          "Purpose": "River-edge residential district with a continuous public landscape",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "park",
+          "ArchetypeId": "park",
+          "Count": 2,
+          "Purpose": "River-edge residential district with a continuous public landscape",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "mixed-center",
+      "Kind": "district",
+      "Purpose": "Mixed commercial and residential center",
+      "Properties": {
+        "layoutIntent": "Irregular terrain-aware boundary; local street patterns follow destinations and ground. No imposed citywide grid."
+      },
+      "Parts": [
+        {
+          "Id": "offices",
+          "ArchetypeId": "office",
+          "Count": 18,
+          "Purpose": "Mixed commercial and residential center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "homes",
+          "ArchetypeId": "apartment-site",
+          "Count": 18,
+          "Purpose": "Mixed commercial and residential center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "shops",
+          "ArchetypeId": "shop",
+          "Count": 20,
+          "Purpose": "Mixed commercial and residential center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "food",
+          "ArchetypeId": "restaurant",
+          "Count": 8,
+          "Purpose": "Mixed commercial and residential center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "clinic",
+          "ArchetypeId": "clinic",
+          "Count": 1,
+          "Purpose": "Mixed commercial and residential center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "plaza",
+          "ArchetypeId": "plaza",
+          "Count": 1,
+          "Purpose": "Mixed commercial and residential center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "work-district",
+      "Kind": "district",
+      "Purpose": "Productive district with complete factory compounds and local services",
+      "Properties": {
+        "layoutIntent": "Irregular terrain-aware boundary; local street patterns follow destinations and ground. No imposed citywide grid."
+      },
+      "Parts": [
+        {
+          "Id": "factories",
+          "ArchetypeId": "factory-site",
+          "Count": 4,
+          "Purpose": "Productive district with complete factory compounds and local services",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "workshops",
+          "ArchetypeId": "workshop",
+          "Count": 10,
+          "Purpose": "Productive district with complete factory compounds and local services",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "warehouses",
+          "ArchetypeId": "warehouse",
+          "Count": 8,
+          "Purpose": "Productive district with complete factory compounds and local services",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "food",
+          "ArchetypeId": "cafe",
+          "Count": 3,
+          "Purpose": "Productive district with complete factory compounds and local services",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "outer-neighborhood",
+      "Kind": "district",
+      "Purpose": "Outer residential neighborhood with a local center",
+      "Properties": {
+        "layoutIntent": "Irregular terrain-aware boundary; local street patterns follow destinations and ground. No imposed citywide grid."
+      },
+      "Parts": [
+        {
+          "Id": "homes",
+          "ArchetypeId": "house-site",
+          "Count": 50,
+          "Purpose": "Outer residential neighborhood with a local center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "townhomes",
+          "ArchetypeId": "townhouse",
+          "Count": 32,
+          "Purpose": "Outer residential neighborhood with a local center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "school",
+          "ArchetypeId": "school-site",
+          "Count": 1,
+          "Purpose": "Outer residential neighborhood with a local center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "shops",
+          "ArchetypeId": "shop",
+          "Count": 8,
+          "Purpose": "Outer residential neighborhood with a local center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "clinic",
+          "ArchetypeId": "clinic",
+          "Count": 1,
+          "Purpose": "Outer residential neighborhood with a local center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "park",
+          "ArchetypeId": "park",
+          "Count": 2,
+          "Purpose": "Outer residential neighborhood with a local center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "city",
+      "Kind": "settlement",
+      "Purpose": "Framework reference city with six distinct districts and complete declared site inventories",
+      "Properties": {
+        "scope": "Authored reference-test city, not a specific commissioned game",
+        "visualPlan": "Individual building references, district details and whole-city overview. Overview is an index; every constituent must remain traceable in district details.",
+        "terrainIntent": "River edge and gently rising outer land; geometry awaits mockup approval and source-calibrated map compilation"
+      },
+      "Parts": [
+        {
+          "Id": "old-center",
+          "ArchetypeId": "old-center",
+          "Count": 1,
+          "Purpose": "Older center with irregular streets and connected civic spaces",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "garden-neighborhood",
+          "ArchetypeId": "garden-neighborhood",
+          "Count": 1,
+          "Purpose": "Residential neighborhood responding to slopes and park edges",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "riverside",
+          "ArchetypeId": "riverside",
+          "Count": 1,
+          "Purpose": "River-edge residential district with a continuous public landscape",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "mixed-center",
+          "ArchetypeId": "mixed-center",
+          "Count": 1,
+          "Purpose": "Mixed commercial and residential center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "work-district",
+          "ArchetypeId": "work-district",
+          "Count": 1,
+          "Purpose": "Productive district with complete factory compounds and local services",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        },
+        {
+          "Id": "outer-neighborhood",
+          "ArchetypeId": "outer-neighborhood",
+          "Count": 1,
+          "Purpose": "Outer residential neighborhood with a local center",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [
+        {
+          "Id": "interface-1",
+          "Kind": "district-access",
+          "Pattern": "Pairs",
+          "FromPart": "old-center",
+          "ToPart": "garden-neighborhood",
+          "Bidirectional": true,
+          "Properties": {
+            "purpose": "Connect residential local center to civic services",
+            "modeIntent": "pedestrian-and-local-vehicle",
+            "geometryStatus": "UnrealizedIntentOnly",
+            "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback"
+          },
+          "LayerId": null
+        },
+        {
+          "Id": "interface-2",
+          "Kind": "district-access",
+          "Pattern": "Pairs",
+          "FromPart": "old-center",
+          "ToPart": "mixed-center",
+          "Bidirectional": true,
+          "Properties": {
+            "purpose": "Connect civic and commercial centers",
+            "modeIntent": "pedestrian-and-local-vehicle",
+            "geometryStatus": "UnrealizedIntentOnly",
+            "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback"
+          },
+          "LayerId": null
+        },
+        {
+          "Id": "interface-3",
+          "Kind": "district-walk",
+          "Pattern": "Pairs",
+          "FromPart": "old-center",
+          "ToPart": "riverside",
+          "Bidirectional": true,
+          "Properties": {
+            "purpose": "Connect civic space to public waterfront",
+            "modeIntent": "pedestrian",
+            "geometryStatus": "UnrealizedIntentOnly",
+            "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback"
+          },
+          "LayerId": null
+        },
+        {
+          "Id": "interface-4",
+          "Kind": "district-access",
+          "Pattern": "Pairs",
+          "FromPart": "garden-neighborhood",
+          "ToPart": "outer-neighborhood",
+          "Bidirectional": true,
+          "Properties": {
+            "purpose": "Connect residential neighborhoods through terrain-responsive local access",
+            "modeIntent": "pedestrian-and-local-vehicle",
+            "geometryStatus": "UnrealizedIntentOnly",
+            "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback"
+          },
+          "LayerId": null
+        },
+        {
+          "Id": "interface-5",
+          "Kind": "district-access",
+          "Pattern": "Pairs",
+          "FromPart": "outer-neighborhood",
+          "ToPart": "mixed-center",
+          "Bidirectional": true,
+          "Properties": {
+            "purpose": "Provide outer-neighborhood access to workplaces and services",
+            "modeIntent": "pedestrian-and-local-vehicle",
+            "geometryStatus": "UnrealizedIntentOnly",
+            "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback"
+          },
+          "LayerId": null
+        },
+        {
+          "Id": "interface-6",
+          "Kind": "district-service-access",
+          "Pattern": "Pairs",
+          "FromPart": "mixed-center",
+          "ToPart": "work-district",
+          "Bidirectional": true,
+          "Properties": {
+            "purpose": "Connect commercial services and productive district",
+            "modeIntent": "pedestrian-and-service-vehicle",
+            "geometryStatus": "UnrealizedIntentOnly",
+            "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback"
+          },
+          "LayerId": null
+        },
+        {
+          "Id": "interface-7",
+          "Kind": "district-walk",
+          "Pattern": "Pairs",
+          "FromPart": "mixed-center",
+          "ToPart": "riverside",
+          "Bidirectional": true,
+          "Properties": {
+            "purpose": "Connect mixed-use center to waterfront recreation",
+            "modeIntent": "pedestrian",
+            "geometryStatus": "UnrealizedIntentOnly",
+            "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback"
+          },
+          "LayerId": null
+        },
+        {
+          "Id": "interface-8",
+          "Kind": "district-access",
+          "Pattern": "Pairs",
+          "FromPart": "work-district",
+          "ToPart": "outer-neighborhood",
+          "Bidirectional": true,
+          "Properties": {
+            "purpose": "Connect productive district and outer neighborhood without forcing passage through civic space",
+            "modeIntent": "pedestrian-and-local-vehicle",
+            "geometryStatus": "UnrealizedIntentOnly",
+            "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback"
+          },
+          "LayerId": null
+        }
+      ],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": true,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

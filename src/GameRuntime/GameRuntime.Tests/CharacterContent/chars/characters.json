@@ -1,0 +1,48 @@
+{
+  "character_stats": [
+    { "id": "chars.stat.strength", "min": 1, "max": 20 },
+    { "id": "chars.stat.courage", "min": 0, "max": 100 }
+  ],
+  "character_skills": [
+    { "id": "chars.skill.shooting", "max_level": 5 },
+    { "id": "chars.skill.drill", "max_level": 5 }
+  ],
+  "character_traits": [
+    { "id": "chars.trait.brave", "label": "trait.brave" },
+    { "id": "chars.trait.careful", "label": "trait.careful" },
+    { "id": "chars.trait.reckless", "label": "trait.reckless" },
+    { "id": "chars.trait.steady", "label": "trait.steady" }
+  ],
+  "name_pools": [
+    { "id": "chars.names.given", "names": ["Adam", "Bram", "Carl", "Dario", "Emil", "Farid", "Gus", "Hugo", "Ivo", "Jonas", "Karim", "Leo"] },
+    { "id": "chars.names.family", "names": ["Ashby", "Brandt", "Cole", "Dunn", "Ekberg", "Foss", "Gray", "Hale", "Ito", "Jansen", "Kerr", "Lund"] }
+  ],
+  "character_archetypes": [
+    { "id": "chars.rifleman", "entity": "chars.walker", "max_spawn": 2000, "given_names": "chars.names.given", "family_names": "chars.names.family",
+      "stats": [{ "stat": "chars.stat.strength", "min": 8, "max": 14 }, { "stat": "chars.stat.courage", "min": 30, "max": 80 }],
+      "skills": [{ "skill": "chars.skill.shooting", "min": 1, "max": 4 }, { "skill": "chars.skill.drill", "min": 0, "max": 3 }],
+      "traits": { "min": 0, "max": 2, "pool": [{ "trait": "chars.trait.brave", "weight": 3 }, { "trait": "chars.trait.careful", "weight": 2 }, { "trait": "chars.trait.reckless", "weight": 1 }, { "trait": "chars.trait.steady", "weight": 2 }] },
+      "equipment": [{ "item": "arms-modern.bolt-rifle", "count": 1 }], "roles": ["infantry"] },
+    { "id": "chars.sergeant", "entity": "chars.walker", "max_spawn": 200, "given_names": "chars.names.given", "family_names": "chars.names.family",
+      "stats": [{ "stat": "chars.stat.strength", "min": 10, "max": 16 }, { "stat": "chars.stat.courage", "min": 60, "max": 95 }],
+      "skills": [{ "skill": "chars.skill.shooting", "min": 3, "max": 5 }, { "skill": "chars.skill.drill", "min": 3, "max": 5 }],
+      "traits": { "min": 1, "max": 2, "pool": [{ "trait": "chars.trait.brave", "weight": 2 }, { "trait": "chars.trait.steady", "weight": 3 }] },
+      "equipment": [{ "item": "arms-modern.bolt-rifle", "count": 1 }], "roles": ["infantry", "leader"] },
+    { "id": "chars.sentry", "entity": "chars.post", "max_spawn": 50, "given_names": "chars.names.given", "family_names": "chars.names.family",
+      "stats": [{ "stat": "chars.stat.strength", "min": 8, "max": 12 }],
+      "skills": [],
+      "traits": { "min": 0, "max": 0, "pool": [] },
+      "equipment": [], "roles": ["guard"] }
+  ],
+  "character_formations": [
+    { "id": "chars.platoon", "squad_entity": "chars.squad", "max_squads": 200, "catalog_unit": null,
+      "members": [{ "archetype": "chars.rifleman", "count": 30 }, { "archetype": "chars.sergeant", "count": 2 }],
+      "equipment": [{ "item": "arms-modern.bolt-rifle", "count": 32 }] },
+    { "id": "chars.company", "squad_entity": "chars.squad", "max_squads": 200, "catalog_unit": null,
+      "members": [{ "archetype": "chars.rifleman", "count": 96 }, { "archetype": "chars.sergeant", "count": 4 }],
+      "equipment": [] },
+    { "id": "chars.patrol", "squad_entity": "chars.small-squad", "max_squads": 10, "catalog_unit": null,
+      "members": [{ "archetype": "chars.rifleman", "count": 6 }],
+      "equipment": [] }
+  ]
+}

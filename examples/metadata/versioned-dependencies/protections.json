@@ -1,0 +1,9 @@
+[
+  {
+    "Id": "source-selection",
+    "Input": "Catalog",
+    "Pointer": "",
+    "Purpose": "Keep source references and required program",
+    "SourceRuleId": "developer:source"
+  }
+]

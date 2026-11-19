@@ -1,0 +1,19 @@
+{
+  "graph":        ["src/EngineCommon/EngineCommon.Graph"],
+  "balance":      ["src/EngineCommon/EngineCommon.Balance"],
+  "tailtool":     ["src/EngineCommon/EngineCommon.TailTool"],
+  "rare":         ["src/EngineCommon/EngineCommon.Balance", "src/EngineCommon/EngineCommon.TailTool", "src/WorldEventsEngine/WorldEventsEngine.Cli"],
+  "guards":       ["src/EngineCommon/EngineCommon.TestSupport", "src/EngineCommon/EngineCommon.Tests"],
+  "common":       ["src/EngineCommon/EngineCommon.Core", "src/EngineCommon/EngineCommon.TestSupport", "src/GameRuntime/GameRuntime.Channels"],
+  "calendar":     ["src/CalendarEngine", "src/GameRuntime/GameRuntime.Calendar"],
+  "relationship": ["src/RelationshipEngine", "src/GameRuntime/GameRuntime.Relationship"],
+  "economy":      ["src/EconomyEngine", "src/GameRuntime/GameRuntime.Economy"],
+  "tutorial":     ["src/TutorialEngine", "src/GameRuntime/GameRuntime.Tutorial"],
+  "worldevents":  ["src/WorldEventsEngine", "src/GameRuntime/GameRuntime.WorldEvents"],
+  "diplomacy":    ["src/DiplomacyEngine", "src/GameRuntime/GameRuntime.Diplomacy"],
+  "dialogue":     ["src/DialogueEngine", "src/GameRuntime/GameRuntime.Dialogue"],
+  "ai":           ["src/AIEngine", "src/GameRuntime/GameRuntime.AI"],
+  "combat":       ["src/CombatEngine", "src/GameRuntime/GameRuntime.CombatStock"],
+  "catalog":      ["src/GameContent"],
+  "scenario":     ["src/ScenarioEngine"]
+}

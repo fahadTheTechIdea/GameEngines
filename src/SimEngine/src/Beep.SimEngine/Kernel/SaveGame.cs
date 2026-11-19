@@ -7,7 +7,7 @@ namespace Beep.SimEngine.Kernel
     public static class EngineInfo
     {
         /// <summary>Bumped with any change to simulation code or state layout; saves and peers must match exactly.</summary>
-        public const string Build = "beep-simengine-2.782.0";
+        public const string Build = "beep-simengine-2.786.0";
         public const int SaveFormat = 166;
     }
 

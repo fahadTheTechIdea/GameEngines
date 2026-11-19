@@ -1,0 +1,112 @@
+{
+  "SchemaVersion": 1,
+  "Id": "service-world",
+  "GameProfile": "exploration",
+  "CatalogId": "service-catalog",
+  "RootArchetypeId": "root",
+  "Scale": "level",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Explicit logical service delivery; physical routes, context, wider world and artwork/runtime remain separate."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": null,
+  "RequireAllPositions": false,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "trunk",
+      "Kind": "provision",
+      "FromId": "service-world/supply-0",
+      "ToId": "service-world/relay-0",
+      "Bidirectional": false,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "branch-0",
+      "Kind": "provision",
+      "FromId": "service-world/relay-0",
+      "ToId": "service-world/users-0",
+      "Bidirectional": false,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "branch-1",
+      "Kind": "provision",
+      "FromId": "service-world/relay-0",
+      "ToId": "service-world/users-1",
+      "Bidirectional": false,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": null,
+  "Surface": null,
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": null,
+  "SuitabilityRules": null,
+  "Placement": null,
+  "Services": {
+    "Bindings": [
+      {
+        "ConsumerNodeId": "service-world/users-0",
+        "RequirementId": "rest",
+        "ProviderNodeId": "service-world/supply-0",
+        "SupplyId": "stock",
+        "ConnectionIds": [
+          "service-world/explicit/trunk",
+          "service-world/explicit/branch-0"
+        ],
+        "Purpose": "Deliver required rest",
+        "SourceRuleId": "test:binding"
+      },
+      {
+        "ConsumerNodeId": "service-world/users-1",
+        "RequirementId": "rest",
+        "ProviderNodeId": "service-world/supply-0",
+        "SupplyId": "stock",
+        "ConnectionIds": [
+          "service-world/explicit/trunk",
+          "service-world/explicit/branch-1"
+        ],
+        "Purpose": "Deliver required rest",
+        "SourceRuleId": "test:binding"
+      }
+    ],
+    "Links": [
+      {
+        "ConnectionId": "service-world/explicit/trunk",
+        "Capacity": 8,
+        "Unit": "rest-points",
+        "Purpose": "Shared bottleneck",
+        "SourceRuleId": "test:trunk"
+      },
+      {
+        "ConnectionId": "service-world/explicit/branch-0",
+        "Capacity": 4,
+        "Unit": "rest-points",
+        "Purpose": "First consumer",
+        "SourceRuleId": "test:branch"
+      },
+      {
+        "ConnectionId": "service-world/explicit/branch-1",
+        "Capacity": 4,
+        "Unit": "rest-points",
+        "Purpose": "Second consumer",
+        "SourceRuleId": "test:branch"
+      }
+    ],
+    "MaximumWork": 2000000
+  }
+}

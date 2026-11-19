@@ -13,14 +13,14 @@ namespace Beep.SimEngine.Views
     }
     public enum ProductiveEstimateStatus : byte
     {
-        NotHead, Continuous, Waiting, Blocked, Paused, ZeroRate, OutOfRange, Conditional, Returning
+        NotHead, Continuous, Waiting, Blocked, ZeroRate, OutOfRange, Conditional, Returning
     }
     /// <summary>Detached yields and current execution. Productive ETA excludes supply/settlement and assumes unchanged rate/gates.</summary>
     public sealed class TransformationExecutionPreview
     {
         internal TransformationExecutionPreview(ITransformationDefinition definition, OperationControlSnapshot control,
             TransformationSnapshot current, ExecutionGateEvaluation gates, MonetaryCostDecision cost,
-            long observedStep, bool clockPaused, GameDuration? nominalCycle, GameDuration? remainingWork,
+            long observedStep, GameDuration? nominalCycle, GameDuration? remainingWork,
             long? completionStep, ProductiveEstimateStatus status)
         {
             Transformation = definition.Id; Mode = definition.Mode; Inputs = definition.Inputs; Outputs = definition.Outputs;
@@ -30,7 +30,7 @@ namespace Beep.SimEngine.Views
             InputRates = CopyRates(definition.InputRates); OutputRates = CopyRates(definition.OutputRates);
             OperatingRates = CopyRates(definition.OperatingInputs); ToolConsumptionRates = CopyRates(definition.ToolConsumptionRates);
             Control = control; Current = current; Gates = gates; MonetaryCost = cost;
-            ObservedStep = observedStep; ClockPaused = clockPaused; NominalCycle = nominalCycle;
+            ObservedStep = observedStep; NominalCycle = nominalCycle;
             RemainingProductiveTime = remainingWork; ProductiveCompletionStep = completionStep; EstimateStatus = status;
         }
         private static IReadOnlyList<ResourceRateInfo> CopyRates(IReadOnlyList<IResourceRate> rates)
@@ -58,7 +58,6 @@ namespace Beep.SimEngine.Views
         public ExecutionGateEvaluation Gates { get; }
         public MonetaryCostDecision MonetaryCost { get; }
         public long ObservedStep { get; }
-        public bool ClockPaused { get; }
         public bool IsHead => Current.Transformation == Transformation;
         // Batch throughput: Outputs per NominalCycle. Continuous: OutputRates times Control.Target.
         // Native packing and blockers can reduce delivered throughput; no extra remainder is calculated here.

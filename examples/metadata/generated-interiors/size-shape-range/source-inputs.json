@@ -1,0 +1,130 @@
+[
+  {
+    "Id": "rectangle-6-extra0",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/rectangle-6-extra0/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/rectangle-6-extra0/catalog.json",
+    "RecipeBytesSha256": "263bbfe5b0a03b6b96c440e78f6547dbdacaa99882deba034ef47045e920dff9",
+    "CatalogBytesSha256": "b597d7b4ad94f30dc893d144c57dd750643a9c8fe59be209386808fe00522dcc",
+    "Baseline": "examples/metadata/generated-interiors/branching"
+  },
+  {
+    "Id": "rectangle-6-extra1",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/rectangle-6-extra1/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/rectangle-6-extra1/catalog.json",
+    "RecipeBytesSha256": "08319901743b42020b77a59533bfb243465568e7f080c0391d40ada3632639fe",
+    "CatalogBytesSha256": "b597d7b4ad94f30dc893d144c57dd750643a9c8fe59be209386808fe00522dcc",
+    "Baseline": "examples/metadata/generated-interiors/branching"
+  },
+  {
+    "Id": "rectangle-12-extra0",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/rectangle-12-extra0/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/rectangle-12-extra0/catalog.json",
+    "RecipeBytesSha256": "900c51e8bdfe042296d9157383a7ec598beee32ed87bc82a725a7631b91855bc",
+    "CatalogBytesSha256": "45b0346ef0dcc537cc9cbf01e071c67ccd3e6ff1c574762d522bcaf0ef79a036",
+    "Baseline": "examples/metadata/generated-interiors/branching"
+  },
+  {
+    "Id": "rectangle-12-extra1",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/rectangle-12-extra1/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/rectangle-12-extra1/catalog.json",
+    "RecipeBytesSha256": "38d9c296745705278be54616f34753352d7039dcacc6acfb98bffb8f5b4cf739",
+    "CatalogBytesSha256": "45b0346ef0dcc537cc9cbf01e071c67ccd3e6ff1c574762d522bcaf0ef79a036",
+    "Baseline": "examples/metadata/generated-interiors/branching"
+  },
+  {
+    "Id": "rectangle-24-extra0",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/rectangle-24-extra0/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/rectangle-24-extra0/catalog.json",
+    "RecipeBytesSha256": "ca979921aaa21d6f1546d5915b875aa7a2ea5e342cd236b3b9f006e9ec8887e0",
+    "CatalogBytesSha256": "bfec3a766900fab0daac35ad4c4b5287486ea05b997fc709c1b2424a2adcb998",
+    "Baseline": "examples/metadata/generated-interiors/branching"
+  },
+  {
+    "Id": "rectangle-24-extra1",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/rectangle-24-extra1/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/rectangle-24-extra1/catalog.json",
+    "RecipeBytesSha256": "8b7ac497861150d683834a3ce6847876ea910aa8a505adc268e6b2b9adca50e1",
+    "CatalogBytesSha256": "bfec3a766900fab0daac35ad4c4b5287486ea05b997fc709c1b2424a2adcb998",
+    "Baseline": "examples/metadata/generated-interiors/branching"
+  },
+  {
+    "Id": "hexagon-6-extra0",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/hexagon-6-extra0/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/hexagon-6-extra0/catalog.json",
+    "RecipeBytesSha256": "2782f0f5367e92980e06b8e4168fee9138033603a501c186aa4d2b1adb34a7e7",
+    "CatalogBytesSha256": "bd0c60917c7a889fca9a684c7fb836ed3c96e6631a4914f9b7122229035a1097",
+    "Baseline": "examples/metadata/generated-interiors/hexagonal"
+  },
+  {
+    "Id": "hexagon-6-extra1",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/hexagon-6-extra1/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/hexagon-6-extra1/catalog.json",
+    "RecipeBytesSha256": "cdb44fc7c8ded03fc510419818e5be91a5a71924963675e5e224152352012168",
+    "CatalogBytesSha256": "bd0c60917c7a889fca9a684c7fb836ed3c96e6631a4914f9b7122229035a1097",
+    "Baseline": "examples/metadata/generated-interiors/hexagonal"
+  },
+  {
+    "Id": "hexagon-12-extra0",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/hexagon-12-extra0/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/hexagon-12-extra0/catalog.json",
+    "RecipeBytesSha256": "d8ef5714a8d469a798fe12ee8de0144ce92ad844cb56037dc30daea09089f52d",
+    "CatalogBytesSha256": "68795c45abfa7331d699f2461f4554a8e9ef2b56f577119bc69096082abdb20f",
+    "Baseline": "examples/metadata/generated-interiors/hexagonal"
+  },
+  {
+    "Id": "hexagon-12-extra1",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/hexagon-12-extra1/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/hexagon-12-extra1/catalog.json",
+    "RecipeBytesSha256": "eefbabb13afeed82bb6fe315f10169db58108e77c18b5c179f351f12001a8c82",
+    "CatalogBytesSha256": "68795c45abfa7331d699f2461f4554a8e9ef2b56f577119bc69096082abdb20f",
+    "Baseline": "examples/metadata/generated-interiors/hexagonal"
+  },
+  {
+    "Id": "hexagon-24-extra0",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/hexagon-24-extra0/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/hexagon-24-extra0/catalog.json",
+    "RecipeBytesSha256": "9a73de4a3760d0d56f8fd54880196f7326fe1ea994b5f18cee990d72622dae79",
+    "CatalogBytesSha256": "397d77ecbdcfb3916ed9eba9840821906625d59efdb3c625bfed7e1b7ed85319",
+    "Baseline": "examples/metadata/generated-interiors/hexagonal"
+  },
+  {
+    "Id": "hexagon-24-extra1",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/hexagon-24-extra1/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/hexagon-24-extra1/catalog.json",
+    "RecipeBytesSha256": "3bc3e4d90295873c7c118f82dccbcafa1c099dcc7558f73b5764afa687d7555e",
+    "CatalogBytesSha256": "397d77ecbdcfb3916ed9eba9840821906625d59efdb3c625bfed7e1b7ed85319",
+    "Baseline": "examples/metadata/generated-interiors/hexagonal"
+  },
+  {
+    "Id": "rectangle-16-extra0",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/rectangle-16-extra0/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/rectangle-16-extra0/catalog.json",
+    "RecipeBytesSha256": "e626fd8a3bce9f889f6f26b1a9960f28c6d53aa49fc090e0f33bd07ae63624a8",
+    "CatalogBytesSha256": "f35212e18c54c46d18aadd2e2662825f0c02842c2902e4503abfa38dfe211067",
+    "Baseline": "examples/metadata/generated-interiors/branching"
+  },
+  {
+    "Id": "rectangle-16-extra1",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/rectangle-16-extra1/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/rectangle-16-extra1/catalog.json",
+    "RecipeBytesSha256": "bf5a336ea47f8cf34c71f5e6de2939fb03e8a625b801767f49c1340097c0c2d4",
+    "CatalogBytesSha256": "f35212e18c54c46d18aadd2e2662825f0c02842c2902e4503abfa38dfe211067",
+    "Baseline": "examples/metadata/generated-interiors/branching"
+  },
+  {
+    "Id": "hexagon-16-extra0",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/hexagon-16-extra0/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/hexagon-16-extra0/catalog.json",
+    "RecipeBytesSha256": "09f77ec5dffb0f42c64bec258975b7d97ed817e47820e2eba51927f950f264ea",
+    "CatalogBytesSha256": "84f8340d755213e2cde14ab895d798c5907ad58ac81de00bf26ffe1807d384d9",
+    "Baseline": "examples/metadata/generated-interiors/hexagonal"
+  },
+  {
+    "Id": "hexagon-16-extra1",
+    "Recipe": "examples/metadata/generated-interiors/size-shape-range/hexagon-16-extra1/recipe.json",
+    "Catalog": "examples/metadata/generated-interiors/size-shape-range/hexagon-16-extra1/catalog.json",
+    "RecipeBytesSha256": "caac4e5d27d8e525b6cb72f540260db4a6da2bf949d07c257af1ff40685145f6",
+    "CatalogBytesSha256": "84f8340d755213e2cde14ab895d798c5907ad58ac81de00bf26ffe1807d384d9",
+    "Baseline": "examples/metadata/generated-interiors/hexagonal"
+  }
+]

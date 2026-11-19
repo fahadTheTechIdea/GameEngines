@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "pack": "factory",
+  "resources": [
+    { "id": "factory.iron-plate", "name": "Iron plate", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["metal", "plate"], "properties": {} },
+    { "id": "factory.copper-plate", "name": "Copper plate", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["metal", "plate"], "properties": {} },
+    { "id": "factory.steel-plate", "name": "Steel plate", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["metal", "plate"], "properties": {} },
+    { "id": "factory.copper-wire", "name": "Copper wire", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["electronic"], "properties": {} },
+    { "id": "factory.gear", "name": "Gear", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["mechanical"], "properties": {} },
+    { "id": "factory.pipe", "name": "Pipe", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["mechanical"], "properties": {} },
+    { "id": "factory.circuit", "name": "Circuit board", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["electronic"], "properties": {} },
+    { "id": "factory.petroleum-gas", "name": "Petroleum gas", "class": "gas", "unit": "m3", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["gas", "chemical"], "properties": {} },
+    { "id": "factory.heavy-oil", "name": "Heavy oil", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["liquid", "chemical"], "properties": {} },
+    { "id": "factory.plastic", "name": "Plastic", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["chemical"], "properties": {} },
+    { "id": "factory.battery", "name": "Battery", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["electronic", "chemical"], "properties": {} },
+    { "id": "factory.electric-motor", "name": "Electric motor", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["mechanical", "electronic"], "properties": {} },
+    { "id": "factory.engine-unit", "name": "Engine unit", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["mechanical"], "properties": {} },
+    { "id": "factory.belt", "name": "Conveyor belt", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["logistics"], "properties": {} },
+    { "id": "factory.inserter", "name": "Inserter", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["logistics"], "properties": {} },
+    { "id": "factory.assembler-unit", "name": "Assembler unit", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 10 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["machine"], "properties": { "crafting-speed": 0.75 } },
+    { "id": "factory.drill", "name": "Mining drill", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 10 }, "grade": null, "perishable": null, "durability": { "uses": 5000 }, "currency": null, "cpc": "4", "tags": ["machine", "mining"], "properties": {} },
+    { "id": "factory.automation-pack", "name": "Automation science pack", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["science"], "properties": {} },
+    { "id": "factory.logistics-pack", "name": "Logistics science pack", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["science"], "properties": {} },
+    { "id": "factory.chemical-pack", "name": "Chemical science pack", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["science"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "factory.assembler", "name": "Assembling machine", "levels": 3 },
+    { "id": "factory.refinery", "name": "Oil refinery", "levels": 1 },
+    { "id": "factory.chem-plant", "name": "Chemical plant", "levels": 1 },
+    { "id": "factory.lab", "name": "Research lab", "levels": 1 },
+    { "id": "factory.boiler", "name": "Boiler and generator", "levels": 1 }
+  ]
+}

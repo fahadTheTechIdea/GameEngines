@@ -89,6 +89,11 @@ namespace Beep.SimEngine.Standard
             composer.Services.Bind<IBusinessSales>(sales); composer.AddSystem(sales, 599);
             if (rules.TradingEnabled) composer.Services.Bind<IResourceSaleSettlement>(accounts);
             composer.Events.Register<BusinessSaleFact>(BusinessSaleFact.EventId, 1);
+            if (accounts != null)
+            {
+                composer.Events.Register<BusinessCashChanged>(BusinessCashChanged.EventId, 1);
+                composer.AddSystem(new CashChangeSystem(composer.World, accounts), 9000);
+            }
             composer.AddViewFeature(Id, 11, (world, viewer) => new BusinessView(world, viewer));
         }
         private static string ReadIdentity(JsonReader settings, string key)

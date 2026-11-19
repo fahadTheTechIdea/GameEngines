@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- OFFLINE authoring aid, never a runtime dependency: reads the per-seed rows a balance sweep wrote and proposes integer tailPpm rungs for a hazard's severity ladder by a peaks-over-threshold fit (generalized Pareto, probability-weighted moments). It is the only place in the engines that uses floating point; it prints its inputs and the integer result so a person can reproduce the number. No runtime project references it (a test fails if one does). -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><AssemblyName>EngineCommon.TailTool</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="EngineCommon.Balance.Tests" />
+  </ItemGroup>
+</Project>

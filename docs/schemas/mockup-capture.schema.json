@@ -160,6 +160,16 @@
                     "null"
                   ]
                 }
+              },
+              "segmentWidthsPixels": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "number"
+                },
+                "default": null
               }
             },
             "required": [

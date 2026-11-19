@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DialogueEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="DialogueEngine.html" aria-current="page">DialogueEngine</a>
+      <a href="../DIALOGUE_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>DialogueEngine</h1>
+  <p class="lede">Conversations and quests: branching lines with guards and effects, choices with availability and timeouts, random and variant nodes, calls and interruptions, quest stages, content warnings, kept history, save and hot reload — plus Yarn Spinner and Ink importers.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">pure runtime</span>
+    <span class="tag">localisation keys</span>
+    <span class="tag">save / reload</span>
+    <span class="tag">Yarn · Ink import</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#document">Document format</a></li>
+    <li><a href="#nodes">Nodes</a></li>
+    <li><a href="#effects">Effects</a></li>
+    <li><a href="#api">Runtime API</a></li>
+    <li><a href="#quests">Quests and stages</a></li>
+    <li><a href="#warnings">Content warnings</a></li>
+    <li><a href="#localisation">Localisation and translation</a></li>
+    <li><a href="#save">Save, history and reload</a></li>
+    <li><a href="#import">Importers</a></li>
+    <li><a href="#cli">Command line</a></li>
+    <li><a href="#component">GameRuntime integration</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>DialogueEngine runs an authored conversation graph and keeps the session state: variables, quest progress, visit counts, the call/interrupt stack, the waiting queue and a bounded history. Text is never stored in the document — every line, option and quest title is a localisation key with typed arguments, so one document serves every language.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Graph validation, execution, choices, random and variant selection, calls, priority and queueing, quests, content warnings, history, save and hot reload.</p></div>
+  <div class="card"><h3>It does not own</h3><p>Rendering, portraits and audio assets, the speaker roster (an <code>ISpeakerCatalog</code> answers), timers (the host calls <code>Timeout</code>), or the localised strings.</p></div>
+  <div class="card"><h3>Deterministic</h3><p>Random choices are seeded rolls keyed by conversation, node and roll counter. The same session and seed replay identically.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/DialogueEngine/DialogueEngine.Core</code></td><td>Reader and checks, runtime, state, save, history, reload map, locale coverage, translation sheet, Yarn/Ink importers.</td><td>net8.0</td></tr>
+    <tr><td><code>src/DialogueEngine/DialogueEngine.Cli</code></td><td><code>check</code>, <code>explain</code>, string export/import, coverage, graph, import, reload-map.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Dialogue</code></td><td><code>DialogueComponent</code>, request port, triggers, input component, checkpoint.</td><td>net8.0</td></tr>
+  </tbody>
+</table>
+
+<h2 id="document" class="anchor">Document format</h2>
+<pre><code>{ "format": 3, "id": "harbour.dialogue",
+  "variables": [ { "id": "trust", "type": "int", "initial": 0, "min": 0, "max": 10 } ],
+  "externalFacts": [ { "id": "met_guard", "type": "bool" } ],
+  "speakers": [ { "id": "mara", "portraits": ["calm"], "emotions": ["warm", "angry"] } ],
+  "quests": [ { "id": "hold", "titleKey": "quest.hold.title",
+                "startStage": "order",
+                "stages": [ { "id": "order", "journalKey": "quest.hold.order", "advance": [] } ] } ],
+  "conversations": [ { "id": "main", "start": "hi", "priority": 0, "onBusy": "queue", "interruptible": true,
+    "nodes": [ { "id": "hi", "kind": "line", "speaker": "mara", "portrait": "calm",
+                 "key": "main.hi", "args": { "name": "ext.player_name" }, "next": "ask" } ] } ],
+  "historyLimit": 100,
+  "contentWarnings": [ { "tag": "violence", "fact": "comfort_violence", "action": "skip" } ] }</code></pre>
+<p>Strict JSON: unknown/missing fields, duplicate ids, unknown speakers/portraits, unreachable nodes, loops without a wait, call cycles and silent chains are refused (<code>DLG_*</code>). The document stores a SHA-256 digest of its exact text; a save names it.</p>
+
+<h2 id="nodes" class="anchor">Nodes</h2>
+<table>
+  <thead><tr><th>Kind</th><th>Behaviour</th></tr></thead>
+  <tbody>
+    <tr><td><code>line</code></td><td>Speaker, portrait, key, typed args, optional tags/voice/emotion/auto-advance, <code>glue</code>, content-warning <code>alternative</code>. Waits for <code>Next</code> unless a skip warning passes it.</td></tr>
+    <tr><td><code>choice</code></td><td>Options with a guard, <code>showWhenUnavailable</code>, weight, effects, tags and next. A seeded choice picks among available weighted options; a timeout names the option the host should take.</td></tr>
+    <tr><td><code>branch</code></td><td>Ordered <code>cases</code> of guard + next, with an <code>otherwise</code> target.</td></tr>
+    <tr><td><code>random</code></td><td>Weighted outcomes; the roll is <code>(seed, conversation, node, counter)</code>.</td></tr>
+    <tr><td><code>effects</code></td><td>Applies effects in order, then goes to <code>next</code>.</td></tr>
+    <tr><td><code>call</code> / <code>return</code></td><td>Runs another conversation as a subroutine and returns a result; call cycles are refused.</td></tr>
+    <tr><td><code>variant</code></td><td>Offers an option list by mode and an <code>exhausted</code> target when none remain (seen-once or shuffle-once text).</td></tr>
+    <tr><td><code>end</code></td><td>Ends the conversation with a result string.</td></tr>
+  </tbody>
+</table>
+<p><code>Guard</code> is the shared condition grammar over document variables and <code>ext.*</code> facts. Effects and conditions record which facts they need, which the loader uses for checks.</p>
+
+<h2 id="effects" class="anchor">Effects</h2>
+<table>
+  <thead><tr><th>Effect</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>set</code></td><td>Set a variable to a literal or fact value.</td></tr>
+    <tr><td><code>add</code></td><td>Add to a numeric variable, clamped to its range.</td></tr>
+    <tr><td><code>startQuest</code>, <code>setStage</code>, <code>finishQuest</code></td><td>Move a quest to its start, a stage or a terminal status.</td></tr>
+    <tr><td><code>signal</code></td><td>Raise a named signal with literal or variable arguments for the game layer.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="api" class="anchor">Runtime API</h2>
+<pre><code>var set     = DialogueLoader.Load(json, speakerCatalog);   // format 3; catalog answers who may speak
+var runtime = new DialogueRuntime(set, seed);
+var facts   = new Dictionary&lt;string, FactValue&gt; { ["met_guard"] = FactValue.From(true) };
+
+DialogueStep step = runtime.Start("main", facts);
+// step.Kind: Line | Choices | Ended | Queued
+step = runtime.Next(facts);           // after a line
+step = runtime.Choose("option-id", facts);
+step = runtime.Timeout(facts);        // host clock decided the choice timed out
+var why = runtime.ExplainChoice(facts);  // Availability + reason per option
+runtime.Interrupt("alarm", facts);    // preempt if allowed by priority/interruptible</code></pre>
+<ul>
+  <li>Starting a conversation while one is open follows <code>onBusy</code>: refuse (<code>DLG_BUSY</code>), queue, or preempt by priority.</li>
+  <li>Unavailable options are hidden or shown disabled; choosing one is refused (<code>DLG_OPTION_UNAVAILABLE</code>).</li>
+  <li>A step limit and call-depth limit prevent an unbounded graph (<code>DLG_STEP_LIMIT</code>, <code>DLG_CALL_DEPTH</code>).</li>
+  <li>Every step carries the events raised on the way (<code>VariableEvent</code>, <code>QuestEvent</code>, <code>SignalEvent</code>, <code>ConversationEvent</code>, <code>SkippedEvent</code>).</li>
+</ul>
+
+<h2 id="quests" class="anchor">Quests and stages</h2>
+<p><code>QuestDef</code> has an id, title key, start stage and ordered stages. Each <code>StageDef</code> has a journal key, a list of <code>StageRule</code> (guard → next stage) and an optional terminal <code>ends</code> status. <code>StartQuest</code> and <code>UpdateQuests(external)</code> return the events raised; statuses are <code>NotStarted</code>, <code>Active</code>, <code>Completed</code>, <code>Failed</code>, <code>Abandoned</code>. A quest that cannot advance and loops is refused (<code>DLG_QUEST_LOOP</code>).</p>
+
+<h2 id="warnings" class="anchor">Content warnings</h2>
+<p><code>contentWarnings</code> maps a tag to an external fact and an action. When a tagged line is reached and the fact is true, <code>skip</code> passes the line without showing it (it does not wait), and <code>replace</code> shows the node's declared <code>alternative</code> key instead. Warnings must be declared by the tag the node uses (<code>DLG_CW_UNDECLARED</code>), must name an external fact (<code>DLG_CW_FACT</code>), and a replacing warning needs an alternative (<code>DLG_CW_ALTERNATIVE</code>).</p>
+
+<h2 id="localisation" class="anchor">Localisation and translation</h2>
+<ul>
+  <li><code>DialogueSet.Keys</code> lists every key and its placeholder names; <code>KeyUses</code> says where each is used.</li>
+  <li><code>TranslationSheet</code> exports and imports a translator sheet, validating placeholders and rejecting stale or unknown keys (<code>SheetImport</code>).</li>
+  <li><code>LocaleCoverage</code> reports missing, extra and malformed entries per table.</li>
+  <li>Plural forms follow CLDR categories; the locale table decides the form.</li>
+</ul>
+
+<h2 id="save" class="anchor">Save, history and reload</h2>
+<ul>
+  <li><code>DialogueSave.Write(runtime)</code> / <code>DialogueSave.Open(set, bytes)</code>; <code>StateDigest(state)</code> and <code>Canonical(state)</code> for journals.</li>
+  <li>A save verifies the document digest (<code>DLG_SAVE_DOCUMENT</code>) and its own state digest (<code>DLG_SAVE_STATE</code>).</li>
+  <li><code>HistoryLog</code> keeps up to <code>historyLimit</code> shown lines and taken answers (line/answer, speaker, key, args, chosen option, seen, skipped, replaced).</li>
+  <li><code>Reload(next, mode, map)</code> hot-swaps a document. <code>ReloadMap</code> follows renamed variables, quests and nodes; an incompatible reload is refused (<code>DLG_RELOAD_INCOMPATIBLE</code>) unless the mode explicitly allows dropping state.</li>
+</ul>
+
+<h2 id="import" class="anchor">Importers</h2>
+<p><code>YarnImporter</code> and <code>InkImporter</code> convert scripts into a dialogue document plus a locale table and report. <code>ImportCapabilities</code> gives the capability matrix: each feature is <code>Converted</code>, <code>Approximated</code>, <code>Dropped</code> or <code>Refused</code> with a sample — never silently lost. Yarn random functions and Ink scoping, threads and shuffle-once/stopping are covered.</p>
+
+<h2 id="cli" class="anchor">Command line</h2>
+<pre><code>DialogueEngine.Cli check &lt;document.json&gt;
+DialogueEngine.Cli explain &lt;document.json&gt; &lt;session.json&gt;
+DialogueEngine.Cli export-strings &lt;document.json&gt; &lt;source&gt; &lt;target&gt; [--source table] [--target table]
+DialogueEngine.Cli import-strings &lt;document.json&gt; &lt;sheet.json&gt; --out &lt;table.json&gt;
+DialogueEngine.Cli coverage &lt;document.json&gt; &lt;table.json&gt; [...]
+DialogueEngine.Cli graph &lt;document.json&gt; [&lt;conversation&gt;]
+DialogueEngine.Cli import yarn|ink &lt;source&gt; --id &lt;id&gt; --locale &lt;locale&gt; --out &lt;doc.json&gt; --strings &lt;table.json&gt; ...
+DialogueEngine.Cli import matrix yarn|ink
+DialogueEngine.Cli reload-map &lt;old.json&gt; &lt;new.json&gt; &lt;map.json&gt;</code></pre>
+<p>Exit codes: <code>0</code> done (coverage complete), <code>1</code> refused or incomplete, <code>2</code> usage or file problem.</p>
+
+<h2 id="component" class="anchor">GameRuntime integration</h2>
+<p><code>DialogueComponent</code> answers start, advance, choose, timeout, interrupt, skip, history and quest requests inside <code>Update</code>; <code>DialogueInputComponent</code> maps input, and <code>DialogueTriggers</code> starts conversations from world facts.</p>
+<table>
+  <thead><tr><th>Request in</th><th>Result out</th></tr></thead>
+  <tbody>
+    <tr><td><code>dialogue.start-requested</code>, <code>advance-requested</code>, <code>choose-requested</code>, <code>quest-start-requested</code>, <code>quests-update-requested</code>, <code>reload-requested</code>, <code>interrupt-requested</code>, <code>timeout-requested</code>, <code>skip-requested</code>, <code>history-requested</code></td><td><code>dialogue.line-shown</code>, <code>choices-shown</code>, <code>ended</code>, <code>signal-raised</code>, <code>quest-changed</code>, <code>variable-changed</code>, <code>reloaded</code>, <code>refused</code>, <code>skipped</code>, <code>conversation-changed</code>, <code>history-entry-listed</code>, <code>history-listed</code></td></tr>
+  </tbody>
+</table>
+<p>Declare the catalog through <code>DialogueChannels.Install(session)</code> before <code>Init</code>. <code>DialogueCheckpoint</code> captures the session state.</p>
+
+<h2 id="testing" class="anchor">Testing</h2>
+<pre><code>dotnet run --project src/DialogueEngine/DialogueEngine.Tests -c Release</code></pre>
+<p>Suites: format and checks, runtime and priorities, quests, content warnings, history, saves and reload maps, locale/plural/CLDR, trace, import and import matrices, fuzz and generated graphs, scale, cheat-free and syntax guards.</p>
+
+<h2 id="source" class="anchor">Source map</h2>
+<dl class="kv">
+  <dt>Reader</dt><dd><code>DialogueReader.cs</code>, <code>DialogueReader.Nodes.cs</code>, <code>DialogueReader.Effects.cs</code>, <code>DialogueReader.Quests.cs</code>, <code>DialogueReader.Checks.cs</code>, <code>DialogueReader.Silent.cs</code></dd>
+  <dt>Runtime</dt><dd><code>DialogueRuntime.cs</code>, <code>DialogueRuntime.History.cs</code>, <code>StepContext.cs</code>, <code>DialogueState.cs</code>, <code>StateRules.cs</code></dd>
+  <dt>Nodes</dt><dd><code>Node.cs</code>, <code>LineNode.cs</code>, <code>ChoiceNode.cs</code>, <code>BranchNode.cs</code>, <code>RandomNode.cs</code>, <code>VariantNode.cs</code>, <code>CallNode.cs</code>, <code>EffectsNode.cs</code>, <code>EndNode.cs</code></dd>
+  <dt>Save and reload</dt><dd><code>DialogueSave.cs</code>, <code>HistoryLog.cs</code>, <code>ReloadMap.cs</code>, <code>ReloadMode.cs</code></dd>
+  <dt>Text</dt><dd><code>TranslationSheet.cs</code>, <code>LocaleCoverage.cs</code>, <code>DialogueTrace.cs</code></dd>
+  <dt>Import</dt><dd><code>Import/YarnImporter*.cs</code>, <code>Import/InkImporter*.cs</code>, <code>ImportCapabilities.cs</code>, <code>ImportReport.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/DialogueEngine</code> and <code>src/GameRuntime/GameRuntime.Dialogue*</code>. Research, audits and importer capability decisions: <a href="../DIALOGUE_ENGINE.md">docs/DIALOGUE_ENGINE.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

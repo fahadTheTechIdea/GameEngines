@@ -1,0 +1,110 @@
+{
+  "SchemaVersion": 1,
+  "Id": "encounter-journey",
+  "GameProfile": "branching-exploration",
+  "CatalogId": "encounter-catalog",
+  "RootArchetypeId": "journey",
+  "Scale": "encounter-graph",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Logical journey only; encounter behavior, reward interaction and spatial realization belong to the consuming game."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [],
+    "Unit": "none"
+  },
+  "Origin": null,
+  "RequireAllPositions": false,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "entry-left",
+      "Kind": "advance",
+      "FromId": "encounter-journey/entry-0",
+      "ToId": "encounter-journey/choices-0",
+      "Bidirectional": false,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "entry-right",
+      "Kind": "advance",
+      "FromId": "encounter-journey/entry-0",
+      "ToId": "encounter-journey/choices-1",
+      "Bidirectional": false,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "left-relay",
+      "Kind": "advance",
+      "FromId": "encounter-journey/choices-0",
+      "ToId": "encounter-journey/relay-0",
+      "Bidirectional": false,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "right-relay",
+      "Kind": "advance",
+      "FromId": "encounter-journey/choices-1",
+      "ToId": "encounter-journey/relay-0",
+      "Bidirectional": false,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "relay-vault",
+      "Kind": "advance",
+      "FromId": "encounter-journey/relay-0",
+      "ToId": "encounter-journey/vault-0",
+      "Bidirectional": false,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "vault-exit",
+      "Kind": "advance",
+      "FromId": "encounter-journey/vault-0",
+      "ToId": "encounter-journey/exit-0",
+      "Bidirectional": false,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": null,
+  "Surface": null,
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": null,
+  "SuitabilityRules": null,
+  "Placement": null,
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": [
+    {
+      "Id": "main-journey",
+      "Purpose": "Reach exit through the relay then vault",
+      "SourceRuleId": "game:journey",
+      "ScopeNodeId": "encounter-journey",
+      "StartNodeId": "encounter-journey/entry-0",
+      "GoalNodeIds": [
+        "encounter-journey/exit-0"
+      ],
+      "ConnectionKinds": [
+        "advance"
+      ],
+      "RequiredMilestones": [
+        "encounter-journey/relay-0",
+        "encounter-journey/vault-0"
+      ],
+      "MaximumWork": 1000000
+    }
+  ]
+}

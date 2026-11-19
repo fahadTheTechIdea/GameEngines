@@ -51,15 +51,30 @@ public sealed class BuildingSizePlanner
         {
             if (variant.ServiceCapacity < demand ||
                 settlement is not null && variant.AllowedClasses is { } classes && !classes.Contains(settlement.Class)) continue;
-            double clearance = variant.SiteClearanceMeters;
-            if (variant.WidthMeters + 2*clearance > maxX-minX + 1e-8 ||
-                variant.DepthMeters + 2*clearance > maxY-minY + 1e-8) continue;
-            double left = (minX+maxX-variant.WidthMeters)/2;
-            double top = frontNorth ? minY+clearance : maxY-clearance-variant.DepthMeters;
-            return new(new WorldPolygon([new(left,top), new(left+variant.WidthMeters,top),
-                new(left+variant.WidthMeters,top+variant.DepthMeters), new(left,top+variant.DepthMeters)]),
-                variant, demand, []);
+            var footprint=FitVariant(variant,minX,minY,maxX,maxY,frontNorth);
+            if(footprint is not null)return new(footprint,variant,demand,[]);
         }
         return Reject("BUILDING_SIZE_OR_CAPACITY_DOES_NOT_FIT", demand);
+    }
+
+    /// <summary>Fits one explicitly selected physical variant. Does not invent settlement demand or qualify resource/siting supplies.</summary>
+    public BuildingSizeResult PlanGeometry(BuildableParcel parcel,BuildingEnvelopeRules envelopeRules,BuildingDefinition definition,string variantId)
+    {
+        ArgumentNullException.ThrowIfNull(definition);definition.Validate();
+        if(definition.PlacementKind!=BuildingPlacementKind.FrontageSite)return new(null,null,0,["BUILDING_PLACEMENT_KIND_UNSUPPORTED"]);
+        if(definition.Id!=envelopeRules.BuildingType)return new(null,null,0,["BUILDING_DEFINITION_MISMATCH"]);
+        var variant=definition.SizeVariants?.SingleOrDefault(v=>v.Id==variantId);
+        if(variant is null)return new(null,null,0,["BUILDING_SIZE_VARIANT_UNKNOWN"]);
+        var envelope=BuildingEnvelopePlanner.Plan(parcel,envelopeRules);
+        if(!envelope.IsFeasible)return new(null,null,0,envelope.Diagnostics);
+        var points=envelope.Footprint!.Vertices;
+        var footprint=FitVariant(variant,points.Min(p=>p.X),points.Min(p=>p.Y),points.Max(p=>p.X),points.Max(p=>p.Y),
+            Math.Abs(parcel.StreetAccess.Y-parcel.Boundary.Vertices.Min(p=>p.Y))<1e-8);
+        return footprint is null?new(null,null,0,["BUILDING_SIZE_OR_CAPACITY_DOES_NOT_FIT"]):new(footprint,variant,0,[]);
+    }
+    private static WorldPolygon? FitVariant(BuildingSizeVariant variant,double minX,double minY,double maxX,double maxY,bool frontNorth)
+    {
+        return BuildingEnvelopePlanner.FitPhysicalRectangle(new([new(minX,minY),new(maxX,minY),new(maxX,maxY),new(minX,maxY)]),
+            variant.WidthMeters,variant.DepthMeters,variant.SiteClearanceMeters,frontNorth);
     }
 }

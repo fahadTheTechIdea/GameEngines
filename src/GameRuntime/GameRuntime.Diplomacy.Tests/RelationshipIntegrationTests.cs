@@ -1,0 +1,261 @@
+using DiplomacyEngine;
+using EngineCommon;
+using RelationshipEngine;
+using ScenarioEngine.Contracts;
+using Xunit;
+
+namespace GameRuntime.Diplomacy.Tests;
+
+/// <summary>The relationship layer and the diplomacy: the leaders' opinions of each other are carried into the realms' regard, and what the realms do to each other happens to their leaders; neither layer reads the other.</summary>
+public sealed class RelationshipIntegrationTests
+{
+    private static readonly RelationshipSet Village = RelationshipLoader.Load(Samples.Read("village.relationship.json"));
+
+    private static readonly Dictionary<string, FactValue> Host = new(StringComparer.Ordinal)
+    {
+        ["cal.season"] = FactValue.From("spring"), ["cal.is_day"] = FactValue.From(true), ["cal.is_holiday"] = FactValue.From(false), ["weather.raining"] = FactValue.From(false),
+    };
+
+    private static DipSet Still() => Samples.Calm(root => Samples.Rules(root, "regard")["trust"] = 0);
+
+    private sealed class Rig
+    {
+        public RuntimeSession Session { get; } = new(new RuntimeClock(50, 8), new Reporter());
+        public DiplomacyComponent Diplomacy { get; }
+        public RelationshipComponent Relationships { get; }
+        public DiplomacyLeaderRegard? Regard { get; }
+        public DiplomacyLeaderOutcomes? Outcomes { get; }
+        public List<RelationshipRefused> Refused { get; } = new();
+        public List<DiplomacyRefused> DiplomacyRefused { get; } = new();
+
+        public Rig(string axis = "affinity", IEnumerable<LeaderRule>? rules = null, DipSet? set = null, bool regard = true, string diplomacyChannel = "", string bridgeDiplomacyChannel = "")
+        {
+            var dip = set ?? Still();
+            var diplomacyChannels = new DiplomacyChannels();
+            diplomacyChannels.Install(Session);
+            var relationshipChannels = new RelationshipChannels();
+            relationshipChannels.Install(Session);
+            Diplomacy = new DiplomacyComponent(DipRuntime.Create(dip), new TickDiplomacyClock(dip), () => Samples.Crisis(), diplomacyChannels, channel: diplomacyChannel);
+            Relationships = new RelationshipComponent(RelationshipRuntime.Create(Village), new TickRelationshipClock(50), () => Host, relationshipChannels);
+            Session.AddComponent(Relationships, 5);
+            Session.AddComponent(Diplomacy, 10);
+            if (regard)
+            {
+                Regard = new DiplomacyLeaderRegard("leaders", Diplomacy, Relationships, axis, diplomacyChannel);
+                Session.AddComponent(Regard, 15);
+            }
+            if (rules is not null)
+            {
+                Outcomes = new DiplomacyLeaderOutcomes("ties", rules, dip, Village, bridgeDiplomacyChannel);
+                Session.AddComponent(Outcomes, 16);
+            }
+            Session.Subscribe<RelationshipRefused>(Refused.Add);
+            Session.Subscribe<DiplomacyRefused>(DiplomacyRefused.Add);
+            Session.Init();
+            Session.Submit(new RelationshipActorAddRequested("add-1", "king-aurel", ""));
+            Session.Submit(new RelationshipActorAddRequested("add-2", "doge-brass", ""));
+            Tick(2);
+        }
+
+        public void Tick(int n = 1) { for (var i = 0; i < n; i++) Assert.Equal(1, Session.Update(20_000)); }
+
+        public void Opinion(string holder, string other, string axis, long delta) => Session.Submit(new RelationshipAxisRequested("o" + holder + other + delta, holder, other, axis, delta));
+    }
+
+    // ---- the leaders' regard, into the diplomacy -------------------------------------------------------------------------------------
+
+    [Fact]
+    public void ALeadersOpinionOfAnotherLeaderBecomesItsRealmsLeaderRegardAndIsWeighedIntoItsRegard()
+    {
+        var rig = new Rig();
+        rig.Tick(3);
+        Assert.Equal(0, rig.Regard!.Sent);
+        var before = rig.Diplomacy.Runtime.RegardOf("aurel", "brass");
+        rig.Opinion("king-aurel", "doge-brass", "affinity", 500);
+        rig.Tick(4);
+        Assert.Equal(1, rig.Regard.Sent);
+        Assert.Equal(500, rig.Diplomacy.Runtime.State.Leader[0 * 5 + 1]);
+        Assert.Equal(0, rig.Diplomacy.Runtime.State.Leader[1 * 5 + 0]);
+        Assert.Equal(before + 500 * 400 / 1000, rig.Diplomacy.Runtime.RegardOf("aurel", "brass"));
+        Assert.Empty(rig.DiplomacyRefused);
+    }
+
+    [Fact]
+    public void ARegardIsOnlySentAgainWhenItChanges()
+    {
+        var rig = new Rig();
+        rig.Opinion("king-aurel", "doge-brass", "affinity", 300);
+        rig.Tick(4);
+        var sent = rig.Regard!.Sent;
+        Assert.Equal(1, sent);
+        rig.Tick(10);
+        Assert.Equal(sent, rig.Regard.Sent);
+        rig.Opinion("doge-brass", "king-aurel", "affinity", -1000);
+        rig.Tick(4);
+        Assert.Equal(sent + 1, rig.Regard.Sent);
+        Assert.Equal(-1000, rig.Diplomacy.Runtime.State.Leader[1 * 5 + 0]);
+        Assert.Equal(300, rig.Diplomacy.Runtime.State.Leader[0 * 5 + 1]);
+    }
+
+    [Fact]
+    public void AnOpinionThatFallsBackToZeroIsToldAsZero()
+    {
+        var rig = new Rig();
+        rig.Opinion("king-aurel", "doge-brass", "affinity", 300);
+        rig.Tick(4);
+        rig.Opinion("king-aurel", "doge-brass", "affinity", -300);
+        rig.Tick(4);
+        Assert.Equal(0, rig.Diplomacy.Runtime.State.Leader[0 * 5 + 1]);
+        Assert.Equal(2, rig.Regard!.Sent);
+    }
+
+    [Theory]
+    [InlineData(0, 0, 1000, -1000)]
+    [InlineData(500, 0, 1000, 0)]
+    [InlineData(1000, 0, 1000, 1000)]
+    [InlineData(250, 0, 1000, -500)]
+    [InlineData(-1000, -1000, 1000, -1000)]
+    [InlineData(0, -1000, 1000, 0)]
+    [InlineData(1000, -1000, 1000, 1000)]
+    [InlineData(500, -1000, 1000, 500)]
+    [InlineData(100, 0, 100, 1000)]
+    [InlineData(2000, 0, 1000, 1000)]
+    [InlineData(-9, 0, 1000, -1000)]
+    public void AnAxisIsStretchedToMinusAThousandToAThousandAroundItsMiddle(long opinion, long min, long max, int expected) => Assert.Equal(expected, DiplomacyLeaderRegard.Stretch(opinion, min, max));
+
+    [Fact]
+    public void AnAxisThatStartsAtZeroIsStretchedToo()
+    {
+        var rig = new Rig("attraction");
+        rig.Tick(3);
+        Assert.Equal(-1000, DiplomacyLeaderRegard.Stretch(0, 0, 1000));
+        Assert.Equal(2, rig.Regard!.Sent);                              // the baseline of attraction is 0, which stretches to -1000: told, both ways, as soon as the leaders are known
+        Assert.Equal(-1000, rig.Diplomacy.Runtime.State.Leader[0 * 5 + 1]);
+        rig.Opinion("king-aurel", "doge-brass", "attraction", 500);
+        rig.Tick(4);
+        Assert.Equal(3, rig.Regard.Sent);
+        Assert.Equal(0, rig.Diplomacy.Runtime.State.Leader[0 * 5 + 1]);
+        Assert.Equal(-1000, rig.Diplomacy.Runtime.State.Leader[1 * 5 + 0]);
+    }
+
+    [Fact]
+    public void ALeaderTheRelationshipLayerDoesNotKnowIsLeftOutUntilItDoes()
+    {
+        var rig = new Rig();
+        rig.Opinion("king-aurel", "doge-brass", "affinity", 400);
+        rig.Tick(4);
+        Assert.Equal(1, rig.Regard!.Sent);                                    // the pairs with the rulers of cinder, dune and ember are not there to read
+        Assert.Equal(0, rig.Diplomacy.Runtime.State.Leader[0 * 5 + 2]);
+        rig.Session.Submit(new RelationshipActorAddRequested("add-3", "queen-cinder", ""));
+        rig.Tick(2);
+        rig.Opinion("queen-cinder", "king-aurel", "affinity", 200);
+        rig.Tick(4);
+        Assert.Equal(2, rig.Regard.Sent);
+        Assert.Equal(200, rig.Diplomacy.Runtime.State.Leader[2 * 5 + 0]);
+    }
+
+    [Fact]
+    public void TheBridgeIsCheckedAgainstBothDocumentsWhenTheGameIsAssembled()
+    {
+        Assert.Equal(DiplomacyLeaderRegard.BadAxis, Samples.Code(() => new Rig("nonsense")));
+        var dip = Still();
+        var channels = new DiplomacyChannels();
+        var relationshipChannels = new RelationshipChannels();
+        var diplomacy = new DiplomacyComponent(DipRuntime.Create(dip), new TickDiplomacyClock(dip), () => Samples.Crisis(), channels);
+        var relationships = new RelationshipComponent(RelationshipRuntime.Create(Village), new TickRelationshipClock(50), () => Host, relationshipChannels);
+        var noLeaders = Samples.Calm(root => { foreach (var realm in root["realms"]!.AsArray()) realm!["leader"] = ""; });
+        var leaderless = new DiplomacyComponent(DipRuntime.Create(noLeaders), new TickDiplomacyClock(noLeaders), () => Samples.Crisis(), channels, id: "leaderless");
+        Assert.Equal(DiplomacyLeaderRegard.BadAxis, Samples.Code(() => new DiplomacyLeaderRegard("l", leaderless, relationships, "affinity")));
+        Assert.Throws<ArgumentNullException>(() => new DiplomacyLeaderRegard("l", null!, relationships, "affinity"));
+        Assert.Throws<ArgumentNullException>(() => new DiplomacyLeaderRegard("l", diplomacy, null!, "affinity"));
+        Assert.NotNull(new DiplomacyLeaderRegard("l", diplomacy, relationships, "trust"));
+    }
+
+    [Fact]
+    public void AnUpdateBeforeInitFails()
+    {
+        var dip = Still();
+        var diplomacy = new DiplomacyComponent(DipRuntime.Create(dip), new TickDiplomacyClock(dip), () => Samples.Crisis(), new DiplomacyChannels());
+        var relationships = new RelationshipComponent(RelationshipRuntime.Create(Village), new TickRelationshipClock(50), () => Host, new RelationshipChannels());
+        var bridge = new DiplomacyLeaderRegard("l", diplomacy, relationships, "affinity");
+        Assert.Throws<InvalidOperationException>(() => bridge.Update(new UpdateContext(1, 0, 0.0, 0)));
+    }
+
+    // ---- what the realms do, to their leaders ---------------------------------------------------------------------------------------
+
+    private static readonly LeaderRule[] Ties =
+    [
+        new("treaty:marriage:signed", LeaderEffectKind.Bond, "spouse"),
+        new("treaty:alliance:signed", LeaderEffectKind.Axis, "affinity", 300),
+        new("treaty:alliance:broken", LeaderEffectKind.Remember, "was-insulted", 1000, Both: false),
+        new("war:declared", LeaderEffectKind.Bond, "sworn-rival"),
+    ];
+
+    [Fact]
+    public void AMarriageBetweenRealmsIsABondBetweenTheirRulers()
+    {
+        var rig = new Rig(rules: Ties, regard: false);
+        rig.Diplomacy.Runtime.Propose("aurel", "brass", "marriage", 0, 0);
+        rig.Tick(10);
+        var relations = rig.Relationships.Runtime;
+        Assert.Contains("spouse", relations.Actor("king-aurel").Edges["doge-brass"].Bonds.Select(b => relations.Set.Bonds[b].Id));
+        Assert.Equal(2, rig.Outcomes!.Requested);
+        Assert.Empty(rig.Refused);
+    }
+
+    [Fact]
+    public void AllianceMovesAnAxisAndWarSetsARivalryAndABetrayalLeavesAMemoryForOneRulerOnly()
+    {
+        var rig = new Rig(rules: Ties, regard: false);
+        rig.Diplomacy.Runtime.Propose("aurel", "brass", "alliance", 0, 0);
+        rig.Tick(8);
+        var relations = rig.Relationships.Runtime;
+        Assert.True(relations.Opinion("king-aurel", "doge-brass", relations.Set.AxisById["affinity"].Index) >= 300);
+        Assert.True(relations.Opinion("doge-brass", "king-aurel", relations.Set.AxisById["affinity"].Index) >= 300);
+        var treaty = rig.Diplomacy.Runtime.Treaties[0];
+        rig.Session.Submit(new DiplomacyRequested("c", "cancel", "aurel", "", "", treaty.Id));
+        rig.Tick(4);
+        Assert.Equal(1, relations.MemoryCount("king-aurel", "doge-brass", relations.Set.MemoryById["was-insulted"].Index));
+        Assert.Equal(0, relations.MemoryCount("doge-brass", "king-aurel", relations.Set.MemoryById["was-insulted"].Index));
+        rig.Session.Submit(new DiplomacyRequested("w", "declare", "aurel", "brass"));
+        rig.Tick(4);
+        Assert.Contains("sworn-rival", relations.Actor("king-aurel").Edges["doge-brass"].Bonds.Select(b => relations.Set.Bonds[b].Id));
+        Assert.Empty(rig.Refused);
+    }
+
+    [Fact]
+    public void ARealmWithoutALeaderHasNoRulerToAffectAndAnotherChannelIsNotListenedTo()
+    {
+        var rig = new Rig(rules: Ties, regard: false, set: Samples.Calm(root => Samples.Realm(root, "brass")["leader"] = ""));
+        rig.Diplomacy.Runtime.Propose("aurel", "brass", "marriage", 0, 0);
+        rig.Tick(10);
+        Assert.Equal(0, rig.Outcomes!.Requested);
+        var deaf = new Rig(rules: Ties, regard: false, diplomacyChannel: "north", bridgeDiplomacyChannel: "south");
+        deaf.Session.Submit(new DiplomacyRequested("p", "propose", "aurel", "brass", "marriage", 0, 0, "north"));
+        deaf.Tick(10);
+        Assert.Equal(0, deaf.Outcomes!.Requested);
+    }
+
+    [Fact]
+    public void RulesAreCheckedAgainstBothDocumentsWhenTheGameIsAssembled()
+    {
+        var dip = Samples.Isles;
+        void Bad(LeaderRule rule, string fragment)
+        {
+            var refusal = Assert.Throws<EngineRefusedException>(() => new DiplomacyLeaderOutcomes("t", [rule], dip, Village));
+            Assert.Equal(DiplomacyLeaderOutcomes.BadRule, refusal.Code);
+            Assert.Contains(fragment, refusal.Message, StringComparison.Ordinal);
+        }
+        Bad(new LeaderRule("nonsense", LeaderEffectKind.Bond, "spouse"), "must be treaty:<type>:<change> or war:<change>");
+        Bad(new LeaderRule("treaty:charter:signed", LeaderEffectKind.Bond, "spouse"), "must be treaty:<type>:<change>");
+        Bad(new LeaderRule("treaty:marriage:blessed", LeaderEffectKind.Bond, "spouse"), "must be treaty:<type>:<change>");
+        Bad(new LeaderRule("war:won", LeaderEffectKind.Bond, "spouse"), "must be treaty:<type>:<change> or war:<change>");
+        Bad(new LeaderRule("treaty:marriage:signed", LeaderEffectKind.Bond, "friend"), "no bond 'friend'");
+        Bad(new LeaderRule("treaty:marriage:signed", LeaderEffectKind.Axis, "charm"), "no axis 'charm'");
+        Bad(new LeaderRule("treaty:marriage:signed", LeaderEffectKind.Remember, "dream"), "no memory 'dream'");
+        Assert.NotNull(new DiplomacyLeaderOutcomes("t", Ties, dip, Village));
+        Assert.Throws<ArgumentNullException>(() => new DiplomacyLeaderOutcomes("t", null!, dip, Village));
+        Assert.Throws<ArgumentNullException>(() => new DiplomacyLeaderOutcomes("t", [], null!, Village));
+        Assert.Throws<ArgumentNullException>(() => new DiplomacyLeaderOutcomes("t", [], dip, null!));
+    }
+}

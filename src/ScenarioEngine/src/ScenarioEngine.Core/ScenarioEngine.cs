@@ -15,6 +15,8 @@ public sealed partial class ScenarioEngine : IScenarioSimulation
     private readonly IEngineReporter _reporter;
     private SessionSnapshot _state;
     private bool _stepping;
+    private readonly bool _usesTickCondition;
+    private bool _evaluatedOnce;
     private readonly ImmutableArray<ObjectiveDefinition> _objectiveOrder;
 
     internal ScenarioEngine(ValidatedScenario scenario, ScenarioStartOptions options, WorldFrame world,
@@ -31,6 +33,7 @@ public sealed partial class ScenarioEngine : IScenarioSimulation
         options = options with { Controllers = options.Controllers.WithComparer(StringComparer.Ordinal) };
         if (restored is not null) SessionSnapshotRules.Validate(restored);
         _objectiveOrder = ScenarioDefinitionRules.ValidateAndOrder(scenario.Definition, layer.Capabilities);
+        _usesTickCondition = ReferencesTick(scenario.Definition);
         foreach (var effect in scenario.Definition.Objectives.SelectMany(o => o.SuccessEffects.Concat(o.FailureEffects)))
             RequireValid(validator.Validate(layer.Capabilities.Effects[effect.Type], effect.Arguments), "EFFECT_ARGUMENTS");
         RequireValid(validator.Validate(layer.Capabilities.ContentSchema, scenario.Definition.LayerData), "LAYER_CONTENT");
@@ -43,7 +46,7 @@ public sealed partial class ScenarioEngine : IScenarioSimulation
             throw new ScenarioContractException("WORLD_INITIAL", "Restored world does not match the snapshot boundary.");
         _runtime = layer.Create(new(scenario.Definition, options, FreezeWorld(world)));
         _state = restored ?? new(scenario.Identity, options.SessionId, options.Seed, options.Controllers,
-            SessionPhase.Ready, 0, world.Generation, 0, 0, 0,
+            SessionPhase.Running, 0, world.Generation, 0, 0, 0,
             scenario.Definition.Objectives.ToImmutableDictionary(o => o.Id, _ => ObjectiveStatus.Locked, StringComparer.Ordinal),
             ImmutableHashSet<string>.Empty, null, null, Freeze(_runtime.InitialState), [],
             ImmutableDictionary<string, CommandReceipt>.Empty, ImmutableDictionary<string, RandomStreamState>.Empty);
@@ -70,6 +73,7 @@ public sealed partial class ScenarioEngine : IScenarioSimulation
                 !_validator.Validate(schema, pending.Command.Payload).IsValid)
                 throw new ScenarioContractException("SNAPSHOT_COMMANDS", "Restored command is not supported by the selected layer.");
         ProjectFacts(_state.Layer, _state.Tick, _state.Objectives);
+        _evaluatedOnce = restored is not null && restored.Tick > 0;
     }
 
     public SessionSnapshot Snapshot => _state;
@@ -80,7 +84,7 @@ public sealed partial class ScenarioEngine : IScenarioSimulation
         try
         {
             if (_stepping) return new(false, "ENGINE_BUSY", null);
-            if (_state.Phase is not (SessionPhase.Running or SessionPhase.Paused or SessionPhase.Ready))
+            if (_state.Phase is not (SessionPhase.Running))
                 return Denied("COMMAND_PHASE");
             if (string.IsNullOrWhiteSpace(command.CommandId) || command.CommandId.Length > 128 ||
                 !_state.Controllers.Contains(command.ControllerId))
@@ -129,7 +133,7 @@ public sealed partial class ScenarioEngine : IScenarioSimulation
         try
         {
             if (_stepping) return new(false, "ENGINE_BUSY", null);
-            if (_state.Phase is not (SessionPhase.Running or SessionPhase.Paused or SessionPhase.Ready)) return Denied("COMMAND_PHASE");
+            if (_state.Phase is not (SessionPhase.Running)) return Denied("COMMAND_PHASE");
             if (!_state.Receipts.TryGetValue(commandId, out var receipt) || receipt.ControllerId != controllerId)
                 return Denied("COMMAND_DENIED");
             if (receipt.Status == CommandStatus.Cancelled) return new(true, "CANCELLED", receipt.Sequence);
@@ -150,23 +154,8 @@ public sealed partial class ScenarioEngine : IScenarioSimulation
         return new(false, code, null);
     }
 
-    public void Start() => ChangePhase(SessionPhase.Ready, SessionPhase.Running);
-    public void Pause() => ChangePhase(SessionPhase.Running, SessionPhase.Paused);
-    public void Resume() => ChangePhase(SessionPhase.Paused, SessionPhase.Running);
-    private void ChangePhase(SessionPhase expected, SessionPhase next)
-    {
-        if (!Monitor.TryEnter(_gate)) throw new ScenarioContractException("ENGINE_BUSY", "Concurrent lifecycle change.");
-        try
-        {
-            if (_stepping) throw new ScenarioContractException("ENGINE_BUSY", "Reentrant lifecycle change.");
-            if (_state.Phase != expected) throw new ScenarioContractException("SESSION_PHASE", "Illegal lifecycle transition.");
-            _state = _state with { Phase = next };
-            _reporter.Report(new("SESSION_" + next.ToString().ToUpperInvariant(), "Session phase changed.", Severity.Information, _state.SessionId));
-        }
-        finally { Monitor.Exit(_gate); }
-    }
 
-    public StepResult Step(TickInput input)
+    public StepResult Update(TickInput input)
     {
         if (!Monitor.TryEnter(_gate)) return NotCommitted("ENGINE_BUSY");
         try
@@ -197,6 +186,15 @@ public sealed partial class ScenarioEngine : IScenarioSimulation
         if (worldError is not null) return NotCommitted(worldError);
         var world = FreezeWorld(input.World);
         var commands = before.PendingCommands.Where(c => c.Command.TargetTick == input.Tick).OrderBy(c => c.Sequence).ToImmutableArray();
+        if (commands.IsEmpty && world.Observations.IsEmpty && before.Phase == SessionPhase.Running && _evaluatedOnce && !_usesTickCondition &&
+            _runtime is IIdleTickRuntime idle && idle.CanSkipIdleTick(before.Layer))
+        {
+            // Nothing arrived and the layer does no time-based work: record the tick without resolving the layer or the graph.
+            var quiet = before with { Tick = input.Tick };
+            ValidateSnapshot(quiet);
+            _state = quiet;
+            return new(true, "COMMITTED", quiet.Tick, [], [], quiet, StateHash(quiet));
+        }
         var random = new PcgRandomStreams(before.Seed, before.RandomStreams);
         var context = new LayerTickContext(input.Tick, TimeSpan.FromMilliseconds(50), world, commands, random);
         var layerResult = _runtime.Resolve(Freeze(before.Layer), context);
@@ -282,6 +280,7 @@ public sealed partial class ScenarioEngine : IScenarioSimulation
         var requests = layerResult.WorldRequests.Select(r => r with { Payload = r.Payload.Clone() }).ToImmutableArray();
         if (phase == SessionPhase.Ended)
             _reporter.Audit(new("ScenarioEnded", outcomeId!, "committed", before.SessionId));
+        _evaluatedOnce = true;
         _state = next;
         return new(true, "COMMITTED", next.Tick, events, requests, next, hash);
     }
@@ -348,4 +347,21 @@ public sealed partial class ScenarioEngine : IScenarioSimulation
             _state = _state with { Phase = SessionPhase.Disposed };
         }
     }
+}
+
+public sealed partial class ScenarioEngine
+{
+    private static bool ReferencesTick(ScenarioDefinition definition) =>
+        ReferencesTick(definition.ClosingCondition) ||
+        definition.Endings.Any(e => ReferencesTick(e.Condition)) ||
+        definition.Objectives.Any(o => ReferencesTick(o.ActivateWhen) || ReferencesTick(o.CompleteWhen) || ReferencesTick(o.FailWhen));
+
+    private static bool ReferencesTick(Condition condition) => condition switch
+    {
+        AllCondition all => all.Children.Any(ReferencesTick),
+        AnyCondition any => any.Children.Any(ReferencesTick),
+        NotCondition not => ReferencesTick(not.Child),
+        CompareCondition compare => compare.Fact == "core.tick",
+        _ => throw new ScenarioContractException("CONDITION_CONTRACT", "Unknown condition node."),
+    };
 }

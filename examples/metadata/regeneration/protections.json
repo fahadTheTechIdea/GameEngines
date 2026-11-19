@@ -1,0 +1,16 @@
+[
+  {
+    "Id": "protected-placement",
+    "Input": "Recipe",
+    "Pointer": "/Placement",
+    "Purpose": "Preserve authored compound anchors and constraints",
+    "SourceRuleId": "developer:placement"
+  },
+  {
+    "Id": "required-catalog",
+    "Input": "Catalog",
+    "Pointer": "",
+    "Purpose": "Preserve complete source-sized content",
+    "SourceRuleId": "developer:content"
+  }
+]

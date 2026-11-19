@@ -1,0 +1,1877 @@
+{
+  "SchemaVersion": 1,
+  "Id": "coastal-mixed-world",
+  "GameProfile": "framework-coastal-reference",
+  "CatalogId": "coastal-programs",
+  "RootArchetypeId": "root",
+  "Scale": "settlement",
+  "Coverage": "CompleteDeclaredScope",
+  "RemainingScopes": [],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    20,
+    20
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "west",
+      "Kind": "west-travel",
+      "FromId": "coastal-mixed-world/planned-0/sites-0",
+      "ToId": "coastal-mixed-world/planned-0/sites-1",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "east",
+      "Kind": "east-travel",
+      "FromId": "coastal-mixed-world/field-0/sites-0",
+      "ToId": "coastal-mixed-world/field-0/sites-2",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "regional",
+      "Kind": "regional-travel",
+      "FromId": "coastal-mixed-world/planned-0/sites-1",
+      "ToId": "coastal-mixed-world/field-0/sites-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "coastal-terrain",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 175,
+          "Y": 0
+        },
+        {
+          "X": 200,
+          "Y": 30
+        },
+        {
+          "X": 196,
+          "Y": 100
+        },
+        {
+          "X": 165,
+          "Y": 160
+        },
+        {
+          "X": 0,
+          "Y": 160
+        }
+      ]
+    },
+    "Exclusions": [
+      {
+        "Id": "shore-reserve",
+        "Purpose": "Undeveloped coastal shore; no construction or routes",
+        "SourceRuleId": "coastal:shore",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 108,
+              "Y": 126
+            },
+            {
+              "X": 142,
+              "Y": 106
+            },
+            {
+              "X": 182,
+              "Y": 116
+            },
+            {
+              "X": 165,
+              "Y": 160
+            },
+            {
+              "X": 100,
+              "Y": 160
+            }
+          ]
+        }
+      }
+    ],
+    "Patches": [
+      {
+        "Id": "lowland",
+        "Kind": "ground",
+        "Purpose": "Lowland district foundation",
+        "SourceRuleId": "coastal:lowland",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 175,
+              "Y": 0
+            },
+            {
+              "X": 200,
+              "Y": 30
+            },
+            {
+              "X": 196,
+              "Y": 100
+            },
+            {
+              "X": 165,
+              "Y": 160
+            },
+            {
+              "X": 0,
+              "Y": 160
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 0,
+        "GradientX": 0.01,
+        "GradientY": 0
+      },
+      {
+        "Id": "hillside",
+        "Kind": "ground",
+        "Purpose": "Continuous hillside grade",
+        "SourceRuleId": "coastal:hillside",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 100,
+              "Y": 0
+            },
+            {
+              "X": 200,
+              "Y": 0
+            },
+            {
+              "X": 200,
+              "Y": 160
+            },
+            {
+              "X": 100,
+              "Y": 160
+            }
+          ]
+        },
+        "Priority": 1,
+        "Origin": {
+          "X": 100,
+          "Y": 0
+        },
+        "Elevation": 1,
+        "GradientX": 0.08,
+        "GradientY": 0
+      }
+    ],
+    "Terrain": null,
+    "HeightField": null
+  },
+  "RouteRules": [
+    {
+      "Id": "west-route",
+      "ConnectionKind": "west-travel",
+      "Profile": {
+        "Id": "walking",
+        "Purpose": "Connect required local programs",
+        "SourceRuleId": "interface:walking",
+        "Radius": 0.3,
+        "MaximumSlope": 1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 2,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001,
+        "Guidance": [
+          {
+            "Id": "planned-region",
+            "Purpose": "Local path alignment ends at the regional interface",
+            "SourceRuleId": "mixed-regions:alignment",
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": 0,
+                  "Y": 0
+                },
+                {
+                  "X": 100,
+                  "Y": 0
+                },
+                {
+                  "X": 100,
+                  "Y": 160
+                },
+                {
+                  "X": 0,
+                  "Y": 160
+                }
+              ]
+            },
+            "Axes": [
+              {
+                "X": 1,
+                "Y": 0
+              },
+              {
+                "X": 0,
+                "Y": 1
+              }
+            ],
+            "CostPerMeter": 2
+          }
+        ]
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 512,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 2500000,
+        "Objective": "LowestCost"
+      },
+      "FromPortId": "east",
+      "ToPortId": "west",
+      "Reuse": null,
+      "Interfaces": [
+        {
+          "ConnectionId": "coastal-mixed-world/explicit/west",
+          "InterfaceId": "west-link",
+          "MaximumCrossingCandidates": 3
+        }
+      ],
+      "Alignments": null
+    },
+    {
+      "Id": "east-route",
+      "ConnectionKind": "east-travel",
+      "Profile": {
+        "Id": "walking",
+        "Purpose": "Connect required local programs",
+        "SourceRuleId": "interface:walking",
+        "Radius": 0.3,
+        "MaximumSlope": 1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 2,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001,
+        "Guidance": [
+          {
+            "Id": "planned-region",
+            "Purpose": "Local path alignment ends at the regional interface",
+            "SourceRuleId": "mixed-regions:alignment",
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": 0,
+                  "Y": 0
+                },
+                {
+                  "X": 100,
+                  "Y": 0
+                },
+                {
+                  "X": 100,
+                  "Y": 160
+                },
+                {
+                  "X": 0,
+                  "Y": 160
+                }
+              ]
+            },
+            "Axes": [
+              {
+                "X": 1,
+                "Y": 0
+              },
+              {
+                "X": 0,
+                "Y": 1
+              }
+            ],
+            "CostPerMeter": 2
+          }
+        ]
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 512,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 2500000,
+        "Objective": "LowestCost"
+      },
+      "FromPortId": "south",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": [
+        {
+          "ConnectionId": "coastal-mixed-world/explicit/east",
+          "InterfaceId": "east-link",
+          "MaximumCrossingCandidates": 3
+        }
+      ],
+      "Alignments": null
+    },
+    {
+      "Id": "regional-route",
+      "ConnectionKind": "regional-travel",
+      "Profile": {
+        "Id": "walking",
+        "Purpose": "Connect required local programs",
+        "SourceRuleId": "interface:walking",
+        "Radius": 0.3,
+        "MaximumSlope": 1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 2,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001,
+        "Guidance": [
+          {
+            "Id": "planned-region",
+            "Purpose": "Local path alignment ends at the regional interface",
+            "SourceRuleId": "mixed-regions:alignment",
+            "Boundary": {
+              "Vertices": [
+                {
+                  "X": 0,
+                  "Y": 0
+                },
+                {
+                  "X": 100,
+                  "Y": 0
+                },
+                {
+                  "X": 100,
+                  "Y": 160
+                },
+                {
+                  "X": 0,
+                  "Y": 160
+                }
+              ]
+            },
+            "Axes": [
+              {
+                "X": 1,
+                "Y": 0
+              },
+              {
+                "X": 0,
+                "Y": 1
+              }
+            ],
+            "CostPerMeter": 2
+          }
+        ]
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 512,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 2500000,
+        "Objective": "LowestCost"
+      },
+      "FromPortId": "east",
+      "ToPortId": "west",
+      "Reuse": null,
+      "Interfaces": [
+        {
+          "ConnectionId": "coastal-mixed-world/explicit/regional",
+          "InterfaceId": "regional-link",
+          "MaximumCrossingCandidates": 3
+        }
+      ],
+      "Alignments": null
+    },
+    {
+      "Id": "compound-entry",
+      "ConnectionKind": "compound-access",
+      "Profile": {
+        "Id": "compound-walk",
+        "Purpose": "Enter every building",
+        "SourceRuleId": "coastal:walk",
+        "Radius": 0.3,
+        "MaximumSlope": 1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 2,
+        "DescentCost": 0.5,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 512,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 2500000,
+        "Objective": "LowestCost"
+      },
+      "FromPortId": "north",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    }
+  ],
+  "NetworkRules": [
+    {
+      "Id": "planned-supply",
+      "RegionNodeId": "coastal-mixed-world/planned-0",
+      "DestinationKind": "site",
+      "MinimumDestinations": 4,
+      "MaximumDestinations": 4,
+      "ConnectionKind": "street",
+      "Options": {
+        "Purpose": "Supply access within the planned program",
+        "SourceRuleId": "policy:supply",
+        "Scale": "local",
+        "Profile": {
+          "Id": "supply-access",
+          "Purpose": "Deliver to every required planned destination after one logical connection loss",
+          "SourceRuleId": "policy:supply",
+          "Radius": 0.6,
+          "MaximumSlope": 0.1,
+          "KindCosts": {
+            "ground": 1
+          },
+          "AscentCost": 2,
+          "DescentCost": 0.5,
+          "MaximumHeightStep": 0.001,
+          "Guidance": [
+            {
+              "Id": "planned-region",
+              "Purpose": "Local path alignment ends at the regional interface",
+              "SourceRuleId": "mixed-regions:alignment",
+              "Boundary": {
+                "Vertices": [
+                  {
+                    "X": 0,
+                    "Y": 0
+                  },
+                  {
+                    "X": 100,
+                    "Y": 0
+                  },
+                  {
+                    "X": 100,
+                    "Y": 160
+                  },
+                  {
+                    "X": 0,
+                    "Y": 160
+                  }
+                ]
+              },
+              "Axes": [
+                {
+                  "X": 1,
+                  "Y": 0
+                },
+                {
+                  "X": 0,
+                  "Y": 1
+                }
+              ],
+              "CostPerMeter": 2
+            }
+          ]
+        },
+        "Search": {
+          "Clearance": 0.1,
+          "Waypoints": [],
+          "MaximumCandidates": 512,
+          "MaximumEdgeChecks": 32768,
+          "MaximumWork": 2500000,
+          "Objective": "LowestCost"
+        },
+        "Connectivity": "SingleConnectionFailure",
+        "NearestNeighbors": 2,
+        "MaximumPairChecks": 128,
+        "MaximumWork": 20000000,
+        "RequiredConnections": null,
+        "Reuse": null
+      },
+      "LayerId": "intent",
+      "PortId": "east"
+    },
+    {
+      "Id": "field-paths",
+      "RegionNodeId": "coastal-mixed-world/field-0",
+      "DestinationKind": "site",
+      "MinimumDestinations": 3,
+      "MaximumDestinations": 3,
+      "ConnectionKind": "footpath",
+      "Options": {
+        "Purpose": "Foot access within the irregular program",
+        "SourceRuleId": "policy:foot",
+        "Scale": "landscape",
+        "Profile": {
+          "Id": "field-foot",
+          "Purpose": "Reach every field destination on foot",
+          "SourceRuleId": "policy:foot",
+          "Radius": 0.3,
+          "MaximumSlope": 1,
+          "KindCosts": {
+            "ground": 1
+          },
+          "AscentCost": 2,
+          "DescentCost": 0.5,
+          "MaximumHeightStep": 0.001
+        },
+        "Search": {
+          "Clearance": 0.1,
+          "Waypoints": [],
+          "MaximumCandidates": 512,
+          "MaximumEdgeChecks": 32768,
+          "MaximumWork": 2500000,
+          "Objective": "LowestCost"
+        },
+        "Connectivity": "Connected",
+        "NearestNeighbors": 2,
+        "MaximumPairChecks": 128,
+        "MaximumWork": 20000000,
+        "RequiredConnections": null,
+        "Reuse": null
+      },
+      "LayerId": "intent",
+      "PortId": "west"
+    }
+  ],
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "region-fields",
+    "Fields": [
+      {
+        "Id": "height",
+        "Purpose": "Elevation limit",
+        "SourceRuleId": "region:height",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Elevation",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "clamped",
+        "Purpose": "Clamped elevation",
+        "SourceRuleId": "region:clamp",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Field",
+            "Coefficient": 1,
+            "FieldId": "height"
+          }
+        ],
+        "Minimum": 0,
+        "Maximum": 7
+      },
+      {
+        "Id": "region-band",
+        "Purpose": "Explicit regional program boundary coordinate",
+        "SourceRuleId": "mixed-regions:domain",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "X",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ],
+    "SampledFields": null
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "regional-sites",
+      "Purpose": "Place each required site in its terrain region",
+      "SourceRuleId": "region:placement",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 175,
+            "Y": 0
+          },
+          {
+            "X": 200,
+            "Y": 30
+          },
+          {
+            "X": 196,
+            "Y": 100
+          },
+          {
+            "X": 165,
+            "Y": 160
+          },
+          {
+            "X": 0,
+            "Y": 160
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "west-a",
+          "Purpose": "Arrival program",
+          "SourceRuleId": "layout:west-a",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "west",
+          "AllocationId": "west-a"
+        },
+        {
+          "Id": "west-b",
+          "Purpose": "Production program",
+          "SourceRuleId": "layout:west-b",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "west",
+          "AllocationId": "west-b"
+        },
+        {
+          "Id": "west-c",
+          "Purpose": "Support program",
+          "SourceRuleId": "layout:west-c",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "west",
+          "AllocationId": "west-c"
+        },
+        {
+          "Id": "west-d",
+          "Purpose": "Storage program",
+          "SourceRuleId": "layout:west-d",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "west",
+          "AllocationId": "west-d"
+        },
+        {
+          "Id": "east-a",
+          "Purpose": "Gathering program",
+          "SourceRuleId": "layout:east-a",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "east",
+          "AllocationId": "east-a"
+        },
+        {
+          "Id": "east-b",
+          "Purpose": "Observation program",
+          "SourceRuleId": "layout:east-b",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "east",
+          "AllocationId": "east-b"
+        },
+        {
+          "Id": "east-c",
+          "Purpose": "Exploration program",
+          "SourceRuleId": "layout:east-c",
+          "Footprint": null,
+          "Profile": {
+            "Id": "usable",
+            "Purpose": "Usable game region",
+            "SourceRuleId": "region:usable",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "height-limit",
+                "FieldId": "height",
+                "Purpose": "Allowed altitude",
+                "SourceRuleId": "region:altitude",
+                "Minimum": 0,
+                "Maximum": 10
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "preferred",
+                "FieldId": "height",
+                "Purpose": "Preferred gameplay altitude",
+                "SourceRuleId": "region:preferred",
+                "Ideal": 4,
+                "Tolerance": 20,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null,
+          "RegionId": "east",
+          "AllocationId": "east-c"
+        }
+      ],
+      "Anchors": [
+        {
+          "Id": "hold-west-a",
+          "Position": {
+            "X": 30,
+            "Y": 40
+          }
+        },
+        {
+          "Id": "hold-west-b",
+          "Position": {
+            "X": 80,
+            "Y": 40
+          }
+        },
+        {
+          "Id": "hold-west-c",
+          "Position": {
+            "X": 30,
+            "Y": 120
+          }
+        },
+        {
+          "Id": "hold-west-d",
+          "Position": {
+            "X": 80,
+            "Y": 120
+          }
+        },
+        {
+          "Id": "hold-east-a",
+          "Position": {
+            "X": 130,
+            "Y": 30
+          }
+        },
+        {
+          "Id": "hold-east-b",
+          "Position": {
+            "X": 173,
+            "Y": 32
+          }
+        },
+        {
+          "Id": "hold-east-c",
+          "Position": {
+            "X": 140,
+            "Y": 80
+          }
+        }
+      ],
+      "Relations": [
+        {
+          "Id": "hold-west-a",
+          "FromId": "west-a",
+          "ToId": "hold-west-a",
+          "Purpose": "Declared compound origin",
+          "SourceRuleId": "coastal:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "hold-west-b",
+          "FromId": "west-b",
+          "ToId": "hold-west-b",
+          "Purpose": "Declared compound origin",
+          "SourceRuleId": "coastal:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "hold-west-c",
+          "FromId": "west-c",
+          "ToId": "hold-west-c",
+          "Purpose": "Declared compound origin",
+          "SourceRuleId": "coastal:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "hold-west-d",
+          "FromId": "west-d",
+          "ToId": "hold-west-d",
+          "Purpose": "Declared compound origin",
+          "SourceRuleId": "coastal:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "hold-east-a",
+          "FromId": "east-a",
+          "ToId": "hold-east-a",
+          "Purpose": "Declared compound origin",
+          "SourceRuleId": "coastal:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "hold-east-b",
+          "FromId": "east-b",
+          "ToId": "hold-east-b",
+          "Purpose": "Declared compound origin",
+          "SourceRuleId": "coastal:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "hold-east-c",
+          "FromId": "east-c",
+          "ToId": "hold-east-c",
+          "Purpose": "Declared compound origin",
+          "SourceRuleId": "coastal:anchor",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        }
+      ],
+      "MinimumSeparation": 0,
+      "MaximumCandidates": 4096,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 150000000,
+      "AllowBoundaryContact": false,
+      "Growth": null,
+      "Execution": "Search",
+      "Nogoods": null
+    },
+    "Bindings": [
+      {
+        "DemandId": "west-a",
+        "NodeId": "coastal-mixed-world/planned-0/sites-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "west-b",
+        "NodeId": "coastal-mixed-world/planned-0/sites-1",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "west-c",
+        "NodeId": "coastal-mixed-world/planned-0/sites-2",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "west-d",
+        "NodeId": "coastal-mixed-world/planned-0/sites-3",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "east-a",
+        "NodeId": "coastal-mixed-world/field-0/sites-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "east-b",
+        "NodeId": "coastal-mixed-world/field-0/sites-1",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      },
+      {
+        "DemandId": "east-c",
+        "NodeId": "coastal-mixed-world/field-0/sites-2",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": null
+      }
+    ],
+    "NestedStages": null,
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 32,
+    "SourceWorld": null,
+    "ConnectedLayouts": null,
+    "Programs": [
+      {
+        "Id": "compound-buildings",
+        "Purpose": "Expand every compound",
+        "SourceRuleId": "coastal:program",
+        "ScopeNodeId": "coastal-mixed-world",
+        "ParentArchetypeId": "site",
+        "MinimumParents": 7,
+        "MaximumParents": 7,
+        "Request": {
+          "Id": "buildings",
+          "Purpose": "All four required buildings within each compound",
+          "SourceRuleId": "coastal:buildings",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "buildings-0",
+              "Purpose": "Required building and equipment",
+              "SourceRuleId": "coastal:building",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "buildings-1",
+              "Purpose": "Required building and equipment",
+              "SourceRuleId": "coastal:building",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "buildings-2",
+              "Purpose": "Required building and equipment",
+              "SourceRuleId": "coastal:building",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "buildings-3",
+              "Purpose": "Required building and equipment",
+              "SourceRuleId": "coastal:building",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "building-0",
+              "Position": {
+                "X": -7,
+                "Y": -6
+              }
+            },
+            {
+              "Id": "building-1",
+              "Position": {
+                "X": 7,
+                "Y": -6
+              }
+            },
+            {
+              "Id": "building-2",
+              "Position": {
+                "X": -7,
+                "Y": 6
+              }
+            },
+            {
+              "Id": "building-3",
+              "Position": {
+                "X": 7,
+                "Y": 6
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "building-0",
+              "FromId": "buildings-0",
+              "ToId": "building-0",
+              "Purpose": "Declared building row",
+              "SourceRuleId": "coastal:row",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "building-1",
+              "FromId": "buildings-1",
+              "ToId": "building-1",
+              "Purpose": "Declared building row",
+              "SourceRuleId": "coastal:row",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "building-2",
+              "FromId": "buildings-2",
+              "ToId": "building-2",
+              "Purpose": "Declared building row",
+              "SourceRuleId": "coastal:row",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "building-3",
+              "FromId": "buildings-3",
+              "ToId": "building-3",
+              "Purpose": "Declared building row",
+              "SourceRuleId": "coastal:row",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 1000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "buildings-0",
+            "PartId": "buildings-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "buildings-1",
+            "PartId": "buildings-1",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "buildings-2",
+            "PartId": "buildings-2",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          },
+          {
+            "DemandId": "buildings-3",
+            "PartId": "buildings-3",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": null
+          }
+        ],
+        "Growth": null
+      },
+      {
+        "Id": "building-equipment",
+        "Purpose": "Expand equipment in every building",
+        "SourceRuleId": "coastal:program",
+        "ScopeNodeId": "coastal-mixed-world",
+        "ParentArchetypeId": "building",
+        "MinimumParents": 28,
+        "MaximumParents": 28,
+        "Request": {
+          "Id": "equipment",
+          "Purpose": "Required equipment fits every building",
+          "SourceRuleId": "coastal:equipment",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "equipment",
+              "Purpose": "Both equipment members",
+              "SourceRuleId": "coastal:equipment",
+              "Footprint": null,
+              "Profile": {
+                "Id": "usable",
+                "Purpose": "Usable game region",
+                "SourceRuleId": "region:usable",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [
+                  {
+                    "Id": "height-limit",
+                    "FieldId": "height",
+                    "Purpose": "Allowed altitude",
+                    "SourceRuleId": "region:altitude",
+                    "Minimum": 0,
+                    "Maximum": 10
+                  }
+                ],
+                "Preferences": [
+                  {
+                    "Id": "preferred",
+                    "FieldId": "height",
+                    "Purpose": "Preferred gameplay altitude",
+                    "SourceRuleId": "region:preferred",
+                    "Ideal": 4,
+                    "Tolerance": 20,
+                    "Weight": 1
+                  }
+                ]
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [],
+          "Relations": [],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 1000000,
+          "AllowBoundaryContact": false,
+          "Growth": null,
+          "Execution": "Search",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "equipment",
+            "PartId": "equipment",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "SiteLayout": null,
+            "Population": {
+              "Purpose": "Equipment line",
+              "SourceRuleId": "coastal:equipment-line",
+              "Path": {
+                "Path": {
+                  "Points": [
+                    {
+                      "X": -2,
+                      "Y": 0
+                    },
+                    {
+                      "X": 2,
+                      "Y": 0
+                    }
+                  ]
+                },
+                "Spacing": 4,
+                "StartDistance": 0,
+                "EndInset": 0,
+                "NormalOffset": 0
+              },
+              "Boundary": null,
+              "Sockets": null,
+              "Route": null,
+              "Region": null,
+              "GeneratedBoundary": null,
+              "Facing": null
+            }
+          }
+        ],
+        "Growth": null
+      }
+    ],
+    "RegionAnchors": null,
+    "AllocationAnchors": null,
+    "Nogoods": null
+  },
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": {
+    "Id": "usable-land",
+    "Purpose": "Connected usable regions",
+    "SourceRuleId": "region:program",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 175,
+          "Y": 0
+        },
+        {
+          "X": 200,
+          "Y": 30
+        },
+        {
+          "X": 196,
+          "Y": 100
+        },
+        {
+          "X": 165,
+          "Y": 160
+        },
+        {
+          "X": 0,
+          "Y": 160
+        }
+      ]
+    },
+    "Profile": {
+      "Id": "planned-domain",
+      "Purpose": "Usable game region",
+      "SourceRuleId": "region:usable",
+      "AllowedKinds": [
+        "ground",
+        "water"
+      ],
+      "Requirements": [
+        {
+          "Id": "height-limit",
+          "FieldId": "height",
+          "Purpose": "Allowed altitude",
+          "SourceRuleId": "region:altitude",
+          "Minimum": 0,
+          "Maximum": 10
+        },
+        {
+          "Id": "regional-band",
+          "FieldId": "region-band",
+          "Purpose": "Explicit neighboring program domains",
+          "SourceRuleId": "mixed-regions:domain",
+          "Minimum": 0,
+          "Maximum": 100
+        }
+      ],
+      "Preferences": [
+        {
+          "Id": "preferred",
+          "FieldId": "height",
+          "Purpose": "Preferred gameplay altitude",
+          "SourceRuleId": "region:preferred",
+          "Ideal": 4,
+          "Tolerance": 20,
+          "Weight": 1
+        }
+      ]
+    },
+    "Seeds": [
+      {
+        "Id": "west",
+        "Purpose": "Western gameplay area",
+        "SourceRuleId": "region:west",
+        "Position": {
+          "X": 40,
+          "Y": 40
+        },
+        "MinimumArea": 12000,
+        "Profile": null
+      },
+      {
+        "Id": "east",
+        "Purpose": "Eastern gameplay area",
+        "SourceRuleId": "region:east",
+        "Position": {
+          "X": 160,
+          "Y": 40
+        },
+        "MinimumArea": 4000,
+        "Profile": {
+          "Id": "irregular-domain",
+          "Purpose": "Usable game region",
+          "SourceRuleId": "region:usable",
+          "AllowedKinds": [
+            "ground",
+            "water"
+          ],
+          "Requirements": [
+            {
+              "Id": "height-limit",
+              "FieldId": "height",
+              "Purpose": "Allowed altitude",
+              "SourceRuleId": "region:altitude",
+              "Minimum": 0,
+              "Maximum": 10
+            },
+            {
+              "Id": "regional-band",
+              "FieldId": "region-band",
+              "Purpose": "Explicit neighboring program domains",
+              "SourceRuleId": "mixed-regions:domain",
+              "Minimum": 100,
+              "Maximum": 200
+            }
+          ],
+          "Preferences": [
+            {
+              "Id": "preferred",
+              "FieldId": "height",
+              "Purpose": "Preferred gameplay altitude",
+              "SourceRuleId": "region:preferred",
+              "Ideal": 4,
+              "Tolerance": 20,
+              "Weight": 1
+            }
+          ]
+        }
+      }
+    ],
+    "MaximumCells": 1024,
+    "MaximumWork": 50000000,
+    "Intents": null,
+    "AnchorPrecision": 0.1,
+    "MaximumAnchorCells": 65536,
+    "MaximumIntentCandidates": 1024,
+    "MaximumIntentStates": 100000,
+    "ExcludedAssignments": null,
+    "IntentRelations": null
+  },
+  "LocalLayouts": {
+    "Layouts": [
+      {
+        "Id": "west-layout",
+        "RegionId": "west",
+        "Purpose": "Ordered local activity areas",
+        "SourceRuleId": "layout:west",
+        "Strategy": "OrientedGrid",
+        "Programs": [
+          {
+            "Id": "west-a",
+            "Purpose": "Arrival program",
+            "SourceRuleId": "layout:west-a",
+            "Anchor": {
+              "X": 40,
+              "Y": 40
+            },
+            "MinimumArea": 2000,
+            "Influence": 0,
+            "Column": 0,
+            "Row": 0,
+            "AllowDisconnected": false
+          },
+          {
+            "Id": "west-b",
+            "Purpose": "Production program",
+            "SourceRuleId": "layout:west-b",
+            "Anchor": {
+              "X": 72,
+              "Y": 40
+            },
+            "MinimumArea": 1400,
+            "Influence": 0,
+            "Column": 1,
+            "Row": 0,
+            "AllowDisconnected": false
+          },
+          {
+            "Id": "west-c",
+            "Purpose": "Support program",
+            "SourceRuleId": "layout:west-c",
+            "Anchor": {
+              "X": 40,
+              "Y": 120
+            },
+            "MinimumArea": 2000,
+            "Influence": 0,
+            "Column": 0,
+            "Row": 1,
+            "AllowDisconnected": false
+          },
+          {
+            "Id": "west-d",
+            "Purpose": "Storage program",
+            "SourceRuleId": "layout:west-d",
+            "Anchor": {
+              "X": 88,
+              "Y": 120
+            },
+            "MinimumArea": 2000,
+            "Influence": 0,
+            "Column": 1,
+            "Row": 1,
+            "AllowDisconnected": false
+          }
+        ],
+        "Grid": {
+          "Origin": {
+            "X": 0,
+            "Y": 0
+          },
+          "RotationDegrees": 0,
+          "CellWidth": 60,
+          "CellHeight": 80
+        },
+        "ResidualPurpose": null,
+        "ParentAllocationId": null,
+        "RegionFrame": null,
+        "Partition": null,
+        "ProgramIntents": null,
+        "AreaPattern": null
+      },
+      {
+        "Id": "east-layout",
+        "RegionId": "east",
+        "Purpose": "Terrain-clipped irregular activity areas",
+        "SourceRuleId": "layout:east",
+        "Strategy": "PowerDiagram",
+        "Programs": [
+          {
+            "Id": "east-a",
+            "Purpose": "Gathering program",
+            "SourceRuleId": "layout:east-a",
+            "Anchor": {
+              "X": 130,
+              "Y": 30
+            },
+            "MinimumArea": 1000,
+            "Influence": 0,
+            "Column": null,
+            "Row": null,
+            "AllowDisconnected": false
+          },
+          {
+            "Id": "east-b",
+            "Purpose": "Observation program",
+            "SourceRuleId": "layout:east-b",
+            "Anchor": {
+              "X": 170,
+              "Y": 20
+            },
+            "MinimumArea": 800,
+            "Influence": 0,
+            "Column": null,
+            "Row": null,
+            "AllowDisconnected": false
+          },
+          {
+            "Id": "east-c",
+            "Purpose": "Exploration program",
+            "SourceRuleId": "layout:east-c",
+            "Anchor": {
+              "X": 140,
+              "Y": 80
+            },
+            "MinimumArea": 1000,
+            "Influence": 0,
+            "Column": null,
+            "Row": null,
+            "AllowDisconnected": false
+          }
+        ],
+        "Grid": null,
+        "ResidualPurpose": null,
+        "ParentAllocationId": null,
+        "RegionFrame": null,
+        "Partition": null,
+        "ProgramIntents": null,
+        "AreaPattern": null
+      }
+    ],
+    "Interfaces": [
+      {
+        "Id": "west-link",
+        "FromId": "west-a",
+        "ToId": "west-b",
+        "Purpose": "Required neighboring programs",
+        "SourceRuleId": "layout:west-link",
+        "MinimumSpan": 30
+      },
+      {
+        "Id": "east-link",
+        "FromId": "east-a",
+        "ToId": "east-c",
+        "Purpose": "Required neighboring programs",
+        "SourceRuleId": "layout:east-link",
+        "MinimumSpan": 20
+      },
+      {
+        "Id": "regional-link",
+        "FromId": "west-b",
+        "ToId": "east-a",
+        "Purpose": "Join planned and irregular local programs",
+        "SourceRuleId": "mixed-regions:interface",
+        "MinimumSpan": 20
+      }
+    ],
+    "MaximumCells": 4096,
+    "MaximumWork": 100000000
+  },
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": null,
+  "RouteBudget": null,
+  "Interiors": null,
+  "TerrainDemands": null,
+  "ProgramComposition": null,
+  "Drainage": null,
+  "Water": null,
+  "WindMoisture": null
+}

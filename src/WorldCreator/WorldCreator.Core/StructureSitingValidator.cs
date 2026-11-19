@@ -35,7 +35,7 @@ public sealed class StructureSitingValidator(ISettlementCatalogRegistry catalogs
         var regions=design.Blueprint.Regions.ToDictionary(r=>r.Id,StringComparer.Ordinal);
         var paths=design.Paths.ToDictionary(p=>p.Id,StringComparer.Ordinal);
         var catalog=design.BuildingCatalog.ToDictionary(d=>d.Id,StringComparer.Ordinal);
-        var terrain=new MockupTerrainQuery(design);
+        var terrain=new MockupTerrainQuery(design,token);
         var districts=new Dictionary<string,SitingDistrict>(StringComparer.Ordinal);
         foreach (var district in plan.Districts)
         {

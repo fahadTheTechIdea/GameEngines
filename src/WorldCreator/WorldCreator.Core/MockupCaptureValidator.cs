@@ -47,7 +47,9 @@ public static class MockupCaptureValidator
                 Fail("CAPTURE_ROAD_INVALID", f.Id, "Road centerlines require polyline geometry and explicit road metadata.");
             if (f.Road is { } road && (f.Semantic != "road.centerline" || !double.IsFinite(road.WidthPixels) || road.WidthPixels <= 0 ||
                 road.WidthPixels > Math.Max(source!.Width, source.Height) || !Enum.IsDefined(road.WidthKind) || road.Level is < -10 or > 10 ||
-                road.AccessModes is null || road.AccessModes.Count == 0 || road.AccessModes.Any(string.IsNullOrWhiteSpace) || road.AccessModes.Distinct().Count() != road.AccessModes.Count))
+                road.AccessModes is null || road.AccessModes.Count == 0 || road.AccessModes.Any(string.IsNullOrWhiteSpace) || road.AccessModes.Distinct().Count() != road.AccessModes.Count ||
+                road.SegmentWidthsPixels is {} widths && (widths.Count!=f.Points.Count-1||widths.Count==0||Math.Abs(widths[0]-road.WidthPixels)>1e-9||
+                    widths.Any(w=>!double.IsFinite(w)||w<=0||w>Math.Max(source.Width,source.Height)))))
                 Fail("CAPTURE_ROAD_INVALID", f.Id, "Positive observed width, width meaning, optional level and explicit access modes required.");
             if (f.Binding is { } binding && (binding.Kind is not ("path" or "region" or "anchor") || string.IsNullOrWhiteSpace(binding.TargetId) ||
                 !bindings.Add(binding.Kind + ":" + binding.TargetId) ||

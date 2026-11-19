@@ -7,7 +7,7 @@ using WorldCreator.Core.Planning;
 /// or a production recommendation for industrial site dimensions.</summary>
 internal static class MockupGenerationFixture
 {
-    public static WorldRequest Create(int width = 48,int height = 48,int settlementCount = 2,int seed = 42)
+    public static WorldRequest Create(int width = 48,int height = 48,int settlementCount = 2)
     {
         const double scale = 4;
         var regions = new List<VisualRegion> { new("world",Rect(0,0,width*scale,height*scale),"synthetic-desert-composition") };
@@ -35,7 +35,7 @@ internal static class MockupGenerationFixture
             SiteRules = [new("loading-yard",SiteFeatureKind.LoadingYard,SiteBand.Rear,4),
                 new("green-buffer",SiteFeatureKind.GreenBuffer,SiteBand.Left,2,2,true,"synthetic-shrub",8,1)]
         };
-        return TestCatalogs.Contextualize(new(width,height,seed,Biome.Desert,settlementCount,
+        return TestCatalogs.Contextualize(new(width,height,settlementCount,
             new(1,new(1,"synthetic-industrial-mockup","simulated-layout-r1","synthetic-pixel-profile",regions,[]),
                 scale,paths,roadRules,settlements,[new("world",CellKind.Sand,0,2,"authored-sand-plane",.001,0)],props,[warehouse],
                 VegetationClearances:[new("synthetic-shrub",.5,false)])));

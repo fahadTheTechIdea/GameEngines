@@ -1,0 +1,175 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "camps",
+          "ArchetypeId": "camp",
+          "Count": 2,
+          "Purpose": "Required exploration camps",
+          "CountParameter": null,
+          "Layout": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "camp",
+          "Minimum": 2,
+          "Maximum": 2
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null
+    },
+    {
+      "Id": "camp",
+      "Kind": "camp",
+      "Purpose": "Camp with constituent stations",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "stations",
+          "ArchetypeId": "station",
+          "Count": 2,
+          "Purpose": "Camp constituents",
+          "CountParameter": null,
+          "Layout": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "station",
+          "Minimum": 2,
+          "Maximum": 2
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Camp reservation",
+        "SourceRuleId": "catalog:camp",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -10,
+              "Y": -8
+            },
+            {
+              "X": 10,
+              "Y": -8
+            },
+            {
+              "X": 10,
+              "Y": 8
+            },
+            {
+              "X": -10,
+              "Y": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "Id": "station",
+      "Kind": "station",
+      "Purpose": "Required camp station",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "objects",
+          "ArchetypeId": "object",
+          "Count": 1,
+          "Purpose": "Required station component",
+          "CountParameter": null,
+          "Layout": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "object",
+          "Minimum": 1,
+          "Maximum": 1
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Station ground footprint",
+        "SourceRuleId": "catalog:station",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -3,
+              "Y": -2.5
+            },
+            {
+              "X": 3,
+              "Y": -2.5
+            },
+            {
+              "X": 3,
+              "Y": 2.5
+            },
+            {
+              "X": -3,
+              "Y": 2.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "Id": "object",
+      "Kind": "object",
+      "Purpose": "Station component",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Component footprint",
+        "SourceRuleId": "catalog:component",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            {
+              "X": -0.5,
+              "Y": 0.5
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

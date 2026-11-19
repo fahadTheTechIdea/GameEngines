@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const WorldSchematic = require('../../src/WorldCreator/WorldCreator.Core/Schematic/world-schematic.js');
-const folder = process.argv.find(a => a.startsWith('--world='))?.slice(8) || 'generated/city-schematic';
+const folder = process.env.WORLD_SCHEMATIC_PACKET || 'generated/metadata-diagram-review';
 const world = JSON.parse(fs.readFileSync(path.join(folder, 'world-metadata.json')));
 
 test('deterministic city hierarchy, every node retained, no overlapping sibling parcels', () => {

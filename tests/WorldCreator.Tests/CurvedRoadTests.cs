@@ -39,7 +39,7 @@ internal static class CurvedRoadTests
         var baseline=SitingAlgorithmTests.Create();
         var extra=new VisualDesignPath("curved-entry","world",new([new(32,64),new(28,48),new(28.1,47.9),new(26,36),new(30,20)]),"road");
         var curved=baseline with {Design=baseline.Design! with {Paths=[..baseline.Design!.Paths,extra],RoadRules=[..baseline.Design.RoadRules,new(extra.Id,RoadClass.Local,new(3,2,0,0,0,0))]}};
-        var engine=new DesertWorldGenerator(TestCatalogs.Registry);
+        var engine=new MockupWorldGenerator(TestCatalogs.Registry);
         var generated=await engine.GenerateAsync(curved);
         Check(generated.Request.Design!.Paths.Single(p=>p.Id==extra.Id).Centerline.Points.SequenceEqual(extra.Centerline.Points),"curved/dense source samples preserved in complete world");
         Check(JsonSerializer.Serialize(generated)==JsonSerializer.Serialize(await engine.GenerateAsync(curved)),"curve generation deterministic");
@@ -65,7 +65,7 @@ internal static class CurvedRoadTests
         var cityRegistry=new SettlementCatalogRegistry(CatalogContentAuthoring.Apply([new ModernCatalog()],[CatalogContentAuthoring.ReadManifest(contentPath)]));
         Check(request.Design!.BuildingCatalog.Count==0 && request.Design.BuildingCatalogIds?.Count==6,"city definitions have one reusable catalog owner");
         var applied=CatalogContentAuthoring.BindReferences(MockupCapturePipeline.ApplyToDesign(capture,request.Design!),cityRegistry);
-        var world=await new DesertWorldGenerator(cityRegistry).GenerateAsync(request with {Design=applied});
+        var world=await new MockupWorldGenerator(cityRegistry).GenerateAsync(request with {Design=applied});
         foreach(var sample in new[]{(815d,510d,"modern.planted-ground"),(800d,568d,"modern.park-paving"),(915d,520d,"modern.football-pitch"),(915d,585d,"modern.basketball-court")})
         {
             var p=MockupCaptureValidator.Transform(capture.Calibration!,new(sample.Item1,sample.Item2));

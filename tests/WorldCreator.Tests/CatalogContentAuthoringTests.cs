@@ -59,7 +59,7 @@ internal static class CatalogContentAuthoringTests
         var registry = new SettlementCatalogRegistry(providers); var registered = registry.Resolve(ModernCatalog.Selection);
         Check(registered.Structures.Count == 198 && registered.Facilities.Count == 7, "new part definition and four reusable programs added to source catalog");
         Check(registered.Provenance.AuthoredContentDigests![content.Id].Length == 64, "authored content identity exported");
-        string pluginPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../WorldCreator.TestCatalog/bin/Release/net10.0/WorldCreator.TestCatalog.dll"));
+        string pluginPath = TestCatalogs.PluginPath;
         using var plugin = new SettlementCatalogPlugin(pluginPath);
         var external = plugin.Providers.Single();
         var externalPart = external.Structures.Single() with { Id = "test.requested-annex" };
@@ -70,20 +70,15 @@ internal static class CatalogContentAuthoringTests
             .Resolve(new(external.Descriptor.Id, external.Descriptor.Capabilities));
         Check(externalPack.Structures.Count == 2 && externalPack.Facilities.Count == 1 && !externalPack.Descriptor.Capabilities.Any(c => c.StartsWith("modern.", StringComparison.Ordinal)),
             "same authoring API extends an independent compiled pack without Modern inheritance");
-        var engine = new DesertWorldGenerator(registry);
+        var planner = new FacilityCompositionPlanner(registry);
         foreach (var pair in new[] { ("user.school-program", 2, 1), ("user.care-program", 2, 1), ("user.home-program", 3, 1), ("user.learning-and-care", 4, 3) })
         {
-            var request = FacilityCompositionTests.Create(pair.Item1, selectedRegistry: registry);
-            var world = await engine.GenerateAsync(request);
-            Check(world.Objects.Count(o => o.VisualSource?.BuildingDefinitionId is not null) == pair.Item2 && world.Facilities!.Count == pair.Item3 &&
-                world.Siting!.Status == SitingEvaluationStatus.Passed, "actual unrelated requested program generates: " + pair.Item1);
+            var plan = planner.PlanGeometry(ModernCatalog.Selection,pair.Item1);
+            Check(plan.Buildings.Count==pair.Item2 && plan.Groups.Count==pair.Item3 && plan.Network.IsConnected(),"current facility geometry: "+pair.Item1);
         }
-        var referenceRequest = FacilityCompositionTests.Create("user.home-program", selectedRegistry: registry);
-        var references = referenceRequest.Design! with { BuildingCatalogIds = ["bungalow", "user.garden-office"] };
-        var referencedWorld = await engine.GenerateAsync(referenceRequest with { Design = references });
-        Check(referencedWorld.Request.Design!.BuildingCatalogIds is null && referencedWorld.Request.Design.BuildingCatalog.Count == 2 &&
-            JsonSerializer.Serialize(referencedWorld.Design) == JsonSerializer.Serialize((await engine.GenerateAsync(referenceRequest)).Design),
-            "registered definition references materialize once and preserve the generated layout");
+        var references=MockupGenerationFixture.Create().Design! with{BuildingCatalog=[],BuildingCatalogIds=["bungalow","user.garden-office"]};
+        var bound=CatalogContentAuthoring.BindReferences(references,registry);
+        Check(bound.BuildingCatalogIds is null&&bound.BuildingCatalog.Count==2,"registered references materialize once");
         Reject(() => CatalogContentAuthoring.BindReferences(references with { BuildingCatalogIds = ["missing.part"] }, registry), "CATALOG_STRUCTURE_REFERENCE_UNKNOWN");
         Reject(() => CatalogContentAuthoring.BindReferences(references with { BuildingCatalogIds = ["bungalow", "bungalow"] }, registry), "CATALOG_STRUCTURE_REFERENCE_INVALID");
         Reject(() => CatalogContentAuthoring.BindReferences(references with { BuildingCatalog = [registered.Structures[0]] }, registry), "CATALOG_STRUCTURE_REFERENCE_AMBIGUOUS");
@@ -92,7 +87,7 @@ internal static class CatalogContentAuthoringTests
         Reject(() => CatalogContentAuthoring.Apply([modern], [content with { Structures = [content.Structures[0] with { Composition = null }] }]), "CATALOG_CONTENT_COMPOSITION_REVIEW_REQUIRED");
         var invalid = content with { Structures = [], Programs = [content.Programs[1] with { Parts = [new("unknown", "missing.part", "small", "must add missing catalog part first")] }] };
         Reject(() => CatalogContentAuthoring.Apply([modern], [invalid]), "CATALOG_FACILITY_PART_UNKNOWN");
-        Reject(() => CatalogContentAuthoring.CompileProgram(content.Programs[1] with { Parts = [content.Programs[1].Parts[0] with { Kind = CatalogPartKind.Equipment }] }, definitions, []), "CATALOG_FACILITY_PART_KIND_UNSUPPORTED");
+        Reject(() => CatalogContentAuthoring.CompileProgram(content.Programs[1] with { Parts = [content.Programs[1].Parts[0] with { Kind = CatalogPartKind.Equipment }] }, definitions, []), "CATALOG_FACILITY_OBJECT_UNKNOWN");
         var replacement = content with { Structures = [definitions.Single(d => d.Id == "clinic") with { AutomaticDemand = false }], Programs = [] };
         Reject(() => CatalogContentAuthoring.Apply([modern], [replacement]), "CATALOG_CONTENT_STRUCTURE_CONFLICT");
         Check(CatalogContentAuthoring.Apply([modern], [replacement with { ReplaceStructureIds = new HashSet<string> { "clinic" } }]).Count == 1, "explicit replacement supported");
@@ -116,11 +111,9 @@ internal static class CatalogContentAuthoringTests
             {
                 var listing = JsonDocument.Parse(await Run("list-buildings", "modern"));
                 Check(listing.RootElement.GetProperty("FamilyCount").GetInt32() == 198, "normal CLI reloads saved project catalog without a per-invocation flag");
-                string requestFile = Path.Combine(root, "request.json");
-                await File.WriteAllTextAsync(requestFile, JsonSerializer.Serialize(FacilityCompositionTests.Create("user.home-program", selectedRegistry: registry), WorldJson.CreateOptions()));
-                await Run("generate-world", requestFile, Path.Combine(root, "world"));
-                var generated = JsonSerializer.Deserialize<WorldDocument>(await File.ReadAllTextAsync(Path.Combine(root, "world", "world.json")), WorldJson.CreateOptions())!;
-                Check(generated.Objects.Count(o => o.VisualSource?.BuildingDefinitionId == "user.garden-office") == 2, "fresh CLI uses newly authored parent and added part");
+                using var authoredListing = JsonDocument.Parse(await Run("list-facilities", "modern"));
+                Check(authoredListing.RootElement.GetProperty("Facilities").EnumerateArray().Any(p => p.GetProperty("Id").GetString() == "user.home-program"),
+                    "fresh CLI resolves authored nested programs through the shared catalog owner");
                 await Run("save-catalog-content", saved, catalogDir, "--replace");
                 Check((await File.ReadAllTextAsync(Path.Combine(root, ".gameframework", "operations", "audit.jsonl"))).Contains("world.catalog.content.saved", StringComparison.Ordinal), "catalog additions use shared audit owner");
                 var splitRoot = Path.Combine(root, "cross-file-project");
@@ -147,7 +140,7 @@ internal static class CatalogContentAuthoringTests
             try { CatalogContentAuthoring.ReadManifest(saved); throw new Exception("invalid manifest accepted"); } catch (JsonException) { }
         }
         finally { Directory.Delete(root, true); }
-        Console.WriteLine("PASS: all 197 family reviews; all 187 frontage families author/register through common grammar; 10 infrastructure families reject building substitution; arbitrary new parts, unrelated/nested requested programs, persistence/automatic reload, explicit updates, cancellation, audit and actual CLI generation.");
+        Console.WriteLine("PASS: all 197 family reviews; all 187 frontage families author/register through common grammar; 10 infrastructure families reject building substitution; arbitrary new parts, unrelated/nested requested programs, persistence/automatic reload, explicit updates, cancellation, audit and actual CLI catalog resolution. Retired city placement is not qualified.");
     }
     private static void Reject(Action action, string code)
     { try { action(); } catch (ArgumentException ex) when (ex.Message.StartsWith(code, StringComparison.Ordinal)) { return; } throw new Exception("Expected authoring rejection " + code); }

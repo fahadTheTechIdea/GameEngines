@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RelationshipEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="RelationshipEngine.html" aria-current="page">RelationshipEngine</a>
+      <a href="../RELATIONSHIP_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>RelationshipEngine</h1>
+  <p class="lede">Social simulation: actors with decaying needs and a derived mood, relationships measured on axes, memories and moodlets that fade and stack, ladders and bonds, gifts and tastes, interactions that can be refused, gossip, and derived communities and standing.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">pure runtime</span>
+    <span class="tag">seeded rolls</span>
+    <span class="tag">save / sweep</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#document">Document format 3</a></li>
+    <li><a href="#needs">Needs, sources and activities</a></li>
+    <li><a href="#mood">Mood and moodlets</a></li>
+    <li><a href="#edges">Edges, axes and memories</a></li>
+    <li><a href="#ladders">Ladders and bonds</a></li>
+    <li><a href="#interactions">Interactions and gifts</a></li>
+    <li><a href="#gossip">Gossip</a></li>
+    <li><a href="#social">Derived social state</a></li>
+    <li><a href="#facts">Facts</a></li>
+    <li><a href="#api">Runtime API</a></li>
+    <li><a href="#cli">Command line</a></li>
+    <li><a href="#component">GameRuntime integration</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>RelationshipEngine simulates how people feel about each other. It owns needs and mood, opinions on named axes, the memories that formed them, the bonds and social ranks between actors, and the attempts to interact. It does not decide what an interaction looks like, move anyone, or render a face — it reports changes and answers queries.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Needs, decay, mood derivation, moodlets, memories, axes, ladders, bonds, gift taste, interactions, gossip, communities, standing, balance.</p></div>
+  <div class="card"><h3>It does not own</h3><p>Dialogue text, animation, pathfinding, factions or diplomacy, or the game's schedule — activities come from the calendar host.</p></div>
+  <div class="card"><h3>Deterministic</h3><p>Every random decision is a seeded roll; a save is a complete copy of state and a scenario replays identically.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/RelationshipEngine/RelationshipEngine.Core</code></td><td>Reader, runtime (time, edges, interactions, social, gossip, balance), decay math, facts, explanation, save image.</td><td>net8.0</td></tr>
+    <tr><td><code>src/RelationshipEngine/RelationshipEngine.Cli</code></td><td><code>check</code>, <code>simulate</code> (with multi-seed sweep), <code>explain</code>, <code>coverage</code>.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Relationship</code></td><td><code>RelationshipComponent</code>, requests and answers, bridges, checkpoint.</td><td>net8.0</td></tr>
+  </tbody>
+</table>
+<p>Samples: <code>samples/village.relationship.json</code>, <code>crowd.relationship.json</code>, with scenarios and an English locale table.</p>
+
+<h2 id="document" class="anchor">Document format 3</h2>
+<p>Strict format 3 (older versions are refused with <code>REL_FORMAT_2</code> / <code>REL_FORMAT_OLD</code>). Sections: <code>seed</code>, <code>time.stepsPerDay</code>, <code>limits</code>, <code>facts</code>, <code>axes</code>, <code>needs</code>, <code>sources</code>, <code>mood</code>, <code>moodlets</code>, <code>memories</code>, <code>traits</code>, <code>ladders</code>, <code>bonds</code>, <code>gifts</code>, <code>tastes</code>, <code>gossip</code>, <code>social</code>, <code>interactions</code>.</p>
+<p>Limits bound actors, edges per actor, memories per edge and moodlets per actor; everything is refused when it cannot run, with <code>REL_*</code> codes.</p>
+
+<h2 id="needs" class="anchor">Needs, sources and activities</h2>
+<pre><code>{ "id": "hunger", "max": 1000, "initial": 800, "decayPerDay": 900, "critical": 200, "rearm": 350,
+  "urgency": [ [0, 1000], [200, 800], [600, 200], [1000, 0] ],
+  "decayModifiers": [ { "when": { "fact": "cal.season", "op": "eq", "value": "winter" }, "permille": 1300 } ] }</code></pre>
+<ul>
+  <li>A need decays per day, optionally scaled by conditional modifiers. <code>critical</code> raises a once-armed alert until <code>rearm</code>.</li>
+  <li><code>urgency</code> is a piecewise-linear curve from level to urgency; <code>Urgency(actor, need)</code> answers it.</li>
+  <li><code>sources</code> map an activity to a need and a refill per day. The host sets the actor's activity (<code>SetActivity</code>), usually from the calendar schedule.</li>
+  <li>A day is spread over <code>social.schedule</code> — <code>Atomic</code> applies it in one step, <code>Spread</code> over the first five steps.</li>
+</ul>
+
+<h2 id="mood" class="anchor">Mood and moodlets</h2>
+<pre><code>mood = trait base + Σ need weights + Σ active moodlet magnitudes
+     (clamped to min/max, resolved to the highest state whose threshold is reached)</code></pre>
+<ul>
+  <li><code>MoodDef</code> carries range, base, hysteresis, need weights and named states (<code>content</code>, <code>happy</code>, …) with thresholds.</li>
+  <li>A moodlet has magnitude, duration, decay (<code>Fixed</code>, <code>Linear</code>, <code>HalfLife</code>) and stack mode (<code>Refresh</code>, <code>Stack</code>, <code>Replace</code>, <code>Unique</code>).</li>
+  <li><code>Grant(actor, moodletId, scalePermille, source)</code> adds one; <code>Mood(actor)</code> and <code>MoodStateId(actor)</code> answer.</li>
+  <li>Traits can shift the mood base, need decay and mood scales.</li>
+</ul>
+
+<h2 id="edges" class="anchor">Edges, axes and memories</h2>
+<p>An edge is one actor's opinion of another: a value on each declared axis (affinity, trust, attraction, …), the memories that formed it, cooldowns and bonds.</p>
+<pre><code>{ "id": "was-gifted", "effects": [ { "axis": "affinity", "magnitude": 120 }, { "axis": "trust", "magnitude": 30 } ],
+  "duration": 720, "decay": { "kind": "halfLife", "halfLife": 240 },
+  "stack": { "mode": "refresh", "max": 1 }, "tags": ["kindness"],
+  "spread": { "as": "heard-kindness", "permille": 600, "chance": 700, "hops": 2 } }</code></pre>
+<ul>
+  <li><code>Remember(holder, subject, memoryId, scalePermille)</code> records a memory; its contribution decays over time.</li>
+  <li><code>Opinion(from, to, axis)</code> is the baseline plus memory contributions, clamped to the axis range.</li>
+  <li>Axes drift toward baseline per day; <code>AdjustAxis</code> applies an explicit change.</li>
+  <li>Actor traits can scale axes through the trait's axis scales.</li>
+</ul>
+
+<h2 id="ladders">Ladders and bonds</h2>
+<ul>
+  <li>A <code>LadderDef</code> turns an axis value into a named step with hysteresis; <code>LadderStateId(from, to, ladder)</code> answers.</li>
+  <li><code>BondDef</code>: symmetric or directional, exclusive, broken when an axis falls below a threshold; <code>SetBond</code>/<code>HasBond</code>.</li>
+  <li>Ties (triads) are balanced or not: <code>Triads(holder, subject)</code> returns <code>TriadReading</code> for each intermediary, with wanted/has and balance.</li>
+</ul>
+
+<h2 id="interactions" class="anchor">Interactions and gifts</h2>
+<pre><code>IReadOnlyList&lt;InteractionOffer&gt; offers = runtime.Offers(actorId, targetId, hostFacts);
+InteractionResult r = runtime.Perform(
+    new InteractionRequest("compliment", actorId, targetId, witnesses, gift: ""), hostFacts);
+// r.Accepted, r.Score, r.Threshold, r.Noise, r.Changes</code></pre>
+<ul>
+  <li>An interaction has tags, a precondition condition, a cooldown, a gift flag, desire rules and effects on the actor's edge, the target's edge, needs, moodlets or bonds.</li>
+  <li>Acceptance is scored from the interaction, the actors' state and the declared modifiers; a seeded roll against a threshold decides, so refusal is possible and explained.</li>
+  <li><code>Offers</code> reports availability with a reason and a desire value, so a UI can grey out what cannot be done.</li>
+  <li>Gifts use tags and the receiver's tastes: <code>GiftTaste(receiver, gift)</code>.</li>
+  <li>Witnesses remember what they saw at a scaled magnitude.</li>
+</ul>
+
+<h2 id="gossip">Gossip</h2>
+<p>A memory can spread: <code>SpreadDef(memory, permille, chance, hops)</code> creates the same memory in others through the social graph. <code>gossip</code> rules set the trust axis, minimum trust, maximum tellings and listeners per memory. Spreading is seeded and bounded.</p>
+
+<h2 id="social">Derived social state</h2>
+<ul>
+  <li><strong>Communities</strong>: label propagation over strong positive edges, recomputed on a configured axis; <code>CommunitySize(actor)</code> answers.</li>
+  <li><strong>Standing</strong>: iterative trust weighting over the graph; <code>social.standing</code> sets axis, threshold, damping, iterations and the pre-trust trait.</li>
+  <li><strong>Balance</strong>: structural balance over triads, limited to top-k actors and a bounded number per actor, with a seeded chance.</li>
+  <li><strong>Schedule</strong>: how the day's needs and sources are applied (<code>Atomic</code> or <code>Spread</code>).</li>
+</ul>
+
+<h2 id="facts">Facts</h2>
+<p><code>RelationshipFacts</code> declares the fact ids usable in conditions, prefixed by <code>actor.</code>, <code>target.</code>, <code>edge.</code> and <code>reverse.</code>:</p>
+<ul>
+  <li>Actor: <code>mood</code>, <code>mood_state</code>, <code>activity</code>, <code>community</code>, <code>community_size</code>, <code>standing</code>, <code>need.&lt;id&gt;</code>, <code>trait.&lt;id&gt;</code>.</li>
+  <li>Edge: <code>known</code>, <code>same_community</code>, <code>state.&lt;ladder&gt;</code>, <code>bond.&lt;id&gt;</code>, <code>memory.&lt;id&gt;</code>, and each axis id.</li>
+  <li><code>reverse.*</code> reads the target's edge back to the actor.</li>
+</ul>
+<p>Anything else is a host fact and must be declared. These facts feed dialogue conditions and AI percepts.</p>
+
+<h2 id="api">Runtime API</h2>
+<pre><code>var set     = RelationshipLoader.Load(json);        // format 3
+var runtime = RelationshipRuntime.Create(set, startStep);
+runtime.AddActor("mara", traits, tastes);
+runtime.SetActivity("mara", "work");
+RelationshipChanges changes = runtime.Advance(toStep, hostFacts);  // daily needs, decay, social refresh
+runtime.Grant("mara", "festival-joy", 1000);
+runtime.Remember("mara", "jory", "was-gifted", 1000);
+var mood    = runtime.Mood("mara");
+var opinion = runtime.Opinion("mara", "jory", "affinity");
+var state   = runtime.LadderStateId("mara", "jory", ladder);</code></pre>
+<p><code>Advance</code> is monotonic and bounded; <code>Owed(toStep)</code> reports outstanding steps. <code>RelationshipChanges</code> lists typed changes for the game layer.</p>
+
+<h2 id="cli">Command line</h2>
+<pre><code>RelationshipEngine.Cli check &lt;relationship.json&gt;
+RelationshipEngine.Cli simulate &lt;relationship.json&gt; &lt;scenario.json&gt; &lt;days&gt; [--save state.json] [--resume state.json] [--verbose]
+RelationshipEngine.Cli simulate ... --seeds &lt;n&gt; [--from-seed s] [--days d] [--metrics a,b] [--rows]
+RelationshipEngine.Cli explain &lt;relationship.json&gt; &lt;state.json&gt; mood &lt;actor&gt;
+RelationshipEngine.Cli explain ... opinion &lt;from&gt; &lt;to&gt; &lt;axis&gt;
+RelationshipEngine.Cli explain ... interaction &lt;actor&gt; &lt;target&gt; &lt;interaction&gt; [--fact id=value]...
+RelationshipEngine.Cli coverage &lt;relationship.json&gt; &lt;locale.json&gt; [...]</code></pre>
+<p>Exit codes: <code>0</code> done, <code>1</code> refused or incomplete, <code>2</code> usage/scenario/file problem. The multi-seed sweep is the balance tool.</p>
+
+<h2 id="component" class="anchor">GameRuntime integration</h2>
+<p><code>RelationshipComponent</code> queues actor, activity, interaction, grant, memory, need, axis, bond and mood requests, then advances with the session clock and publishes changes.</p>
+<table>
+  <thead><tr><th>Request in</th><th>Result out</th></tr></thead>
+  <tbody>
+    <tr><td><code>relationship.actor-add-requested</code>, <code>actor-remove</code>, <code>activity-requested</code>, <code>interact-requested</code>, <code>grant-requested</code>, <code>remember-requested</code>, <code>need-requested</code>, <code>axis-requested</code>, <code>bond-requested</code>, <code>mood-requested</code>, <code>opinion-requested</code></td><td><code>relationship.applied</code>, <code>refused</code>, <code>interaction-performed</code>, <code>mood-answered</code>, <code>opinion-answered</code>, <code>stepped</code>, <code>mood-changed</code>, <code>need-critical</code>, <code>state-changed</code>, <code>bond-changed</code>, <code>memory-added</code>, <code>moodlet-added</code>, <code>evicted</code>, <code>community-changed</code>, <code>standing-changed</code>, <code>balance-shifted</code></td></tr>
+  </tbody>
+</table>
+<p>Declare the catalog through the project's channels before <code>Init</code>; <code>RelationshipCheckpoint</code> saves state. Bridges feed opinions to AI and dialogue.</p>
+
+<h2 id="testing">Testing</h2>
+<pre><code>dotnet run --project src/RelationshipEngine/RelationshipEngine.Tests -c Release</code></pre>
+<p>Suites: needs, mood, moodlets, decay, edges, ladders/bonds, interactions, gossip, community, standing, balance, day schedule, crowd scenario, bounds/boundary, refusal matrix, save/tamper, scale, format 3, CLI and source guards.</p>
+
+<h2 id="source">Source map</h2>
+<dl class="kv">
+  <dt>Reader</dt><dd><code>RelationshipReader.cs</code>, <code>.Interactions.cs</code>, <code>.Modifiers.cs</code>, <code>.Network.cs</code>, <code>.Social.cs</code></dd>
+  <dt>Runtime</dt><dd><code>RelationshipRuntime.cs</code>, <code>.Day.cs</code>, <code>.Time.cs</code>, <code>.Edges.cs</code>, <code>.Interact.cs</code>, <code>.Gossip.cs</code>, <code>.Social.cs</code>, <code>.Balance.cs</code>, <code>.Host.cs</code></dd>
+  <dt>Model</dt><dd><code>Definitions.cs</code>, <code>State.cs</code>, <code>RelationshipSet.cs</code>, <code>RelationshipStateRules.cs</code>, <code>DecayMath.cs</code></dd>
+  <dt>Facts and text</dt><dd><code>RelationshipFacts.cs</code>, <code>RelationshipExplain*.cs</code>, <code>RelationshipNames.cs</code>, <code>RelationshipImage.cs</code>, <code>RelationshipSave.cs</code></dd>
+  <dt>Refusals</dt><dd><code>RelationshipCodes.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/RelationshipEngine</code> and <code>src/GameRuntime/GameRuntime.Relationship*</code>. Research, model and measurements: <a href="../RELATIONSHIP_ENGINE.md">docs/RELATIONSHIP_ENGINE.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

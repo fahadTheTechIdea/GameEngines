@@ -1,0 +1,612 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "level",
+      "Purpose": "Exploration area",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "gates",
+          "ArchetypeId": "gate",
+          "Count": 2,
+          "Purpose": "Required journey entrances",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        },
+        {
+          "Id": "markers",
+          "ArchetypeId": "marker",
+          "Count": 4,
+          "Purpose": "Mark the bent approach",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": {
+            "Id": "detail-variants",
+            "Seed": "detail-01",
+            "Purpose": "Choose a permitted marker form",
+            "SourceRuleId": "catalog:marker",
+            "ArchetypeIds": [
+              "marker",
+              "marker-wide",
+              "marker-tall"
+            ],
+            "Weights": {
+              "marker": 12,
+              "marker-tall": 1,
+              "marker-wide": 1
+            }
+          },
+          "ProgramMix": null
+        },
+        {
+          "Id": "boundary",
+          "ArchetypeId": "marker",
+          "Count": 4,
+          "Purpose": "Mark the irregular resource reserve",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": {
+            "Id": "border-variants",
+            "Seed": "border-01",
+            "Purpose": "Choose a permitted marker form",
+            "SourceRuleId": "catalog:marker",
+            "ArchetypeIds": [
+              "marker",
+              "marker-wide",
+              "marker-tall"
+            ]
+          },
+          "ProgramMix": null
+        },
+        {
+          "Id": "resource",
+          "ArchetypeId": "resource",
+          "Count": 1,
+          "Purpose": "Required collectible location",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null,
+          "ProgramMix": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "gate",
+          "Minimum": 2,
+          "Maximum": 2
+        },
+        {
+          "Kind": "marker",
+          "Minimum": 8,
+          "Maximum": 8
+        },
+        {
+          "Kind": "resource",
+          "Minimum": 1,
+          "Maximum": 1
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "gate",
+      "Kind": "gate",
+      "Purpose": "Required gate",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized gate",
+        "SourceRuleId": "catalog:gate",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            {
+              "X": -0.5,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": 0.6
+            },
+            {
+              "X": -0.6,
+              "Y": 0.6
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": [
+          {
+            "Id": "entry",
+            "Purpose": "Interaction access",
+            "SourceRuleId": "catalog:gate",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -0.5
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -1.5
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "marker",
+      "Kind": "marker",
+      "Purpose": "Required marker",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "attachment",
+          "ArchetypeId": "badge",
+          "Count": 1,
+          "Purpose": "Required marker identity",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                0
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null,
+          "Variation": {
+            "Id": "badge-variants",
+            "Seed": "badge-01",
+            "Purpose": "Choose the required badge form",
+            "SourceRuleId": "catalog:badge",
+            "ArchetypeIds": [
+              "badge",
+              "badge-round"
+            ]
+          },
+          "ProgramMix": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "component",
+          "Minimum": 1,
+          "Maximum": 1
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized marker",
+        "SourceRuleId": "catalog:marker",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            {
+              "X": -0.5,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": 0.6
+            },
+            {
+              "X": -0.6,
+              "Y": 0.6
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "resource",
+      "Kind": "resource",
+      "Purpose": "Required resource",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized resource",
+        "SourceRuleId": "catalog:resource",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            {
+              "X": -0.5,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": -0.6
+            },
+            {
+              "X": 0.6,
+              "Y": 0.6
+            },
+            {
+              "X": -0.6,
+              "Y": 0.6
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": [
+          {
+            "Id": "entry",
+            "Purpose": "Interaction access",
+            "SourceRuleId": "catalog:resource",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -0.5
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -1.5
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "marker-wide",
+      "Kind": "marker",
+      "Purpose": "Required marker",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "attachment",
+          "ArchetypeId": "badge",
+          "Count": 1,
+          "Purpose": "Required marker identity",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                0
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null,
+          "Variation": {
+            "Id": "badge-variants",
+            "Seed": "badge-01",
+            "Purpose": "Choose the required badge form",
+            "SourceRuleId": "catalog:badge",
+            "ArchetypeIds": [
+              "badge",
+              "badge-round"
+            ]
+          },
+          "ProgramMix": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "component",
+          "Minimum": 1,
+          "Maximum": 1
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Exact marker-wide",
+        "SourceRuleId": "catalog:marker-wide",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.7,
+              "Y": -0.4
+            },
+            {
+              "X": 0.7,
+              "Y": -0.4
+            },
+            {
+              "X": 0.7,
+              "Y": 0.4
+            },
+            {
+              "X": -0.7,
+              "Y": 0.4
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -0.7999999999999999,
+              "Y": -0.5
+            },
+            {
+              "X": 0.7999999999999999,
+              "Y": -0.5
+            },
+            {
+              "X": 0.7999999999999999,
+              "Y": 0.5
+            },
+            {
+              "X": -0.7999999999999999,
+              "Y": 0.5
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "marker-tall",
+      "Kind": "marker",
+      "Purpose": "Required marker",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "attachment",
+          "ArchetypeId": "badge",
+          "Count": 1,
+          "Purpose": "Required marker identity",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                0
+              ],
+              "Step": [
+                0,
+                0
+              ]
+            }
+          },
+          "Capacity": null,
+          "Variation": {
+            "Id": "badge-variants",
+            "Seed": "badge-01",
+            "Purpose": "Choose the required badge form",
+            "SourceRuleId": "catalog:badge",
+            "ArchetypeIds": [
+              "badge",
+              "badge-round"
+            ]
+          },
+          "ProgramMix": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "component",
+          "Minimum": 1,
+          "Maximum": 1
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Exact marker-tall",
+        "SourceRuleId": "catalog:marker-tall",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.4,
+              "Y": -0.7
+            },
+            {
+              "X": 0.4,
+              "Y": -0.7
+            },
+            {
+              "X": 0.4,
+              "Y": 0.7
+            },
+            {
+              "X": -0.4,
+              "Y": 0.7
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.7999999999999999
+            },
+            {
+              "X": 0.5,
+              "Y": -0.7999999999999999
+            },
+            {
+              "X": 0.5,
+              "Y": 0.7999999999999999
+            },
+            {
+              "X": -0.5,
+              "Y": 0.7999999999999999
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "badge",
+      "Kind": "component",
+      "Purpose": "Required marker identity",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "badge-round",
+      "Kind": "component",
+      "Purpose": "Required marker identity",
+      "Properties": {
+        "form": "round"
+      },
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    }
+  ]
+}

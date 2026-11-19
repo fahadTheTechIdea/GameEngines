@@ -4,23 +4,22 @@ namespace WorldCreator.Core.Planning;
 
 /// <summary>Deliberate placement pattern within an approved visual region, never a free-space search.</summary>
 public sealed record RegionPattern(string Id, string RegionId, string Kind, string Purpose,
-    double SpacingMeters, double MarginMeters, string RuleId);
+    double SpacingMeters, double MarginMeters, string RuleId,int StartEdgeIndex,double StartDistanceMeters=0,double? SpanLengthMeters=null);
 
 public sealed record RegionPatternResult(IReadOnlyList<VisualObjectDecision> Decisions,
     IReadOnlyList<VisualAnchor> GeneratedAnchors, IReadOnlyList<WorldDesignIssue> Issues);
 
 /// <summary>
-/// First supported grammar: orderly row of repeating props along an axis-aligned
-/// rectangular region's southern edge, inset by a specified design margin.
-/// Suitable for fences/hedges/lamps of a styled game scene; not arbitrary scattering.
+/// Samples an explicit span of a simple polygon boundary with an inward offset.
+/// Uses the same geometry as physical metadata population; no rectangle fallback.
 /// </summary>
 public sealed class VisualRegionPatternGenerator
 {
-    public RegionPatternResult Generate(ApprovedVisualWorldBlueprint blueprint, RegionPattern pattern)
+    public RegionPatternResult Generate(ApprovedVisualWorldBlueprint blueprint, RegionPattern pattern,CancellationToken token=default)
     {
         ArgumentNullException.ThrowIfNull(blueprint);
         ArgumentNullException.ThrowIfNull(pattern);
-        var issues = new List<WorldDesignIssue>();
+        token.ThrowIfCancellationRequested();
         if (!double.IsFinite(pattern.SpacingMeters) || pattern.SpacingMeters <= 0 ||
             !double.IsFinite(pattern.MarginMeters) || pattern.MarginMeters < 0 ||
             string.IsNullOrWhiteSpace(pattern.Id) || string.IsNullOrWhiteSpace(pattern.Kind) ||
@@ -34,27 +33,26 @@ public sealed class VisualRegionPatternGenerator
         {
             return new([], [], [new("REGION_INVALID", pattern.Id, "Region polygon invalid.")]);
         }
-        var points = region.Outline.Vertices;
-        var xs = points.Select(p => p.X).Distinct().Order().ToArray();
-        var ys = points.Select(p => p.Y).Distinct().Order().ToArray();
-        if (points.Count != 4 || xs.Length != 2 || ys.Length != 2)
-            return new([], [], [new("UNSUPPORTED_REGION_SHAPE", pattern.Id, "This pattern supports rectangles only.")]);
-        double left = xs[0] + pattern.MarginMeters;
-        double right = xs[1] - pattern.MarginMeters;
-        double y = ys[1] - pattern.MarginMeters;
-        if (left > right || y < ys[0])
-            return new([], [], [new("REGION_TOO_SMALL", pattern.Id, "Pattern margins exceed available area.")]);
-        int count = 1 + (int)Math.Floor((right - left) / pattern.SpacingMeters);
-        if (count > 100_000)
-            return new([], [], [new("PATTERN_TOO_LARGE", pattern.Id, "Pattern exceeds configured safety limit.")]);
+        IReadOnlyList<WorldPoint> positions;
+        try
+        {
+            var grammar=new WorldBoundaryPattern(region.Outline,pattern.StartEdgeIndex,pattern.SpacingMeters,pattern.StartDistanceMeters,pattern.MarginMeters,pattern.SpanLengthMeters);
+            var (path,span)=WorldPopulationGeometry.BoundaryPath(grammar,token);
+            double requested=1+Math.Floor(span/pattern.SpacingMeters);
+            if(pattern.StartDistanceMeters+(requested-1)*pattern.SpacingMeters>=path.Length-1e-9)requested--;
+            if(requested<1||requested>100000)return new([],[],[new("PATTERN_TOO_LARGE",pattern.Id,"Pattern must contain 1–100000 positions.")]);
+            positions=WorldPopulationGeometry.Boundary(grammar,(int)requested,token);
+        }
+        catch(ArgumentException error){return new([],[],[new(error.Message,pattern.Id,"Boundary grammar is invalid; revise its explicit span or offset.")]);}
         var anchors = new List<VisualAnchor>();
         var decisions = new List<VisualObjectDecision>();
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < positions.Count; i++)
         {
+            token.ThrowIfCancellationRequested();
             string id = $"{pattern.Id}-{i}";
-            anchors.Add(new(id, region.Id, new(left + i * pattern.SpacingMeters, y), pattern.Kind));
+            anchors.Add(new(id, region.Id, positions[i], pattern.Kind));
             decisions.Add(new(id, pattern.Kind, id, pattern.Purpose, pattern.RuleId));
         }
-        return new(decisions, anchors, issues);
+        return new(decisions, anchors, []);
     }
 }

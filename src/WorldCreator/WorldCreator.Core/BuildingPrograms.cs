@@ -20,7 +20,7 @@ public sealed record BuildingDefinition(string Id, string Function, int ServiceC
     double MinimumRoadWidthMeters = 0, IReadOnlySet<SettlementRole>? AllowedRoles = null,
     string Category = "Unspecified", string CapacityUnit = "service-units",
     bool AutomaticDemand = true, BuildingPlacementKind PlacementKind = BuildingPlacementKind.FrontageSite,
-    StructureSitingProfile? SitingProfile = null, StructureCompositionAssessment? Composition = null)
+    StructureSitingProfile? SitingProfile = null, StructureCompositionAssessment? Composition = null,SiteBoundaryRule? BoundaryRule=null)
 {
     public void Validate()
     {
@@ -42,17 +42,8 @@ public sealed record BuildingDefinition(string Id, string Function, int ServiceC
                 throw new ArgumentException("Building size variants must have unique IDs.");
             foreach (var variant in SizeVariants) variant.Validate();
         }
-        var rules = new HashSet<string>(StringComparer.Ordinal);
-        foreach (var rule in SiteRules ?? [])
-            if (rule is null || string.IsNullOrWhiteSpace(rule.Id) || !rules.Add(rule.Id) ||
-                !Enum.IsDefined(rule.Kind) || !Enum.IsDefined(rule.Band) || rule.Kind == SiteFeatureKind.AccessWalkway ||
-                !double.IsFinite(rule.MinimumDepthMeters) || rule.MinimumDepthMeters <= 0 ||
-                !double.IsFinite(rule.InsetMeters) || rule.InsetMeters < 0 ||
-                !double.IsFinite(rule.PlantSpacingMeters) || !double.IsFinite(rule.PlantMarginMeters) ||
-                rule.PlantMarginMeters < 0 || rule.SpeciesAssetId is not null &&
-                (string.IsNullOrWhiteSpace(rule.SpeciesAssetId) || rule.PlantSpacingMeters <= 0) ||
-                rule.MaximumDepthMeters is { } maximum && (!double.IsFinite(maximum) || maximum < rule.MinimumDepthMeters))
-                throw new ArgumentException("Invalid building site grammar.");
+        BuildingSitePlanner.ValidateRules(SiteRules);
+        BuildingSitePlanner.ValidateBoundaryRule(BoundaryRule);
     }
 }
 

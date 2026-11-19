@@ -1,0 +1,126 @@
+{
+  "SchemaVersion": 1,
+  "Id": "encounter-catalog",
+  "Archetypes": [
+    {
+      "Id": "journey",
+      "Kind": "journey",
+      "Purpose": "Authored exploration journey",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "entry",
+          "ArchetypeId": "encounter",
+          "Count": 1,
+          "Purpose": "Journey entry",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "choices",
+          "ArchetypeId": "choice",
+          "Count": 2,
+          "Purpose": "Alternative encounters",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "relay",
+          "ArchetypeId": "encounter",
+          "Count": 1,
+          "Purpose": "Required first milestone",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "vault",
+          "ArchetypeId": "encounter",
+          "Count": 1,
+          "Purpose": "Required second milestone",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "exit",
+          "ArchetypeId": "encounter",
+          "Count": 1,
+          "Purpose": "Journey goal",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "encounter",
+      "Kind": "encounter",
+      "Purpose": "Authored exploration encounter",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "choice",
+      "Kind": "encounter",
+      "Purpose": "Authored exploration encounter",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "reward",
+          "ArchetypeId": "reward",
+          "Count": 1,
+          "Purpose": "Required nested reward",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "reward",
+      "Kind": "reward",
+      "Purpose": "Authored exploration reward",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

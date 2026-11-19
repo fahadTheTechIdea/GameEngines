@@ -1,0 +1,19 @@
+config_version=5
+
+[application]
+
+config/name="GameRuntime Godot Host"
+run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.7", "C#")
+
+[autoload]
+
+GameFramework="*res://addons/gameruntime/GameFramework.cs"
+
+[dotnet]
+
+project/assembly_name="GameRuntime.Godot"
+
+[physics]
+
+common/physics_ticks_per_second=30

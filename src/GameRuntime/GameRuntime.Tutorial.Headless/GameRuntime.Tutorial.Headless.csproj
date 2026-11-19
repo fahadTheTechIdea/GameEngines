@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Tutorial.Bridges/GameRuntime.Tutorial.Bridges.csproj" />
+    <EmbeddedResource Include="../../TutorialEngine/samples/valley.tutorial.json" LogicalName="valley.tutorial.json" />
+    <EmbeddedResource Include="../../TutorialEngine/samples/valley.en.json" LogicalName="valley.en.json" WithCulture="false" />
+  </ItemGroup>
+</Project>

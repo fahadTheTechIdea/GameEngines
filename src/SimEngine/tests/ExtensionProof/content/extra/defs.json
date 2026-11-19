@@ -1,4 +1,0 @@
-{ "entities": [ { "id": "extra.bin", "kind": "structure", "components": {
-          "tile_presence": { "space": "flat.tiles", "width": 2, "height": 2, "blocks": true, "movable": false },
-          "counter": { "per_tick": 2 }
-        } } ] }

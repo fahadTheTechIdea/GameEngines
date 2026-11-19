@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "pack": "gear",
+  "stats": [
+    { "id": "gear.damage", "name": "Damage", "dimension": "none", "unit": "1", "kind": "integer", "min": 0, "max": 10000, "values": [], "classes": ["weapon", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "structure-unit", "mount", "ammunition"] },
+    { "id": "gear.damage-type", "name": "Damage type", "dimension": "none", "unit": "1", "kind": "enum", "min": null, "max": null, "values": ["slash", "pierce", "blunt", "ballistic", "blast", "energy", "fire"], "classes": ["weapon", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "structure-unit", "mount", "ammunition"] },
+    { "id": "gear.range", "name": "Effective range", "dimension": "length", "unit": "m", "kind": "number", "min": 0, "max": 1000000, "values": [], "classes": ["weapon", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "structure-unit", "mount"] },
+    { "id": "gear.rate-of-fire", "name": "Rate of fire", "dimension": "rate", "unit": "/min", "kind": "number", "min": 0, "max": 100000, "values": [], "classes": ["weapon", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "structure-unit", "mount"] },
+    { "id": "gear.accuracy", "name": "Accuracy", "dimension": "ratio", "unit": "%", "kind": "number", "min": 1, "max": 100, "values": [], "classes": ["weapon", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "structure-unit", "mount"] },
+    { "id": "gear.penetration", "name": "Armor penetration", "dimension": "none", "unit": "1", "kind": "integer", "min": 0, "max": 10000, "values": [], "classes": ["weapon", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "structure-unit", "mount", "ammunition"] },
+    { "id": "gear.splash-radius", "name": "Splash radius", "dimension": "length", "unit": "m", "kind": "number", "min": 0, "max": 10000, "values": [], "classes": ["weapon", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "structure-unit", "ammunition"] },
+    { "id": "gear.armor-rating", "name": "Armor rating", "dimension": "none", "unit": "1", "kind": "integer", "min": 0, "max": 10000, "values": [], "classes": ["armor", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "mount", "structure-unit"] },
+    { "id": "gear.structure", "name": "Structure points", "dimension": "none", "unit": "1", "kind": "integer", "min": 1, "max": 1000000000, "values": [], "classes": ["vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "mount", "structure-unit"] },
+    { "id": "gear.weight", "name": "Weight", "dimension": "mass", "unit": "kg", "kind": "number", "min": 0, "max": 1000000000, "values": [], "classes": ["weapon", "armor", "tool", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "mount", "structure-unit", "ammunition"] },
+    { "id": "gear.speed", "name": "Top speed", "dimension": "speed", "unit": "km/h", "kind": "number", "min": 0, "max": 100000, "values": [], "classes": ["vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "mount"] },
+    { "id": "gear.operating-range", "name": "Operating range", "dimension": "length", "unit": "km", "kind": "number", "min": 0, "max": 100000000, "values": [], "classes": ["vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space"] },
+    { "id": "gear.ceiling", "name": "Service ceiling", "dimension": "length", "unit": "m", "kind": "number", "min": 0, "max": 100000000, "values": [], "classes": ["vehicle-air", "vehicle-space"] },
+    { "id": "gear.reliability", "name": "Reliability", "dimension": "ratio", "unit": "%", "kind": "number", "min": 0, "max": 100, "values": [], "classes": ["weapon", "tool", "vehicle-land", "vehicle-sea", "vehicle-air", "vehicle-space", "structure-unit"] },
+    { "id": "gear.efficiency", "name": "Work efficiency", "dimension": "ratio", "unit": "%", "kind": "number", "min": 0, "max": 1000, "values": [], "classes": ["tool"] }
+  ],
+  "skills": [
+    { "id": "gear.driving", "name": "Driving", "max": 10 },
+    { "id": "gear.sailing", "name": "Sailing", "max": 10 },
+    { "id": "gear.piloting", "name": "Piloting", "max": 10 },
+    { "id": "gear.gunnery", "name": "Gunnery", "max": 10 },
+    { "id": "gear.riding", "name": "Riding", "max": 10 },
+    { "id": "gear.starflight", "name": "Starflight", "max": 10 }
+  ]
+}

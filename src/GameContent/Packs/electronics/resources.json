@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "pack": "electronics",
+  "resources": [
+    { "id": "electronics.silica", "name": "Quartz silica", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["semiconductor"], "properties": { "base-price": 0.5 } },
+    { "id": "electronics.gallium", "name": "Gallium", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["semiconductor", "metal"], "properties": { "base-price": 40 } },
+    { "id": "electronics.lithium-brine", "name": "Lithium brine", "class": "fluid", "unit": "L", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "1", "tags": ["battery"], "properties": { "base-price": 6 } },
+    { "id": "electronics.resin", "name": "Epoxy resin", "class": "fluid", "unit": "L", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["chemical"], "properties": { "base-price": 4 } },
+    { "id": "electronics.boule", "name": "Silicon boule", "class": "intermediate", "unit": "kg", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["semiconductor"], "properties": { "base-price": 12 } },
+    { "id": "electronics.wafer", "name": "Silicon wafer", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["semiconductor"], "properties": { "base-price": 1.5 } },
+    { "id": "electronics.die", "name": "Processor die", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 1000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["semiconductor"], "properties": { "base-price": 0.5 } },
+    { "id": "electronics.chip", "name": "Microcontroller", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 1000 }, "grade": { "scheme": "quality", "levels": ["standard", "select", "premium"] }, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["semiconductor"], "properties": { "base-price": 3 } },
+    { "id": "electronics.pwb", "name": "Printed wiring board", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["board"], "properties": { "base-price": 2.5 } },
+    { "id": "electronics.led", "name": "Light emitting diode", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 5000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["optics"], "properties": { "base-price": 0.1 } },
+    { "id": "electronics.lens", "name": "Optical lens", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["optics"], "properties": { "base-price": 1.2 } },
+    { "id": "electronics.display", "name": "Display panel", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["optics", "board"], "properties": { "base-price": 25 } },
+    { "id": "electronics.cell", "name": "Lithium cell", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["battery"], "properties": { "base-price": 4 } },
+    { "id": "electronics.power-pack", "name": "Power pack", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["battery"], "properties": { "base-price": 90 } },
+    { "id": "electronics.control-board", "name": "Control board", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 100 }, "grade": { "scheme": "quality", "levels": ["standard", "select", "premium"] }, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["board"], "properties": { "base-price": 40 } },
+    { "id": "electronics.emitter", "name": "Hardlight emitter", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["hardlight"], "properties": { "base-price": 180 } },
+    { "id": "electronics.projector", "name": "Hardlight projector", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 5000 }, "currency": null, "cpc": "4", "tags": ["hardlight"], "properties": { "base-price": 5000 } },
+    { "id": "electronics.sensor", "name": "Proximity sensor", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": { "uses": 3000 }, "currency": null, "cpc": "4", "tags": ["sensor"], "properties": { "base-price": 120 } },
+    { "id": "electronics.terminal", "name": "Wrist terminal", "class": "product", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["consumer"], "properties": { "base-price": 450 } },
+    { "id": "electronics.drone", "name": "Courier drone", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 2000 }, "currency": null, "cpc": "4", "tags": ["robotics"], "properties": { "base-price": 1100 } },
+    { "id": "electronics.soldering-iron", "name": "Soldering iron", "class": "tool", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 500 }, "currency": null, "cpc": "4", "tags": ["tool"], "properties": { "base-price": 25 } }
+  ],
+  "stations": [
+    { "id": "electronics.fab", "name": "Semiconductor fab", "levels": 3 },
+    { "id": "electronics.assembly-line", "name": "Pick-and-place line", "levels": 1 },
+    { "id": "electronics.optics-bench", "name": "Optics bench", "levels": 1 },
+    { "id": "electronics.test-bench", "name": "Test bench", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "electronics.packaging", "name": "Chip packaging", "max": 10 },
+    { "id": "electronics.rf-tuning", "name": "Hardlight tuning", "max": 10 }
+  ]
+}

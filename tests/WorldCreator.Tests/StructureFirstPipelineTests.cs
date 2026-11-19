@@ -16,7 +16,7 @@ internal static class StructureFirstPipelineTests
         try
         {
             var pipeline = new StructureFirstPipeline();
-            var world = await new DesertWorldGenerator(TestCatalogs.Registry).GenerateAsync(MockupGenerationFixture.Create(64,64,1));
+            var world = await new MockupWorldGenerator(TestCatalogs.Registry).GenerateAsync(MockupGenerationFixture.Create(64,64,1));
             string before = StructureFirstPipeline.WorldDigest(world);
             var spec = pipeline.Plan(world);
             var empty = await pipeline.BuildAsync(world, spec, root);
@@ -70,7 +70,7 @@ internal static class StructureFirstPipelineTests
                 "components":[{"id":"base","parent":null,"atlases":{"S":"base.atlas.json"}}],
                 "sampled_poses":[{"direction":"S","normalized_time":0,"nodes":{"base":{"frame_index":0,"world_matrix_2d":[[1,0,0],[0,1,0],[0,0,1]]}}}]}
                 """);
-            ApprovedArtManifest Manifest() => new(1,"synthetic-warehouse","v001","test",ArtApprovalState.Approved,
+            ApprovedArtManifest Manifest() => new(2,"synthetic-warehouse","synthetic-warehouse","v001","test",ArtApprovalState.Approved,
                 [new("base-sheet","source.png","base.atlas.json",imageHash,Hash(atlasFile),"base",["S"])],[]);
             spec = spec with { Art=spec.Art.Select(e=>e with { Production=new("synthetic-warehouse","v001","bundle.json","base","S","base-sheet","base") }).ToArray() };
             var allowed = new Authority(true); var denied = new Authority(false);
@@ -130,7 +130,7 @@ internal static class StructureFirstPipelineTests
     { try { await action(); } catch(Exception ex) when(ex is ArgumentException or IOException or OperationCanceledException or JsonException) { return; } throw new Exception("Missing rejection: "+message); }
     private static void Check(bool ok,string message){if(!ok)throw new Exception("Structure pipeline: "+message);}
     private sealed class Authority(bool approved):IGameArtsApprovalAuthority
-    { public Task<bool> IsApprovedAsync(string assetId,string revision,CancellationToken token=default)=>Task.FromResult(approved); }
+    { public Task<bool> IsApprovedAsync(string assetId,string revision,CancellationToken token=default)=>Task.FromResult(approved);  public Task<bool> IsApprovedArtifactAsync(string id,string revision,string hash,CancellationToken token=default)=>IsApprovedAsync(id,revision,token); }
     private sealed class Registry(ApprovedArtManifest manifest):IApprovedArtRegistry
     { public Task<ApprovedArtManifest?> ResolveAsync(string assetId,CancellationToken token=default)=>Task.FromResult<ApprovedArtManifest?>(manifest.AssetId==assetId?manifest:null); }
 }

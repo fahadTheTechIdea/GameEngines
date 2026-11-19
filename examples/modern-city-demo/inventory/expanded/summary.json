@@ -1,0 +1,41 @@
+{
+  "SchemaVersion": 2,
+  "Id": "framework-reference-city",
+  "GameProfile": "framework-reference-test",
+  "Scale": "city",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Approved district and city composition, terrain and street geometry, exact map reconciliation, full terrain/object/motion asset inventory, approved production art and functional Godot world remain open."
+  ],
+  "Nodes": 862,
+  "Connections": 0,
+  "Layers": 0,
+  "UnassignedLayerNodes": 862,
+  "UnassignedLayerConnections": 0,
+  "SurfaceId": null,
+  "TerrainPatches": null,
+  "RoutedConnections": 0,
+  "GeneratedNetworks": 0,
+  "NetworkConnections": 0,
+  "EnvironmentalFields": 0,
+  "PointSuitabilityChecks": 0,
+  "LocalAllocations": 0,
+  "LocalInterfaces": 0,
+  "GeneratedRegions": 0,
+  "AssignedRegionArea": null,
+  "UnclaimedSuitableArea": null,
+  "IneligibleRegionArea": null,
+  "PlacedSites": 0,
+  "StorageChunks": 0,
+  "ChunkMembers": 0,
+  "Kinds": {
+    "building": 369,
+    "district": 6,
+    "ground-area": 328,
+    "settlement": 1,
+    "site": 158
+  },
+  "RecipeSha256": "cbea749ef03dce251a1827008e7fa4a0796c243125a66a34a02cd766d2e43657",
+  "CatalogSha256": "6dfdd890f3c8c55271848c91c17f3a11aa9c0889969058d7b15105986abbcfc2",
+  "Scope": "Metadata generation only; no art, mockups, physics or game runtime required or implied."
+}

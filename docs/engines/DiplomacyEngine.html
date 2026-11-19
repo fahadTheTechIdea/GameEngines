@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DiplomacyEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="DiplomacyEngine.html" aria-current="page">DiplomacyEngine</a>
+      <a href="../DIPLOMACY_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>DiplomacyEngine</h1>
+  <p class="lede">Realms and what they think of each other: regard and acceptance, proposals and treaties with clauses and obligations, wars with score and exhaustion, coalitions and the balance of power, espionage and intelligence, and each realm's internal politics.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">pure runtime</span>
+    <span class="tag">seeded rolls</span>
+    <span class="tag">save / replay</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#document">Document format</a></li>
+    <li><a href="#regard">Regard and acceptance</a></li>
+    <li><a href="#treaties">Proposals, treaties and obligations</a></li>
+    <li><a href="#wars">Wars</a></li>
+    <li><a href="#coalitions">Coalitions and balance</a></li>
+    <li><a href="#espionage">Espionage and intelligence</a></li>
+    <li><a href="#politics">Internal politics</a></li>
+    <li><a href="#facts">Facts offered to other layers</a></li>
+    <li><a href="#api">Runtime API</a></li>
+    <li><a href="#determinism">Determinism and save</a></li>
+    <li><a href="#cli">Command line</a></li>
+    <li><a href="#component">GameRuntime integration</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>DiplomacyEngine owns relations between realms: standing, acceptance of proposals, treaty obligations, war conduct and peace, coalition formation, spies and internal stability. It is a pure function of the document, the steps and calls it is given, and its own seeded rolls. It makes no presentation decisions and executes no effects itself — it reports changes and issues effect requests.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Regard, acceptance scoring, proposals, treaties, clauses and obligations, wars and exhaustion, coalitions, agents/missions/intel, factions and stability, incident log.</p></div>
+  <div class="card"><h3>It does not own</h3><p>Armies and battles, market prices, rendering, or the strategic UI. Wars are scored by CombatEngine results the game reports in.</p></div>
+  <div class="card"><h3>No floating point</h3><p>Per-mille and permille-scaled integers throughout; every roll is counter-based from the document seed.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/DiplomacyEngine/DiplomacyEngine.Core</code></td><td>Reader, regard/acceptance, treaties, wars, coalitions, espionage, politics, facts, save.</td><td>net8.0</td></tr>
+    <tr><td><code>src/DiplomacyEngine/DiplomacyEngine.Cli</code></td><td><code>check</code>, <code>simulate</code>, <code>explain</code>, <code>coverage</code>.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Diplomacy</code></td><td><code>DiplomacyComponent</code>, channels, clocks, journal, transcript, replay, checkpoint.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Diplomacy.Bridges</code></td><td>Bridges to combat results, economy, calendar and world events.</td><td>net8.0</td></tr>
+  </tbody>
+</table>
+<p>Samples: <code>src/DiplomacyEngine/samples/isles.diplomacy.json</code>, <code>isles.diplomacy.scenario.json</code>, <code>isles.diplomacy.en.json</code>.</p>
+
+<h2 id="document" class="anchor">Document format 1</h2>
+<p>Strict JSON with a seed, limits, seasons, ideologies, traits, deeds, rules, casus belli, missions, treaty types and realms.</p>
+<table>
+  <thead><tr><th>Section</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>seed</code>, <code>time</code>, <code>limits</code></td><td>Deterministic seed; steps per day; caps on treaties, proposals, wars, agents, missions, calls, incidents, grants and deeds per pair.</td></tr>
+    <tr><td><code>seasons</code></td><td>Cycle and per-season war cost.</td></tr>
+    <tr><td><code>ideologies</code>, <code>traits</code></td><td>Affinity matrix between ideologies; trait effects on acceptance, reliability, counter-intelligence and spying.</td></tr>
+    <tr><td><code>deeds</code></td><td>Remembered acts (gift, insult, betrayal, war-on-us, spying) with value and duration.</td></tr>
+    <tr><td><code>rules</code></td><td><code>regard</code>, <code>standing</code> decay, <code>war</code>, <code>acceptance</code> lines, <code>balance</code>, <code>politics</code>, <code>espionage</code>.</td></tr>
+    <tr><td><code>casusBelli</code>, <code>missions</code>, <code>types</code></td><td>War justifications, espionage missions, treaty type definitions with clause sets, terms, exclusions and breach rules.</td></tr>
+    <tr><td><code>realms</code></td><td>Ideology, traits, might, market, leader, control (AI/Host), stability, legitimacy, trust/fear/honour/infamy, factions and like/dislike of political events.</td></tr>
+  </tbody>
+</table>
+<p>Refusals: <code>DIP_FORMAT</code>, <code>DIP_UNKNOWN_FIELD</code>, <code>DIP_MISSING_FIELD</code>, <code>DIP_RANGE</code>, <code>DIP_DUPLICATE</code>, <code>DIP_REFERENCE</code>, <code>DIP_CLAUSE</code>, <code>DIP_RULES</code>, <code>DIP_POLITICS</code>, <code>DIP_ESPIONAGE</code>.</p>
+
+<h2 id="regard">Regard and acceptance</h2>
+<p><code>RegardOf(holder, subject)</code> is the clamped sum of terms — ideology affinity, leader regard, trust, honour, coalition membership and remembered deeds. It ranges −1000…1000.</p>
+<p>A proposal is scored by <code>Acceptance.Evaluate</code>:</p>
+<pre><code>score = type.Bias
+      + trait bias
+      + Σ (raw[source] × weight[source] / 1000)      // FactorSource
+      + Σ modifier values that hold
+chance = 0 below rejectAt, 1000 at/above acceptAt, proportional in between</code></pre>
+<p>Factor sources: <code>Regard</code>, <code>Trust</code>, <code>Fear</code>, <code>Honour</code>, <code>PowerRatio</code>, <code>SharedEnemy</code>, <code>Ideology</code>, <code>Ties</code>, <code>Weariness</code>, <code>Threat</code>, <code>Stability</code>, <code>Coalition</code>, <code>Terms</code>, <code>WarScore</code>, <code>Exhaustion</code>. The <code>Verdict</code> carries every line: name, raw, weight, contribution.</p>
+
+<h2 id="treaties">Proposals, treaties and obligations</h2>
+<ul>
+  <li><code>Propose(from, to, type, termDays, amount)</code> → a proposal; <code>Respond</code>, <code>Withdraw</code>, and automatic expiry are reported as <code>ProposalChange</code>.</li>
+  <li>Treaty types have <code>consent</code> (Mutual or Imposed), clause sets, permanence, term bounds, regard change, requirements, exclusions, war interaction, succession behaviour and a cancel rule (<code>Free</code>, <code>Breach</code>, <code>Never</code>).</li>
+  <li>Clauses: <code>NonAggression</code>, <code>Trade</code>, <code>Tribute</code>, <code>Defend</code>, <code>Vassal</code>, <code>Truce</code>, <code>Bond</code>, <code>Embargo</code>. Each may have an interval, grace, maximum misses, due season, optionality and mutuality.</li>
+  <li>Obligations report <code>Due</code>, <code>Paid</code>, <code>Missed</code>, <code>Called</code>, <code>Honoured</code>, <code>Ignored</code>; <code>Fulfil(treatyId, paid)</code> answers a due obligation.</li>
+  <li>Breach applies the type's trust/honour loss, deed and casus belli (<code>CancelRule.Breach</code>).</li>
+</ul>
+
+<h2 id="wars">Wars</h2>
+<ul>
+  <li><code>DeclareWar(attacker, target, casusBelli)</code> — a valid casus belli is required unless <code>allowNoCb</code>, which costs infamy and honour. A declared war applies the declared deed.</li>
+  <li>Allies may be called: an AI realm joins by a seeded chance from <code>callBase</code>, fear and standing. A refused call is an incident.</li>
+  <li><code>Score(warId, favoured, amount, source)</code> records battle, occupation, blockade or event score; exhaustion accumulates per season (<code>exhaustPpm</code>). The host reports CombatEngine outcomes here.</li>
+  <li><code>JoinWar</code>/<code>LeaveWar</code> manage participants; wars end through score/exhaustion rules and are reported as <code>WarChange</code>.</li>
+  <li><code>GrantCasusBelli</code> adds a time-limited justification; <code>Holds</code> answers whether one exists.</li>
+</ul>
+
+<h2 id="coalitions">Coalitions and balance</h2>
+<p>On a configured interval, realms compare threat against <code>threatLine</code> and <code>relaxLine</code>. A coalition forms when enough realms share a threat (<code>minMembers</code>), grows by <code>joinRegard</code> and <code>bandwagonFear</code>, and dissolves below the relax line. Formation, joining, leaving and dissolution are reported as <code>CoalitionChange</code>. A coalition grants its members a balance casus belli.</p>
+
+<h2 id="espionage">Espionage and intelligence</h2>
+<ul>
+  <li>Agents have an owner and skill; states <code>Idle</code>, <code>Away</code>, <code>Captured</code>; <code>Recruit</code>, <code>Release</code>.</li>
+  <li>Missions: <code>Intel</code>, <code>Sabotage</code>, <code>Incite</code>, <code>Counter</code>; each has duration, difficulty, exposure, gain, shock, stability hit, deed and granted casus belli.</li>
+  <li><code>OddsOf(agent, target, mission)</code> — success and exposure with a reason. Outcomes: <code>Started</code>, <code>Succeeded</code>, <code>Failed</code>, <code>SucceededExposed</code>, <code>FailedExposed</code>.</li>
+  <li>Intel levels: <code>None</code>, <code>Rumour</code>, <code>Report</code>, <code>Detailed</code>, <code>Complete</code>; <code>Estimate</code> gives low/estimate/high with error from the level; intel decays and counter-espionage decays separately. Exposed missions create incidents and may grant <code>spied</code>.</li>
+</ul>
+
+<h2 id="politics">Internal politics</h2>
+<p>Each realm has stability, legitimacy, factions with shares and satisfaction, and a band: <code>Stable</code>, <code>Unrest</code>, <code>Revolt</code>. Political events (<code>WarDeclared</code>, <code>WarOnUs</code>, <code>WarWon</code>, <code>WarLost</code>, <code>PeaceSigned</code>, <code>TreatySigned</code>, <code>TreatyBreached</code>, <code>TributePaid</code>, <code>TributeMissed</code>, <code>SpyExposed</code>, <code>Disaster</code>, <code>Succession</code>) move factions by their likes. <code>Happen(realm, political, scale)</code> applies one. A succession resets legitimacy and can start a contested succession with a claim casus belli. A revolt refuses some calls (<code>DIP_REVOLT</code>).</p>
+
+<h2 id="facts">Facts offered to other layers</h2>
+<p><code>Facts(prefix, realm, other)</code> and <code>DipFacts.Offered</code> expose:</p>
+<ul>
+  <li><code>diplomacy.&lt;realm&gt;.stability</code>, <code>.legitimacy</code>, <code>.trust</code>, <code>.fear</code>, <code>.honour</code>, <code>.infamy</code>, <code>.might</code>, <code>.wars</code>, <code>.treaties</code>, <code>.band</code>.</li>
+  <li>Pair facts: <code>regard</code>, <code>reverse</code>, <code>ratio</code>, <code>at_war</code>, <code>treaties</code>, <code>coalition</code>, <code>intel</code>, <code>first.*</code>, <code>second.*</code>, <code>treaty.&lt;type&gt;</code>, <code>cb.&lt;id&gt;</code>.</li>
+</ul>
+<p>These feed dialogue conditions, AI percepts, events and UI queries.</p>
+
+<h2 id="api">Runtime API</h2>
+<pre><code>var set     = DipLoader.Load(json);          // format 1
+var realm   = DipRuntime.Create(set);
+
+var changes = realm.Advance(toStep, seasonAt, hostFacts);  // at most 4000 steps
+var verdict = realm.Evaluate("crown", "guild", "nap", termDays: 60, amount: 0);
+var made    = realm.Propose("crown", "guild", "nap", 60, 0);
+var answer  = realm.Respond(proposalId, accept: true);
+var war     = realm.DeclareWar("crown", "isles", "rivalry");
+var odds    = realm.OddsOf("spy-1", "isles", "sabotage");
+var intel   = realm.Estimate("crown", "isles");
+var regard  = realm.RegardOf("crown", "guild");</code></pre>
+<p>Every call returns a <code>DipChanges</code> stream of typed changes (proposal, treaty, obligation, war, coalition, mission, agent, intel, politics, incident, effect, grant). State is readable through <code>Realms</code>, <code>Treaties</code>, <code>Proposals</code>, <code>Wars</code>, <code>Coalitions</code>, <code>Agents</code>, <code>Missions</code>, <code>Incidents</code>.</p>
+
+<h2 id="determinism">Determinism and save</h2>
+<p>Every random value is a counter-based <code>DeterministicRoll</code> keyed by the document seed and a stream name; there is no generator state. <code>Advance</code> is monotonic and capped at 4,000 steps (<code>DIP_STEP_ORDER</code>). <code>DipSave</code> writes a complete state copy; it verifies the document digest (<code>DIP_SAVE_DOCUMENT</code>) and the state digest (<code>DIP_SAVE_STATE</code>). <code>StateDigest()</code> is stable across equal states.</p>
+
+<h2 id="cli">Command line</h2>
+<pre><code>DiplomacyEngine.Cli check &lt;diplomacy.json&gt;
+DiplomacyEngine.Cli simulate &lt;diplomacy.json&gt; &lt;scenario.json&gt; &lt;steps&gt; [--save &lt;state.json&gt;] [--verbose]
+DiplomacyEngine.Cli explain &lt;diplomacy.json&gt; &lt;state.json&gt; proposal &lt;from&gt; &lt;to&gt; &lt;type&gt; &lt;days&gt; &lt;amount&gt;
+DiplomacyEngine.Cli explain ... regard|mission|coalition|realm ...
+DiplomacyEngine.Cli coverage &lt;diplomacy.json&gt; &lt;locale.json&gt; [...]</code></pre>
+<p>Exit codes: <code>0</code> done, <code>1</code> refused or incomplete, <code>2</code> usage/scenario/file problem.</p>
+
+<h2 id="component">GameRuntime integration</h2>
+<p><code>DiplomacyComponent</code> answers a generic <code>diplomacy.requested</code> port and publishes typed changes. It advances on calendar seasons through <code>DiplomacyClocks</code>.</p>
+<table>
+  <thead><tr><th>Event</th><th>Direction</th></tr></thead>
+  <tbody>
+    <tr><td><code>diplomacy.requested</code></td><td>Request in</td></tr>
+    <tr><td><code>diplomacy.applied</code>, <code>diplomacy.refused</code>, <code>diplomacy.evaluated</code>, <code>diplomacy.standing-answered</code>, <code>diplomacy.estimated</code></td><td>Answer out</td></tr>
+    <tr><td><code>diplomacy.season-changed</code>, <code>proposal-changed</code>, <code>treaty-changed</code>, <code>obligation-changed</code>, <code>war-changed</code>, <code>coalition-changed</code>, <code>mission-changed</code>, <code>agent-changed</code>, <code>intel-changed</code>, <code>politics-changed</code>, <code>grant-changed</code>, <code>incident-logged</code>, <code>effect-issued</code></td><td>Change out</td></tr>
+  </tbody>
+</table>
+<p><code>DiplomacyJournal</code>/<code>Transcript</code>/<code>Replay</code> support deterministic replay; <code>DiplomacyCheckpoint</code> captures state. Declare the catalog through <code>DiplomacyChannels.Install</code> before <code>Init</code>.</p>
+
+<h2 id="testing">Testing</h2>
+<pre><code>dotnet run --project src/DiplomacyEngine/DiplomacyEngine.Tests -c Release</code></pre>
+<p>Suites: <code>AcceptanceTests</code>, <code>TreatyTests</code>, <code>WarTests</code>, <code>EspionageTests</code>, <code>PoliticsTests</code>, <code>ReputationTests</code>, <code>BalanceTests</code>, <code>DeterminismTests</code>, <code>SaveTests</code>, <code>FactsNamesTests</code>, <code>BoundaryTests</code>, <code>RefusalMatrixTests</code>, <code>ScaleTests</code>, <code>CliTests</code>, <code>SourceGuardTests</code>.</p>
+
+<h2 id="source">Source map</h2>
+<dl class="kv">
+  <dt>Reader</dt><dd><code>DipReader.cs</code>, <code>DipReader.Realms.cs</code>, <code>DipReader.Rules.cs</code>, <code>DipReader.Types.cs</code></dd>
+  <dt>Runtime</dt><dd><code>DipRuntime*.cs</code> (Advance, Regard, Treaties, Wars, Balance, Espionage, Politics)</dd>
+  <dt>Rules</dt><dd><code>Acceptance.cs</code>, <code>DipMath.cs</code>, <code>State.cs</code>, <code>DipStateRules.cs</code></dd>
+  <dt>Save and text</dt><dd><code>DipSave.cs</code>, <code>DipFacts.cs</code>, <code>DipNames.cs</code>, <code>DipExplain.cs</code>, <code>DipChanges.cs</code></dd>
+  <dt>Refusals</dt><dd><code>DipCodes.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/DiplomacyEngine</code> and <code>src/GameRuntime/GameRuntime.Diplomacy*</code>. Research, model limits and measurements: <a href="../DIPLOMACY_ENGINE.md">docs/DIPLOMACY_ENGINE.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

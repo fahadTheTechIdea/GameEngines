@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Economy.Bridges/GameRuntime.Economy.Bridges.csproj" />
+    <EmbeddedResource Include="../../CalendarEngine/samples/gregorian.calendar.json" LogicalName="gregorian.calendar.json" />
+    <EmbeddedResource Include="../../EconomyEngine/samples/town.economy.json" LogicalName="town.economy.json" />
+  </ItemGroup>
+</Project>

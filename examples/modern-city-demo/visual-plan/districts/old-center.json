@@ -1,0 +1,256 @@
+{
+  "Version": 1,
+  "Status": "DraftAuthoringBriefOnly",
+  "PathBase": "examples/modern-city-demo",
+  "SourceHandoff": "inventory/art-handoff-v003.json",
+  "SourceHandoffSha256": "621cfaaad79c20eb2c414c080549de49cf01bb42fab6e8458a26dcd42f7a1dc3",
+  "District": "old-center",
+  "ContextNodeId": "framework-reference-city/old-center-0",
+  "Purpose": "Older center with irregular streets and connected civic spaces",
+  "RequiredMemberNodeIds": [
+    "framework-reference-city/old-center-0",
+    "framework-reference-city/old-center-0/cafes-0",
+    "framework-reference-city/old-center-0/cafes-1",
+    "framework-reference-city/old-center-0/cafes-2",
+    "framework-reference-city/old-center-0/cafes-3",
+    "framework-reference-city/old-center-0/cafes-4",
+    "framework-reference-city/old-center-0/civic-0",
+    "framework-reference-city/old-center-0/food-0",
+    "framework-reference-city/old-center-0/food-1",
+    "framework-reference-city/old-center-0/food-2",
+    "framework-reference-city/old-center-0/food-3",
+    "framework-reference-city/old-center-0/food-4",
+    "framework-reference-city/old-center-0/homes-0",
+    "framework-reference-city/old-center-0/homes-1",
+    "framework-reference-city/old-center-0/homes-2",
+    "framework-reference-city/old-center-0/homes-3",
+    "framework-reference-city/old-center-0/homes-4",
+    "framework-reference-city/old-center-0/homes-5",
+    "framework-reference-city/old-center-0/homes-6",
+    "framework-reference-city/old-center-0/homes-7",
+    "framework-reference-city/old-center-0/homes-8",
+    "framework-reference-city/old-center-0/homes-9",
+    "framework-reference-city/old-center-0/homes-10",
+    "framework-reference-city/old-center-0/homes-11",
+    "framework-reference-city/old-center-0/homes-12",
+    "framework-reference-city/old-center-0/homes-13",
+    "framework-reference-city/old-center-0/homes-14",
+    "framework-reference-city/old-center-0/homes-15",
+    "framework-reference-city/old-center-0/homes-16",
+    "framework-reference-city/old-center-0/homes-17",
+    "framework-reference-city/old-center-0/homes-18",
+    "framework-reference-city/old-center-0/homes-19",
+    "framework-reference-city/old-center-0/homes-20",
+    "framework-reference-city/old-center-0/homes-21",
+    "framework-reference-city/old-center-0/homes-22",
+    "framework-reference-city/old-center-0/homes-23",
+    "framework-reference-city/old-center-0/homes-24",
+    "framework-reference-city/old-center-0/homes-25",
+    "framework-reference-city/old-center-0/homes-26",
+    "framework-reference-city/old-center-0/homes-27",
+    "framework-reference-city/old-center-0/homes-28",
+    "framework-reference-city/old-center-0/homes-29",
+    "framework-reference-city/old-center-0/homes-30",
+    "framework-reference-city/old-center-0/homes-31",
+    "framework-reference-city/old-center-0/homes-32",
+    "framework-reference-city/old-center-0/homes-33",
+    "framework-reference-city/old-center-0/library-0",
+    "framework-reference-city/old-center-0/plazas-0",
+    "framework-reference-city/old-center-0/plazas-1",
+    "framework-reference-city/old-center-0/shops-0",
+    "framework-reference-city/old-center-0/shops-1",
+    "framework-reference-city/old-center-0/shops-2",
+    "framework-reference-city/old-center-0/shops-3",
+    "framework-reference-city/old-center-0/shops-4",
+    "framework-reference-city/old-center-0/shops-5",
+    "framework-reference-city/old-center-0/shops-6",
+    "framework-reference-city/old-center-0/shops-7",
+    "framework-reference-city/old-center-0/shops-8",
+    "framework-reference-city/old-center-0/shops-9",
+    "framework-reference-city/old-center-0/shops-10",
+    "framework-reference-city/old-center-0/shops-11",
+    "framework-reference-city/old-center-0/shops-12",
+    "framework-reference-city/old-center-0/shops-13"
+  ],
+  "BuildingCounts": {
+    "cafe": 5,
+    "civic": 1,
+    "library": 1,
+    "restaurant": 5,
+    "shop": 14,
+    "townhouse": 34
+  },
+  "GroundAreaCounts": {
+    "plaza": 2
+  },
+  "WholeSiteCounts": {},
+  "OverviewJobId": "scope:old-center",
+  "DetailScopeIds": [
+    "old-center-civic-and-market-01",
+    "old-center-civic-and-market-02",
+    "old-center-residential-frontages-01",
+    "old-center-residential-frontages-02"
+  ],
+  "RequiredReferenceImages": [
+    {
+      "ReferenceJobId": "reference-0e2905f2f54b08decf08ebcf40216985004bb8bc37c6278bc298137c8488427e",
+      "MockupId": "townhouse-compact",
+      "Revision": "v001",
+      "StateSnapshot": "Approved",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/approved/framework-city-reference_asset_townhouse-compact_mockup_v001.png",
+        "Sha256": "9be42519765019c6a5a96c8f6f9d6b18b2f3af97125bf1d60136efa4d6e2fdc5",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-435205c0a5f9d868ac54756c4c22f2e6be2e35e5663465c5e913d3230913f028",
+      "MockupId": "library-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_library-reference_mockup_v001.png",
+        "Sha256": "ec28f89e40f027f147307deaa9813f8f2bd1f8238c638cc3f415b94d1ffd5d95",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-4b76fc91bc800ff3a8c519bdc318632f57e2a523aef2f7fcdc223a6c829bf780",
+      "MockupId": "restaurant-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_restaurant-reference_mockup_v001.png",
+        "Sha256": "1f8b4f867e98369994448ed0ff965b745426dccb54c43aba47316fc96f80ec93",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-6fe3aecaef2eafb96dfcfdd9a5d748b562452103fc64182dbafc738cfdc2121a",
+      "MockupId": "plaza-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_plaza-reference_mockup_v001.png",
+        "Sha256": "a2d6848c5631400e63c21aaab3df118c35dc7b035bb687bd88a6f9e40f1800e0",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-85adeaac7a00ea6fa17e7f786feb4221b79862bfd1ac65a7b5fe2280cb633d16",
+      "MockupId": "shop-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_shop-reference_mockup_v001.png",
+        "Sha256": "9aa66adff4a151ae70313d64df221e1a76cc2ec5163f85d90fb608bcdf3cef93",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-8ba80057fedfa0719f9965e9cd2a47e863ce21813c3567ccef003868dc5e69c4",
+      "MockupId": "civic-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_civic-reference_mockup_v001.png",
+        "Sha256": "300968acf71e2bcf53bf72557c28d346c582c29b56cde96c74376c0982c78739",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-922c5c33620df6fda60887cd84dc1d12a6787bc8c2bdb18624b9f2c3ad015bfd",
+      "MockupId": "cafe-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_cafe-reference_mockup_v001.png",
+        "Sha256": "8302858e2332956905e38aa8671cc4748c366d97a1b8b159ab83579f897a0d5c",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    }
+  ],
+  "UnapprovedReferenceRevisions": [
+    "library-reference:v001",
+    "restaurant-reference:v001",
+    "plaza-reference:v001",
+    "shop-reference:v001",
+    "civic-reference:v001",
+    "cafe-reference:v001"
+  ],
+  "LogicalInterfaces": [
+    {
+      "Id": "framework-reference-city/link-interface-1-0",
+      "Kind": "district-access",
+      "FromId": "framework-reference-city/old-center-0",
+      "ToId": "framework-reference-city/garden-neighborhood-0",
+      "Bidirectional": true,
+      "SourceRuleId": "city:interface-1",
+      "Properties": {
+        "geometryStatus": "UnrealizedIntentOnly",
+        "modeIntent": "pedestrian-and-local-vehicle",
+        "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback",
+        "purpose": "Connect residential local center to civic services"
+      },
+      "LayerId": null
+    },
+    {
+      "Id": "framework-reference-city/link-interface-2-0",
+      "Kind": "district-access",
+      "FromId": "framework-reference-city/old-center-0",
+      "ToId": "framework-reference-city/mixed-center-0",
+      "Bidirectional": true,
+      "SourceRuleId": "city:interface-2",
+      "Properties": {
+        "geometryStatus": "UnrealizedIntentOnly",
+        "modeIntent": "pedestrian-and-local-vehicle",
+        "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback",
+        "purpose": "Connect civic and commercial centers"
+      },
+      "LayerId": null
+    },
+    {
+      "Id": "framework-reference-city/link-interface-3-0",
+      "Kind": "district-walk",
+      "FromId": "framework-reference-city/old-center-0",
+      "ToId": "framework-reference-city/riverside-0",
+      "Bidirectional": true,
+      "SourceRuleId": "city:interface-3",
+      "Properties": {
+        "geometryStatus": "UnrealizedIntentOnly",
+        "modeIntent": "pedestrian",
+        "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback",
+        "purpose": "Connect civic space to public waterfront"
+      },
+      "LayerId": null
+    }
+  ],
+  "GeometryStatus": "UnrealizedIntentOnly",
+  "WorldPositions": null,
+  "DetailExecutionStatus": "AwaitingExactReferenceApprovals",
+  "OverviewExecutionStatus": "AwaitingApprovedDetailImages",
+  "OverviewPrompt": "visual-plan/prompts/district-old-center.draft.txt",
+  "GeneratedOverviewImage": null,
+  "Acceptance": [
+    "All declared instances and compound parts retained",
+    "Current approved exact reference revisions only",
+    "Fixed camera, per-object facings and readable ground access",
+    "Cross-view feature identities and calibration reviewed; deviations revised before compilation",
+    "Visible props and moving components added to catalogue and final map demand",
+    "No overview-resolution, vision, map or production acceptance inferred from this brief"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "farming",
+  "version": "1.0.0",
+  "title": "Farming and village life: crops, animals, preserves, kitchen",
+  "language": "en",
+  "world": "timeless",
+  "genres": ["farming-life"],
+  "dependencies": [{ "id": "core", "version": "1.0.0" }],
+  "license": { "spdx": "CC0-1.0", "provenance": "original", "author": "GameFrameWork" },
+  "locales": [],
+  "documents": ["resources.json", "recipes.json"]
+}

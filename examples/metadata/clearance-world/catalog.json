@@ -1,0 +1,125 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "sites",
+          "ArchetypeId": "site",
+          "Count": 2,
+          "Purpose": "Required catalog sites",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [
+        {
+          "Id": "walk",
+          "Kind": "walk",
+          "Pattern": "Chain",
+          "FromPart": "sites",
+          "ToPart": null,
+          "Bidirectional": true,
+          "Properties": null,
+          "LayerId": null
+        }
+      ],
+      "ChildRequirements": [
+        {
+          "Kind": "site",
+          "Minimum": 2,
+          "Maximum": 2
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null
+    },
+    {
+      "Id": "site",
+      "Kind": "site",
+      "Purpose": "Source footprint with reserved surroundings",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Exact footprint and placement reservation",
+        "SourceRuleId": "catalog:site",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -2,
+              "Y": -2
+            },
+            {
+              "X": 2,
+              "Y": -2
+            },
+            {
+              "X": 2,
+              "Y": 2
+            },
+            {
+              "X": -2,
+              "Y": 2
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -5,
+              "Y": -4
+            },
+            {
+              "X": 5,
+              "Y": -4
+            },
+            {
+              "X": 5,
+              "Y": 4
+            },
+            {
+              "X": -5,
+              "Y": 4
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": [
+          {
+            "Id": "entry",
+            "Purpose": "North entry",
+            "SourceRuleId": "catalog:entry",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -2
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -6
+            },
+            "Width": 1
+          }
+        ]
+      },
+      "Capacities": null
+    }
+  ]
+}

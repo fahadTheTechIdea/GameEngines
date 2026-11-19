@@ -1,0 +1,84 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "sites",
+          "ArchetypeId": "site",
+          "Count": 1,
+          "Purpose": "Required source site",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "site",
+          "Minimum": 1,
+          "Maximum": 1
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null
+    },
+    {
+      "Id": "site",
+      "Kind": "site",
+      "Purpose": "Source footprint with reserved surroundings",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": {
+        "Catalog": {
+          "CatalogId": "modern",
+          "EnabledCapabilities": [
+            "modern.district-policy",
+            "modern.electricity-network",
+            "modern.facility-technology",
+            "modern.motor-road-network",
+            "modern.potable-water-network",
+            "modern.wastewater-network"
+          ]
+        },
+        "DefinitionId": "village-house",
+        "VariantId": "cottage"
+      },
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": [
+          {
+            "Id": "front",
+            "Purpose": "Declared front entrance",
+            "SourceRuleId": "example:front",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -5
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -9
+            },
+            "Width": 1.5
+          }
+        ]
+      },
+      "Capacities": null
+    }
+  ]
+}

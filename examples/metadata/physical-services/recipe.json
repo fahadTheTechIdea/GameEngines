@@ -1,0 +1,345 @@
+{
+  "SchemaVersion": 1,
+  "Id": "placement-feedback",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Declared physical service catchment and placement feedback; full catalog context, shared corridors, world generation, artwork and native runtime remain open."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    0,
+    0
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "journey",
+      "Kind": "travel",
+      "FromId": "placement-feedback/sites-0",
+      "ToId": "placement-feedback/fixed-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "feedback-terrain",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 40,
+          "Y": 0
+        },
+        {
+          "X": 40,
+          "Y": 30
+        },
+        {
+          "X": 0,
+          "Y": 30
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [],
+    "Terrain": null,
+    "HeightField": {
+      "SchemaVersion": 1,
+      "Id": "flat",
+      "Kind": "ground",
+      "Purpose": "Feedback terrain",
+      "SourceRuleId": "test",
+      "Unit": "meters",
+      "Origin": {
+        "X": 0,
+        "Y": 0
+      },
+      "StepX": 5,
+      "StepY": 5,
+      "Columns": 9,
+      "Rows": 7,
+      "Heights": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "RouteRules": [
+    {
+      "Id": "journey-route",
+      "ConnectionKind": "travel",
+      "Profile": {
+        "Id": "foot",
+        "Purpose": "Walk between destinations",
+        "SourceRuleId": "example:walking",
+        "Radius": 0.3,
+        "MaximumSlope": 1,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.25,
+        "Waypoints": [],
+        "MaximumCandidates": 128,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 5000000
+      },
+      "FromPortId": "entry",
+      "ToPortId": null
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "coordinates",
+    "Fields": [
+      {
+        "Id": "x",
+        "Purpose": "Authored x axis",
+        "SourceRuleId": "test",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "X",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      },
+      {
+        "Id": "y",
+        "Purpose": "Authored y axis",
+        "SourceRuleId": "test",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Y",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ]
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "sites",
+      "Purpose": "Place accessible required site",
+      "SourceRuleId": "test",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 40,
+            "Y": 0
+          },
+          {
+            "X": 40,
+            "Y": 30
+          },
+          {
+            "X": 0,
+            "Y": 30
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "site",
+          "Purpose": "Required site",
+          "SourceRuleId": "test",
+          "Footprint": null,
+          "Profile": {
+            "Id": "site",
+            "Purpose": "Prefer a low central position",
+            "SourceRuleId": "test",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [
+              {
+                "Id": "x-band",
+                "FieldId": "x",
+                "Purpose": "Keep full footprint in the declared band",
+                "SourceRuleId": "test",
+                "Minimum": 6,
+                "Maximum": 14
+              }
+            ],
+            "Preferences": [
+              {
+                "Id": "prefer-x",
+                "FieldId": "x",
+                "Purpose": "Preferred x",
+                "SourceRuleId": "test",
+                "Ideal": 10,
+                "Tolerance": 40,
+                "Weight": 1
+              },
+              {
+                "Id": "prefer-y",
+                "FieldId": "y",
+                "Purpose": "Preferred y",
+                "SourceRuleId": "test",
+                "Ideal": 5,
+                "Tolerance": 30,
+                "Weight": 1
+              }
+            ]
+          },
+          "Reservation": null
+        }
+      ],
+      "Anchors": [],
+      "Relations": [],
+      "MinimumSeparation": 0,
+      "MaximumCandidates": 2048,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 50000000
+    },
+    "Bindings": [
+      {
+        "DemandId": "site",
+        "NodeId": "placement-feedback/sites-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null
+      }
+    ],
+    "NestedStages": null,
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 128
+  },
+  "Services": {
+    "Bindings": [
+      {
+        "ConsumerNodeId": "placement-feedback/sites-0",
+        "RequirementId": "rest",
+        "ProviderNodeId": "placement-feedback/fixed-0",
+        "SupplyId": "stock",
+        "ConnectionIds": [
+          "placement-feedback/explicit/journey"
+        ],
+        "Purpose": "Deliver within catchment",
+        "SourceRuleId": "test:physical"
+      }
+    ],
+    "Links": [
+      {
+        "ConnectionId": "placement-feedback/explicit/journey",
+        "Capacity": 4,
+        "Unit": "rest-points",
+        "Purpose": "Declared delivery capacity",
+        "SourceRuleId": "test:physical"
+      }
+    ],
+    "MaximumWork": 2000000
+  }
+}

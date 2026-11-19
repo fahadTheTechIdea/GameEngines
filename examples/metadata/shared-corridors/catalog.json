@@ -1,0 +1,102 @@
+{
+  "SchemaVersion": 1,
+  "Id": "surface-example",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Irregular exploration region",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "locations",
+          "ArchetypeId": "location",
+          "Count": 3,
+          "Purpose": "Required exploration destinations",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                0,
+                0
+              ],
+              "Step": [
+                20,
+                0
+              ]
+            }
+          },
+          "Capacity": null
+        },
+        {
+          "Id": "crossing",
+          "ArchetypeId": "location",
+          "Count": 2,
+          "Purpose": "Crossing exploration destinations",
+          "CountParameter": null,
+          "Layout": {
+            "StrategyId": "line",
+            "Parameters": {
+              "Origin": [
+                20,
+                -10
+              ],
+              "Step": [
+                0,
+                30
+              ]
+            }
+          },
+          "Capacity": null
+        }
+      ],
+      "Connections": [
+        {
+          "Id": "links",
+          "Kind": "travel-intent",
+          "Pattern": "Chain",
+          "FromPart": "locations",
+          "ToPart": null,
+          "Bidirectional": true,
+          "Properties": null,
+          "LayerId": null
+        },
+        {
+          "Id": "cross",
+          "Kind": "travel-intent",
+          "Pattern": "Chain",
+          "FromPart": "crossing",
+          "ToPart": null,
+          "Bidirectional": true,
+          "Properties": null,
+          "LayerId": null
+        }
+      ],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "location",
+      "Kind": "destination",
+      "Purpose": "A game-defined destination",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

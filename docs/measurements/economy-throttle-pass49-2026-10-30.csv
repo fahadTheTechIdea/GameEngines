@@ -1,0 +1,6 @@
+variant,price_noise,throttle_stop,throttle_full,day,riverton_flour_stock,riverton_flour_price,riverton_bread_stock,hillfort_steel_stock,mill_runs_last_period,bakery_runs_last_period,note
+format 3 document (pass 46 section 13.9),0,none,none,120,~18000,,,,,,figure recorded in section 13.9 before the pass; shocks did not act on recipe output
+format 4 without throttle,0,none,none,120,12370,750,253,0,182,105,drought now cuts the output of the mill (shocks act on recipe output); flour sits at its floor price
+format 4 throttle 900-1200,0,900,1200,120,1,3534,253,1,56,56,mill stops when flour is worth under 90 percent of the grain it takes
+format 4 throttle 800-1100,0,800,1100,120,0,2732,369,0,22,22,a different band gives a different equilibrium
+shipped town.economy.json,20,900,1200,120,1,3269,341,1,36,36,all five lines throttled 900-1200; one seed (the document's own)

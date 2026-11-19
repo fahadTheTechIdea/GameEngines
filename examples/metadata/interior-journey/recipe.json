@@ -1,0 +1,1218 @@
+{
+  "SchemaVersion": 1,
+  "Id": "interior-journey",
+  "GameProfile": "interior-exploration",
+  "CatalogId": "interior-content",
+  "RootArchetypeId": "floor",
+  "Scale": "single-floor",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Authored single-floor program with generated source-sized allocations and continuous passage geometry. Automatic room topology, wall meshes, door animation, art and playable runtime remain open."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    5,
+    5
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "entry-approach",
+      "Kind": "entry-approach",
+      "FromId": "interior-journey/entry-0",
+      "ToId": "interior-journey/entry-0/east-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "east-corridor",
+      "Kind": "east-corridor",
+      "FromId": "interior-journey/entry-0/east-0",
+      "ToId": "interior-journey/relay-0/west-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "relay-arrival",
+      "Kind": "relay-arrival",
+      "FromId": "interior-journey/relay-0/west-0",
+      "ToId": "interior-journey/relay-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "relay-departure",
+      "Kind": "relay-departure",
+      "FromId": "interior-journey/relay-0",
+      "ToId": "interior-journey/relay-0/south-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "south-corridor",
+      "Kind": "south-corridor",
+      "FromId": "interior-journey/relay-0/south-0",
+      "ToId": "interior-journey/exit-0/north-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    },
+    {
+      "Id": "exit-arrival",
+      "Kind": "exit-arrival",
+      "FromId": "interior-journey/exit-0/north-0",
+      "ToId": "interior-journey/exit-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": null,
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "interior-floor",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 2,
+          "Y": 2
+        },
+        {
+          "X": 8,
+          "Y": 2
+        },
+        {
+          "X": 8,
+          "Y": 4
+        },
+        {
+          "X": 16,
+          "Y": 4
+        },
+        {
+          "X": 16,
+          "Y": 2
+        },
+        {
+          "X": 22,
+          "Y": 2
+        },
+        {
+          "X": 22,
+          "Y": 8
+        },
+        {
+          "X": 20,
+          "Y": 8
+        },
+        {
+          "X": 20,
+          "Y": 14
+        },
+        {
+          "X": 22,
+          "Y": 14
+        },
+        {
+          "X": 22,
+          "Y": 20
+        },
+        {
+          "X": 16,
+          "Y": 20
+        },
+        {
+          "X": 16,
+          "Y": 14
+        },
+        {
+          "X": 18,
+          "Y": 14
+        },
+        {
+          "X": 18,
+          "Y": 8
+        },
+        {
+          "X": 16,
+          "Y": 8
+        },
+        {
+          "X": 16,
+          "Y": 6
+        },
+        {
+          "X": 8,
+          "Y": 6
+        },
+        {
+          "X": 8,
+          "Y": 8
+        },
+        {
+          "X": 2,
+          "Y": 8
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "deck",
+        "Kind": "deck",
+        "Purpose": "Walkable floor",
+        "SourceRuleId": "interior:floor",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 2,
+              "Y": 2
+            },
+            {
+              "X": 8,
+              "Y": 2
+            },
+            {
+              "X": 8,
+              "Y": 4
+            },
+            {
+              "X": 16,
+              "Y": 4
+            },
+            {
+              "X": 16,
+              "Y": 2
+            },
+            {
+              "X": 22,
+              "Y": 2
+            },
+            {
+              "X": 22,
+              "Y": 8
+            },
+            {
+              "X": 20,
+              "Y": 8
+            },
+            {
+              "X": 20,
+              "Y": 14
+            },
+            {
+              "X": 22,
+              "Y": 14
+            },
+            {
+              "X": 22,
+              "Y": 20
+            },
+            {
+              "X": 16,
+              "Y": 20
+            },
+            {
+              "X": 16,
+              "Y": 14
+            },
+            {
+              "X": 18,
+              "Y": 14
+            },
+            {
+              "X": 18,
+              "Y": 8
+            },
+            {
+              "X": 16,
+              "Y": 8
+            },
+            {
+              "X": 16,
+              "Y": 6
+            },
+            {
+              "X": 8,
+              "Y": 6
+            },
+            {
+              "X": 8,
+              "Y": 8
+            },
+            {
+              "X": 2,
+              "Y": 8
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 0,
+        "GradientX": 0,
+        "GradientY": 0
+      }
+    ],
+    "Terrain": null,
+    "HeightField": null
+  },
+  "RouteRules": [
+    {
+      "Id": "entry-approach",
+      "ConnectionKind": "entry-approach",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Full-width interior walking",
+        "SourceRuleId": "interior:movement",
+        "Radius": 0.3,
+        "MaximumSlope": 0.01,
+        "KindCosts": {
+          "deck": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 5000000
+      },
+      "FromPortId": null,
+      "ToPortId": "east",
+      "Reuse": null,
+      "Interfaces": null
+    },
+    {
+      "Id": "east-corridor",
+      "ConnectionKind": "east-corridor",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Full-width interior walking",
+        "SourceRuleId": "interior:movement",
+        "Radius": 0.3,
+        "MaximumSlope": 0.01,
+        "KindCosts": {
+          "deck": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 5000000
+      },
+      "FromPortId": "east",
+      "ToPortId": "west",
+      "Reuse": null,
+      "Interfaces": null
+    },
+    {
+      "Id": "relay-arrival",
+      "ConnectionKind": "relay-arrival",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Full-width interior walking",
+        "SourceRuleId": "interior:movement",
+        "Radius": 0.3,
+        "MaximumSlope": 0.01,
+        "KindCosts": {
+          "deck": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 5000000
+      },
+      "FromPortId": "west",
+      "ToPortId": null,
+      "Reuse": null,
+      "Interfaces": null
+    },
+    {
+      "Id": "relay-departure",
+      "ConnectionKind": "relay-departure",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Full-width interior walking",
+        "SourceRuleId": "interior:movement",
+        "Radius": 0.3,
+        "MaximumSlope": 0.01,
+        "KindCosts": {
+          "deck": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 5000000
+      },
+      "FromPortId": null,
+      "ToPortId": "south",
+      "Reuse": null,
+      "Interfaces": null
+    },
+    {
+      "Id": "south-corridor",
+      "ConnectionKind": "south-corridor",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Full-width interior walking",
+        "SourceRuleId": "interior:movement",
+        "Radius": 0.3,
+        "MaximumSlope": 0.01,
+        "KindCosts": {
+          "deck": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 5000000
+      },
+      "FromPortId": "south",
+      "ToPortId": "north",
+      "Reuse": null,
+      "Interfaces": null
+    },
+    {
+      "Id": "exit-arrival",
+      "ConnectionKind": "exit-arrival",
+      "Profile": {
+        "Id": "walk",
+        "Purpose": "Full-width interior walking",
+        "SourceRuleId": "interior:movement",
+        "Radius": 0.3,
+        "MaximumSlope": 0.01,
+        "KindCosts": {
+          "deck": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 0.1,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 5000000
+      },
+      "FromPortId": "north",
+      "ToPortId": null,
+      "Reuse": null,
+      "Interfaces": null
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "interior-fields",
+    "Fields": [
+      {
+        "Id": "level",
+        "Purpose": "Floor elevation",
+        "SourceRuleId": "interior:floor",
+        "Unit": "meters",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Elevation",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ]
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "floor-program",
+      "Purpose": "Preserve authored room program",
+      "SourceRuleId": "interior:program",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 2,
+            "Y": 2
+          },
+          {
+            "X": 8,
+            "Y": 2
+          },
+          {
+            "X": 8,
+            "Y": 4
+          },
+          {
+            "X": 16,
+            "Y": 4
+          },
+          {
+            "X": 16,
+            "Y": 2
+          },
+          {
+            "X": 22,
+            "Y": 2
+          },
+          {
+            "X": 22,
+            "Y": 8
+          },
+          {
+            "X": 20,
+            "Y": 8
+          },
+          {
+            "X": 20,
+            "Y": 14
+          },
+          {
+            "X": 22,
+            "Y": 14
+          },
+          {
+            "X": 22,
+            "Y": 20
+          },
+          {
+            "X": 16,
+            "Y": 20
+          },
+          {
+            "X": 16,
+            "Y": 14
+          },
+          {
+            "X": 18,
+            "Y": 14
+          },
+          {
+            "X": 18,
+            "Y": 8
+          },
+          {
+            "X": 16,
+            "Y": 8
+          },
+          {
+            "X": 16,
+            "Y": 6
+          },
+          {
+            "X": 8,
+            "Y": 6
+          },
+          {
+            "X": 8,
+            "Y": 8
+          },
+          {
+            "X": 2,
+            "Y": 8
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "entry",
+          "Purpose": "Required interior member",
+          "SourceRuleId": "interior:entry",
+          "Footprint": null,
+          "Profile": {
+            "Id": "floor",
+            "Purpose": "Remain on authored interior floor",
+            "SourceRuleId": "interior:floor",
+            "AllowedKinds": [
+              "deck"
+            ],
+            "Requirements": [],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "relay",
+          "Purpose": "Required interior member",
+          "SourceRuleId": "interior:relay",
+          "Footprint": null,
+          "Profile": {
+            "Id": "floor",
+            "Purpose": "Remain on authored interior floor",
+            "SourceRuleId": "interior:floor",
+            "AllowedKinds": [
+              "deck"
+            ],
+            "Requirements": [],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "exit",
+          "Purpose": "Required interior member",
+          "SourceRuleId": "interior:exit",
+          "Footprint": null,
+          "Profile": {
+            "Id": "floor",
+            "Purpose": "Remain on authored interior floor",
+            "SourceRuleId": "interior:floor",
+            "AllowedKinds": [
+              "deck"
+            ],
+            "Requirements": [],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "east-hall",
+          "Purpose": "Required interior member",
+          "SourceRuleId": "interior:east-hall",
+          "Footprint": null,
+          "Profile": {
+            "Id": "floor",
+            "Purpose": "Remain on authored interior floor",
+            "SourceRuleId": "interior:floor",
+            "AllowedKinds": [
+              "deck"
+            ],
+            "Requirements": [],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        },
+        {
+          "Id": "south-hall",
+          "Purpose": "Required interior member",
+          "SourceRuleId": "interior:south-hall",
+          "Footprint": null,
+          "Profile": {
+            "Id": "floor",
+            "Purpose": "Remain on authored interior floor",
+            "SourceRuleId": "interior:floor",
+            "AllowedKinds": [
+              "deck"
+            ],
+            "Requirements": [],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        }
+      ],
+      "Anchors": [
+        {
+          "Id": "entry-anchor",
+          "Position": {
+            "X": 5,
+            "Y": 5
+          }
+        },
+        {
+          "Id": "relay-anchor",
+          "Position": {
+            "X": 19,
+            "Y": 5
+          }
+        },
+        {
+          "Id": "exit-anchor",
+          "Position": {
+            "X": 19,
+            "Y": 17
+          }
+        },
+        {
+          "Id": "east-hall-anchor",
+          "Position": {
+            "X": 12,
+            "Y": 5
+          }
+        },
+        {
+          "Id": "south-hall-anchor",
+          "Position": {
+            "X": 19,
+            "Y": 11
+          }
+        }
+      ],
+      "Relations": [
+        {
+          "Id": "entry-pin",
+          "FromId": "entry",
+          "ToId": "entry-anchor",
+          "Purpose": "Authored spatial relationship",
+          "SourceRuleId": "interior:layout",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "relay-pin",
+          "FromId": "relay",
+          "ToId": "relay-anchor",
+          "Purpose": "Authored spatial relationship",
+          "SourceRuleId": "interior:layout",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "exit-pin",
+          "FromId": "exit",
+          "ToId": "exit-anchor",
+          "Purpose": "Authored spatial relationship",
+          "SourceRuleId": "interior:layout",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "east-hall-pin",
+          "FromId": "east-hall",
+          "ToId": "east-hall-anchor",
+          "Purpose": "Authored spatial relationship",
+          "SourceRuleId": "interior:layout",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        },
+        {
+          "Id": "south-hall-pin",
+          "FromId": "south-hall",
+          "ToId": "south-hall-anchor",
+          "Purpose": "Authored spatial relationship",
+          "SourceRuleId": "interior:layout",
+          "Minimum": 0,
+          "Maximum": 0,
+          "Ideal": 0,
+          "Weight": 1
+        }
+      ],
+      "MinimumSeparation": 0,
+      "MaximumCandidates": 2048,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 20000000,
+      "AllowBoundaryContact": true
+    },
+    "Bindings": [
+      {
+        "DemandId": "entry",
+        "NodeId": "interior-journey/entry-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null
+      },
+      {
+        "DemandId": "relay",
+        "NodeId": "interior-journey/relay-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null
+      },
+      {
+        "DemandId": "exit",
+        "NodeId": "interior-journey/exit-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null
+      },
+      {
+        "DemandId": "east-hall",
+        "NodeId": "interior-journey/east-hall-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null
+      },
+      {
+        "DemandId": "south-hall",
+        "NodeId": "interior-journey/south-hall-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null
+      }
+    ],
+    "NestedStages": [
+      {
+        "Id": "entry-contents",
+        "ParentNodeId": "interior-journey/entry-0",
+        "Request": {
+          "Id": "entry-program",
+          "Purpose": "Preserve authored room program",
+          "SourceRuleId": "interior:program",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "east",
+              "Purpose": "Required interior member",
+              "SourceRuleId": "interior:east",
+              "Footprint": null,
+              "Profile": {
+                "Id": "floor",
+                "Purpose": "Remain on authored interior floor",
+                "SourceRuleId": "interior:floor",
+                "AllowedKinds": [
+                  "deck"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "content",
+              "Purpose": "Required interior member",
+              "SourceRuleId": "interior:content",
+              "Footprint": null,
+              "Profile": {
+                "Id": "floor",
+                "Purpose": "Remain on authored interior floor",
+                "SourceRuleId": "interior:floor",
+                "AllowedKinds": [
+                  "deck"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "east-anchor",
+              "Position": {
+                "X": 2.75,
+                "Y": 0
+              }
+            },
+            {
+              "Id": "content-anchor",
+              "Position": {
+                "X": -1,
+                "Y": 1
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "east-pin",
+              "FromId": "east",
+              "ToId": "east-anchor",
+              "Purpose": "Authored spatial relationship",
+              "SourceRuleId": "interior:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "content-pin",
+              "FromId": "content",
+              "ToId": "content-anchor",
+              "Purpose": "Authored spatial relationship",
+              "SourceRuleId": "interior:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false
+        },
+        "Bindings": [
+          {
+            "DemandId": "east",
+            "NodeId": "interior-journey/entry-0/east-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null
+          },
+          {
+            "DemandId": "content",
+            "NodeId": "interior-journey/entry-0/content-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null
+          }
+        ]
+      },
+      {
+        "Id": "relay-contents",
+        "ParentNodeId": "interior-journey/relay-0",
+        "Request": {
+          "Id": "relay-program",
+          "Purpose": "Preserve authored room program",
+          "SourceRuleId": "interior:program",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "west",
+              "Purpose": "Required interior member",
+              "SourceRuleId": "interior:west",
+              "Footprint": null,
+              "Profile": {
+                "Id": "floor",
+                "Purpose": "Remain on authored interior floor",
+                "SourceRuleId": "interior:floor",
+                "AllowedKinds": [
+                  "deck"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "south",
+              "Purpose": "Required interior member",
+              "SourceRuleId": "interior:south",
+              "Footprint": null,
+              "Profile": {
+                "Id": "floor",
+                "Purpose": "Remain on authored interior floor",
+                "SourceRuleId": "interior:floor",
+                "AllowedKinds": [
+                  "deck"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "content",
+              "Purpose": "Required interior member",
+              "SourceRuleId": "interior:content",
+              "Footprint": null,
+              "Profile": {
+                "Id": "floor",
+                "Purpose": "Remain on authored interior floor",
+                "SourceRuleId": "interior:floor",
+                "AllowedKinds": [
+                  "deck"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "west-anchor",
+              "Position": {
+                "X": -2.75,
+                "Y": 0
+              }
+            },
+            {
+              "Id": "south-anchor",
+              "Position": {
+                "X": 0,
+                "Y": 2.75
+              }
+            },
+            {
+              "Id": "content-anchor",
+              "Position": {
+                "X": 1,
+                "Y": 0
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "west-pin",
+              "FromId": "west",
+              "ToId": "west-anchor",
+              "Purpose": "Authored spatial relationship",
+              "SourceRuleId": "interior:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "south-pin",
+              "FromId": "south",
+              "ToId": "south-anchor",
+              "Purpose": "Authored spatial relationship",
+              "SourceRuleId": "interior:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "content-pin",
+              "FromId": "content",
+              "ToId": "content-anchor",
+              "Purpose": "Authored spatial relationship",
+              "SourceRuleId": "interior:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false
+        },
+        "Bindings": [
+          {
+            "DemandId": "west",
+            "NodeId": "interior-journey/relay-0/west-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null
+          },
+          {
+            "DemandId": "south",
+            "NodeId": "interior-journey/relay-0/south-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null
+          },
+          {
+            "DemandId": "content",
+            "NodeId": "interior-journey/relay-0/content-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null
+          }
+        ]
+      },
+      {
+        "Id": "exit-contents",
+        "ParentNodeId": "interior-journey/exit-0",
+        "Request": {
+          "Id": "exit-program",
+          "Purpose": "Preserve authored room program",
+          "SourceRuleId": "interior:program",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "north",
+              "Purpose": "Required interior member",
+              "SourceRuleId": "interior:north",
+              "Footprint": null,
+              "Profile": {
+                "Id": "floor",
+                "Purpose": "Remain on authored interior floor",
+                "SourceRuleId": "interior:floor",
+                "AllowedKinds": [
+                  "deck"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            },
+            {
+              "Id": "content",
+              "Purpose": "Required interior member",
+              "SourceRuleId": "interior:content",
+              "Footprint": null,
+              "Profile": {
+                "Id": "floor",
+                "Purpose": "Remain on authored interior floor",
+                "SourceRuleId": "interior:floor",
+                "AllowedKinds": [
+                  "deck"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [
+            {
+              "Id": "north-anchor",
+              "Position": {
+                "X": 0,
+                "Y": -2.75
+              }
+            },
+            {
+              "Id": "content-anchor",
+              "Position": {
+                "X": 1,
+                "Y": 1
+              }
+            }
+          ],
+          "Relations": [
+            {
+              "Id": "north-pin",
+              "FromId": "north",
+              "ToId": "north-anchor",
+              "Purpose": "Authored spatial relationship",
+              "SourceRuleId": "interior:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            },
+            {
+              "Id": "content-pin",
+              "FromId": "content",
+              "ToId": "content-anchor",
+              "Purpose": "Authored spatial relationship",
+              "SourceRuleId": "interior:layout",
+              "Minimum": 0,
+              "Maximum": 0,
+              "Ideal": 0,
+              "Weight": 1
+            }
+          ],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": false
+        },
+        "Bindings": [
+          {
+            "DemandId": "north",
+            "NodeId": "interior-journey/exit-0/north-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null
+          },
+          {
+            "DemandId": "content",
+            "NodeId": "interior-journey/exit-0/content-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null
+          }
+        ]
+      }
+    ],
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 32
+  },
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": [
+    {
+      "Id": "journey",
+      "Purpose": "Visit relay before exit",
+      "SourceRuleId": "interior:progression",
+      "ScopeNodeId": "interior-journey",
+      "StartNodeId": "interior-journey/entry-0",
+      "GoalNodeIds": [
+        "interior-journey/exit-0"
+      ],
+      "ConnectionKinds": [
+        "entry-approach",
+        "east-corridor",
+        "relay-arrival",
+        "relay-departure",
+        "south-corridor",
+        "exit-arrival"
+      ],
+      "RequiredMilestones": [
+        "interior-journey/relay-0"
+      ],
+      "MaximumWork": 1000000
+    }
+  ]
+}

@@ -1,0 +1,275 @@
+{
+  "Version": 1,
+  "Status": "DraftAuthoringBriefOnly",
+  "PathBase": "examples/modern-city-demo",
+  "SourceHandoff": "inventory/art-handoff-v003.json",
+  "SourceHandoffSha256": "621cfaaad79c20eb2c414c080549de49cf01bb42fab6e8458a26dcd42f7a1dc3",
+  "District": "work-district",
+  "ContextNodeId": "framework-reference-city/work-district-0",
+  "Purpose": "Productive district with complete factory compounds and local services",
+  "RequiredMemberNodeIds": [
+    "framework-reference-city/work-district-0",
+    "framework-reference-city/work-district-0/factories-0",
+    "framework-reference-city/work-district-0/factories-0/admin-0",
+    "framework-reference-city/work-district-0/factories-0/gate-0",
+    "framework-reference-city/work-district-0/factories-0/halls-0",
+    "framework-reference-city/work-district-0/factories-0/halls-1",
+    "framework-reference-city/work-district-0/factories-0/plant-0",
+    "framework-reference-city/work-district-0/factories-0/stores-0",
+    "framework-reference-city/work-district-0/factories-0/stores-1",
+    "framework-reference-city/work-district-0/factories-0/walk-0",
+    "framework-reference-city/work-district-0/factories-0/workshop-0",
+    "framework-reference-city/work-district-0/factories-0/yard-0",
+    "framework-reference-city/work-district-0/factories-1",
+    "framework-reference-city/work-district-0/factories-1/admin-0",
+    "framework-reference-city/work-district-0/factories-1/gate-0",
+    "framework-reference-city/work-district-0/factories-1/halls-0",
+    "framework-reference-city/work-district-0/factories-1/halls-1",
+    "framework-reference-city/work-district-0/factories-1/plant-0",
+    "framework-reference-city/work-district-0/factories-1/stores-0",
+    "framework-reference-city/work-district-0/factories-1/stores-1",
+    "framework-reference-city/work-district-0/factories-1/walk-0",
+    "framework-reference-city/work-district-0/factories-1/workshop-0",
+    "framework-reference-city/work-district-0/factories-1/yard-0",
+    "framework-reference-city/work-district-0/factories-2",
+    "framework-reference-city/work-district-0/factories-2/admin-0",
+    "framework-reference-city/work-district-0/factories-2/gate-0",
+    "framework-reference-city/work-district-0/factories-2/halls-0",
+    "framework-reference-city/work-district-0/factories-2/halls-1",
+    "framework-reference-city/work-district-0/factories-2/plant-0",
+    "framework-reference-city/work-district-0/factories-2/stores-0",
+    "framework-reference-city/work-district-0/factories-2/stores-1",
+    "framework-reference-city/work-district-0/factories-2/walk-0",
+    "framework-reference-city/work-district-0/factories-2/workshop-0",
+    "framework-reference-city/work-district-0/factories-2/yard-0",
+    "framework-reference-city/work-district-0/factories-3",
+    "framework-reference-city/work-district-0/factories-3/admin-0",
+    "framework-reference-city/work-district-0/factories-3/gate-0",
+    "framework-reference-city/work-district-0/factories-3/halls-0",
+    "framework-reference-city/work-district-0/factories-3/halls-1",
+    "framework-reference-city/work-district-0/factories-3/plant-0",
+    "framework-reference-city/work-district-0/factories-3/stores-0",
+    "framework-reference-city/work-district-0/factories-3/stores-1",
+    "framework-reference-city/work-district-0/factories-3/walk-0",
+    "framework-reference-city/work-district-0/factories-3/workshop-0",
+    "framework-reference-city/work-district-0/factories-3/yard-0",
+    "framework-reference-city/work-district-0/food-0",
+    "framework-reference-city/work-district-0/food-1",
+    "framework-reference-city/work-district-0/food-2",
+    "framework-reference-city/work-district-0/warehouses-0",
+    "framework-reference-city/work-district-0/warehouses-1",
+    "framework-reference-city/work-district-0/warehouses-2",
+    "framework-reference-city/work-district-0/warehouses-3",
+    "framework-reference-city/work-district-0/warehouses-4",
+    "framework-reference-city/work-district-0/warehouses-5",
+    "framework-reference-city/work-district-0/warehouses-6",
+    "framework-reference-city/work-district-0/warehouses-7",
+    "framework-reference-city/work-district-0/workshops-0",
+    "framework-reference-city/work-district-0/workshops-1",
+    "framework-reference-city/work-district-0/workshops-2",
+    "framework-reference-city/work-district-0/workshops-3",
+    "framework-reference-city/work-district-0/workshops-4",
+    "framework-reference-city/work-district-0/workshops-5",
+    "framework-reference-city/work-district-0/workshops-6",
+    "framework-reference-city/work-district-0/workshops-7",
+    "framework-reference-city/work-district-0/workshops-8",
+    "framework-reference-city/work-district-0/workshops-9"
+  ],
+  "BuildingCounts": {
+    "cafe": 3,
+    "guardhouse": 4,
+    "office": 4,
+    "production-hall": 8,
+    "warehouse": 16,
+    "workshop": 14
+  },
+  "GroundAreaCounts": {
+    "entry-walk": 4,
+    "utility-yard": 4,
+    "yard": 4
+  },
+  "WholeSiteCounts": {
+    "factory-site": 4
+  },
+  "OverviewJobId": "scope:work-district",
+  "DetailScopeIds": [
+    "work-district-factory-compounds-01",
+    "work-district-factory-compounds-02",
+    "work-district-work-services-01"
+  ],
+  "RequiredReferenceImages": [
+    {
+      "ReferenceJobId": "reference-1cbffa40b61e60640ddc1e63d1cb46f40e04ad0855e4008a42d09b7afd66df1c",
+      "MockupId": "yard-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_yard-reference_mockup_v001.png",
+        "Sha256": "4922a7da082b44baa18981d458a9fb3532a605b435b642a391079077697c879f",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-5f553935d0722ad751a7158bb8c8987f610d3be5f28425cb78c4da1759827fe0",
+      "MockupId": "utility-yard-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_utility-yard-reference_mockup_v001.png",
+        "Sha256": "a787298a64d9705cefc1802ef12ccc516cf72c45d3d09f5eebb38e226b894705",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-81f173a25e32f6ae189b4723d1dc77e844c0911c276ed0e200f2d5b58b62b09f",
+      "MockupId": "workshop-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_workshop-reference_mockup_v001.png",
+        "Sha256": "f4ea32d1b344bf1752b355d9c556514e7809f5198241a040b6a860896bb2ff4e",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-90b796b64f0a583ec3375a2b31dfcf7db01d665356ebc9aa3a4a871153b230d4",
+      "MockupId": "entry-walk-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_entry-walk-reference_mockup_v001.png",
+        "Sha256": "a2875123d3a2bf7199e375aa6092f839981ef5bdc6cbe575d218814afa54db5d",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-922c5c33620df6fda60887cd84dc1d12a6787bc8c2bdb18624b9f2c3ad015bfd",
+      "MockupId": "cafe-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_cafe-reference_mockup_v001.png",
+        "Sha256": "8302858e2332956905e38aa8671cc4748c366d97a1b8b159ab83579f897a0d5c",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-a06a5e327e9ed659eeef69deb6d9cba8bfcbd6e01f193891455fd025803cd93d",
+      "MockupId": "warehouse-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_warehouse-reference_mockup_v001.png",
+        "Sha256": "c5335862c05c2be5f5dab4a22c63946df919eab87497323bf64eeec648f92f03",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-b8070f322fad9559184829cb0c4e0d2b774b3e04bee85a3c5445c471f2fa7e15",
+      "MockupId": "guardhouse-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_guardhouse-reference_mockup_v001.png",
+        "Sha256": "557d056fba21e8de3e645cf04f4e09210aa4721846c07047689ad0699c9db209",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-c972da467b49cf34eac4ffc206821d3db51320c4e3fc49be6b41fca3ec6b02b3",
+      "MockupId": "production-hall-reference",
+      "Revision": "v001",
+      "StateSnapshot": "Approved",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/approved/framework-city-reference_asset_production-hall-reference_mockup_v001.png",
+        "Sha256": "35db6c187277ef772acdcd785bee25f90a7da116c42b2927f098d2fdc05a9b1a",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    },
+    {
+      "ReferenceJobId": "reference-f83473439871a39aed527c9ad771532527dc6db83f10ba056374b904b57a7229",
+      "MockupId": "office-reference",
+      "Revision": "v001",
+      "StateSnapshot": "GeneratedAwaitingOwnerReview",
+      "Image": {
+        "Path": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_office-reference_mockup_v001.png",
+        "Sha256": "4b3e59d2e82381f92305b09f3425a11d70776d984cc8177594ff75e4315173aa",
+        "Width": 1254,
+        "Height": 1254,
+        "Mode": "RGB"
+      }
+    }
+  ],
+  "UnapprovedReferenceRevisions": [
+    "yard-reference:v001",
+    "utility-yard-reference:v001",
+    "workshop-reference:v001",
+    "entry-walk-reference:v001",
+    "cafe-reference:v001",
+    "warehouse-reference:v001",
+    "guardhouse-reference:v001",
+    "office-reference:v001"
+  ],
+  "LogicalInterfaces": [
+    {
+      "Id": "framework-reference-city/link-interface-6-0",
+      "Kind": "district-service-access",
+      "FromId": "framework-reference-city/mixed-center-0",
+      "ToId": "framework-reference-city/work-district-0",
+      "Bidirectional": true,
+      "SourceRuleId": "city:interface-6",
+      "Properties": {
+        "geometryStatus": "UnrealizedIntentOnly",
+        "modeIntent": "pedestrian-and-service-vehicle",
+        "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback",
+        "purpose": "Connect commercial services and productive district"
+      },
+      "LayerId": null
+    },
+    {
+      "Id": "framework-reference-city/link-interface-8-0",
+      "Kind": "district-access",
+      "FromId": "framework-reference-city/work-district-0",
+      "ToId": "framework-reference-city/outer-neighborhood-0",
+      "Bidirectional": true,
+      "SourceRuleId": "city:interface-8",
+      "Properties": {
+        "geometryStatus": "UnrealizedIntentOnly",
+        "modeIntent": "pedestrian-and-local-vehicle",
+        "placementRule": "Follow approved mockup composition and terrain; no imposed grid or straight-line road fallback",
+        "purpose": "Connect productive district and outer neighborhood without forcing passage through civic space"
+      },
+      "LayerId": null
+    }
+  ],
+  "GeometryStatus": "UnrealizedIntentOnly",
+  "WorldPositions": null,
+  "DetailExecutionStatus": "AwaitingExactReferenceApprovals",
+  "OverviewExecutionStatus": "AwaitingApprovedDetailImages",
+  "OverviewPrompt": "visual-plan/prompts/district-work-district.draft.txt",
+  "GeneratedOverviewImage": null,
+  "Acceptance": [
+    "All declared instances and compound parts retained",
+    "Current approved exact reference revisions only",
+    "Fixed camera, per-object facings and readable ground access",
+    "Cross-view feature identities and calibration reviewed; deviations revised before compilation",
+    "Visible props and moving components added to catalogue and final map demand",
+    "No overview-resolution, vision, map or production acceptance inferred from this brief"
+  ]
+}

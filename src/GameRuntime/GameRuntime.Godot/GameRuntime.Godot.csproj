@@ -1,0 +1,21 @@
+<Project Sdk="Godot.NET.Sdk/4.7.2">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    <RootNamespace>GameRuntime.GodotHost</RootNamespace>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Abstractions/GameRuntime.Abstractions.csproj" />
+    <ProjectReference Include="../GameRuntime.Scenario/GameRuntime.Scenario.csproj" />
+    <ProjectReference Include="../GameRuntime.Sim/GameRuntime.Sim.csproj" />
+    <ProjectReference Include="../../SimEngine/help/quickstart/Game.Module/QuickGame.Module.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Core/ScenarioEngine.Core.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Content/ScenarioEngine.Content.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/src/ScenarioEngine.Diagnostics/ScenarioEngine.Diagnostics.csproj" />
+    <ProjectReference Include="../../ScenarioEngine/samples/Counter.GameLayer/Counter.GameLayer.csproj" />
+  </ItemGroup>
+</Project>

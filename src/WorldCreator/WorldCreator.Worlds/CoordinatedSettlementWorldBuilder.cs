@@ -14,7 +14,7 @@ public sealed record CoordinatedSettlementSpecification(
     SettlementTransportSpecification Transport);
 
 public sealed record CoordinatedSettlementResult(
-    DummyVillageWorldDocument? World, IReadOnlyList<string> Issues)
+    WorldSceneDocument? World, IReadOnlyList<string> Issues)
 {
     public bool Valid => World is not null && Issues.Count == 0;
 }
@@ -27,7 +27,7 @@ public sealed record CoordinatedSettlementResult(
 public sealed class CoordinatedSettlementWorldBuilder
 {
     public CoordinatedSettlementResult Build(
-        DummyVillageWorldDocument source,
+        WorldSceneDocument source,
         SettlementDesignResult settlement,
         CoordinatedSettlementSpecification specification,
         WorldQualityRules qualityRules)

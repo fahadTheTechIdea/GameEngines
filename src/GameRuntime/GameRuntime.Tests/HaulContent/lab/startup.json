@@ -1,0 +1,8 @@
+{
+  "world_setup_profiles": [{ "id": "lab.start", "entries": ["lab.bench.start", "lab.annex.start", "lab.hauler.start"], "includes": [] }],
+  "entity_setups": [
+    { "id": "lab.bench.start", "after": [], "entity": "lab.bench", "company": 0, "placement": { "space": "lab.tiles", "x": 1, "y": 1 }, "home": null },
+    { "id": "lab.annex.start", "after": ["lab.bench.start"], "entity": "lab.annex", "company": 0, "placement": { "space": "lab.tiles", "x": 8, "y": 1 }, "home": null },
+    { "id": "lab.hauler.start", "after": ["lab.annex.start", "lab.bench.start"], "entity": "lab.hauler", "company": 0, "placement": { "space": "lab.tiles", "x": 4, "y": 3 }, "home": "lab.bench.start" }
+  ]
+}

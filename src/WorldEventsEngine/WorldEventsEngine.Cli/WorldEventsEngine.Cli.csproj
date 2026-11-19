@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The authoring tool for world-events documents: check, simulate, explain, coverage. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><AssemblyName>WorldEventsEngine.Cli</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="WorldEventsEngine.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../WorldEventsEngine.Core/WorldEventsEngine.Core.csproj" />
+    <ProjectReference Include="../../EngineCommon/EngineCommon.Balance/EngineCommon.Balance.csproj" />
+  </ItemGroup>
+</Project>

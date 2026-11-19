@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ScenarioEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="ScenarioEngine.html" aria-current="page">ScenarioEngine</a>
+      <a href="../ENGINE_GRAPH.md">Engine graph</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation · mission framework</p>
+  <h1>ScenarioEngine</h1>
+  <p class="lede">A standalone scenario kernel: validated JSON content, typed facts and conditions, objective graphs with endings, replaceable game layers, transactional command admission, world frames, checksummed saves, previous-generation recovery and portable recorded replay — with no engine or Godot dependency.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0 libraries</span>
+    <span class="tag">net10.0 hosts</span>
+    <span class="tag">schema validated</span>
+    <span class="tag">replay</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#content">Content and validation</a></li>
+    <li><a href="#contracts">Contracts: facts, conditions, objectives, endings</a></li>
+    <li><a href="#layers">Game layers</a></li>
+    <li><a href="#simulation">Simulation and commands</a></li>
+    <li><a href="#session">Session snapshot and restore</a></li>
+    <li><a href="#persistence">Save, recovery and audit</a></li>
+    <li><a href="#replay">Replay</a></li>
+    <li><a href="#diagnostics">Diagnostics and notifications</a></li>
+    <li><a href="#host">Hosting and the simulator</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map and SDD</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>ScenarioEngine is the mission and objective framework for games that need a win/lose structure: objectives that lock, activate, complete or fail, typed facts, exhaustive endings, and a repeatable tick loop over an authored scenario. The kernel contains no domain rules and no renderer; a game supplies a <strong>game layer</strong> that implements the mission's own verbs.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Content validation, conditions, objective graph, endings, command admission, tick transaction, snapshots, save/recovery, replay, diagnostics.</p></div>
+  <div class="card"><h3>The game layer owns</h3><p>Domain state and rules, operations, effects, observations and projected facts. It is pure: previous snapshot in, candidate state and events out.</p></div>
+  <div class="card"><h3>Transactional</h3><p>A failed tick rolls back. Commands are bounded, owned by a controller, deduplicated and fingerprinted before they are admitted.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/ScenarioEngine/src/ScenarioEngine.Contracts</code></td><td>Facts, conditions, objectives, endings, commands, observations, layer contracts, snapshots, replay and wire rules.</td></tr>
+    <tr><td><code>ScenarioEngine.Core</code></td><td><code>ScenarioEngine</code> (the simulation), <code>ScenarioSessionFactory</code>, <code>GameLayerRegistry</code>, PCG random streams.</td></tr>
+    <tr><td><code>ScenarioEngine.Content</code></td><td>JSON Schema validation (<code>JsonSchemaContractValidator</code>), pack source, content service and semantic checks.</td></tr>
+    <tr><td><code>ScenarioEngine.Persistence</code></td><td>Save codec and service, pluggable <code>ISaveStore</code>, previous-generation recovery.</td></tr>
+    <tr><td><code>ScenarioEngine.Replay</code></td><td>Recording, tape encode/decode and verification with the first divergent entry.</td></tr>
+    <tr><td><code>ScenarioEngine.Diagnostics</code></td><td><code>IEngineReporter</code>, platform logger, audit records, notification sink.</td></tr>
+    <tr><td><code>samples/Counter.GameLayer</code></td><td>The working example layer and game.</td></tr>
+    <tr><td><code>tools/ScenarioSimulator</code>, <code>tests/ScenarioEngine.Tests</code></td><td>Headless composition root and the test suite.</td></tr>
+  </tbody>
+</table>
+<div class="note"><strong>Revision note.</strong> The project README describes a shared <code>GameBase</code>/<code>GameFactory</code> lifecycle. This checkout does not contain those types; the current public surface is <code>IScenarioSimulation</code>, <code>ScenarioEngine</code>, <code>ScenarioSessionFactory</code> and the layer contracts. Document follows the source.</div>
+
+<h2 id="content" class="anchor">Content and validation</h2>
+<ul>
+  <li>A pack is a normalized JSON document up to 1 MiB, read through <code>IScenarioPackSource</code> (<code>JsonFilePackSource</code> for the headless host).</li>
+  <li><code>IScenarioContentService.LoadAsync</code> validates with <code>IContractValidator</code> before anything is registered; cancellation is honoured before registration.</li>
+  <li>Semantic checks add identity, digest, zone/exit/objective reference checks and ending-coverage rules on top of the schema.</li>
+  <li><code>RemoveFromCatalog</code> removes a pack/digest from new selection; existing sessions keep their immutable definitions.</li>
+  <li>A validated scenario is a <code>ValidatedScenario(ScenarioIdentity, ScenarioDefinition)</code>; the identity carries pack id/version, content digest, scenario id and layer id/version.</li>
+</ul>
+
+<h2 id="contracts" class="anchor">Contracts: facts, conditions, objectives, endings</h2>
+<pre><code>public abstract record Condition;
+public sealed record AllCondition(ImmutableArray&lt;Condition&gt; Children) : Condition;
+public sealed record AnyCondition(ImmutableArray&lt;Condition&gt; Children) : Condition;
+public sealed record NotCondition(Condition Child) : Condition;
+public sealed record CompareCondition(string Fact, string Operation, FactValue Value) : Condition;</code></pre>
+<ul>
+  <li><strong>Facts</strong> are boolean, integer or text; a layer declares each fact and its bounds.</li>
+  <li><strong>Objectives</strong> have dependencies (with accepted statuses), activate/complete/fail conditions and success/failure effects.</li>
+  <li><strong>Endings</strong> have a priority, a condition and outcome tags. Ambiguous or unreachable endings are refused at validation.</li>
+  <li><strong>Zones</strong> and <strong>exits</strong> name anchors, target zones, conditions and durations; every target must exist.</li>
+</ul>
+
+<h2 id="layers" class="anchor">Game layers</h2>
+<pre><code>public interface IGameLayer
+{
+    string Id { get; }
+    string Version { get; }
+    LayerCapabilities Capabilities { get; }
+    ValidationReport Validate(JsonElement content);
+    ILayerRuntime Create(LayerStartContext context);
+}
+
+public interface ILayerRuntime
+{
+    LayerSnapshot InitialState { get; }
+    LayerStepResult Resolve(LayerSnapshot previous, LayerTickContext context);
+    LayerEffectResult ApplyEffects(LayerSnapshot candidate, ImmutableArray&lt;EffectEnvelope&gt; effects, LayerTickContext context);
+    ImmutableDictionary&lt;string, FactValue&gt; ProjectFacts(LayerSnapshot state);
+    ValidationReport ValidateState(LayerSnapshot state);
+}</code></pre>
+<ul>
+  <li>A layer declares its operations, effects, observations, facts and content schema, so commands and observations are checked before they reach it.</li>
+  <li><code>LayerTickContext</code> supplies the tick, fixed step, world frame, admitted commands and seeded random streams; a layer never reads a clock.</li>
+  <li><code>Resolve</code> returns the next snapshot, per-command outcomes, domain events and world requests. <code>ApplyEffects</code> handles ordered effects.</li>
+  <li>A layer that can prove an idle tick does nothing may implement <code>IIdleTickRuntime</code>.</li>
+  <li>Register layers in <code>GameLayerRegistry</code> at the composition root. Registration accepts implementations; it does not scan or execute DLLs named by JSON.</li>
+</ul>
+
+<h2 id="simulation" class="anchor">Simulation and commands</h2>
+<pre><code>using var session = factory.Create(validated, startOptions, initialWorld);
+AdmissionResult admitted = session.Enqueue(new CommandEnvelope(
+    commandId, controllerId, targetTick, worldGeneration, operation, payloadJson));
+AdmissionResult cancelled = session.CancelQueued(controllerId, commandId);
+StepResult step = session.Update(new TickInput(tick, worldFrame));</code></pre>
+<ul>
+  <li>Commands are bounded (payload ≤ 64 KiB UTF-8, depth 32, duplicate JSON properties refused), owned by a controller and fingerprinted; a duplicate id is not admitted twice.</li>
+  <li>A world frame carries at most 256 observations within a 1 MiB aggregate budget; an invalid frame yields an uncommitted result and the session keeps running.</li>
+  <li><code>Update</code> advances one integer simulation tick. <code>StepResult</code> reports committed, a code, the tick, events, world requests, the snapshot and the rule-state hash. A failed tick is rolled back.</li>
+  <li><code>ScenarioEngine.StateHash(snapshot)</code> gives the stable state digest used by saves and replay.</li>
+</ul>
+
+<h2 id="session">Session snapshot and restore</h2>
+<p><code>SessionSnapshot</code> is the complete session: identity, session id, seed, controllers, phase, tick, world generation, sequence counters, objectives, applied effects, ending/outcome, layer snapshot, pending commands, receipts and random-stream states.</p>
+<ul>
+  <li><code>SessionSnapshotRules</code> validates queued commands, payloads, controllers, fingerprints, duplicate sequences, receipt relationships and phase values before a snapshot is accepted.</li>
+  <li><code>ScenarioSessionFactory.Restore(scenario, snapshot, restoredWorld)</code> rebuilds a session; the scenario and layer are revalidated first.</li>
+  <li>Controller matching is ordinal regardless of the caller's comparer.</li>
+</ul>
+
+<h2 id="persistence">Save, recovery and audit</h2>
+<ul>
+  <li><code>SaveDocument</code> carries save format, engine build id, UTC time and the snapshot; the save codec produces bytes with integrity checksums.</li>
+  <li><code>ISaveStore</code> is the replaceable storage boundary; <code>LocalFileSaveStore</code> implements real file replacement.</li>
+  <li><code>IRecoverableSaveStore</code> (optional) exposes an earlier generation. <code>IScenarioSaveRecoveryService.LoadPreviousAsync</code> validates and audits it before returning; missing, corrupt or unreadable backups have explicit diagnostics.</li>
+  <li>Load reads the current generation only; recovery reads the backup only after the host selects it. Neither promotes, repairs or rewrites files.</li>
+  <li>An audit failure leaves the catalog unchanged. Checksums detect modification; they are not authentication.</li>
+</ul>
+
+<h2 id="replay">Replay</h2>
+<pre><code>var service = new ReplayService(sessionFactory, reporter);
+IReplayService replay = service;
+IReplayCodec codec = service;
+using var recorded = replay.Record(session, initialWorld);
+recorded.Enqueue(command);
+recorded.Step(tickInput);
+byte[] bytes = codec.Encode(recorded.CaptureReplay());
+ReplayResult result = replay.Verify(scenario, codec.Decode(bytes).Tape!);</code></pre>
+<ul>
+  <li>The tape holds the starting snapshot/world, commands, cancellations, start/pause/resume/step/dispose calls and expected hashes for state and returned events/requests/receipts.</li>
+  <li>Verification identifies the first divergent entry and checks initial content identity and SHA-256 integrity.</li>
+  <li>Tapes are bounded to 10,000 entries / 16 MiB. The recorder owns its session; use it exclusively while recording.</li>
+  <li>Replay records explicit world inputs; synthetic-input checks do not prove native navigation.</li>
+</ul>
+
+<h2 id="diagnostics">Diagnostics and notifications</h2>
+<p><code>IEngineReporter</code> / <code>ApplicationDiagnostics</code> record operations and failures; <code>EngineNotice</code> and <code>INotificationSink</code> (<code>ConsoleNotificationSink</code> in the host) surface them. <code>AuditRecord</code> names the operation, target, result and session. Validation findings are <code>Diagnostic(Code, Message, File, Pointer, Severity)</code>.</p>
+
+<h2 id="host">Hosting and the simulator</h2>
+<pre><code>dotnet build ScenarioEngine.slnx -c Release
+dotnet run --project tools/ScenarioSimulator/ScenarioSimulator.csproj -c Release
+dotnet run --project tests/ScenarioEngine.Tests/ScenarioEngine.Tests.csproj -c Release -- -noColor</code></pre>
+<p><code>ScenarioSimulator</code> is the headless composition root: it loads JSON, initializes, submits an order per tick, updates, reaches an ending, writes two save generations, restores the previous one and compares continuation and replay hashes. The <code>Counter</code> sample is the minimal working layer.</p>
+<p>For GameFrameWork, <code>src/GameRuntime/GameRuntime.Scenario/MissionComponent</code> adapts the mission to the runtime's event model, and <code>GameRuntime.Services</code> uses <code>IScenarioSaveCodec</code> for composite checkpoints.</p>
+
+<h2 id="testing">Testing</h2>
+<p>The suite covers engine behaviour, content validation, objectives and endings, persistence and recovery, replay budget/verification, plugin registration, boundary passes and source-and-factory checks. <code>tools/Verify-ScenarioEngine.ps1</code> runs scoped checks and records commands and results under <code>artifacts/verification</code>.</p>
+
+<h2 id="source">Source map and SDD</h2>
+<dl class="kv">
+  <dt>Contracts</dt><dd><code>Definitions.cs</code>, <code>Simulation.cs</code>, <code>ConditionLogic.cs</code>, <code>SessionSnapshotRules.cs</code>, <code>WireJsonRules.cs</code>, <code>Replay.cs</code></dd>
+  <dt>Core</dt><dd><code>ScenarioEngine.cs</code>, <code>ScenarioSessionFactory.cs</code>, <code>GameLayerRegistry.cs</code>, <code>PcgRandomStreams.cs</code></dd>
+  <dt>Content</dt><dd><code>ScenarioContentService*.cs</code>, <code>JsonSchemaContractValidator.cs</code>, <code>JsonFilePackSource.cs</code></dd>
+  <dt>Persistence</dt><dd><code>ScenarioSaveCodec.cs</code>, <code>ScenarioSaveService.cs</code>, <code>LocalFileSaveStore.cs</code></dd>
+  <dt>Replay</dt><dd><code>ReplayService*.cs</code></dd>
+  <dt>Sample</dt><dd><code>samples/Counter.GameLayer</code>, <code>tools/ScenarioSimulator</code></dd>
+</dl>
+<p>Owned design documents: <a href="../../src/ScenarioEngine/docs/sdd/README.md">SDD index</a>, <a href="../../src/ScenarioEngine/docs/sdd/03_SCENARIO_ENGINE.md">scenario engine</a>, <a href="../../src/ScenarioEngine/docs/sdd/04_SCENARIO_CONTENT.md">content</a>, <a href="../../src/ScenarioEngine/docs/sdd/08_SCENARIO_AUTHORING_GUIDE.md">authoring guide</a>.</p>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/ScenarioEngine</code>. The project's own README and SDD remain the design authority; this page summarizes the code as present.</p>
+</footer>
+</main>
+</body>
+</html>

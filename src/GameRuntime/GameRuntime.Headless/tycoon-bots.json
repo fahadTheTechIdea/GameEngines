@@ -1,0 +1,77 @@
+{
+  "format": 1,
+  "id": "tycoon.bots",
+  "keys": [
+    { "id": "founded", "type": "bool", "initial": false, "source": "host" },
+    { "id": "stock", "type": "int", "initial": -1, "min": -1, "max": 1000000000000, "source": "host" },
+    { "id": "profit", "type": "int", "initial": 0, "min": -100000000000, "max": 100000000000, "source": "host" },
+    { "id": "goal", "type": "int", "initial": 0, "min": -100000000000, "max": 100000000000, "source": "host" },
+    { "id": "in-flight", "type": "int", "initial": 0, "min": 0, "max": 1000000, "source": "host" },
+    { "id": "lot-start", "type": "int", "initial": 1, "min": 1, "max": 1000, "source": "host" },
+    { "id": "greedy-lot-min", "type": "int", "initial": 6, "min": 1, "max": 1000, "source": "agent" },
+    { "id": "greedy-lot-max", "type": "int", "initial": 10, "min": 1, "max": 1000, "source": "agent" },
+    { "id": "cautious-lot-min", "type": "int", "initial": 3, "min": 1, "max": 1000, "source": "agent" },
+    { "id": "cautious-lot-max", "type": "int", "initial": 5, "min": 1, "max": 1000, "source": "agent" },
+    { "id": "started", "type": "bool", "initial": false, "source": "agent" },
+    { "id": "lot", "type": "int", "initial": 1, "min": 1, "max": 1000, "source": "agent" },
+    { "id": "sped", "type": "bool", "initial": false, "source": "agent" },
+    { "id": "exhausted", "type": "bool", "initial": false, "source": "agent" },
+    { "id": "last-sale", "type": "int", "initial": -1000000, "min": -1000000, "max": 1000000000000, "source": "agent" },
+    { "id": "since", "type": "int", "initial": 0, "min": -1000000000000, "max": 1000000, "source": "agent" },
+    { "id": "gap", "type": "int", "initial": 0, "min": -1000000000000, "max": 1000000000000, "source": "agent" },
+    { "id": "remaining", "type": "int", "initial": 0, "min": -1000000000000, "max": 1000000000000, "source": "agent" }
+  ],
+  "percepts": [
+    { "kind": "refusal", "capacity": 256, "memory": 1000000000, "owned": false, "attrs": [
+        { "id": "no-stock", "type": "bool", "unknown": false },
+        { "id": "units", "type": "int", "min": 0, "max": 1000000000, "unknown": 0 } ] }
+  ],
+  "intents": [
+    { "id": "sell", "args": [ { "id": "units", "type": "int", "min": 0, "max": 1000000000 } ] },
+    { "id": "speed", "args": [ { "id": "numerator", "type": "int", "min": 1, "max": 1000 }, { "id": "denominator", "type": "int", "min": 1, "max": 1000 } ] }
+  ],
+  "behaviors": [
+    { "id": "greedy", "every": 1, "root": { "id": "play", "kind": "sequence", "resume": false, "children": [
+        { "id": "begin", "kind": "selector", "resume": false, "children": [
+            { "id": "begun", "kind": "condition", "when": { "fact": "key.started", "op": "eq", "value": true } },
+            { "id": "first-think", "kind": "sequence", "resume": false, "children": [
+                { "id": "take-lot", "kind": "let", "key": "lot", "value": { "key": "lot-start" } },
+                { "id": "mark-started", "kind": "let", "key": "started", "value": true } ] } ] },
+        { "id": "learn", "kind": "forEach", "from": "refusal", "limit": 256, "where": { "fact": "item.no-stock", "op": "eq", "value": true }, "child":
+          { "id": "refused", "kind": "sequence", "resume": false, "children": [
+            { "id": "units-gap", "kind": "let", "key": "gap", "value": { "op": "sub", "args": [ { "item": "units" }, { "key": "lot" } ] } },
+            { "id": "this-lot", "kind": "condition", "when": { "fact": "key.gap", "op": "eq", "value": 0 } },
+            { "id": "shrink", "kind": "selector", "resume": false, "children": [
+                { "id": "last-unit", "kind": "sequence", "resume": false, "children": [
+                    { "id": "is-one", "kind": "condition", "when": { "fact": "key.lot", "op": "eq", "value": 1 } },
+                    { "id": "give-up", "kind": "let", "key": "exhausted", "value": true } ] },
+                { "id": "halve", "kind": "let", "key": "lot", "value": { "op": "max", "args": [ 1, { "op": "div", "args": [ { "key": "lot" }, 2 ] } ] } } ] } ] } },
+        { "id": "is-founded", "kind": "condition", "when": { "fact": "key.founded", "op": "eq", "value": true } },
+        { "id": "not-exhausted", "kind": "condition", "when": { "fact": "key.exhausted", "op": "eq", "value": false } },
+        { "id": "left", "kind": "let", "key": "remaining", "value": { "op": "sub", "args": [ { "key": "goal" }, { "key": "profit" } ] } },
+        { "id": "goal-not-met", "kind": "condition", "when": { "fact": "key.remaining", "op": "gt", "value": 0 } },
+        { "id": "hurry", "kind": "succeed", "child": { "id": "hurry-once", "kind": "sequence", "resume": false, "children": [
+            { "id": "not-sped", "kind": "condition", "when": { "fact": "key.sped", "op": "eq", "value": false } },
+            { "id": "mark-sped", "kind": "let", "key": "sped", "value": true },
+            { "id": "faster", "kind": "act", "intent": "speed", "args": { "numerator": 2, "denominator": 1 } } ] } },
+        { "id": "sell-big", "kind": "act", "intent": "sell", "args": { "units": { "key": "lot" } } } ] } },
+
+    { "id": "cautious", "every": 1, "root": { "id": "play", "kind": "sequence", "resume": false, "children": [
+        { "id": "begin", "kind": "selector", "resume": false, "children": [
+            { "id": "begun", "kind": "condition", "when": { "fact": "key.started", "op": "eq", "value": true } },
+            { "id": "first-think", "kind": "sequence", "resume": false, "children": [
+                { "id": "take-lot", "kind": "let", "key": "lot", "value": { "key": "lot-start" } },
+                { "id": "mark-started", "kind": "let", "key": "started", "value": true } ] } ] },
+        { "id": "learn", "kind": "forEach", "from": "refusal", "limit": 256, "where": { "fact": "item.no-stock", "op": "eq", "value": true }, "child":
+          { "id": "halve", "kind": "let", "key": "lot", "value": { "op": "max", "args": [ 1, { "op": "div", "args": [ { "key": "lot" }, 2 ] } ] } } },
+        { "id": "is-founded", "kind": "condition", "when": { "fact": "key.founded", "op": "eq", "value": true } },
+        { "id": "left", "kind": "let", "key": "remaining", "value": { "op": "sub", "args": [ { "key": "goal" }, { "key": "profit" } ] } },
+        { "id": "goal-not-met", "kind": "condition", "when": { "fact": "key.remaining", "op": "gt", "value": 0 } },
+        { "id": "has-stock", "kind": "condition", "when": { "fact": "key.stock", "op": "gt", "value": 0 } },
+        { "id": "none-in-flight", "kind": "condition", "when": { "fact": "key.in-flight", "op": "eq", "value": 0 } },
+        { "id": "waited", "kind": "let", "key": "since", "value": { "op": "min", "args": [ 1000000, { "op": "sub", "args": [ { "op": "tick" }, { "key": "last-sale" } ] } ] } },
+        { "id": "cooled-down", "kind": "condition", "when": { "fact": "key.since", "op": "gte", "value": 45 } },
+        { "id": "note-sale", "kind": "let", "key": "last-sale", "value": { "op": "tick" } },
+        { "id": "sell-small", "kind": "act", "intent": "sell", "args": { "units": { "op": "max", "args": [ 0, { "op": "min", "args": [ { "key": "lot" }, { "key": "stock" } ] } ] } } } ] } }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "modules": [
+    { "id": "gf.director", "version": "1.0.0", "documents": [] },
+    { "id": "sim.access", "version": "1.0.0", "documents": ["chars/access.json"] },
+    { "id": "sim.world-setup", "version": "1.0.0", "documents": ["chars/startup.json"] },
+    { "id": "sim.characters", "version": "1.0.0", "documents": ["chars/characters.json"] },
+    {
+      "id": "chars",
+      "version": "1.0.0",
+      "requires": [
+        { "id": "sim.access", "version": "1.0.0" },
+        { "id": "sim.world-setup", "version": "1.0.0" },
+        { "id": "sim.characters", "version": "1.0.0" }
+      ],
+      "documents": ["chars/world.json"]
+    }
+  ]
+}

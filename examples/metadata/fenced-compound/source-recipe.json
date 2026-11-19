@@ -1,0 +1,395 @@
+{
+  "SchemaVersion": 1,
+  "Id": "fenced-compound",
+  "GameProfile": "framework",
+  "CatalogId": "fence-catalog",
+  "RootArchetypeId": "world",
+  "Scale": "compound",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Fenced compound geometry and static full-width journeys; art, gate animation and runtime remain separate."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    30,
+    20
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": [
+    {
+      "Id": "journey",
+      "Kind": "journey",
+      "FromId": "fenced-compound/inside-0",
+      "ToId": "fenced-compound/outside-0",
+      "Bidirectional": true,
+      "Properties": null,
+      "LayerId": null
+    }
+  ],
+  "Layers": null,
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "compound-domain",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 60,
+          "Y": 0
+        },
+        {
+          "X": 60,
+          "Y": 40
+        },
+        {
+          "X": 0,
+          "Y": 40
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [],
+    "Terrain": null,
+    "HeightField": {
+      "SchemaVersion": 1,
+      "Id": "flat",
+      "Kind": "ground",
+      "Purpose": "Declared flat game terrain",
+      "SourceRuleId": "fence:terrain",
+      "Unit": "meters",
+      "Origin": {
+        "X": 0,
+        "Y": 0
+      },
+      "StepX": 20,
+      "StepY": 20,
+      "Columns": 4,
+      "Rows": 3,
+      "Heights": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "RouteRules": [
+    {
+      "Id": "journey",
+      "ConnectionKind": "journey",
+      "Profile": {
+        "Id": "actor",
+        "Purpose": "Full-width compound journey",
+        "SourceRuleId": "fence:actor",
+        "Radius": 0.6,
+        "MaximumSlope": 0,
+        "KindCosts": {
+          "ground": 1
+        },
+        "AscentCost": 0,
+        "DescentCost": 0,
+        "MaximumHeightStep": 0.001
+      },
+      "Search": {
+        "Clearance": 1,
+        "Waypoints": [],
+        "MaximumCandidates": 256,
+        "MaximumEdgeChecks": 32768,
+        "MaximumWork": 20000000,
+        "Objective": "LowestCost"
+      },
+      "FromPortId": null,
+      "ToPortId": null,
+      "Reuse": null,
+      "Interfaces": null,
+      "Alignments": null
+    }
+  ],
+  "NetworkRules": null,
+  "Environment": {
+    "SchemaVersion": 1,
+    "Id": "terrain",
+    "Fields": [
+      {
+        "Id": "slope",
+        "Purpose": "Terrain grade",
+        "SourceRuleId": "fence:grade",
+        "Unit": "ratio",
+        "Offset": 0,
+        "Terms": [
+          {
+            "Input": "Slope",
+            "Coefficient": 1,
+            "FieldId": null
+          }
+        ],
+        "Minimum": null,
+        "Maximum": null
+      }
+    ],
+    "SampledFields": null
+  },
+  "SuitabilityRules": null,
+  "Placement": {
+    "Request": {
+      "Id": "compound",
+      "Purpose": "Place the declared compound",
+      "SourceRuleId": "fence:compound",
+      "Boundary": {
+        "Vertices": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 60,
+            "Y": 0
+          },
+          {
+            "X": 60,
+            "Y": 40
+          },
+          {
+            "X": 0,
+            "Y": 40
+          }
+        ]
+      },
+      "Demands": [
+        {
+          "Id": "compound",
+          "Purpose": "Required compound",
+          "SourceRuleId": "fence:compound",
+          "Footprint": null,
+          "Profile": {
+            "Id": "ground",
+            "Purpose": "Required usable ground",
+            "SourceRuleId": "fence:ground",
+            "AllowedKinds": [
+              "ground"
+            ],
+            "Requirements": [],
+            "Preferences": []
+          },
+          "Reservation": null,
+          "RegionId": null,
+          "AllocationId": null
+        }
+      ],
+      "Anchors": [],
+      "Relations": [],
+      "MinimumSeparation": 0,
+      "MaximumCandidates": 2048,
+      "MaximumSearchStates": 100000,
+      "MaximumWork": 20000000,
+      "AllowBoundaryContact": true,
+      "Growth": null,
+      "Execution": "Prescribed",
+      "Nogoods": null
+    },
+    "Bindings": [
+      {
+        "DemandId": "compound",
+        "NodeId": "fenced-compound/compound-0",
+        "UseCatalogFootprint": true,
+        "RotationDegrees": 0,
+        "PartId": null,
+        "SiteLayout": null,
+        "Population": {
+          "Purpose": "Retain authored compound center",
+          "SourceRuleId": "fence:center",
+          "Path": null,
+          "Boundary": null,
+          "Sockets": [
+            {
+              "NodeId": "fenced-compound/compound-0",
+              "Position": {
+                "X": 30,
+                "Y": 20
+              }
+            }
+          ],
+          "Route": null,
+          "Region": null,
+          "GeneratedBoundary": null,
+          "Facing": null
+        }
+      }
+    ],
+    "NestedStages": [
+      {
+        "Id": "reference",
+        "ParentNodeId": "fenced-compound/compound-0",
+        "Request": {
+          "Id": "reference",
+          "Purpose": "Place the perimeter source",
+          "SourceRuleId": "fence:reference",
+          "Boundary": null,
+          "Demands": [
+            {
+              "Id": "reference",
+              "Purpose": "Required perimeter source",
+              "SourceRuleId": "fence:reference",
+              "Footprint": null,
+              "Profile": {
+                "Id": "ground",
+                "Purpose": "Required usable ground",
+                "SourceRuleId": "fence:ground",
+                "AllowedKinds": [
+                  "ground"
+                ],
+                "Requirements": [],
+                "Preferences": []
+              },
+              "Reservation": null,
+              "RegionId": null,
+              "AllocationId": null
+            }
+          ],
+          "Anchors": [],
+          "Relations": [],
+          "MinimumSeparation": 0,
+          "MaximumCandidates": 2048,
+          "MaximumSearchStates": 100000,
+          "MaximumWork": 20000000,
+          "AllowBoundaryContact": true,
+          "Growth": null,
+          "Execution": "Prescribed",
+          "Nogoods": null
+        },
+        "Bindings": [
+          {
+            "DemandId": "reference",
+            "NodeId": "fenced-compound/compound-0/reference-0",
+            "UseCatalogFootprint": true,
+            "RotationDegrees": 0,
+            "PartId": null,
+            "SiteLayout": null,
+            "Population": {
+              "Purpose": "Place the declared gate approach",
+              "SourceRuleId": "fence:reference",
+              "Path": null,
+              "Boundary": null,
+              "Sockets": [
+                {
+                  "NodeId": "fenced-compound/compound-0/reference-0",
+                  "Position": {
+                    "X": 0,
+                    "Y": -7
+                  }
+                }
+              ],
+              "Route": null,
+              "Region": null,
+              "GeneratedBoundary": null,
+              "Facing": null
+            }
+          }
+        ]
+      }
+    ],
+    "MaximumWork": 200000000,
+    "MaximumStageAttempts": 128,
+    "MaximumFeasibilityAttempts": 32,
+    "SourceWorld": null,
+    "ConnectedLayouts": null,
+    "Programs": null,
+    "RegionAnchors": null,
+    "AllocationAnchors": null,
+    "Nogoods": null
+  },
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": {
+    "Id": "perimeter",
+    "Purpose": "Exact designed perimeter region",
+    "SourceRuleId": "fence:perimeter",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 20,
+          "Y": 14
+        },
+        {
+          "X": 40,
+          "Y": 14
+        },
+        {
+          "X": 40,
+          "Y": 26
+        },
+        {
+          "X": 20,
+          "Y": 26
+        }
+      ]
+    },
+    "Profile": {
+      "Id": "ground",
+      "Purpose": "Required usable ground",
+      "SourceRuleId": "fence:ground",
+      "AllowedKinds": [
+        "ground"
+      ],
+      "Requirements": [],
+      "Preferences": []
+    },
+    "Seeds": [
+      {
+        "Id": "perimeter",
+        "Purpose": "Required perimeter source",
+        "SourceRuleId": "fence:perimeter",
+        "Position": {
+          "X": 30,
+          "Y": 20
+        },
+        "MinimumArea": 240,
+        "Profile": null
+      }
+    ],
+    "MaximumCells": 1024,
+    "MaximumWork": 50000000,
+    "Intents": null,
+    "AnchorPrecision": 0.1,
+    "MaximumAnchorCells": 65536,
+    "MaximumIntentCandidates": 1024,
+    "MaximumIntentStates": 100000,
+    "ExcludedAssignments": null,
+    "IntentRelations": null
+  },
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": null,
+  "RouteBudget": null,
+  "Interiors": null,
+  "TerrainDemands": null,
+  "ProgramComposition": null,
+  "Drainage": null,
+  "Water": null,
+  "WindMoisture": null
+}

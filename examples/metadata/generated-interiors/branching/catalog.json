@@ -1,0 +1,132 @@
+{
+  "SchemaVersion": 1,
+  "Id": "room-modules",
+  "Archetypes": [
+    {
+      "Id": "floor",
+      "Kind": "floor",
+      "Purpose": "Connected interior exploration program",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "rooms",
+          "ArchetypeId": "room",
+          "Count": 6,
+          "Purpose": "Required room",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "room",
+      "Kind": "room",
+      "Purpose": "Reusable room and its fixture",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "fixture",
+          "ArchetypeId": "fixture",
+          "Count": 1,
+          "Purpose": "Required interior equipment",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null,
+          "Variation": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Exact room module",
+        "SourceRuleId": "interior:module",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -3,
+              "Y": -2.5
+            },
+            {
+              "X": 3,
+              "Y": -2.5
+            },
+            {
+              "X": 3,
+              "Y": 2.5
+            },
+            {
+              "X": -3,
+              "Y": 2.5
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "fixture",
+      "Kind": "equipment",
+      "Purpose": "Purposeful internal obstacle",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Exact fixture",
+        "SourceRuleId": "interior:fixture",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.4,
+              "Y": -0.25
+            },
+            {
+              "X": 0.4,
+              "Y": -0.25
+            },
+            {
+              "X": 0.4,
+              "Y": 0.25
+            },
+            {
+              "X": -0.4,
+              "Y": 0.25
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

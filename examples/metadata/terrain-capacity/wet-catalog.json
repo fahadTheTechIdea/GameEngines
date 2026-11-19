@@ -1,0 +1,197 @@
+{
+  "SchemaVersion": 1,
+  "Id": "terrain-demand-mini-catalog",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Source habitat",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "features",
+          "ArchetypeId": "feature",
+          "Count": 2,
+          "Purpose": "At least two required features",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": {
+            "CapacityId": "service",
+            "UseStructureVariant": false,
+            "RequiredQuantity": 12,
+            "Unit": "units",
+            "Purpose": "Required gameplay function",
+            "SourceRuleId": "terrain-capacity:demand",
+            "QuantityParameter": null,
+            "MaximumCount": 10000
+          },
+          "Variation": {
+            "Id": "habitat-options",
+            "Seed": "0",
+            "Purpose": "Stable authored habitat forms",
+            "SourceRuleId": "terrain-capacity:variation",
+            "ArchetypeIds": [
+              "feature",
+              "feature-alt"
+            ]
+          },
+          "ProgramMix": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "feature",
+      "Kind": "environment-feature",
+      "Purpose": "Required terrain-following world feature",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized environmental feature with clearance",
+        "SourceRuleId": "contour:feature",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.2,
+              "Y": -0.2
+            },
+            {
+              "X": 0.2,
+              "Y": -0.2
+            },
+            {
+              "X": 0.2,
+              "Y": 0.2
+            },
+            {
+              "X": -0.2,
+              "Y": 0.2
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -0.3,
+              "Y": -0.3
+            },
+            {
+              "X": 0.3,
+              "Y": -0.3
+            },
+            {
+              "X": 0.3,
+              "Y": 0.3
+            },
+            {
+              "X": -0.3,
+              "Y": 0.3
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": [
+        {
+          "Id": "service",
+          "Unit": "units",
+          "Quantity": 3,
+          "Purpose": "Original source capacity",
+          "SourceRuleId": "terrain-capacity:normal"
+        }
+      ],
+      "Services": null,
+      "ProgramInputs": null
+    },
+    {
+      "Id": "feature-alt",
+      "Kind": "environment-feature",
+      "Purpose": "Required terrain-following world feature",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": null,
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Source-sized environmental feature with clearance",
+        "SourceRuleId": "contour:feature",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.2,
+              "Y": -0.2
+            },
+            {
+              "X": 0.2,
+              "Y": -0.2
+            },
+            {
+              "X": 0.2,
+              "Y": 0.2
+            },
+            {
+              "X": -0.2,
+              "Y": 0.2
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -0.3,
+              "Y": -0.3
+            },
+            {
+              "X": 0.3,
+              "Y": -0.3
+            },
+            {
+              "X": 0.3,
+              "Y": 0.3
+            },
+            {
+              "X": -0.3,
+              "Y": 0.3
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": [
+        {
+          "Id": "service",
+          "Unit": "units",
+          "Quantity": 5,
+          "Purpose": "Alternative source capacity",
+          "SourceRuleId": "terrain-capacity:alt"
+        }
+      ],
+      "Services": null,
+      "ProgramInputs": null
+    }
+  ]
+}

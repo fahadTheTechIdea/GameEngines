@@ -1,61 +1,59 @@
-# Research-backed city generator architecture (2026-10-21)
+# Research-led game-world generation architecture
 
-Status: architectural design and research; not implemented. This document is normative guidance for future work, not evidence of working City generation.
+> Retired production path (2026-10-26): the owner rejected this city-first implementation. Its runtime generator, contracts, network/district/parcel orchestration and city CLI commands are removed. The content below is historical evidence, not current API instructions. Follow the [world master plan](ADVANCED_WORLD_GENERATION_MASTER_PLAN.md) and [active tracker](ROADMAP.md) for the replacement. No compatibility/legacy generator is retained.
 
-## Scope and integration
-- Core spatial planning, urban topology, terrain, geometry, objects and gameplay semantics are independent of Godot.
-- GameArtsSkills supplies approved graphics, mockup workflow, animations and measured atlases; never replace or bypass asset approval.
-- Agentic SDLC framework supplies orchestrator discipline, ADRs, tests, evidence and quality controls.
-- World geometry uses current GameArtsSkills v7.5 **orthogonal square** logical grid (16 x 16 m cells / initially 256 x 256 px ground artwork), 1 m construction snap as configured. Street geometry is continuous meters and is rasterized to world cells only at export. Do not mistake 2.5D art projection for terrain grid shape.
+Reviewed 2026-10-26. This is the current architecture decision and research record, not a claim that every stage works. It replaces the earlier realism-first proposal. WorldCreator generates renderer-neutral world metadata and spatial designs; games choose their scale, rules, structure programs and presentation.
 
-## Critical dependency model
-1. World terrain/height, rivers, cliffs, protected areas, coast.
-2. City demand/growth anchors, district land-use/density, service centers, gateways.
-3. Connected, typed street graph over topography: arterials, collectors, local roads, alleys, paths. Constraints: flood/slope, crossings, dead ends, grade, block sizes, connectivity.
-4. Co-generate road corridors, blocks and frontage-based parcels; snap junctions, resolve planar intersections, reject invalid parcel geometries and disconnected access.
-5. Road assembly from parameterized cross sections including carriageways/lane geometry, parking, medians, curbs, curb ramps, drainage, pedestrian through zone, furnishing/tree zone, frontage and setbacks. Use orientation-aware intersection templates, not arbitrary sprite adjacency.
-6. Zoning-based buildings with parcel frontage, entrance connectivity, foundation elevation, roof/render heights, accessible driveways and component attachment rules.
-7. Public space, parks, gardens, plazas, footpaths, green spaces, landscaping and terrain-appropriate species profiles.
-8. Placement rules for furniture, streetlights, signs, markings, signals, poles, manholes, hydrants, drains, barriers; respect clearance, crossings, access, tree roots, sightlines and lighting coverage.
-9. Independent vehicle, pedestrian, service/emergency navigation; record graph and tile/polygon-derived traversal data, actor sizes, one-way segments and state-dependent gate access.
-10. Resolve approved art asset IDs into Godot resources, rasterization/atlases, collision, navigation, occlusion, sorted layers, interactive scenes, validation and exports.
+## Findings from primary sources
 
-## Core spatial entities
-WorldRegion; City; District; LandUseZone; StreetNode; StreetEdge; StreetCorridor; StreetProfile; Lane; Intersection; StreetCorner; SidewalkZone; CurbSegment; Crossing; Block; Parcel; BuildingFootprint; BuildingEntrance; Park; Garden; PlantingArea; StreetFurniture; Sign; Luminaire; UtilityFeature; TraversalLink; NavigationGraph; TerrainHeightField; DynamicComponent; AssetReference.
-Every feature has stable unique ID, bounds/geometry, real-world units, owner/district ID, seed/provenance and optional rendering/interaction references.
+| Source | Finding relevant to this engine | Decision |
+| --- | --- | --- |
+| [Dormans, Adventures in Level Design, 2010](https://www.pcgworkshop.com/archive/dormans2010adventures.pdf) | Mission structure and spatial structure serve different roles and are generated in separate stages. | Represent gameplay requirements before geometry. A connected street graph alone cannot establish that a game objective is reachable or correctly gated. |
+| [Parish and Müller, Procedural Modeling of Cities, 2001](https://cgl.ethz.ch/Downloads/Publications/Papers/2001/p_Par01.pdf) | City generation separates global goals from local constraints and derives streets, lots and buildings in stages. | Keep authored region/district needs separate from geometry feasibility, but solve their assignment together. Do not let local iteration order decide the city's contents. |
+| [Vanegas et al., Procedural Generation of Parcels, 2012](https://www.cs.purdue.edu/cgvlab/www/resources/papers/Vanegas-Eurographics-2012-Procedural_Generation_of_Parcels_in_Urban_Modeling.pdf) | Parcel subdivision is a distinct design problem, with street access, user-controlled dimensions and different subdivision styles. It considers skeleton and oriented bounding-box approaches. | Source dimensions, frontage, area and depth must inform subdivision. Complete land coverage alone is insufficient. Do not label a nearest-street partition as this paper's full algorithm. |
+| [Shaker and Togelius, Search-Based PCG](https://www.pcgbook.com/chapter02.pdf) | Representations, search and content evaluation are separate concerns. | Hard validity constraints must precede soft composition preferences. Use bounded search with explicit failure, not unlimited retries or success-shaped fallback worlds. |
+| [Shaker, Smith and Yannakakis, Evaluating Content Generators](https://www.pcgbook.com/chapter12.pdf) | Evaluation examines the range and quality of generated content rather than one attractive output. | Qualify multiple game-authored profiles and layouts, constraint failures, scale and repeatability. A passing fixture does not prove broad world variety. |
+| [Gumin, WaveFunctionCollapse, original repository](https://github.com/mxgmn/WaveFunctionCollapse) | WFC enforces local patterns/adjacency; propagation can encounter contradictions. | Candidate downstream tool for compatible modular tiles. It is not by itself the owner of world hierarchy, global gameplay progression, source dimensions or required-content counts. No WFC dependency added. |
 
-## Street rules and semantic layers
-- Four sidewalk roles: building frontage, clear pedestrian travel, furnishing/trees, and optional curbside buffer. Widths and local rules belong to street profile; do not encode one city's measurements universally.
-- Curbs are sampled along continuous road borders; corners need specialized geometry, ADA-style ramps for suitable profiles and explicit crosswalk connections.
-- Signs derive from street name, intersection restrictions, direction and route type; lights derive from street profile/coverage, spacing and obstruction checks. Signals are stateful timelines with conflict-free phases.
-- Gardens belong to parcels, parks or medians; irrigation, plant type, sunlight and biome constraints determine vegetation choices. Adjacent gardens should share compatible borders but retain natural variation.
-- The generated city must pass connected-network, legal-geometry, parcel frontage, entrance reachability, pedestrian walkability, drainage and visual-layer checks.
+These are algorithmic references, not copied implementations. The decisions below are our engineering synthesis. No single technique above is established as best for every game world.
 
-## Algorithms and determinism
-- Compare grid, organic, radial, hybrid graph planning; avoid hardcoding one road topology.
-- Use seeded stream-per-subsystem and stable IDs to localize regeneration; global System.Random consumption order should not define stability across unrelated stages.
-- Use graph search/MST for major connection scaffolds, cost-guided routing respecting slope and obstacles, planarity/intersection splitting, constrained polygon partitioning for blocks/parcels, and rule-based furniture placement. These are candidate algorithms requiring profiling and tests rather than already-implemented guarantees.
-- Store both high-fidelity vector semantics and chunked render raster data, with chunk-border seams and runtime-edit handling.
+## Current engine observations
 
-## Godot adapter
-- Target Godot 4.6 docs (pin/test target project version). TileMapLayer plus TileSetAtlasSource for repeated surfaces and graphics, TileSetScenesCollectionSource or PackedScenes for suitable small/static scene items, standalone scenes for interactive buildings/gates.
-- TileSet supports physics, navigation, occlusion and custom-data layers, but simply naming layers does not create those resources.
-- Keep pedestrian/road routing graphs as independent data; export simplified NavigationPolygon regions and navigation links, avoiding excessive per-tile region polygons.
-- Gate state transitions update physics, nav graph and runtime links atomically in game model; schedule Godot NavigationServer synchronization before querying updated routes.
-- Preserve original opaque chroma pink GameArts PNGs; runtime import produces explicitly tracked transparent derivatives only where asset policy and approval allow—resolve policy conflict with GameArts maintainer before automatically generating them.
+- C# owns reusable catalog expansion, source geometry, city street strategies, parcel compilation and validation. JavaScript renders exported meter geometry; it must not reposition the world.
+- Metadata recipes already describe hierarchical locations and connections. The existing city route compiles connected streets, frontage parcels and nested structure programs. Preserve these current capabilities through their existing owners.
+- The ordinary-city allocation loop selected each parcel independently using locally eligible weights and counts. It could not enforce district service counts or reserve scarce compatible sites. Replaced by `CityDistrictAllocator`; there is no retained greedy mode.
+- Grid block targets and parcel frontage/depth rules are still independently authored. Required-site reservation is compact, but ordinary sites can have large residual land. The recent parcel-ground rules describe that land honestly; they do not establish good density or solve this coupling.
+- Current metadata connectivity is not a mission solver. Full multi-region terrain/settlement co-generation, chunk continuity and game-state progression remain unproven.
 
-## Acceptance tests before marking city playable
-- Same seed+profile+version yields identical canonical output. No silent invalid geometry. All parcels with required frontage can reach a usable street/sidewalk; all structure entrances reachable for intended actors.
-- Non-overlapping curbs/lanes/intersections/props unless explicitly allowed. Crosswalk endpoints connect sidewalk graphs. Signs face correct traffic direction. Furniture preserves clear walkways and intersection sightlines.
-- Each atlas references a real measured PNG with verified cells, pivots, padding, scale and masking. Every dynamic component has valid attachment transforms and complete directional coverage when required.
-- Imported Godot world renders correct tile IDs and layers; collisions match physical obstacles; nav paths work for every agent type; closing gates blocks routes; no seam or art alignment errors.
-- Benchmarks at growing city/chunk sizes; reproducible build and test logs. The foundation exporter currently writes only a scene skeleton, not a playable scene.
+## One generation pipeline, distinct responsibilities
 
-## References examined
-- https://onlinelibrary.wiley.com/doi/full/10.1111/cgf.15053 (Chen et al., 2024, parcels/streets co-generation)
-- https://link.springer.com/article/10.1007/s43762-026-00263-8 (2026, comparative procedural morphology)
-- https://nacto.org/publication/urban-street-design-guide/ (street hierarchy/intersections)
-- https://nacto.org/publication/urban-street-design-guide/street-design-elements/sidewalks/sidewalk-zones/ (cross-sectional zones)
-- https://docs.godotengine.org/en/4.6/classes/class_tileset.html (tile resource types/layers)
-- https://docs.godotengine.org/en/4.6/tutorials/navigation/navigation_using_navigationmeshes.html (navigation design/performance)
-- https://docs.godotengine.org/en/4.6/tutorials/navigation/navigation_using_navigationservers.html (synchronization)
+1. **Game intent and reusable programs.** Select authored world scope, gameplay locations, interactions, mandatory counts, allowed connections, structure composition and optional visual references. Factories, clubs and other compounds use the same nested catalog mechanism; no parent-name-specific compiler.
+2. **Logical world topology.** Derive region and location relationships and required traversals from game rules. Distinguish connection kinds and conditional access. Reject unsatisfied gameplay obligations before claiming a usable world.
+3. **Spatial feasibility.** Each world-region grammar owns its appropriate geometry: settlements, interiors/dungeons and wilderness need different rules. Reuse current contracts where they express the needed semantics. Adding an implementation must not create a second legacy/current version of the same algorithm.
+4. **Joint demand and layout.** Resolve exact source program dimensions first. Subdivision must account for useful frontage, permissible depth/area and intended density. Allocate content across all compatible sites, with hard counts and role restrictions before weighted preferences. Feed infeasibility back to an explicitly bounded design solve; do not enlarge every parcel or disguise residual land.
+5. **Hierarchical composition.** Compile exact parent/child structures, working access, grounds, equipment and surroundings. Declared gardens and yards have purposes and ownership. Undeclared land stays measurable; a colored polygon does not count as a physical structure or completed artwork.
+6. **Acceptance and export.** Validate geometric containment, occupancy, exact source sizes, movement/access, declared counts and hierarchy; qualify diversity and gameplay requirements separately. Persist reproducible inputs/output/build identity. Use existing API/CLI audit boundaries and renderer-neutral export. Godot and GameArts are downstream integrations when requested.
+
+This ordering is the implementation direction. It does not claim that the unimplemented stages are present.
+
+## Current replacement: district-wide constrained allocation
+
+`CityLandUseRule.MinimumCount` and `MaximumCount` apply to ordinary parcels in each district. Explicit required sites are separately counted and do not consume these quotas. Null maximum permits all available ordinary parcels; zero forbids that type. Weights remain positive relative preferences, not guarantees.
+
+`CityDistrictAllocator` solves a capacitated bipartite assignment between actual candidate parcels and their compatible source types. It first satisfies minima using alternating paths, then allocates remaining capacity by increasing weighted marginal load. An alternating path can move a flexible assignment without changing its source size or decreasing an already fulfilled type count. Types at maximum capacity cannot receive another parcel. Feasibility, search work, cancellation and invalid input have explicit outcomes. Stable IDs, candidate scarcity and ordinal ties remove input-enumeration dependence. The old per-parcel selection loop is removed.
+
+The weighted objective is the sum of squared ordinary counts divided by their declared weights, subject to the hard eligibility and count bounds. Tests independently enumerate every assignment on 7,203 small constrained cases; larger-world optimality is not inferred from timing or selected screenshots. Requested and achieved counts are exported on district metadata. Existing package reproduction verifies the actual generated assignment.
+
+This replaces content allocation, not block subdivision. It cannot repair an impossible street plan, guarantee every world genre, supply gameplay runtime, or prove attractive composition. The active master plan tracks those remaining requirements.
+
+## Acceptance matrix for the wider work
+
+- Dense urban, suburban, village and industrial game profiles must show distinct intentional spatial structures, not recolors of one grid.
+- Mandatory content must survive constrained geometry; an impossible request must fail with a useful diagnostic and no published partial package.
+- Nested compounds must preserve every declared member, grounds and access relationship.
+- Gameplay graphs require explicit directed/conditional reachability checks; weak connectivity is insufficient.
+- Source programs and district density must drive block/parcel design; report physical program occupancy separately from assigned ground area.
+- Repeated generation must reproduce the same inputs and build; tests must cover profile variation, rotations, boundaries, budgets and cancellation.
+- Native playability, art/mockup fidelity, large-world streaming and human visual acceptance remain separate, unrun gates unless actual evidence is recorded.
+
+No new dependency, installation, cloud build or publication is part of this change.

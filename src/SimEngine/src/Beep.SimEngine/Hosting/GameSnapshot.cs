@@ -41,7 +41,7 @@ namespace Beep.SimEngine.Hosting
         {
             if (previous != null && previous.Revision != 0 && previous.Viewer != viewer)
                 throw new InvalidOperationException("snapshot baseline belongs to another viewer");
-            var entities = new List<EntityView>();
+            var entities = new List<EntityView>(world.Entities.All.Count);
             foreach (var entity in world.Entities.All)
                 if (entity.Alive && (visible == null || visible(entity))) entities.Add(PlayerView.ViewOf(world, entity));
             entities.Sort((left, right) => left.Id.CompareTo(right.Id));

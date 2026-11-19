@@ -11,7 +11,7 @@ public sealed record PedestrianRoadCrossing(string Id, string PedestrianPathId,
 public sealed class PedestrianRoadCrossingValidator
 {
     private const double Epsilon = 1e-6;
-    public IReadOnlyList<string> Validate(DummyVillageWorldDocument world,
+    public IReadOnlyList<string> Validate(WorldSceneDocument world,
         IReadOnlyList<PedestrianRoadCrossing> crossings)
     {
         ArgumentNullException.ThrowIfNull(world);

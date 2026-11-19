@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The bridge that tells AI agents what time it is, as a percept: knowledge, not truth. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GameRuntime.Calendar/GameRuntime.Calendar.csproj" />
+    <ProjectReference Include="../GameRuntime.AI/GameRuntime.AI.csproj" />
+  </ItemGroup>
+</Project>

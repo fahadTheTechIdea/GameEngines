@@ -1,0 +1,87 @@
+{
+  "SchemaVersion": 1,
+  "Id": "encounter-expedition",
+  "GameProfile": "game-authored-exploration",
+  "CatalogId": "encounter-program",
+  "RootArchetypeId": "world",
+  "Scale": "encounter-world",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Generated topology only; physical domain, local content, game-specific interaction and artwork are separate."
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": null,
+  "RequireAllPositions": false,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": null,
+  "Surface": null,
+  "RouteRules": null,
+  "NetworkRules": null,
+  "Environment": null,
+  "SuitabilityRules": null,
+  "Placement": null,
+  "Services": null,
+  "Context": null,
+  "Corridors": null,
+  "Regions": null,
+  "LocalLayouts": null,
+  "LayoutAdaptation": null,
+  "ProgressionRules": null,
+  "PopulationSource": null,
+  "Chunks": null,
+  "TopologyRules": [
+    {
+      "Id": "journey",
+      "Purpose": "Explore branches before and after the transition",
+      "SourceRuleId": "program:expedition",
+      "ScopeNodeId": "encounter-expedition",
+      "StartNodeId": "encounter-expedition/entry-0",
+      "ConnectionKind": "passage",
+      "Stages": [
+        {
+          "Id": "approach",
+          "Purpose": "Before transition",
+          "ExitNodeId": "encounter-expedition/gate-0",
+          "MemberKinds": [
+            "early-encounter"
+          ],
+          "MinimumMembers": 2,
+          "MaximumMembers": 2,
+          "MinimumExtraConnections": 2
+        },
+        {
+          "Id": "objective",
+          "Purpose": "After transition",
+          "ExitNodeId": "encounter-expedition/goal-0",
+          "MemberKinds": [
+            "late-encounter"
+          ],
+          "MinimumMembers": 3,
+          "MaximumMembers": 3,
+          "MinimumExtraConnections": 1
+        }
+      ],
+      "Seed": "case-0",
+      "MaximumDegree": 3,
+      "ExtraConnections": 3,
+      "MaximumWork": 1000000,
+      "LayerId": null
+    }
+  ],
+  "RouteBudget": null,
+  "Interiors": null,
+  "TerrainDemands": null,
+  "ProgramComposition": null,
+  "Drainage": null,
+  "Water": null,
+  "WindMoisture": null
+}

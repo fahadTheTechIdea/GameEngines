@@ -1,0 +1,330 @@
+{
+  "SchemaVersion": 1,
+  "Id": "expedition-content",
+  "Archetypes": [
+    {
+      "Id": "root",
+      "Kind": "region",
+      "Purpose": "Two connected expedition outposts",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "outposts",
+          "ArchetypeId": "outpost",
+          "Count": 2,
+          "Purpose": "Required expedition base",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [
+        {
+          "Kind": "outpost",
+          "Minimum": 2,
+          "Maximum": 2
+        }
+      ],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": null,
+      "Access": null,
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "outpost",
+      "Kind": "outpost",
+      "Purpose": "Shelter and outdoor supply yard",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "shelters",
+          "ArchetypeId": "shelter",
+          "Count": 1,
+          "Purpose": "Required weather shelter",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        },
+        {
+          "Id": "yards",
+          "ArchetypeId": "yard",
+          "Count": 1,
+          "Purpose": "Required outdoor work area",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Shelter and outdoor supply yard",
+        "SourceRuleId": "expedition:outpost",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -7,
+              "Y": -3
+            },
+            {
+              "X": 7,
+              "Y": -3
+            },
+            {
+              "X": 7,
+              "Y": 3
+            },
+            {
+              "X": -7,
+              "Y": 3
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -8,
+              "Y": -4
+            },
+            {
+              "X": 8,
+              "Y": -4
+            },
+            {
+              "X": 8,
+              "Y": 4
+            },
+            {
+              "X": -8,
+              "Y": 4
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "shelter",
+      "Kind": "structure",
+      "Purpose": "Weather shelter",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Weather shelter",
+        "SourceRuleId": "expedition:shelter",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -2,
+              "Y": -1
+            },
+            {
+              "X": 2,
+              "Y": -1
+            },
+            {
+              "X": 2,
+              "Y": 1
+            },
+            {
+              "X": -2,
+              "Y": 1
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -2.5,
+              "Y": -1.5
+            },
+            {
+              "X": 2.5,
+              "Y": -1.5
+            },
+            {
+              "X": 2.5,
+              "Y": 1.5
+            },
+            {
+              "X": -2.5,
+              "Y": 1.5
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": [
+          {
+            "Id": "north",
+            "Purpose": "Shelter entrance",
+            "SourceRuleId": "expedition:entrance",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -1
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -2
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "yard",
+      "Kind": "ground-area",
+      "Purpose": "Supply handling and work area",
+      "Properties": {},
+      "Parts": [
+        {
+          "Id": "stores",
+          "ArchetypeId": "store",
+          "Count": 1,
+          "Purpose": "Required supply cache",
+          "CountParameter": null,
+          "Layout": null,
+          "Capacity": null
+        }
+      ],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Supply handling and work area",
+        "SourceRuleId": "expedition:yard",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -2,
+              "Y": -1.5
+            },
+            {
+              "X": 2,
+              "Y": -1.5
+            },
+            {
+              "X": 2,
+              "Y": 1.5
+            },
+            {
+              "X": -2,
+              "Y": 1.5
+            }
+          ]
+        },
+        "Reservation": {
+          "Vertices": [
+            {
+              "X": -2.5,
+              "Y": -2
+            },
+            {
+              "X": 2.5,
+              "Y": -2
+            },
+            {
+              "X": 2.5,
+              "Y": 2
+            },
+            {
+              "X": -2.5,
+              "Y": 2
+            }
+          ]
+        }
+      },
+      "Access": {
+        "Occupancy": "Reservation",
+        "Ports": [
+          {
+            "Id": "north",
+            "Purpose": "Yard approach",
+            "SourceRuleId": "expedition:yard-access",
+            "BoundaryPosition": {
+              "X": 0,
+              "Y": -1.5
+            },
+            "ApproachPosition": {
+              "X": 0,
+              "Y": -2.5
+            },
+            "Width": 0.8
+          }
+        ]
+      },
+      "Capacities": null,
+      "Services": null
+    },
+    {
+      "Id": "store",
+      "Kind": "equipment",
+      "Purpose": "Solid supply cache",
+      "Properties": {},
+      "Parts": [],
+      "Connections": [],
+      "ChildRequirements": [],
+      "RequireWeaklyConnectedChildren": false,
+      "Structure": null,
+      "LayerId": "intent",
+      "PhysicalFootprint": {
+        "Unit": "meters",
+        "Purpose": "Solid supply cache",
+        "SourceRuleId": "expedition:store",
+        "Polygon": {
+          "Vertices": [
+            {
+              "X": -0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": -0.5
+            },
+            {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            {
+              "X": -0.5,
+              "Y": 0.5
+            }
+          ]
+        },
+        "Reservation": null
+      },
+      "Access": {
+        "Occupancy": "Solid",
+        "Ports": []
+      },
+      "Capacities": null,
+      "Services": null
+    }
+  ]
+}

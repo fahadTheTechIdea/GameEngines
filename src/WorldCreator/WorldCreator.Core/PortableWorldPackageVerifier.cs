@@ -18,11 +18,11 @@ public sealed class PortableWorldPackageVerifier(IApprovedArtRegistry registry)
         ArgumentException.ThrowIfNullOrWhiteSpace(worldJsonPath);
         ArgumentException.ThrowIfNullOrWhiteSpace(trustedAssetRoot);
         token.ThrowIfCancellationRequested();
-        DummyVillageWorldDocument? world;
+        WorldSceneDocument? world;
         try
         {
             await using var stream = File.OpenRead(worldJsonPath);
-            world = await JsonSerializer.DeserializeAsync<DummyVillageWorldDocument>(
+            world = await JsonSerializer.DeserializeAsync<WorldSceneDocument>(
                 stream, cancellationToken: token);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or
@@ -72,6 +72,7 @@ public sealed class PortableWorldPackageVerifier(IApprovedArtRegistry registry)
             }
             if (!WorldAssetDependencyManifestBuilder.IsComplete(manifest, id) ||
                 manifest!.GameArtsRevision != evidence.GameArtsRevision ||
+                manifest.BundleAssetId != evidence.BundleAssetId ||
                 manifest.StandardVersion != evidence.StandardVersion ||
                 evidence.Files is null)
             {

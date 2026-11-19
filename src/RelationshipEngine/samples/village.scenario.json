@@ -1,0 +1,16 @@
+{
+  "actors": [
+    { "id": "alice", "traits": [ "kind" ], "tastes": { "flower": 2 }, "routine": [ "sleep", "sleep", "sleep", "sleep", "sleep", "sleep", "sleep", "eat", "work", "work", "work", "work", "eat", "work", "work", "work", "work", "work", "idle", "idle", "idle", "idle", "sleep", "sleep" ] },
+    { "id": "bob", "traits": [ "grumpy", "glutton" ], "tastes": { "food": -1 }, "routine": [ "sleep", "sleep", "sleep", "sleep", "sleep", "sleep", "sleep", "eat", "work", "work", "work", "work", "eat", "work", "work", "work", "work", "work", "idle", "idle", "idle", "idle", "sleep", "sleep" ] },
+    { "id": "cara", "traits": [ "sociable" ], "tastes": {}, "routine": [ "sleep", "sleep", "sleep", "sleep", "sleep", "sleep", "sleep", "eat", "work", "work", "work", "work", "eat", "work", "work", "work", "work", "work", "idle", "idle", "idle", "idle", "sleep", "sleep" ] },
+    { "id": "dan", "traits": [ "stoic" ], "tastes": { "junk": 1 }, "routine": [ "sleep", "sleep", "sleep", "sleep", "sleep", "sleep", "sleep", "eat", "work", "work", "work", "work", "eat", "work", "work", "work", "work", "work", "idle", "idle", "idle", "idle", "sleep", "sleep" ] }
+  ],
+  "facts": { "cal.season": "spring", "cal.is_day": true, "cal.is_holiday": false, "weather.raining": false },
+  "script": [
+    { "step": 30, "interaction": "chat", "actor": "alice", "target": "bob" },
+    { "step": 36, "interaction": "give-gift", "actor": "bob", "target": "alice", "witnesses": [ "cara" ], "gift": "flowers" },
+    { "step": 60, "interaction": "insult", "actor": "bob", "target": "dan" },
+    { "step": 72, "interaction": "flirt", "actor": "cara", "target": "dan" },
+    { "step": 100, "interaction": "share-meal", "actor": "alice", "target": "cara" }
+  ]
+}

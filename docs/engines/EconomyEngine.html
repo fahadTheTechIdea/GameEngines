@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EconomyEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="EconomyEngine.html" aria-current="page">EconomyEngine</a>
+      <a href="../ECONOMY_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>EconomyEngine</h1>
+  <p class="lede">Markets that move: goods and prices with elasticities and bands, production recipes and lines with inputs, requirements, wear and capacity, trade, taxes, tariffs and subsidies, shipments and landed cost, currencies and growth, loans, shocks and modifiers.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">whole-number model</span>
+    <span class="tag">conservation checked</span>
+    <span class="tag">save / replay</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#document">Document format 6</a></li>
+    <li><a href="#markets">Markets, pairs and prices</a></li>
+    <li><a href="#production">Production and recipes</a></li>
+    <li><a href="#trade">Trade, taxes and budgets</a></li>
+    <li><a href="#routing">Routes and landed cost</a></li>
+    <li><a href="#money">Currencies, loans and settlement</a></li>
+    <li><a href="#shocks">Shocks and modifiers</a></li>
+    <li><a href="#facts">Facts</a></li>
+    <li><a href="#api">Runtime API</a></li>
+    <li><a href="#explain">Explaining a number</a></li>
+    <li><a href="#determinism">Determinism and save</a></li>
+    <li><a href="#cli">Command line</a></li>
+    <li><a href="#component">GameRuntime integration</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>EconomyEngine simulates the market layer of a game world: what goods cost and how much is in stock in each market, what production lines turn into what, how cargo moves and what it costs landed, and the money side — currencies, treasuries, taxes, wages, subsidies and loans. It has no clock: the caller supplies a step number and the runtime closes a period whenever the step crosses a multiple of <code>periodSteps</code>.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Prices, stock, supply and demand, production lines, trade arithmetic, routes, currencies, loans, shocks, modifiers, wear and the conservation invariant.</p></div>
+  <div class="card"><h3>It does not own</h3><p>Individual agents and pathfinding, market UI, quest rewards, or the strategic simulation. Combat and alchemy bridge in through their own components.</p></div>
+  <div class="card"><h3>No floats, no hidden randomness</h3><p>Integer per-mille arithmetic and the document's seeded noise only. Every number is bounded by the document's limits.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/EconomyEngine/EconomyEngine.Core</code></td><td>Reader, runtime (market, production, routing, currency, settle, margin, shocks), save image, facts, explanation.</td><td>net8.0</td></tr>
+    <tr><td><code>src/EconomyEngine/EconomyEngine.Cli</code></td><td><code>check</code>, <code>simulate</code> (including multi-seed sweeps), <code>explain</code>, <code>coverage</code>.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Economy</code></td><td><code>EconomyComponent</code>, clocks, journal, transcript, replay, checkpoint.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Economy.Bridges</code></td><td>Bridges to catalogs, diplomacy, alchemy and combat stock.</td><td>net8.0</td></tr>
+  </tbody>
+</table>
+<p>Samples: <code>samples/town.economy.json</code>, <code>workshop.economy.json</code>, <code>town.scenario.json</code>.</p>
+
+<h2 id="document" class="anchor">Document format 6</h2>
+<p>Only format 6 is read; formats 1–5 are refused with their own codes (<code>ECON_FORMAT_2</code> … <code>ECON_FORMAT_5</code>). Sections:</p>
+<table>
+  <thead><tr><th>Section</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>seed</code>, <code>time</code>, <code>limits</code></td><td>Seeded noise; <code>stepsPerDay</code> and <code>periodSteps</code>; caps on shipments, loans, shocks and price history.</td></tr>
+    <tr><td><code>price</code></td><td><code>responseMin/Max</code>, <code>settlePeriods</code>, <code>bandMargin</code>, <code>noise</code>, <code>arrearsPenalty</code>.</td></tr>
+    <tr><td><code>routing</code></td><td><code>direct</code> or <code>landed</code>; landed pricing only counts routes that reach the market.</td></tr>
+    <tr><td><code>currencies</code></td><td>Reference flag, anchor, money supply, growth and maximum rate step.</td></tr>
+    <tr><td><code>goods</code>, <code>bands</code></td><td>Base price, demand/supply elasticity, floor/ceiling, speed, max step, inertia, decay, weight, tags; price bands.</td></tr>
+    <tr><td><code>recipes</code></td><td>Inputs and outputs, duration, locked flag, requirements (with optional wear).</td></tr>
+    <tr><td><code>schedules</code>, <code>policies</code></td><td>Recurring settlement and budget schedules; sales/import/export/subsidy policies with rates and tags.</td></tr>
+    <tr><td><code>modifiers</code>, <code>shocks</code></td><td>Conditional supply/demand modifiers; timed shocks with typed effects.</td></tr>
+    <tr><td><code>markets</code></td><td>Treasury, staff, spread, traded pairs, policies, budget, production lines (capacity, inputs, outputs, requirements, throttle).</td></tr>
+    <tr><td><code>routes</code>, <code>loans</code>, <code>facts</code></td><td>From/to, delay, capacity, cost per weight, margin and share; loan definitions; declared host facts.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="markets" class="anchor">Markets, pairs and prices</h2>
+<p>A market trades a set of <em>pairs</em> (good, production, consumption, stock, cover, capacity). A price moves toward a reference price from elasticity, band, speed, inertia and decay, with a bounded step per period and optional seeded noise. A <code>Result</code> reports price, stock, supply, demand, met and change.</p>
+<ul>
+  <li><code>Quote(market, good, quantity)</code> — price a trade without executing it; <code>Trade</code> — execute, returning unit price, value, tax and total.</li>
+  <li><code>PriceHistory(market, pair)</code> — bounded history for charts.</li>
+  <li><code>Ratio(market, pair)</code> — stock relative to cover; <code>Reachable</code> — best route value, route index and hops.</li>
+</ul>
+
+<h2 id="production" class="anchor">Production and recipes</h2>
+<p>A line runs a recipe up to its capacity, limited by the first thing that blocks it: <code>LineLimit.Locked</code>, <code>Capacity</code>, <code>Input</code> (missing input), <code>Room</code> (output full), <code>Held</code> (requirement missing), <code>Margin</code> (throttled because the margin is too low) or <code>Worn</code> (tool worn out).</p>
+<pre><code>IReadOnlyList&lt;LinePlan&gt; plan = runtime.PlanLines(marketIndex, hostFacts);
+LineMargin margin = runtime.MarginOfLine(marketIndex, recipeIndex, hostFacts);
+// InputCost, OutputValue, Ratio, Fraction, Wage, Overhead</code></pre>
+<ul>
+  <li><code>RequirePairs</code> are per-run requirements that are not consumed unless they carry <code>Wear</code>; a shared tool wears by units per run and blocks the line when spent.</li>
+  <li><code>UnlockRecipe(id)</code> opens a locked recipe; <code>IsUnlocked(recipe)</code> answers.</li>
+  <li><code>ThrottleDef</code> stops a line when the margin ratio is below <code>Stop</code> and runs fully at <code>Full</code>; optional per-line costs override the market's wage/overhead.</li>
+</ul>
+
+<h2 id="trade" class="anchor">Trade, taxes and budgets</h2>
+<ul>
+  <li>Policies: <code>Sales</code> tax, <code>Import</code> tariff, <code>Export</code> tariff, <code>Subsidy</code>; each has a rate or per-unit amount, tags and a schedule.</li>
+  <li>Budgets: <code>Wage</code> and <code>Upkeep</code>, with a schedule, amount, per-head share and indexation.</li>
+  <li><code>Settle(scheduleId)</code> pays a schedule: taxes, wages, upkeep, subsidies and loans; <code>SettleKind</code> names each entry.</li>
+  <li>Arrears are tracked per market and penalised at the configured rate; <code>InArrears(market)</code> answers.</li>
+</ul>
+
+<h2 id="routing" class="anchor">Routes and landed cost</h2>
+<p>With <code>routing.mode = landed</code>, a market's price can reflect the cheapest way to bring a good from where it is cheap, including route delay, capacity, cost per weight, margin and share.</p>
+<pre><code>Reachable reach = runtime.Reach(market, pair);   // Value, Route, Hops
+IReadOnlyList&lt;RouteLine&gt; lines = runtime.PlanRoute(route);
+long capacity = runtime.CapacityNow(route);</code></pre>
+<p><code>RouteLine</code> reports good, rank, gain, ratio, landed price, via, surplus, wanted, shipped and outcome. Shipments are bounded by <code>limits.maxShipments</code> and arrive after their delay.</p>
+
+<h2 id="money" class="anchor">Currencies, loans and settlement</h2>
+<ul>
+  <li>Each currency has a level, an exchange rate, money supply and growth. <code>ReferencePrice(currency, good)</code> converts the good's base price; <code>SetGrowth(currencyId, ppm)</code> changes growth.</li>
+  <li>Loans: <code>Lend(id, lender, borrower, principal, ratePpm, term, kind, schedule, defaultAfter)</code>; kinds <code>Annuity</code> and <code>Bullet</code>; outcomes <code>Missed</code>, <code>Closed</code>, <code>Defaulted</code>.</li>
+  <li><code>Conservation()</code> returns per-currency totals; money moves only between treasuries and the world account, so the totals equal the starting money plus what was minted.</li>
+  <li><code>Fund(market, delta)</code> moves money into or out of a treasury (the caller owns why).</li>
+</ul>
+
+<h2 id="shocks" class="anchor">Shocks and modifiers</h2>
+<p><code>ApplyShock(shockId, marketId, scalePermille)</code> starts a timed shock with effects: <code>Supply</code>, <code>Demand</code>, <code>Price</code>, <code>Rate</code>, <code>Growth</code>, <code>Route</code>. Modifiers are conditional supply/demand changes on a good with a tag; they apply while their shared condition holds over host facts. Active shocks and their remaining time are readable through <code>ActiveShocks</code>.</p>
+
+<h2 id="facts" class="anchor">Facts</h2>
+<p><code>EconomyFacts.Read(runtime, marketId, prefix)</code> offers <code>market.*</code> and <code>currency.*</code> facts — prices, stock, ratios, bands, arrears, shortages, currency levels and rates — for dialogue conditions, AI percepts and events. <code>EconomyFacts.IsReserved</code> guards the two prefixes.</p>
+
+<h2 id="api" class="anchor">Runtime API</h2>
+<pre><code>var set     = EconomyLoader.Load(json);         // format 6
+var runtime = EconomyRuntime.Create(set, startStep);
+EconomyChanges changes = runtime.Advance(toStep, hostFacts);  // closes ≤ 64 periods
+var quote   = runtime.Quote("town", "bread", 10);
+var trade   = runtime.Trade("town", "bread", 10);
+runtime.Settle("weekly");
+runtime.ApplyShock("drought", "town", 800);
+runtime.UnlockRecipe("forge-steel");
+var digest  = runtime.StateDigest();</code></pre>
+<p><code>Advance</code> is monotonic; the owed periods are reported by <code>Owed(targetStep)</code>. <code>EconomyChanges</code> lists typed changes for the game layer.</p>
+
+<h2 id="explain" class="anchor">Explaining a number</h2>
+<p><code>EconomyExplain</code> returns an <code>Explanation(Subject, Terms, Value, State)</code> with a term per contribution — the same reasoning the CLI prints for <code>price</code>, <code>loan</code>, <code>currency</code>, <code>route</code>, <code>reach</code> and <code>production</code>. If a number matters to a player, explain it rather than showing a bare value.</p>
+
+<h2 id="determinism" class="anchor">Determinism and save</h2>
+<p>All arithmetic is whole-number per-mille; randomness is the document seed only. <code>EconomyImage</code> captures the complete state, <code>EconomySave</code> verifies the document digest (<code>ECON_SAVE_DOCUMENT</code>) and state digest (<code>ECON_SAVE_STATE</code>). Two equal runs have equal <code>StateDigest()</code>.</p>
+
+<h2 id="cli" class="anchor">Command line</h2>
+<pre><code>EconomyEngine.Cli check &lt;economy.json&gt;
+EconomyEngine.Cli simulate &lt;economy.json&gt; &lt;scenario.json&gt; &lt;periods&gt; [--save state.json] [--verbose]
+EconomyEngine.Cli simulate ... --seeds &lt;n&gt; [--from-seed s] [--days d] [--metrics a,b] [--rows]
+EconomyEngine.Cli explain &lt;economy.json&gt; &lt;state.json&gt; price|loan|currency|route|reach|production ...
+EconomyEngine.Cli coverage &lt;economy.json&gt; &lt;locale.json&gt; [...]</code></pre>
+<p>Exit codes: <code>0</code> done, <code>1</code> refused or incomplete, <code>2</code> usage/scenario/file problem. The multi-seed sweep is the intended tool for balance work.</p>
+
+<h2 id="component" class="anchor">GameRuntime integration</h2>
+<p><code>EconomyComponent</code> turns requests into runtime calls inside <code>Update</code>, then advances on the session clock through <code>EconomyClocks</code>.</p>
+<table>
+  <thead><tr><th>Request in</th><th>Result out</th></tr></thead>
+  <tbody>
+    <tr><td><code>economy.trade-requested</code>, <code>shock-requested</code>, <code>settle-requested</code>, <code>growth-requested</code>, <code>fund-requested</code>, <code>lend-requested</code>, <code>quote-requested</code>, <code>price-requested</code>, <code>recipe-unlock-requested</code></td><td><code>economy.applied</code>, <code>refused</code>, <code>trade-executed</code>, <code>quoted</code>, <code>price-answered</code>, <code>stepped</code>, <code>rate-changed</code>, <code>shock-changed</code>, <code>shipment-arrived</code>, <code>band-changed</code>, <code>shortage-changed</code>, <code>shipment-launched</code>, <code>route-blocked</code>, <code>settled</code>, <code>loan-changed</code>, <code>production-limited</code>, <code>recipe-unlocked</code></td></tr>
+  </tbody>
+</table>
+<p>Install <code>EconomyChannels</code> before <code>Init</code>. <code>EconomyJournal</code>/<code>Transcript</code>/<code>Replay</code> verify a recorded run; <code>EconomyCheckpoint</code> saves state.</p>
+
+<h2 id="testing" class="anchor">Testing</h2>
+<pre><code>dotnet run --project src/EconomyEngine/EconomyEngine.Tests -c Release</code></pre>
+<p>Suites: price, production, capacity, margin/requirements, wear and profit, settle, routes and routing, trade, currency, shock/modifier, bounds and boundary, refusal matrix, save and tamper, scale, CLI and balance sweeps.</p>
+
+<h2 id="source" class="anchor">Source map</h2>
+<dl class="kv">
+  <dt>Reader</dt><dd><code>EconomyReader.cs</code>, <code>EconomyReader.Markets.cs</code>, <code>EconomyReader.Recipes.cs</code></dd>
+  <dt>Runtime</dt><dd><code>EconomyRuntime*.cs</code> (Market, Production, Routes, Landed, Currency, Settle, Shocks, Margin, Plan, Wear)</dd>
+  <dt>Model</dt><dd><code>Definitions.cs</code>, <code>State.cs</code>, <code>EconomySet.cs</code>, <code>EconomyStateRules.cs</code>, <code>EconomyMath.cs</code></dd>
+  <dt>Save</dt><dd><code>EconomyImage.cs</code>, <code>EconomySave.cs</code></dd>
+  <dt>Explanation</dt><dd><code>EconomyExplain.cs</code>, <code>EconomyFacts.cs</code>, <code>EconomyNames.cs</code></dd>
+  <dt>Refusals</dt><dd><code>EconomyCodes.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/EconomyEngine</code> and <code>src/GameRuntime/GameRuntime.Economy*</code>. Model history, balances and measurements: <a href="../ECONOMY_ENGINE.md">docs/ECONOMY_ENGINE.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

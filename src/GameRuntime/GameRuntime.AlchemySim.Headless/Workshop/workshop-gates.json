@@ -1,0 +1,19 @@
+{
+  "technology_completion_effects": [ { "id": "space.discover.complete" } ],
+  "technology_transformation_unlocks": [
+    { "id": "space.discover.smelt.unlock", "definition": "space.smelt.planetx" },
+    { "id": "space.discover.assemble.unlock", "definition": "space.assemble.parts" }
+  ],
+  "technologies": [
+    {
+      "id": "space.discover.smelt", "prerequisites": [], "unlocks": ["space.discover.smelt.unlock"],
+      "player_orderable": true, "priority": 30, "automatic_supply": false, "on_complete": "space.discover.complete",
+      "nodes": [ { "id": "study", "executor": "work.timed", "duration": { "numerator": 1, "denominator": 1, "unit": "minute" } } ]
+    },
+    {
+      "id": "space.discover.assemble", "prerequisites": [], "unlocks": ["space.discover.assemble.unlock"],
+      "player_orderable": true, "priority": 30, "automatic_supply": false, "on_complete": "space.discover.complete",
+      "nodes": [ { "id": "study", "executor": "work.timed", "duration": { "numerator": 1, "denominator": 1, "unit": "minute" } } ]
+    }
+  ]
+}

@@ -163,6 +163,15 @@ namespace Beep.SimEngine.Standard
         { Company = company; Technology = technology.Id; Known = known; CompletedTick = tick; ActiveOrder = order; Blocker = blocker;
             Prerequisites = new List<string>(technology.Dependencies).AsReadOnly(); }
     }
+    /// <summary>A company learned a technology. Published once, when its research completes.</summary>
+    public readonly struct TechnologyLearned
+    {
+        public const string EventId = "sim.technology.learned";
+        public PlayerId Company { get; }
+        public string Technology { get; }
+        public TechnologyLearned(PlayerId company, string technology) { Company = company; Technology = technology; }
+    }
+
     public sealed class TechnologyService : ITechnologyKnowledge, IKnowledgeProvider, ICompositionValidator, IContentAccessRule
     {
         private readonly World _world;
@@ -296,6 +305,7 @@ namespace Beep.SimEngine.Standard
             var technology = (ITechnologyDefinition)order.Plan;
             Code recorded = _world.Services.Get<ICompanyKnowledge>().Record(order.Owner, Id, technology.Id, JsonValue.NewObject());
             if (!recorded.IsNone) return recorded;
+            _world.Events.Publish(new TechnologyLearned(order.Owner, technology.Id));
             _world.Services.Get<WorkBoard>().Dirty = true; return Code.None;
         }
         public Code ReadTechnology(PlayerId viewer, PlayerId company, string technology, out TechnologySnapshot snapshot)

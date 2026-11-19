@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The authoring tool for diplomacy documents: check, simulate, explain, coverage. -->
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><AssemblyName>DiplomacyEngine.Cli</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DiplomacyEngine.Core/DiplomacyEngine.Core.csproj" />
+  </ItemGroup>
+</Project>

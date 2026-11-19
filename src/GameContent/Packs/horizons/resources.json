@@ -1,0 +1,31 @@
+{
+  "format": 1,
+  "pack": "horizons",
+  "eras": [
+    { "id": "horizons.space-age", "name": "Early space age", "order": 110, "tier": 12, "label": "space-age", "span": null },
+    { "id": "horizons.near-future", "name": "Near future", "order": 120, "tier": 13, "label": "near-future", "span": null },
+    { "id": "horizons.far-future", "name": "Far future", "order": 130, "tier": 14, "label": "far-future", "span": null }
+  ],
+  "availability": [
+    { "id": "matter.superconductor", "from": "horizons.near-future", "until": null },
+    { "id": "matter.make-superconductor", "from": "horizons.near-future", "until": null },
+    { "id": "matter.graphene", "from": "horizons.near-future", "until": null },
+    { "id": "matter.make-graphene", "from": "horizons.near-future", "until": null },
+    { "id": "matter.reactive-tile", "from": "horizons.near-future", "until": null },
+    { "id": "matter.make-reactive-tile", "from": "horizons.near-future", "until": null },
+    { "id": "matter.energy-mag", "from": "horizons.near-future", "until": null },
+    { "id": "matter.make-energy-mag", "from": "horizons.near-future", "until": null },
+    { "id": "matter.plasma-cell", "from": "horizons.far-future", "until": null },
+    { "id": "matter.make-plasma-cell", "from": "horizons.far-future", "until": null },
+    { "id": "matter.fusion-core", "from": "horizons.far-future", "until": null },
+    { "id": "matter.make-fusion-core", "from": "horizons.far-future", "until": null },
+    { "id": "matter.hull-alloy", "from": "horizons.far-future", "until": null },
+    { "id": "matter.make-hull-alloy", "from": "horizons.far-future", "until": null },
+    { "id": "matter.focus-lens", "from": "horizons.far-future", "until": null },
+    { "id": "matter.make-focus-lens", "from": "horizons.far-future", "until": null },
+    { "id": "matter.make-superconductor-alt", "from": "horizons.near-future", "until": null },
+    { "id": "matter.make-graphene-alt", "from": "horizons.near-future", "until": null },
+    { "id": "matter.make-hull-alloy-alt", "from": "horizons.far-future", "until": null },
+    { "id": "matter.make-fusion-core-alt", "from": "horizons.far-future", "until": null }
+  ]
+}

@@ -35,7 +35,7 @@ public sealed partial class ReplayService(IScenarioSessionFactory sessions, IEng
                 {
                     ReplayOperation.Submit => simulation.Enqueue(entry.Command!),
                     ReplayOperation.CancelQueued => simulation.CancelQueued(entry.ControllerId!, entry.CommandId!),
-                    ReplayOperation.Step => simulation.Step(entry.Input!),
+                    ReplayOperation.Update => simulation.Update(entry.Input!),
                     _ => ApplyLifecycle(simulation, entry.Operation)
                 };
                 var hash = ContractJson.StateHash(simulation.Snapshot);
@@ -75,9 +75,6 @@ public sealed partial class ReplayService(IScenarioSessionFactory sessions, IEng
     {
         switch (operation)
         {
-            case ReplayOperation.Start: simulation.Start(); break;
-            case ReplayOperation.Pause: simulation.Pause(); break;
-            case ReplayOperation.Resume: simulation.Resume(); break;
             case ReplayOperation.Dispose: simulation.Dispose(); break;
             default: throw new ScenarioContractException("REPLAY_OPERATION", "Unsupported replay operation.");
         }
@@ -89,7 +86,7 @@ public sealed partial class ReplayService(IScenarioSessionFactory sessions, IEng
         var payload = ContractJson.Element(tape);
         var bytes = ContractJson.Canonical(ContractJson.Element(new
         {
-            replayFormat = 1, hashAlgorithm = "canonical-session-sha256-v1",
+            replayFormat = 2, hashAlgorithm = "canonical-session-sha256-v1",
             randomAlgorithm = "pcg32-xsh-rr-v1", payload, payloadDigest = ContractJson.HashJson(payload)
         }), integerOnly: false);
         if (bytes.Length > MaxBytes) throw new ScenarioContractException("REPLAY_SIZE", "Replay exceeds 16 MiB.");
@@ -103,7 +100,7 @@ public sealed partial class ReplayService(IScenarioSessionFactory sessions, IEng
             using var document = JsonDocument.Parse(bytes, new JsonDocumentOptions { MaxDepth = 64 });
             var root = document.RootElement;
             ContractJson.RejectDuplicateProperties(root);
-            if (root.EnumerateObject().Count() != 5 || root.GetProperty("replayFormat").GetInt32() != 1 ||
+            if (root.EnumerateObject().Count() != 5 || root.GetProperty("replayFormat").GetInt32() != 2 ||
                 root.GetProperty("hashAlgorithm").GetString() != "canonical-session-sha256-v1" ||
                 root.GetProperty("randomAlgorithm").GetString() != "pcg32-xsh-rr-v1")
                 throw new ScenarioContractException("REPLAY_VERSION", "Unsupported replay format.");
@@ -129,7 +126,7 @@ public sealed partial class ReplayService(IScenarioSessionFactory sessions, IEng
     }
     private static void ValidateTape(ReplayTape tape)
     {
-        if (tape is null || tape.Format != 1 || tape.Entries.IsDefault || tape.Entries.Length > MaxEntries)
+        if (tape is null || tape.Format != 2 || tape.Entries.IsDefault || tape.Entries.Length > MaxEntries)
             throw new ScenarioContractException("REPLAY_VERSION", "Invalid replay format or entry count.");
         SessionSnapshotRules.Validate(tape.InitialSnapshot);
         ValidateBaseline(tape.InitialSnapshot, tape.InitialWorld);
@@ -146,7 +143,7 @@ public sealed partial class ReplayService(IScenarioSessionFactory sessions, IEng
             var valid = entry.Operation switch
             {
                 ReplayOperation.Submit => entry.Command is not null && entry.Input is null && entry.ControllerId is null && entry.CommandId is null,
-                ReplayOperation.Step => entry.Input is not null && entry.Input.World is not null && !entry.Input.World.Observations.IsDefault && entry.Command is null && entry.ControllerId is null && entry.CommandId is null,
+                ReplayOperation.Update => entry.Input is not null && entry.Input.World is not null && !entry.Input.World.Observations.IsDefault && entry.Command is null && entry.ControllerId is null && entry.CommandId is null,
                 ReplayOperation.CancelQueued => !string.IsNullOrWhiteSpace(entry.ControllerId) && !string.IsNullOrWhiteSpace(entry.CommandId) && entry.Command is null && entry.Input is null,
                 _ => entry.Command is null && entry.Input is null && entry.ControllerId is null && entry.CommandId is null
             };
@@ -182,7 +179,7 @@ public sealed partial class ReplayService(IScenarioSessionFactory sessions, IEng
             lock (_gate)
             {
                 if (_inside) throw new ScenarioContractException("REPLAY_BUSY", "Cannot capture during a replay operation.");
-                return new(1, _initial, _initialWorld, [.. _entries]);
+                return new(2, _initial, _initialWorld, [.. _entries]);
             }
         }
         private T Record<T>(ReplayEntry template, Func<ReplayEntry, T> operation, Func<T, string> resultCode)
@@ -209,16 +206,13 @@ public sealed partial class ReplayService(IScenarioSessionFactory sessions, IEng
             }
         }
         private void Lifecycle(ReplayOperation operation) => Record(new(operation, "", "", ""), _ => ApplyLifecycle(_simulation, operation), code => code);
-        public void Start() => Lifecycle(ReplayOperation.Start);
-        public void Pause() => Lifecycle(ReplayOperation.Pause);
-        public void Resume() => Lifecycle(ReplayOperation.Resume);
         public AdmissionResult Enqueue(CommandEnvelope command) =>
             Record(new(ReplayOperation.Submit, "", "", "", Command: command), e => _simulation.Enqueue(e.Command!), result => result.Code);
         public AdmissionResult CancelQueued(string controllerId, string commandId) =>
             Record(new(ReplayOperation.CancelQueued, "", "", "", ControllerId: controllerId, CommandId: commandId),
                 e => _simulation.CancelQueued(e.ControllerId!, e.CommandId!), result => result.Code);
-        public StepResult Step(TickInput input) =>
-            Record(new(ReplayOperation.Step, "", "", "", Input: input), e => _simulation.Step(e.Input!), result => result.Code);
+        public StepResult Update(TickInput input) =>
+            Record(new(ReplayOperation.Update, "", "", "", Input: input), e => _simulation.Update(e.Input!), result => result.Code);
         public void Dispose()
         {
             lock (_gate)

@@ -295,9 +295,9 @@ namespace Beep.SimEngine.Kernel
             private readonly World _world;
             private readonly Entity _entity;
             private readonly IGameClock _clock;
-            private readonly int _version, _speed;
+            private readonly int _version;
             private readonly PlayerId _owner;
-            private readonly bool _alive, _paused;
+            private readonly bool _alive;
             private readonly bool _allowEntityVersionChange;
             private readonly Code _state;
             private readonly long _since, _update;
@@ -309,14 +309,14 @@ namespace Beep.SimEngine.Kernel
                 _allowEntityVersionChange = allowEntityVersionChange;
                 _version = entity?.Version ?? 0; _owner = entity?.Owner ?? PlayerId.None; _alive = entity?.Alive ?? false;
                 _state = entity?.State ?? Code.None; _since = entity?.StateSince ?? 0; _update = _clock.StepIndex;
-                _paused = _clock.Paused; _speed = _clock.Speed; _next = world.Entities.NextIdentity;
+                _next = world.Entities.NextIdentity;
                 _randomState = world.Random.State; _randomVersion = world.Random.ObservationVersion;
             }
             internal void Verify()
             {
                 if (_entity != null && (!ReferenceEquals(_world.Entities.Get(_entity.Id), _entity) || !_allowEntityVersionChange && _entity.Version != _version || _entity.Owner != _owner ||
                     _entity.Alive != _alive || _entity.State != _state || _entity.StateSince != _since) ||
-                    !ReferenceEquals(_world.Clock, _clock) || _clock.StepIndex != _update || _clock.Paused != _paused || _clock.Speed != _speed ||
+                    !ReferenceEquals(_world.Clock, _clock) || _clock.StepIndex != _update ||
                     _world.Entities.NextIdentity != _next || _world.Random.State != _randomState || _world.Random.ObservationVersion != _randomVersion)
                     throw new InvalidOperationException("entity observation mutated scoped state, identity, random-stream or game-clock facts");
             }

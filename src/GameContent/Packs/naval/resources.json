@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "pack": "naval",
+  "resources": [
+    { "id": "naval.oak", "name": "Ship oak", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 2000 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["timber"], "properties": { "base-price": 0.6 } },
+    { "id": "naval.hemp", "name": "Hemp", "class": "raw", "unit": "kg", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["fibre"], "properties": { "base-price": 1.5 } },
+    { "id": "naval.pine-tar", "name": "Pine tar", "class": "fluid", "unit": "L", "origin": "natural", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "0", "tags": ["sealant"], "properties": { "base-price": 4 } },
+    { "id": "naval.keel", "name": "Keel beam", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 5 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["hull"], "properties": { "base-price": 150 } },
+    { "id": "naval.planking", "name": "Hull planking", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["hull"], "properties": { "base-price": 1.5 } },
+    { "id": "naval.oakum", "name": "Oakum", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["sealant"], "properties": { "base-price": 3 } },
+    { "id": "naval.canvas", "name": "Sail canvas", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 200 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["textile"], "properties": { "base-price": 3 } },
+    { "id": "naval.sail", "name": "Canvas sail", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 50 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["rig"], "properties": { "base-price": 80 } },
+    { "id": "naval.mast", "name": "Mast spar", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 10 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["rig"], "properties": { "base-price": 60 } },
+    { "id": "naval.rigging", "name": "Standing rigging", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 10 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "3", "tags": ["rig"], "properties": { "base-price": 160 } },
+    { "id": "naval.anchor", "name": "Ship anchor", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 5 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["fitting"], "properties": { "base-price": 150 } },
+    { "id": "naval.deck-gun", "name": "Deck gun", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 20 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "4", "tags": ["fitting", "weapon"], "properties": { "base-price": 300 } },
+    { "id": "naval.hull-frame", "name": "Hull frame", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 2 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["hull"], "properties": { "base-price": 700 } },
+    { "id": "naval.caulked-hull", "name": "Caulked hull", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 2 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["hull"], "properties": { "base-price": 1500 } },
+    { "id": "naval.sheathed-hull", "name": "Copper-sheathed hull", "class": "intermediate", "unit": "{each}", "origin": "crafted", "stack": { "max": 2 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "5", "tags": ["hull"], "properties": { "base-price": 2400 } },
+    { "id": "naval.cutter", "name": "Cutter", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 20000 }, "currency": null, "cpc": "5", "tags": ["ship"], "properties": { "base-price": 5000 } },
+    { "id": "naval.brig", "name": "Brig", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 40000 }, "currency": null, "cpc": "5", "tags": ["ship"], "properties": { "base-price": 12000 } },
+    { "id": "naval.galleon", "name": "Galleon", "class": "equipment", "unit": "{each}", "origin": "crafted", "stack": { "max": 1 }, "grade": null, "perishable": null, "durability": { "uses": 80000 }, "currency": null, "cpc": "5", "tags": ["ship"], "properties": { "base-price": 22000 } },
+    { "id": "naval.biscuit", "name": "Ship's biscuit", "class": "consumable", "unit": "{each}", "origin": "crafted", "stack": { "max": 500 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": "2", "tags": ["provisions"], "properties": { "base-price": 1 } },
+    { "id": "naval.chart", "name": "Navigation chart", "class": "information", "unit": "{point}", "origin": "crafted", "stack": { "max": 100 }, "grade": null, "perishable": null, "durability": null, "currency": null, "cpc": null, "tags": ["navigation"], "properties": {} }
+  ],
+  "stations": [
+    { "id": "naval.sawpit", "name": "Sawpit", "levels": 1 },
+    { "id": "naval.sail-loft", "name": "Sail loft", "levels": 1 },
+    { "id": "naval.slipway", "name": "Slipway", "levels": 3 },
+    { "id": "naval.chart-room", "name": "Chart room", "levels": 1 },
+    { "id": "naval.harbor-market", "name": "Harbor market", "levels": 1 }
+  ],
+  "skills": [
+    { "id": "naval.shipwrighting", "name": "Shipwrighting", "max": 10 },
+    { "id": "naval.seamanship", "name": "Seamanship", "max": 10 }
+  ]
+}

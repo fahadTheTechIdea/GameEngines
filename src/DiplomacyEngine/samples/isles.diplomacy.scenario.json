@@ -1,0 +1,16 @@
+{
+ "facts": { "game.crisis": 2 },
+ "script": [
+  { "at": 0, "do": "propose", "arg": "aurel:brass:alliance:0:0" },
+  { "at": 0, "do": "propose", "arg": "aurel:dune:nap:120:0" },
+  { "at": 1, "do": "propose", "arg": "cinder:dune:trade:0:0" },
+  { "at": 2, "do": "mission", "arg": "agent-brass-1:aurel:spy" },
+  { "at": 3, "do": "propose", "arg": "ember:cinder:nap:30:0" },
+  { "at": 10, "do": "respond", "arg": "3", "n": 1 },
+  { "at": 20, "do": "war", "arg": "ember:dune:" },
+  { "at": 30, "do": "score", "arg": "0:ember:600:battle" },
+  { "at": 40, "do": "propose", "arg": "ember:dune:peace:60:0" },
+  { "at": 60, "do": "deed", "arg": "brass:aurel:gift:600" },
+  { "at": 70, "do": "mission", "arg": "agent-aurel-1:ember:sabotage" }
+ ]
+}

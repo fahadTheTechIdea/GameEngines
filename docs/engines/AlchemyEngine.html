@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlchemyEngine — GameFrameWork engine documentation</title>
+<link rel="stylesheet" href="assets/engine-docs.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">GameFrameWork · Engine docs</span>
+    <nav>
+      <a href="index.html">All engines</a>
+      <a href="AlchemyEngine.html" aria-current="page">AlchemyEngine</a>
+      <a href="../ALCHEMY_ENGINE.md">Design record</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+<header class="page-head">
+  <p class="eyebrow">Engine documentation</p>
+  <h1>AlchemyEngine</h1>
+  <p class="lede">Combination and discovery: validated element and recipe content, an exact order-free match over inputs, catalysts and environment tags, chance decided from a seed and attempt number, and a discovery book the player keeps.</p>
+  <div class="badge-row">
+    <span class="tag">net8.0</span>
+    <span class="tag">pure rules</span>
+    <span class="tag">discovery state</span>
+    <span class="tag">GameRuntime component</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="On this page">
+  <strong>On this page</strong>
+  <ol>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#projects">Projects and assemblies</a></li>
+    <li><a href="#content">Content format</a></li>
+    <li><a href="#matching">Matching rules</a></li>
+    <li><a href="#chance">Chance and determinism</a></li>
+    <li><a href="#book">The discovery book</a></li>
+    <li><a href="#api">Public API</a></li>
+    <li><a href="#runtime">GameRuntime integration</a></li>
+    <li><a href="#sim">SimEngine bridge</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#source">Source map</a></li>
+  </ol>
+</nav>
+
+<h2 id="purpose" class="anchor">Purpose</h2>
+<p>AlchemyEngine answers one question: <em>what happens when these items are combined in this environment?</em> It owns the rules and the player's knowledge, not the inventory, the workshop or the presentation. It has no clock, no counters and no random state — the caller passes a seed, an attempt number and environment tags.</p>
+<div class="grid">
+  <div class="card"><h3>It owns</h3><p>Content validation, recipe matching, exact-fraction chance, the discovery book (elements, recipes, tried combinations, attempts), save and hash.</p></div>
+  <div class="card"><h3>It does not own</h3><p>Inventory quantities, UI, unlocks, rewards, crafting time, or what a discovered element is worth. Those are game-layer decisions.</p></div>
+  <div class="card"><h3>Refuse, never repair</h3><p>Bad content or a bad request raises a coded exception. Nothing is defaulted, skipped or guessed.</p></div>
+</div>
+
+<h2 id="projects" class="anchor">Projects and assemblies</h2>
+<table>
+  <thead><tr><th>Project</th><th>Role</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/AlchemyEngine/AlchemyEngine.Core</code></td><td>Content loader and validator, rules, discovery book and save. Pure; no I/O or clock.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Alchemy</code></td><td><code>AlchemyComponent</code> owns a <code>DiscoveryBook</code>, answers combine requests and emits discovery events.</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.AlchemySim</code></td><td>Bridges alchemy discovery into a SimEngine production chain (recipe unlock, processor, ordering).</td><td>net8.0</td></tr>
+    <tr><td><code>src/GameRuntime/GameRuntime.Tests</code></td><td><code>AlchemyEngineTests.cs</code> and runtime integration tests.</td><td>net8.0</td></tr>
+  </tbody>
+</table>
+
+<h2 id="content" class="anchor">Content format</h2>
+<p>Strict JSON with a version number. The loader refuses unknown or missing fields (<code>ALCHEMY_UNKNOWN_FIELD</code>, <code>ALCHEMY_MISSING_FIELD</code>).</p>
+<pre><code>{ "format": 1,
+  "elements": [
+    { "id": "water", "name": "Water", "properties": ["liquid"], "starting": true },
+    { "id": "steam", "name": "Steam", "properties": ["gas"], "starting": false } ],
+  "recipes": [
+    { "id": "boil-water",
+      "inputs": ["water"], "catalysts": [], "environment": ["heat"], "outputs": ["steam"],
+      "ordered": false, "chance": { "numerator": 1, "denominator": 4 } } ] }</code></pre>
+<table>
+  <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>id</code>, <code>name</code>, <code>properties</code>, <code>starting</code></td><td>Element identity and the tags the game may query. At least one element must be starting.</td></tr>
+    <tr><td><code>inputs</code></td><td>Consumed by the reaction. Non-empty.</td></tr>
+    <tr><td><code>catalysts</code></td><td>Must be present but are not consumed; returned in <code>Kept</code>.</td></tr>
+    <tr><td><code>environment</code></td><td>Tags (for example <code>heat</code>) that must all be offered by the caller.</td></tr>
+    <tr><td><code>outputs</code></td><td>What appears. Non-empty.</td></tr>
+    <tr><td><code>ordered</code></td><td>When true, inputs must arrive in exactly the declared sequence; otherwise any order matches.</td></tr>
+    <tr><td><code>chance</code></td><td>Exact fraction <code>numerator / denominator</code>, denominator at most 1,000,000. <code>1/1</code> always reacts.</td></tr>
+  </tbody>
+</table>
+<p>Validation also refuses duplicate ids, a catalyst that is also an input, bad chances, no starting element, an ambiguous pair of recipes that could both match one combination, and an element that no chain can ever produce (<code>ALCHEMY_UNREACHABLE_ELEMENT</code>).</p>
+
+<h2 id="matching" class="anchor">Matching rules</h2>
+<ul>
+  <li>At most <code>AlchemyRules.MaxItems = 8</code> items; empty is refused; every item must exist in the content.</li>
+  <li>Environment tags are deduplicated and sorted; each must be 1–64 chars of <code>a-z 0-9 . _ -</code>.</li>
+  <li>Recipes are grouped by the order-free <em>vessel key</em> (inputs + catalysts, sorted). A recipe fits when all its environment tags are offered and, if ordered, its non-catalyst inputs equal the request sequence.</li>
+  <li>More than one fitting recipe is a content bug and is refused at combine time (<code>ALCHEMY_COMBINE_AMBIGUOUS</code>) — the loader normally prevents it.</li>
+  <li>Outcomes: <code>Reacted</code>, <code>NoReaction</code> (valid but no recipe), <code>Fizzled</code> (recipe fits, chance failed), <code>Refused</code> (bad request; <code>Code</code> says why).</li>
+</ul>
+
+<h2 id="chance" class="anchor">Chance and determinism</h2>
+<pre><code>text  = "alchemy-roll|" + seed + "|" + attempt + "|" + recipe.Id + "|"
+      + string.Join('+', items) + "|" + string.Join(',', environment);
+hash  = SHA256(text);
+value = first 8 bytes big-endian;
+reacts when value % denominator &lt; numerator</code></pre>
+<p>Because the roll depends only on the seed, the attempt, the recipe and the canonical request, replaying a journal reproduces every reaction. A fizzle is chance, not a conclusion: the book does not record it as tried, so the next attempt rolls differently.</p>
+
+<h2 id="book" class="anchor">The discovery book</h2>
+<p><code>DiscoveryBook</code> is the player's knowledge: known elements, known recipes, tried combinations and a monotonic attempt counter used as the chance input.</p>
+<ul>
+  <li>A new book knows exactly the content's <code>starting</code> elements.</li>
+  <li><code>CheckUsable(items)</code> returns <code>ALCHEMY_COMBINE_NOT_DISCOVERED</code> when an item is unknown — a player cannot combine what it has not found.</li>
+  <li><code>Record(result)</code> teaches nothing for a refusal; a fizzle costs an attempt but stays untried; a reaction adds outputs and the recipe.</li>
+  <li><code>LearnRecipe(id)</code> teaches from outside (scroll, teacher, research) and does not count as an attempt.</li>
+  <li><code>Hash()</code> is SHA-256 over content digest, attempts and sorted sets — the per-tick fingerprint for a journal.</li>
+  <li>A saved book names the content digest; it will not load against other content (<code>ALCHEMY_BOOK_CONTENT</code>).</li>
+</ul>
+
+<h2 id="api" class="anchor">Public API</h2>
+<table>
+  <thead><tr><th>Member</th><th>Contract</th></tr></thead>
+  <tbody>
+    <tr><td><code>AlchemyContentLoader.Load(json)</code></td><td>Validate and build immutable content; throws <code>AlchemyContentException</code>/<code>AlchemyRefusedException</code> with a code.</td></tr>
+    <tr><td><code>AlchemyRules.Combine(items, new CombineContext(seed, attempt, environment))</code></td><td>Match, then roll the exact chance. Pure.</td></tr>
+    <tr><td><code>WhatDoes(items, environment)</code></td><td>The match without rolling: useful for a hint or a preview.</td></tr>
+    <tr><td><code>WhatMakes(elementId)</code></td><td>Every recipe producing the element, ordered by id.</td></tr>
+    <tr><td><code>new DiscoveryBook(content)</code></td><td>Starting knowledge; then <code>Record</code>, <code>LearnRecipe</code>, <code>CheckUsable</code>, <code>HasTried</code>.</td></tr>
+    <tr><td><code>book.Save()</code> / <code>DiscoveryBook.Load(content, bytes)</code></td><td>Envelope with content digest and body digest; loading refuses a different content or a tampered body.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="runtime" class="anchor">GameRuntime integration</h2>
+<p><code>AlchemyComponent(rules, book, seed, id = "alchemy")</code> queues <code>CombineRequested</code> and <code>RecipeLearnedExternally</code>, then answers inside <code>Update</code> in arrival order, using the book's attempt counter as the only variation.</p>
+<table>
+  <thead><tr><th>Event</th><th>Direction</th></tr></thead>
+  <tbody>
+    <tr><td><code>alchemy.combine-requested</code>, <code>alchemy.recipe-learned-externally</code></td><td>Request in</td></tr>
+    <tr><td><code>alchemy.combined</code>, <code>alchemy.combine-refused</code>, <code>alchemy.discovery-made</code></td><td>Result out</td></tr>
+    <tr><td><code>alchemy.knowledge-restored</code></td><td>Emitted at <code>Init</code> so a host can rebuild its view</td></tr>
+  </tbody>
+</table>
+<p><code>IsQuiet</code> is true only when no request or external lesson waits; <code>Fingerprint()</code> reports tick, book hash and pending count. Declare <code>AlchemyEventCatalog</code> before <code>Init</code>.</p>
+
+<h2 id="sim" class="anchor">SimEngine bridge</h2>
+<p><code>GameRuntime.AlchemySim</code> turns alchemy discoveries into production: <code>SimRecipeSource.Alchemy</code> projects recipes into SimEngine content, <code>RecipeUnlockComponent</code> opens a recipe when its discovery event arrives, <code>SimProcessor</code> runs the production step, and <code>DiscoverRecipeEffect</code> turns a produced item into a book discovery. The proof game is the alchemist workshop under <code>src/GameRuntime/GameRuntime.AlchemySim.Headless/Workshop</code>.</p>
+
+<h2 id="testing" class="anchor">Testing</h2>
+<pre><code>dotnet run --project src/GameRuntime/GameRuntime.Tests -c Release</code></pre>
+<p><code>AlchemyEngineTests.cs</code> covers content refusals, ordered and unordered matching, catalysts and environment, exact chance reproducibility, discovery book transitions and save/hash behaviour.</p>
+
+<h2 id="source" class="anchor">Source map</h2>
+<dl class="kv">
+  <dt>Loader</dt><dd><code>AlchemyContentLoader.cs</code>, <code>AlchemyContentLoader.Validate.cs</code>, <code>ContentJson.cs</code></dd>
+  <dt>Model</dt><dd><code>AlchemyContent.cs</code>, <code>ElementDef.cs</code>, <code>RecipeDef.cs</code></dd>
+  <dt>Rules</dt><dd><code>AlchemyRules.cs</code>, <code>AlchemyRules.Match.cs</code>, <code>AlchemyRules.Query.cs</code>, <code>CombineResult.cs</code></dd>
+  <dt>Discovery</dt><dd><code>DiscoveryBook.cs</code>, <code>DiscoveryBook.Save.cs</code></dd>
+  <dt>Refusals</dt><dd><code>AlchemyCodes.cs</code>, <code>AlchemyContentException.cs</code></dd>
+  <dt>Runtime</dt><dd><code>GameRuntime.Alchemy/AlchemyComponent.cs</code>, <code>AlchemyCheckpoint.cs</code></dd>
+</dl>
+
+<footer class="page-foot">
+  <p>Source-verified 2026-11-06 from <code>src/AlchemyEngine</code> and <code>src/GameRuntime/GameRuntime.Alchemy*</code>. Research and game comparisons: <a href="../ALCHEMY_ENGINE.md">docs/ALCHEMY_ENGINE.md</a>.</p>
+</footer>
+</main>
+</body>
+</html>

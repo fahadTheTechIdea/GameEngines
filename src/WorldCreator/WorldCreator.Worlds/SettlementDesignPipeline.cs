@@ -16,10 +16,10 @@ public sealed class SettlementDesignPipeline(ISettlementCatalogRegistry catalogs
     public SettlementDesignResult Build(WorldRequest request, CancellationToken token = default)
     {
         token.ThrowIfCancellationRequested();
-        if (request.Design is not null)
+        if(request.Design is not null)
         {
-            try { request=request with { Design=new FacilityCompositionPlanner(catalogs).Expand(request.Design,token) }; }
-            catch (ArgumentException ex) { return new(new("unresolved-facility-design",new(request.Width,request.Height),[]),new([],[],[new(ex.Message,"facility composition rejected")]),[],new([],[]),[ex.Message]); }
+            try { request=request with { Design=CatalogContentAuthoring.BindReferences(request.Design,catalogs,token) }; }
+            catch(ArgumentException ex) { return new(new("unresolved-catalog-design",new(request.Width,request.Height),[]),new([],[],[new(ex.Message,"catalog reference rejected")]),[],new([],[]),[ex.Message]); }
         }
         var settlement = new SettlementPlanner(catalogs).Plan(request, token);
         var design = settlement.Design ?? new WorldDesignPlan("unresolved-mockup-design",

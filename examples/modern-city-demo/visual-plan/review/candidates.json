@@ -1,0 +1,229 @@
+{
+  "Version": 1,
+  "RecordedAtUtc": "2026-10-28T09:10:00.474145+00:00",
+  "Status": "ReadOnlyReviewSnapshot",
+  "ProposedCandidates": [
+    {
+      "Kind": "District detail",
+      "Id": "detail-old-center-residential-frontages-01",
+      "Revision": "v002",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_scene_detail-old-center-residential-frontages-01_mockup_v002.png",
+      "Sha256": "c3d44ad99729b36b0ecbd8302001df06cb65248a65530034c5096007c6842ef3",
+      "Status": "Awaiting owner review",
+      "Notes": [
+        "Codex visual self-review: 17 of 17 building bodies.",
+        "Map calibration, occluded ground/doors and native acceptance are not established."
+      ],
+      "ExpectedBuildings": 17,
+      "ObservedBuildingsSelfReview": 17
+    },
+    {
+      "Kind": "District detail",
+      "Id": "detail-outer-neighborhood-residential-04",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_scene_detail-outer-neighborhood-residential-04_mockup_v001.png",
+      "Sha256": "f5fcea60d30010021442ba23d3d3e10ab3b0da0a04eaa8f6ecae99af392910e4",
+      "Status": "Awaiting owner review",
+      "Notes": [
+        "Codex visual self-review: 19 of 19 building bodies.",
+        "Map calibration, occluded ground/doors and native acceptance are not established."
+      ],
+      "ExpectedBuildings": 19,
+      "ObservedBuildingsSelfReview": 19
+    },
+    {
+      "Kind": "Building reference",
+      "Id": "cafe-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_cafe-reference_mockup_v001.png",
+      "Sha256": "8302858e2332956905e38aa8671cc4748c366d97a1b8b159ab83579f897a0d5c",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Building reference",
+      "Id": "civic-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_civic-reference_mockup_v001.png",
+      "Sha256": "300968acf71e2bcf53bf72557c28d346c582c29b56cde96c74376c0982c78739",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Building reference",
+      "Id": "guardhouse-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_guardhouse-reference_mockup_v001.png",
+      "Sha256": "557d056fba21e8de3e645cf04f4e09210aa4721846c07047689ad0699c9db209",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Building reference",
+      "Id": "library-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_library-reference_mockup_v001.png",
+      "Sha256": "ec28f89e40f027f147307deaa9813f8f2bd1f8238c638cc3f415b94d1ffd5d95",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Building reference",
+      "Id": "office-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_office-reference_mockup_v001.png",
+      "Sha256": "4b3e59d2e82381f92305b09f3425a11d70776d984cc8177594ff75e4315173aa",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Building reference",
+      "Id": "restaurant-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_restaurant-reference_mockup_v001.png",
+      "Sha256": "1f8b4f867e98369994448ed0ff965b745426dccb54c43aba47316fc96f80ec93",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Building reference",
+      "Id": "school-building-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_school-building-reference_mockup_v001.png",
+      "Sha256": "5700db721d46e4d492111e9a3d3aa1a8d752e3eb0336eee3e89ef35af8aeb024",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Building reference",
+      "Id": "shop-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_shop-reference_mockup_v001.png",
+      "Sha256": "9aa66adff4a151ae70313d64df221e1a76cc2ec5163f85d90fb608bcdf3cef93",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Building reference",
+      "Id": "warehouse-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_warehouse-reference_mockup_v001.png",
+      "Sha256": "c5335862c05c2be5f5dab4a22c63946df919eab87497323bf64eeec648f92f03",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Building reference",
+      "Id": "workshop-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_workshop-reference_mockup_v001.png",
+      "Sha256": "f4ea32d1b344bf1752b355d9c556514e7809f5198241a040b6a860896bb2ff4e",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Ground-area concept",
+      "Id": "courtyard-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_courtyard-reference_mockup_v001.png",
+      "Sha256": "f9a4dada86930628231412bbc4e27bf57180b20e01bbaedace8c905133dac076",
+      "Status": "Awaiting owner review",
+      "Notes": [
+        "Ground boundary widens toward front in the concept. Not a calibrated rectangle or accepted production projection; explicit owner review and source-footprint reconciliation remain required."
+      ]
+    },
+    {
+      "Kind": "Ground-area concept",
+      "Id": "entry-walk-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_entry-walk-reference_mockup_v001.png",
+      "Sha256": "a2875123d3a2bf7199e375aa6092f839981ef5bdc6cbe575d218814afa54db5d",
+      "Status": "Awaiting owner review",
+      "Notes": [
+        "Ground boundary widens toward front in the concept. Not a calibrated rectangle or accepted production projection; explicit owner review and source-footprint reconciliation remain required."
+      ]
+    },
+    {
+      "Kind": "Ground-area concept",
+      "Id": "garden-reference",
+      "Revision": "v002",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_garden-reference_mockup_v002.png",
+      "Sha256": "0a279d0475d1120da24b67fc6ffd7c5e7eb50ba7805bc02cca9b3e30b5fb7321",
+      "Status": "Awaiting owner review",
+      "Notes": [
+        "v002 corrects perspective taper; v001 remains unapproved and is not selected for districts."
+      ]
+    },
+    {
+      "Kind": "Ground-area concept",
+      "Id": "park-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_park-reference_mockup_v001.png",
+      "Sha256": "aeb660d90a887548b1a795f9aa53d1700a9fb68bac5d1eafa80489c02a72f93d",
+      "Status": "Awaiting owner review",
+      "Notes": []
+    },
+    {
+      "Kind": "Ground-area concept",
+      "Id": "playground-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_playground-reference_mockup_v001.png",
+      "Sha256": "09ea93f763b629f7a57a615bc7b8d83f3e86b67c0274ac767547fd85c1dead48",
+      "Status": "Awaiting owner review",
+      "Notes": [
+        "Ground boundary widens toward front in the concept. Not a calibrated rectangle or accepted production projection; explicit owner review and source-footprint reconciliation remain required."
+      ]
+    },
+    {
+      "Kind": "Ground-area concept",
+      "Id": "plaza-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_plaza-reference_mockup_v001.png",
+      "Sha256": "a2d6848c5631400e63c21aaab3df118c35dc7b035bb687bd88a6f9e40f1800e0",
+      "Status": "Awaiting owner review",
+      "Notes": [
+        "Ground boundary widens toward front in the concept. Not a calibrated rectangle or accepted production projection; explicit owner review and source-footprint reconciliation remain required."
+      ]
+    },
+    {
+      "Kind": "Ground-area concept",
+      "Id": "utility-yard-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_utility-yard-reference_mockup_v001.png",
+      "Sha256": "a787298a64d9705cefc1802ef12ccc516cf72c45d3d09f5eebb38e226b894705",
+      "Status": "Awaiting owner review",
+      "Notes": [
+        "Ground boundary widens toward front in the concept. Not a calibrated rectangle or accepted production projection; explicit owner review and source-footprint reconciliation remain required."
+      ]
+    },
+    {
+      "Kind": "Ground-area concept",
+      "Id": "yard-reference",
+      "Revision": "v001",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_asset_yard-reference_mockup_v001.png",
+      "Sha256": "4922a7da082b44baa18981d458a9fb3532a605b435b642a391079077697c879f",
+      "Status": "Awaiting owner review",
+      "Notes": [
+        "Ground boundary widens toward front in the concept. Not a calibrated rectangle or accepted production projection; explicit owner review and source-footprint reconciliation remain required."
+      ]
+    }
+  ],
+  "FailedCandidatesNotProposed": [
+    {
+      "Kind": "District detail",
+      "Id": "detail-old-center-residential-frontages-02",
+      "Revision": "v002",
+      "File": ".gamearts/outputs/mockups/generated/framework-city-reference_scene_detail-old-center-residential-frontages-02_mockup_v002.png",
+      "Sha256": "c7f21dd13422853246251b2501b1818dd93ee0b00f67efed88555c778b38f7af",
+      "Status": "Not proposed for approval",
+      "Notes": [
+        "Codex visual self-review: 16 of 17 building bodies.",
+        "Map calibration, occluded ground/doors and native acceptance are not established."
+      ],
+      "ExpectedBuildings": 17,
+      "ObservedBuildingsSelfReview": 16
+    }
+  ],
+  "ApprovalAuthority": "Canonical GameArts lifecycle; this page has no approval/write controls.",
+  "MapOrWorldAccepted": false
+}

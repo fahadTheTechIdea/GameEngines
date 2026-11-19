@@ -1,0 +1,194 @@
+{
+  "SchemaVersion": 1,
+  "Id": "destination-network",
+  "GameProfile": "exploration",
+  "CatalogId": "surface-example",
+  "RootArchetypeId": "root",
+  "Scale": "region",
+  "Coverage": "PartialScope",
+  "RemainingScopes": [
+    "Authored terrain and destination anchors; generated landforms, suitability, regions, junctions, structures, art and runtime remain open"
+  ],
+  "Parameters": {},
+  "Space": {
+    "Axes": [
+      "x",
+      "y"
+    ],
+    "Unit": "meters"
+  },
+  "Origin": [
+    10,
+    10
+  ],
+  "RequireAllPositions": true,
+  "MaximumNodes": 10000,
+  "MaximumConnections": 50000,
+  "AdditionalConnections": null,
+  "Layers": [
+    {
+      "Id": "intent",
+      "Kind": "game-intent",
+      "Purpose": "Declared exploration destinations",
+      "SourceRuleId": "example:destinations",
+      "DependsOn": [],
+      "Coverage": "CompleteDeclaredScope",
+      "RemainingScopes": []
+    }
+  ],
+  "Surface": {
+    "SchemaVersion": 1,
+    "Id": "flat",
+    "Unit": "meters",
+    "Boundary": {
+      "Vertices": [
+        {
+          "X": 0,
+          "Y": 0
+        },
+        {
+          "X": 120,
+          "Y": 0
+        },
+        {
+          "X": 120,
+          "Y": 40
+        },
+        {
+          "X": 70,
+          "Y": 40
+        },
+        {
+          "X": 70,
+          "Y": 100
+        },
+        {
+          "X": 0,
+          "Y": 100
+        }
+      ]
+    },
+    "Exclusions": [],
+    "Patches": [
+      {
+        "Id": "ground",
+        "Kind": "meadow",
+        "Purpose": "Exploration ground",
+        "SourceRuleId": "authored-ground",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 0,
+              "Y": 0
+            },
+            {
+              "X": 120,
+              "Y": 0
+            },
+            {
+              "X": 120,
+              "Y": 40
+            },
+            {
+              "X": 70,
+              "Y": 40
+            },
+            {
+              "X": 70,
+              "Y": 100
+            },
+            {
+              "X": 0,
+              "Y": 100
+            }
+          ]
+        },
+        "Priority": 0,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 10,
+        "GradientX": 0,
+        "GradientY": 0
+      },
+      {
+        "Id": "water",
+        "Kind": "water",
+        "Purpose": "Keep the inlet open",
+        "SourceRuleId": "authored-ground",
+        "Boundary": {
+          "Vertices": [
+            {
+              "X": 45,
+              "Y": 0
+            },
+            {
+              "X": 55,
+              "Y": 0
+            },
+            {
+              "X": 55,
+              "Y": 20
+            },
+            {
+              "X": 45,
+              "Y": 20
+            }
+          ]
+        },
+        "Priority": 1,
+        "Origin": {
+          "X": 0,
+          "Y": 0
+        },
+        "Elevation": 10,
+        "GradientX": 0,
+        "GradientY": 0
+      }
+    ]
+  },
+  "RouteRules": null,
+  "NetworkRules": [
+    {
+      "Id": "regional-access",
+      "RegionNodeId": "destination-network",
+      "DestinationKind": "destination",
+      "MinimumDestinations": 4,
+      "MaximumDestinations": 4,
+      "ConnectionKind": "regional-travel",
+      "Options": {
+        "Purpose": "Connect required exploration locations",
+        "SourceRuleId": "example:access",
+        "Scale": "region",
+        "Profile": {
+          "Id": "foot",
+          "Purpose": "Walk between destinations",
+          "SourceRuleId": "example:walking",
+          "Radius": 1,
+          "MaximumSlope": 0.5,
+          "KindCosts": {
+            "meadow": 1,
+            "mud": 20
+          },
+          "AscentCost": 0,
+          "DescentCost": 0,
+          "MaximumHeightStep": 0.001
+        },
+        "Search": {
+          "Clearance": 0.5,
+          "Waypoints": [],
+          "MaximumCandidates": 256,
+          "MaximumEdgeChecks": 32768,
+          "MaximumWork": 2000000
+        },
+        "Connectivity": "SingleConnectionFailure",
+        "NearestNeighbors": 1,
+        "MaximumPairChecks": 128,
+        "MaximumWork": 30000000,
+        "RequiredConnections": null
+      },
+      "LayerId": "intent"
+    }
+  ]
+}

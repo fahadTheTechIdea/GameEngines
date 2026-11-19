@@ -1,0 +1,31 @@
+run,measurement,median,min,max,unit,repeats
+1,load document (116 KB),18.320,18.320,18.320,ms,1
+1,first step,26.117,26.117,26.117,ms,1
+1,ordinary step (100 regions 20 hazards 20 diseases),2.882,1.179,21.474,ms,364
+1,a year of daily steps,1871.778,1871.778,1871.778,ms,1
+1,changes in the year,48213,48213,48213,count,1
+1,most hazards at once,377,377,377,count,1
+1,most diseases at once,16,16,16,count,1
+1,save write (100 KB),3.043,2.294,35.768,ms,7
+1,save open,6.072,4.500,23.346,ms,7
+1,allocated by one step,2704696,2704696,2704696,bytes,1
+2,load document (116 KB),15.237,15.237,15.237,ms,1
+2,first step,26.602,26.602,26.602,ms,1
+2,ordinary step (100 regions 20 hazards 20 diseases),2.678,1.329,17.497,ms,364
+2,a year of daily steps,1564.317,1564.317,1564.317,ms,1
+2,changes in the year,48213,48213,48213,count,1
+2,most hazards at once,377,377,377,count,1
+2,most diseases at once,16,16,16,count,1
+2,save write (100 KB),3.186,2.140,33.461,ms,7
+2,save open,6.964,4.562,24.608,ms,7
+2,allocated by one step,2704696,2704696,2704696,bytes,1
+3,load document (116 KB),15.711,15.711,15.711,ms,1
+3,first step,25.854,25.854,25.854,ms,1
+3,ordinary step (100 regions 20 hazards 20 diseases),3.866,1.210,23.133,ms,364
+3,a year of daily steps,1943.987,1943.987,1943.987,ms,1
+3,changes in the year,48213,48213,48213,count,1
+3,most hazards at once,377,377,377,count,1
+3,most diseases at once,16,16,16,count,1
+3,save write (100 KB),3.849,3.803,51.408,ms,7
+3,save open,7.778,7.239,37.058,ms,7
+3,allocated by one step,2704696,2704696,2704696,bytes,1

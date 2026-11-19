@@ -1,8 +1,6 @@
 {
   "Width": 228,
   "Height": 226,
-  "Seed": 42,
-  "Biome": "Desert",
   "SettlementCount": 1,
   "Design": {
     "SchemaVersion": 1,

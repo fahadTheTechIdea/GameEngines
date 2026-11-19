@@ -1,0 +1,78 @@
+{
+  "format": 1,
+  "id": "valley-year",
+  "time": { "hoursPerDay": 24, "minutesPerHour": 60, "ticksPerMinute": 1 },
+  "epoch": { "year": 1 },
+  "weekMode": "restart",
+  "weekdays": [
+    { "id": "mon", "key": "cal.weekday.mon" }, { "id": "tue", "key": "cal.weekday.tue" }, { "id": "wed", "key": "cal.weekday.wed" }, { "id": "thu", "key": "cal.weekday.thu" },
+    { "id": "fri", "key": "cal.weekday.fri" }, { "id": "sat", "key": "cal.weekday.sat" }, { "id": "sun", "key": "cal.weekday.sun" }
+  ],
+  "months": [
+    { "id": "spring", "key": "cal.month.spring", "days": 28, "leapDays": 0, "intercalary": false },
+    { "id": "summer", "key": "cal.month.summer", "days": 28, "leapDays": 0, "intercalary": false },
+    { "id": "fall", "key": "cal.month.fall", "days": 28, "leapDays": 0, "intercalary": false },
+    { "id": "winter", "key": "cal.month.winter", "days": 28, "leapDays": 0, "intercalary": false }
+  ],
+  "leap": [],
+  "eras": [],
+  "dayParts": [
+    { "id": "night", "key": "cal.daypart.night", "from": "0:00" }, { "id": "morning", "key": "cal.daypart.morning", "from": "6:00" },
+    { "id": "day", "key": "cal.daypart.day", "from": "9:00" }, { "id": "evening", "key": "cal.daypart.evening", "from": "17:00" }, { "id": "late", "key": "cal.daypart.late", "from": "22:00" }
+  ],
+  "seasons": [
+    { "id": "spring", "key": "cal.season.spring", "month": "spring", "day": 1, "sunrise": "6:00", "sunset": "18:30" },
+    { "id": "summer", "key": "cal.season.summer", "month": "summer", "day": 1, "sunrise": "5:30", "sunset": "20:00" },
+    { "id": "fall", "key": "cal.season.fall", "month": "fall", "day": 1, "sunrise": "6:30", "sunset": "18:00" },
+    { "id": "winter", "key": "cal.season.winter", "month": "winter", "day": 1, "sunrise": "7:00", "sunset": "17:00" }
+  ],
+  "twilightMinutes": 30,
+  "moons": [],
+  "holidays": [
+    { "id": "egg-festival", "key": "cal.holiday.egg-festival", "days": 1, "tags": [ "festival" ], "rule": { "freq": "yearly", "start": { "year": 1, "month": "spring", "day": 13 } } },
+    { "id": "flower-dance", "key": "cal.holiday.flower-dance", "days": 1, "tags": [ "festival" ], "rule": { "freq": "yearly", "start": { "year": 1, "month": "spring", "day": 24 } } },
+    { "id": "luau", "key": "cal.holiday.luau", "days": 1, "tags": [ "festival" ], "rule": { "freq": "yearly", "start": { "year": 1, "month": "summer", "day": 11 } } },
+    { "id": "fair", "key": "cal.holiday.fair", "days": 1, "tags": [ "festival" ], "rule": { "freq": "yearly", "start": { "year": 1, "month": "fall", "day": 16 } } },
+    { "id": "ice-festival", "key": "cal.holiday.ice-festival", "days": 1, "tags": [ "festival" ], "rule": { "freq": "yearly", "start": { "year": 1, "month": "winter", "day": 8 } } },
+    { "id": "winter-star", "key": "cal.holiday.winter-star", "days": 1, "tags": [ "festival" ], "rule": { "freq": "yearly", "start": { "year": 1, "month": "winter", "day": 25 } } }
+  ],
+  "formats": [ { "id": "long", "key": "cal.format.long" } ],
+  "locations": [
+    { "id": "home", "key": "cal.place.home" }, { "id": "library", "key": "cal.place.library" }, { "id": "saloon", "key": "cal.place.saloon" }, { "id": "mountain", "key": "cal.place.mountain" },
+    { "id": "beach", "key": "cal.place.beach" }, { "id": "town-square", "key": "cal.place.town-square" }, { "id": "festival-grounds", "key": "cal.place.festival-grounds" }, { "id": "farm", "key": "cal.place.farm" }
+  ],
+  "activities": [
+    { "id": "sleep", "key": "cal.act.sleep" }, { "id": "read", "key": "cal.act.read" }, { "id": "eat", "key": "cal.act.eat" }, { "id": "wander", "key": "cal.act.wander" },
+    { "id": "fish", "key": "cal.act.fish" }, { "id": "rest", "key": "cal.act.rest" }, { "id": "celebrate", "key": "cal.act.celebrate" }, { "id": "farm", "key": "cal.act.farm" }
+  ],
+  "interrupts": [ { "id": "storm-shelter", "priority": 100, "location": "home", "activity": "rest" } ],
+  "facts": [ { "id": "weather.raining", "type": "bool" } ],
+  "schedules": [
+    { "id": "scholar", "routines": [
+      { "id": "base", "priority": 0, "blocks": [
+        { "id": "sleep-night", "from": "0:00", "to": "9:00", "location": "home", "activity": "sleep" },
+        { "id": "study", "from": "9:00", "to": "12:00", "location": "library", "activity": "read" },
+        { "id": "lunch", "from": "12:00", "to": "13:00", "location": "saloon", "activity": "eat" },
+        { "id": "walk", "from": "13:00", "to": "17:00", "location": "mountain", "activity": "wander" },
+        { "id": "supper", "from": "17:00", "to": "21:00", "location": "saloon", "activity": "rest" },
+        { "id": "sleep-late", "from": "21:00", "to": "24:00", "location": "home", "activity": "sleep" } ] },
+      { "id": "weekend", "priority": 5, "when": { "weekdays": [ "sat", "sun" ] }, "blocks": [
+        { "id": "stroll", "from": "10:00", "to": "14:00", "location": "town-square", "activity": "wander" } ] },
+      { "id": "rain", "priority": 10, "when": { "condition": { "fact": "weather.raining", "op": "eq", "value": true } }, "blocks": [
+        { "id": "stay-in", "from": "9:00", "to": "17:00", "location": "library", "activity": "read" } ] },
+      { "id": "festival", "priority": 50, "when": { "condition": { "fact": "cal.is_holiday", "op": "eq", "value": true } }, "blocks": [
+        { "id": "party", "from": "9:00", "to": "21:00", "location": "festival-grounds", "activity": "celebrate" } ] } ] },
+    { "id": "fisher", "routines": [
+      { "id": "base", "priority": 0, "blocks": [
+        { "id": "sleep-night", "from": "0:00", "to": "6:00", "location": "home", "activity": "sleep" },
+        { "id": "morning-catch", "from": "6:00", "to": "12:00", "location": "beach", "activity": "fish" },
+        { "id": "midday", "from": "12:00", "to": "13:00", "location": "saloon", "activity": "eat" },
+        { "id": "tend", "from": "13:00", "to": "18:00", "location": "farm", "activity": "farm" },
+        { "id": "supper", "from": "18:00", "to": "22:00", "location": "saloon", "activity": "rest" },
+        { "id": "sleep-late", "from": "22:00", "to": "24:00", "location": "home", "activity": "sleep" } ] },
+      { "id": "winter-ice", "priority": 20, "when": { "seasons": [ "winter" ] }, "blocks": [
+        { "id": "stay-warm", "from": "6:00", "to": "18:00", "location": "home", "activity": "rest" } ] },
+      { "id": "festival", "priority": 50, "when": { "condition": { "fact": "cal.is_holiday", "op": "eq", "value": true } }, "blocks": [
+        { "id": "party", "from": "9:00", "to": "21:00", "location": "festival-grounds", "activity": "celebrate" } ] } ] }
+  ]
+}

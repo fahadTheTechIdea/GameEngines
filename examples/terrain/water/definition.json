@@ -1,0 +1,1 @@
+{"SchemaVersion":1,"Id":"stream","Kind":"water","Purpose":"Game-authored wet ribbon","SourceRuleId":"water:width","MinimumFlow":1,"BaseWidth":0.5,"WidthPerRate":0,"MaximumWidth":10000,"Priority":1000,"MaximumSegments":512,"MaximumPatches":1024,"MaximumWork":20000000}

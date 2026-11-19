@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" Version="4.0.2" />
+    <ProjectReference Include="../GameRuntime.Core/GameRuntime.Core.csproj" />
+    <ProjectReference Include="../GameRuntime.Headless/GameRuntime.Headless.csproj" />
+    <ProjectReference Include="../GameRuntime.Alchemy/GameRuntime.Alchemy.csproj" />
+    <ProjectReference Include="../GameRuntime.Alchemy.Headless/GameRuntime.Alchemy.Headless.csproj" />
+    <ProjectReference Include="../GameRuntime.AlchemySim/GameRuntime.AlchemySim.csproj" />
+    <ProjectReference Include="../GameRuntime.AlchemySim.Headless/GameRuntime.AlchemySim.Headless.csproj" />
+    <ProjectReference Include="../../AlchemyEngine/AlchemyEngine.Core/AlchemyEngine.Core.csproj" />
+    <ProjectReference Include="../GameRuntime.Services/GameRuntime.Services.csproj" />
+    <ProjectReference Include="../GameRuntime.Characters/GameRuntime.Characters.csproj" />
+    <ProjectReference Include="../GameRuntime.Field.Headless/GameRuntime.Field.Headless.csproj" />
+    <ProjectReference Include="../../GameContent/GameContent.Catalog.Characters/GameContent.Catalog.Characters.csproj" />
+    <ProjectReference Include="../../GameContent/GameContent.Catalog.Combat/GameContent.Catalog.Combat.csproj" />
+    <ProjectReference Include="../GameRuntime.Combat/GameRuntime.Combat.csproj" />
+    <ProjectReference Include="../GameRuntime.Dialogue/GameRuntime.Dialogue.csproj" />
+    <ProjectReference Include="../GameRuntime.AI/GameRuntime.AI.csproj" />
+    <ProjectReference Include="../GameRuntime.Briefing.Headless/GameRuntime.Briefing.Headless.csproj" />
+    <ProjectReference Include="../GameRuntime.Relationship.Bridges/GameRuntime.Relationship.Bridges.csproj" />
+    <ProjectReference Include="../GameRuntime.Combat.Headless/GameRuntime.Combat.Headless.csproj" />
+    <ProjectReference Include="../GameRuntime.Sim/GameRuntime.Sim.csproj" />
+    <ProjectReference Include="../../SimEngine/help/quickstart/Game.Module/QuickGame.Module.csproj" />
+    <Compile Include="../../DialogueEngine/DialogueEngine.Tests/GraphGenerator.cs" Link="Dialogue/GraphGenerator.cs" />
+    <None Include="../GameRuntime.Tool/ObjectiveContent/**/*.json" Link="ObjectiveContent/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="HaulContent/**/*.json" Link="HaulContent/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="CharacterContent/**/*.json" Link="CharacterContent/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="CharacterBareContent/**/*.json" Link="CharacterBareContent/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="ResearchContent/**/*.json" Link="ResearchContent/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

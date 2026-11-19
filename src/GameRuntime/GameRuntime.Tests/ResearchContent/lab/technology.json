@@ -1,0 +1,8 @@
+{
+  "technology_completion_effects": [{ "id": "lab.research-complete" }],
+  "technologies": [{
+    "id": "lab.basics", "prerequisites": [], "unlocks": [],
+    "player_orderable": true, "priority": 50, "automatic_supply": false, "on_complete": "lab.research-complete",
+    "nodes": [{ "executor": "work.timed", "id": "study", "duration": { "numerator": 1, "denominator": 20, "unit": "hour" } }]
+  }]
+}
