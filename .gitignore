@@ -4,3 +4,9 @@
 .idea/
 generated/
 .gameframework/operations/
+
+# Bundled toolchains and generated run output
+.tools/
+*.log
+**/.gamearts/
+System.IO.MemoryStream
